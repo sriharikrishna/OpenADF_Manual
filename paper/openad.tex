@@ -231,15 +231,107 @@ provided on \xaifBooster\ as a platform for implementing new AD algorithms with
 the objective to establish an open quasi-standard development infrastructure
 within the AD community.
 %-----------------------------------------------------------------------------------------
-\subsection{Fortran~90 front-end} 
+\subsection{OpenADFortTK (a.k.a. Fortran~90 front-end)}
 
-{\tt ADDED BY NATHAN }
+{\tt ADDED BY MIKE AND NATHAN }
 
 The main target application of the ACTS project is the MIT general circulation
 model (MITgcm) \cite{mars-eta:97b,mars-eta:97a}. 
 It is mostly implemented in Fortran~77 to permit maintenance of an efficient
 and correct adjoint as the code evolves \cite{HHG02}. Future development will
 increasingly add Fortran~90 features. 
+The OpenADFortTK component covers the Fortran 90-specific features of
+the OpenAD system. Throughout this paper, we use ``front end'' as a
+synonym for OpenADFortTK. 
+
+blah blah \ldots OpenADFortTK = OpenAD Fortran Toolkit. blah blah
+
+In spite of the appelation ``front end'', OpenADFortTK subcomponents
+operate at several stages of the AD process (as seen in the diagram).
+The OpenADFortTK subcomponents are:
+
+   \begin{description}
+     \item[mfef90] A classical compiler front end that parses
+       Fortran 90, generating an intermediate representation (IR)
+       in the Whirl language
+
+     \item[canonicalizer] Convert some tedious (for AD) 
+        programming constructs into canonical form. This component
+        is whirl to whirl.
+
+     \item[whirl2xaif] A bridge component that:
+        \begin{itemize}
+           \item Drives the various program analyses (see OpenAnalysis)
+        
+           \item Filters out program statements that are not in the
+                 computational core of the language.
+
+           \item Converts the program analyses and core computational
+                 statements from whirl into XAIF
+	\end{itemize}
+
+     \item[xaif2whirl] A bridge component that converts the 
+        differentiated program represented in XAIF
+        to a whirl representation.
+
+     \item[whirl2f] The ``unparser'' that converts whirl to
+        Fortran 90
+
+     \item[postprocessor] Final part of the transformation that
+        performs template expansion as well as inlining substitutions.
+
+   \end{description}
+
+Both mfef90 and whirl2f are part of the Open64 project.
+
+
+In the remainder of this section, we will briefly summarize the
+subcomponents.
+
+\subsubsection*{Open64 components}
+The Open64 project supplies 2 elements for the front end:
+   \begin{enumerate}
+      \item mfef90
+      \item whirl2f
+   \end{enumerate}
+Both of these elements employ the Open64 intermediate
+representiation (IR) language called whirl. The mfef90 element is a classical
+compiler parser that reads Fortran 90 source and converts it to
+the whirl IR . Similarly, whirl2f accepts whirl IR as input, and produces
+corresponding Fortran 90 source.
+
+The whirl IR language resembles a standard assembly language.
+Whirl, however, has been designed to enable good optimization for
+high performance computing in Fortran, C, and C++. See \cite{whirl-stuff}
+for more details on whirl.
+
+The bulk of the design effort from the Open64 community is in
+ensuring that whirl can be effectively used for source-to-source
+transformation as well. Consequently, the bulk of the Open64 effort
+goes into whirl2f.
+
+The OpenAD project contributed some development of the pragma / directive
+mechanism in the Open64 components.
+
+\subsubsection*{Canonicalization}
+To simplify the development of the AD engine, the front end converts
+simplifies some programming constructs. In other words, all
+program statements that are differentiated are in \emph{canonical}
+form. For OpenAD, some of the canonicalizations performed are:
+
+   \begin{enumerate}
+      \item Common blocks are converted to modules
+      \item user defined functions are converted to subroutines
+      \item Non-variable actual parameters are hoisted to
+            temporaries
+      \item Derived type references are scalarized.
+   \end{enumerate}
+
+
+[ expand on reason for canonicalization ... ]
+
+\subsubsection*{Whirl2xaif and xaif2whirl}
+
 To ensure robustness of the AD tool, we sought industrial strength
 programming-language-dependent components.  We chose the Center for High
 Performance Software Research's (Rice University) \OpenSixtyFour\
@@ -286,6 +378,32 @@ flow analyses.
 sub secion of xaif2whirl: postprocessor to handle things that are not
 convenient in WHIRL
 
+*** Cite Rice Tech report.
+
+\subsubsection*{Postprocessor}
+The postprocessor performs various ``cleanup'' operations of the
+differentiated code. The 2 most important tasks are:
+
+   \begin{enumerate}
+      \item template expansion
+      \item inline substitution
+   \end{enumerate}
+
+Template expansion is intimately connected with the differentiation
+algorithms. Some parts of the code use different recomputation/storage
+strategies, as well as different taping patterns. These various
+strategies are encoded in Fortran 90 templates, and expanded by the
+post processor.
+
+Similarly, some operations introduced by the differentiation process
+are coded as function operations. To make these operations work well,
+however, they must be substituted inline, replacing the function call.
+
+
+[ Need examples of templates here (or somewhere) ]
+
+
+[ Does inlining serve any other purpose besides efficiency? ]
 
 %-----------------------------------------------------------------------------------------
 \subsection{\OpenAnalysis} 

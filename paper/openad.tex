@@ -232,29 +232,65 @@ the objective to establish an open quasi-standard development infrastructure
 within the AD community.
 %-----------------------------------------------------------------------------------------
 \subsection{Fortran~90 front-end} 
+
+{\tt ADDED BY NATHAN }
+
 The main target application of the ACTS project is the MIT general circulation
 model (MITgcm) \cite{mars-eta:97b,mars-eta:97a}. 
 It is mostly implemented in Fortran~77 to permit maintenance of an efficient
 and correct adjoint as the code evolves \cite{HHG02}. Future development will
-increasingly add Fortran~90 features. We use the Fortran~90 
-front-end that is part of the \OpenSixtyFour\ compiler suite 
-maintained by the Center for High Performance Software
-Research at Rice University 
-({\tt hipersoft.cs.rice.edu/OpenSixtyFour/}). It parses
-Fortran codes into an intermediate representation called whirl and
-provides an unparser from whirl back to Fortran. 
-The focus of the ACTS project is on the
-transformation of whirl into xaif (\whirlToxaif) and, conversely, on the
-back-translation of differentiated xaif code into whirl (\xaifTowhirl). 
-\whirlToxaif\ uses the call graph and control flow graph builders that are part 
-of the \OpenAnalysis\footnote{No documentation is available yet. 
-Refer to the \OpenSixtyFour\ cvs repository under 
-{\tt hipersoft.cs.rice.edu/Open64} for information on the code.} 
+increasingly add Fortran~90 features. 
+To ensure robustness of the AD tool, we sought industrial strength
+programming-language-dependent components.  We chose the Center for High
+Performance Software Research's (Rice University) \OpenSixtyFour\
+compiler, a multi-platform version of the SGI Pro64/Open64 compiler
+suite, originally based on SGI's commercial MIPSPro compiler 
+({\tt hipersoft.cs.rice.edu/OpenSixtyFour/}).  HiPerSoft
+has invested significant effort extending the infrastructure to
+support source-to-source transformations.  \OpenSixtyFour\'s
+Fortran~90 front end (mfef90) parses Fortran codes into an intermediate
+representation called WHIRL; a companion tool (whirl2f) unparses WHIRL
+back to Fortran source code.
+
+The focus of the ACTS project is on translating WHIRL into XAIF
+(\whirlToxaif), feeding it to the differentiation engine, and then
+back-translating the differentiated XAIF into WHIRL (\xaifTowhirl).
+Two distinguishing features of XAIF shape the contours of \whirlToxaif
+and \xaifTowhirl.  First, because XAIF represents only the numerical
+core of a program, many WHIRL statements and expressions must be
+represented using opaque markers and annotations.  
+*** FIXME For example *** 
+These opaque objects, which refer to the input WHIRL, are created by
+\whirlToxaif and depositied in special XAIF constructs designed for
+conveying such information through the differentiation engines.  Given
+the original WHIRL and the differentiated XAIF (with the opaque
+objects intact), \xaifTowhirl generates new WHIRL representing the
+differentiated code. *** BUILD from CFGs? ***
+
+The second distinguishing characteristic of XAIF is that it represents
+programs as common compiler analyses.  For example, a program is a
+call graph where nodes in the call graph are control flow graphs;
+control flow graphs contain basic blocks with statements.  Moreover,
+statements and expressions in XAIF are annotated with alias and
+activity  *** FIXME ***
+
+ \whirlToxaif\ uses the call graph and control flow graph builders
+that are part of the \OpenAnalysis\footnote{No documentation is
+available yet.  Refer to the \OpenSixtyFour\ cvs repository under {\tt
+hipersoft.cs.rice.edu/Open64} for information on the code.}
 infrastructure, whose objective is to provide a programming
-language-independent platform for the development of data and control flow 
-analyses. 
+language-independent platform for the development of data and control
+flow analyses.
+
+
+sub secion of xaif2whirl: postprocessor to handle things that are not
+convenient in WHIRL
+
+
 %-----------------------------------------------------------------------------------------
 \subsection{\OpenAnalysis} 
+
+
 
 %#########################################################################################
 \section{Application}

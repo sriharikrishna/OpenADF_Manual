@@ -1,0 +1,169 @@
+\begin{thebibliography}{10}
+
+\bibitem{AGN03}
+A.~Albrecht, P.~Gottschling, and U.~Naumann.
+\newblock Markowitz-type heuristics for computing {J}acobian matrices
+  efficiently.
+\newblock In {\em Computational Science -- ICCS 2003}, volume 2658 of {\em
+  LNCS}, pages 575--584. Springer, 2003.
+
+\bibitem{BBCG96}
+M.~Berz, C.~Bischof, G.~Corliss, and A.~Griewank, editors.
+\newblock {\em Computational Differentiation: Techniques, Applications, and
+  Tools}, Proceedings Series, Philadelphia, 1996. SIAM.
+
+\bibitem{BiHa96}
+C.~Bischof and M.~Haghighat.
+\newblock Hierarchical approaches to automatic differentiation.
+\newblock In {\em \cite{BBCG96}}, pages 82--94, 1996.
+
+\bibitem{CDB96}
+B.~Christianson, L.~Dixon, and S.~Brown.
+\newblock Sharing storage using dirty vectors.
+\newblock In {\em \cite{BBCG96}}, pages 107--115. SIAM, Philadelphia, PA, 1996.
+
+\bibitem{CFG+01}
+G.~Corliss, C.~Faure, A.~Griewank, L.~Hascoet, and U.~Naumann, editors.
+\newblock {\em Automatic Differentiation of Algorithms -- From Simulation to
+  Optimization}, New York, 2002. Springer.
+
+\bibitem{CG91}
+G.~Corliss and A.~Griewank, editors.
+\newblock {\em Automatic Differentiation: Theory, Implementation, and
+  Application}, Proceedings Series, Philadelphia, 1991. SIAM.
+
+\bibitem{FTB97}
+W.~Feehery, J.~Tolsma, and P.~Barton.
+\newblock Efficient sensitivity analysis of large-scale differential-algebraic
+  systems.
+\newblock {\em Applied Numerical Mathematics}, 25:41--54, 1997.
+
+\bibitem{DesignPatterns}
+E.~Gamma, R.~Helm, R.~Johnson, and J.~Vlissides.
+\newblock {\em Design Patterns}.
+\newblock Addison-Wesley, Reading, MA, 1995.
+
+\bibitem{GiKa02}
+R.~Giering and T.~Kaminski.
+\newblock {Applying TAF to generate efficient derivative code of Fortran 77-95
+  programs}.
+\newblock In {\em Proceedings of GAMM 2002, Augsburg, Germany}, 2002.
+
+\bibitem{Gri92}
+A.~Griewank.
+\newblock Achieving logarithmic growth of temporal and spatial complexity in
+  reverse automatic differentiation.
+\newblock {\em Optimization Methods and Software}, 1(1):35--54, 1992.
+
+\bibitem{Gri00}
+A.~Griewank.
+\newblock {\em Evaluating Derivatives. Principles and Techniques of Algorithmic
+  Differentiation}.
+\newblock Number~19 in Frontiers in Applied Mathematics. SIAM, Philadelphia,
+  2000.
+
+\bibitem{GrRe91}
+A.~Griewank and S.~Reese.
+\newblock On the calculation of {J}acobian matrices by the {M}arkovitz rule.
+\newblock In {\em \cite{CG91}}, pages 126--135, 1991.
+
+\bibitem{HNP02}
+L.~Hasco\"et, U.~Naumann, and V.~Pascual.
+\newblock {TBR} analysis in reverse-mode automatic differentiation.
+\newblock Preprint MCS-P936-0202, Argonne National Laboratory, 2002.
+\newblock Under Review for Elsevier Science FGCS.
+
+\bibitem{HHG02}
+P.~Heimbach, C.~Hill, and R.~Giering.
+\newblock Automatic generation of efficient adjoint code for a parallel
+  {N}avier-{S}tokes solver.
+\newblock In P.~M.~A. Sloot, C.~J.~K. Tan, J.~J. Dongarra, and A.~G. Hoekstra,
+  editors, {\em Computational Science -- ICCS~2002, Proceedings of the
+  International Conference on Computational Science, Amsterdam, The
+  Netherlands, April~21--24, 2002. Part~II}, volume 2330 of {\em Lecture Notes
+  in Computer Science}, pages 1019--1028, Berlin, 2002. Springer.
+
+\bibitem{HNN02}
+P.~Hovland, U.~Naumann, and B.~Norris.
+\newblock An {XML}-based platform for semantic transformation of numerical
+  programs.
+\newblock In M.~Hamza, editor, {\em Software Engineering and Applications},
+  pages 530--538. ACTA Press, 2002.
+
+\bibitem{HoNo01}
+P.~Hovland and B.~Norris.
+\newblock Users' guide to {ADIC} 1.1.
+\newblock Technical Memorandum ANL/MCS-TM-225, Mathematical and Computer
+  Science Division, Argonne National Laboratory, 2001.
+
+\bibitem{maro-eta:99}
+J.~Marotzke, R.~Giering, K.~Zhang, D.~Stammer, C.~Hill, and T.~Lee.
+\newblock Construction of the adjoint {MIT} ocean general circulation model and
+  application to {A}tlantic heat transport variability.
+\newblock {\em J. Geophysical Research}, 104, C12:29,529--29,547, 1999.
+
+\bibitem{mars-eta:97b}
+J.~Marshall, A.~Adcroft, C.~Hill, L.~Perelman, and C.~Heisey.
+\newblock Hydrostatic, quasi-hydrostatic and nonhydrostatic ocean modeling.
+\newblock {\em J. Geophysical Research}, 102, C3:5,753--5,766, 1997b.
+
+\bibitem{mars-eta:97a}
+J.~Marshall, C.~Hill, L.~Perelman, and A.~Adcroft.
+\newblock Hydrostatic, quasi-hydrostatic and nonhydrostatic ocean modeling.
+\newblock {\em J. Geophysical Research}, 102, C3:5,733--5,752, 1997.
+
+\bibitem{Muc97}
+S.~Muchnick.
+\newblock {\em Advanced Compiler Design and Implementation}.
+\newblock Academic Press, San Diego, 1997.
+
+\bibitem{ElimTechMP}
+U.~Naumann.
+\newblock Optimal accumulation of {J}acobian matrices by elimination methods on
+  the dual computational graph.
+\newblock {\em Math. Prog.}, 2003.
+\newblock Published online at {\tt www.springerlink.com}.
+
+\bibitem{SEUpreacc}
+U.~Naumann.
+\newblock Optimal pivoting in tangent-linear and adjoint systems of nonlinear
+  equations.
+\newblock Preprint ANL-MCS/P944-0402, Argonne National Laboratory, 2003.
+\newblock Under review for Math. Prog.
+
+\bibitem{SAGA}
+U.~Naumann and P.~Gottschling.
+\newblock Simulated annealing for optimal pivot selection in {J}acobian
+  accumulation.
+\newblock In A.~Albrecht and K.~Steinh\"ofel, editors, {\em Stochastic
+  Algorithms: Foundations and Applications}, volume 2827 of {\em Lecture Notes
+  in Computer Science}, pages 83--97. Springer, 2003.
+
+\bibitem{NaHe03}
+U.~Naumann and P.~Heimbach.
+\newblock {Coupling tangent-linear and adjoint models}.
+\newblock In V.~Kumar, M.~L. Gavrilova, C.~J.~K. Tan, and P.~{L'Ecuyer},
+  editors, {\em Computational Science and Its Applications -- ICCSA~2003,
+  Proceedings of the International Conference on Computational Science and its
+  Applications, Montreal, Canada, May~18--21, 2003. Part~II}, volume 2668 of
+  {\em Lecture Notes in Computer Science}, pages 95--104, Berlin, 2003.
+  Springer.
+
+\bibitem{tzi-ioa:02}
+E.~Tziperman and P.~Ioannou.
+\newblock Transient growth and optimal excitation of thermohaline variability.
+\newblock {\em J.~Phys.~Oceanogr.}, 32:3427--3435, 2002.
+
+\bibitem{UtNa03}
+J.~Utke and U.~Naumann.
+\newblock Software technological issues in automatizing the semantic
+  transformation of numerical programs.
+\newblock In M.~Hamza, editor, {\em Software Engineering and Applications},
+  pages 417--422. ACTA Press, 2003.
+
+\bibitem{WaGr01}
+A.~Walther and A.~Griewank.
+\newblock New results on program reversals.
+\newblock In {\em \cite{CFG+01}}, pages 237--243. Springer, New York, 2001.
+
+\end{thebibliography}

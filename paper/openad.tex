@@ -1,19 +1,53 @@
 \documentclass[acmtocl,acmnow]{acmtrans2m}
 \usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage[dvips]{epsfig}
+\usepackage{url}
+\usepackage{wrapfig}
+\usepackage[usenames]{color}
+\usepackage[dvips]{epsfig,psfrag}
 
-\newcommand{\R}{I\!\!R}
+%graphics
+\newcommand{\ellipse}[1]{{\raisebox{-1ex}{\protect\psfrag{a}[][]{\small$#1$}%
+\protect\includegraphics[width=10mm,height=5mm,clip]{vertex.eps}}}}
+\newcommand{\Sourcevertex}{{\raisebox{-.2ex}{\includegraphics[width=3.5mm,clip]{sourcevertex.eps}}}}
+\newcommand{\Sinkvertex}{{\raisebox{-.2ex}{\includegraphics[width=3.5mm,clip]{sinkvertex.eps}}}}
+\newcommand{\sourcevertex}{{\raisebox{-.2ex}{\includegraphics[width=2.5mm,clip]{sourcevertex.eps}}}}
+\newcommand{\sinkvertex}{{\raisebox{-.2ex}{\includegraphics[width=2.5mm,clip]{sinkvertex.eps}}}}
+
+%names and CS terms
+\newcommand{\entry}{entry}
+\newcommand{\exit}{exit}
+\newcommand{\Loop}{loop}
+\newcommand{\branch}{branch}
+\newcommand{\basicblock}{basicblock}
 \newcommand{\OpenAD}{OpenAD}
-\newcommand{\OpenSixtyFour}{Open64}
-\newcommand{\OpenAnalysis}{OpenAnalysis}
 \newcommand{\OpenADFortTk}{OpenADFortTk}
+\newcommand{\OpenAnalysis}{OpenAnalysis}
+\newcommand{\OpenSixtyFour}{Open64}
 \newcommand{\XAIF}{XAIF}
 \newcommand{\xaifBooster}{xaifBooster}
 \newcommand{\whirlToxaif}{whirl2xaif}
 \newcommand{\xaifTowhirl}{xaif2whirl}
+
+%math
+\newcommand{\R}{I\!\!R}
+\newcommand{\bmC}{\mbox{\bf\em C}}
+\newcommand{\bmf}{\mbox{\bf\em f}}
+\newcommand{\bmg}{\mbox{\bf\em g}}
+\newcommand{\bmI}{\mbox{\bf\em I}}
+\newcommand{\bmJ}{\mbox{\bf\em J}}
+\newcommand{\bmu}{\mbox{\bf\em u}}
+\newcommand{\bmv}{\mbox{\bf\em v}}
+\newcommand{\bmw}{\mbox{\bf\em w}}
+\newcommand{\bmx}{\mbox{\bf\em x}}
+\newcommand{\bmy}{\mbox{\bf\em y}}
+
+%environments
 \newcommand{\reffig}[1]{Figure~\ref{#1}}
 \newcommand{\refsec}[1]{Section~\ref{#1}}
+\newcommand{\refeqn}[1]{(\ref{#1})}
+\newcommand{\refcan}[1]{(C\ref{#1})}
+\newtheorem{Can}{Canonicalization}
 
 \markboth{Lots Of Authors et al.}{\OpenAD}
 
@@ -24,7 +58,9 @@ of Fortran90 codes}
 MIKE FAGAN, NATHAN TALLENT \\Rice University\\
 MICHELLE STROUT, JEAN UTKE \\Argonne National Laboratory 
 \and
-UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
+UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen\\
+{\color{Red}[ fix the ordering ]}
+}
 
 \begin{abstract}
 The \OpenAD\ tool allows the evaluation of first and second order 
@@ -61,13 +97,13 @@ The Fortran specifive front and back end to this transformation engine is the \O
 
 \begin{bottomstuff} 
 P.~Heimbach, C.~Hill, D.~Ozyurt, and C.~Wunsch, Massachusetts Institute of Technology, 
-Boston, MA XXXXX;\newline
+Boston, MA 02139;\newline
 M.~Fagan, N.~Tallent, Rice University, 
-Houston, TX XXXXX;\newline
+Houston, TX 77251;\newline
 M.~Strout, J.~Utke, Argonne National Laboratory, 
-Argonne, IL XXXXX;\newline
+Argonne, IL 60439;\newline
 U.~Naumann, Rheinisch Westf\"alische Techinische Hochschule Aachen, 
-D-XXXXX Aachen, Germany;\newline
+D-52056 Aachen, Germany;\newline
 Funding for the ACTS project is provided by NSF under ITR contract OCE-0205590
 for a three year period that started in September 2002.
 \end{bottomstuff}
@@ -76,7 +112,7 @@ for a three year period that started in September 2002.
 %#########################################################################################
 \section{Introduction} \label{sec:Introduction}
 
-The basic principles of automatic differentiation (AD), see also \refsec{ssec:ADmath}, 
+The basic principles of automatic differentiation (AD), see also \refsec{ssec:ADIntro}, 
 have been known for several decades \cite{wengert}
 but only during the last 15 years the tools implementing AD have found a noticable use in 
 optimization, data assimilation, and other applications in need of efficient and accurate 
@@ -100,9 +136,11 @@ data assimilation on large scale models used in oceanography and climate researc
 An evaluation of the available tools revealed some shortcomings from the perspectives 
 of the tool users as well as the tool developers. 
 
-From  the AD tool  users point of view ... FILL IN
+From  the AD tool  users point of view ... 
+{\color{Red} [ FILL IN ] } 
 
-From the AD tool developers point of view ... FILL IN
+From the AD tool developers point of view ...
+{\color{Red} [ FILL IN ] } 
 
 These issues became the motivation for the 
 Adjoint Compiler Technology \& Standards (ACTS) project\footnote{ 
@@ -119,12 +157,10 @@ development and use of AD algorithms.
 The C/C++ oriented ADIC version 2.0 is based on the same infrastructure and can be found
 at {\tt www.mcs.anl.gov/adicserver}.
 }
-\begin{figure}[htb]
-\centerline{ 
+\begin{wrapfigure}{r}{6cm}
 \epsfig{file=overview.eps,width=6cm}
-}
 \caption{\OpenAD\ components and pipeline} \label{fig:overview}
-\end{figure}
+\end{wrapfigure}
 The collaboration  of the \OpenAD\  components is illustrated in 
 \reffig{fig:overview}
 The \OpenSixtyFour\ front-end performs a lexical, 
@@ -158,17 +194,444 @@ This paper discusses the components of \OpenAD,
 including the underlying design decisions, algorithmic aspects, and
 numerical results.
  
+%#########################################################################################
+\section{AD Concepts}\label{sec:ADIntro}
 
+In this section we introduce the terminology we will refer to throughout 
+this paper. We will also introduce a number of canonicalizations 
+that are required to simplify the theoretical and practical 
+aspects of the code transformation in \OpenAD.
 
-
-
-
-\subsection{Formal description of Automatic Differentiation}
-
-In this section we introduce the notational framework we will refer to throughout 
-this paper. A detailled introduction to AD can be found in \cite{Gri00}. 
+A detailled introduction to AD can be found in \cite{Gri00}. 
 We would also like to refer the reader to the proceedings of four conferences 
 on AD \cite{CG91,BBCG96,CFG+01,BCH+05}.
+
+We assume a vector valued function $\bmy=\bmf(\bmx): \R^n\mapsto \R^m$ that is implemented 
+as a computer program in a language such as Fortran, C, or C++. 
+The computer program 
+induces a {\em call graph} (CG) \cite{Aho}
+whose vertices are subroutines and whose edges 
+represent calls potentially made during the computation of $\bmy$ for particular 
+values of $\bmx$. 
+Every subroutine consists of a {\em control flow graph} (CFG) that 
+represents the typical control flow constructs such as \entry, \exit, \Loop, \branch, 
+and \basicblock. 
+A \basicblock\ consists of a sequence of assignments and subroutine calls. 
+In the following we assume some canonicalizations are performed. 
+These canonicalizations are implemented in the front end discussed in 
+\refsec{sssec:Canonicalization}.
+\begin{Can} \label{can:funcToSub}
+All constructs occuring in \basicblock\ that are neither assignments nor subroutine calls (such as function calls, built-in I/O statements) 
+are canonicalized into subroutine calls.
+\end{Can}
+\begin{Can} \label{can:assignSideEffectFree}
+An assignment effects a single variable on the left-hand side and 
+the right-hand-side expression is side-effect free.
+\end{Can}
+\begin{Can} \label{can:assignElemental}
+The right-hand-side expression consists only of elemental operations $\phi$ typically 
+defined in a programming language as built-in operators and intrinsics.
+\end{Can}
+\begin{Can} \label{can:assignFunction}
+User defined functions and calls to these functions in right-hand-side expressions 
+are canonicalized to subroutined calls.
+\end{Can}
+Without loss of generality we can assume that an evaluation of $\bmf(\bmx)$ for  
+a particular value of $\bmx$ can be represented by a sequence of 
+elemental operations $v_j=\phi_j(\ldots,v_i,\ldots)$. 
+The $v_i$ represent the vertices $\in V$ in the correspong corresponding computational 
+graph $G=(V,E)$. The edges $(i,j)\in E$ in this graph are the direct dependencies 
+implied by the elemental $v_j=\phi_j(\ldots,v_i,\ldots)$.
+
+The elemental operations $\phi$ are differentiable on open subdomains. 
+Each edge $(i,j)\in E$ has an attached local partial derivative 
+$c_{ji}=\frac{\partial v_j}{\partial v_i}$. 
+The central principle of AD is 
+the application of the chain rule to the elemental $\phi$, that is 
+multiplications and additions of the  $c_{ji}$.  
+
+Because the code for a $\bmf$ generally contains control flow constructs there is no 
+single $G$ that represents the computation of $\bmf$ for all possible values of $\bmx$.
+
+In practice, \OpenAD\ considers subgraphs constructed 
+from the contents of a \basicblock.
+In the following we illustrate the prinicpal approach with the use 
+of a toy example.  
+\begin{wrapfigure}{l}{.5\linewidth}
+\begin{tabbing}
+\hspace{.6cm}{\footnotesize \bf 01}\hspace{.5cm} {\tt y(k)=sin(x(1)*x(2)); k=k+1} \\
+\hspace{.6cm}{\footnotesize \bf 02}\hspace{.5cm} {\tt if} \={\tt (mod(k,2) .eq. 1) then } \\
+\hspace{.6cm}{\footnotesize \bf 03}\hspace{.5cm} \>{\tt y(k)=2*y(k-1)}  \\
+\hspace{.6cm}{\footnotesize \bf 04}\hspace{.5cm} {\tt else } \\
+\hspace{.6cm}{\footnotesize \bf 05}\hspace{.5cm} \>{\tt do} \={\tt i=1,k } \\
+\hspace{.6cm}{\footnotesize \bf 06}\hspace{.5cm} \>\>{\tt t1=x(1)+x(2) } \\
+\hspace{.6cm}{\footnotesize \bf 07}\hspace{.5cm} \>\>{\tt t2=t1*sin(x(1)) } \\
+\hspace{.6cm}{\footnotesize \bf 08}\hspace{.5cm} \>\>{\tt x(1)=cos(t1*t2) } \\
+\hspace{.6cm}{\footnotesize \bf 09}\hspace{.5cm} \>\>{\tt x(2)=-sqrt(t2) } \\
+\hspace{.6cm}{\footnotesize \bf 10}\hspace{.5cm} \>{\tt end do } \\
+\hspace{.6cm}{\footnotesize \bf 11}\hspace{.5cm} {\tt end if } \\
+\hspace{.6cm}{\footnotesize \bf 12}\hspace{.5cm} {\tt y(k)=y(k)+x(1)*x(2) } 
+\end{tabbing}
+\caption{Toy example code}\label{fig:toy}
+\end{wrapfigure}
+Line numbers have been added for simpler referencing within the text.
+The CFG resulting from the above code is depicted in 
+\reffig{fig:cfg}(a).
+The assignment statements are contained in the {\basicblock}s B(2,3,4,6,12).
+For instance, 
+the statements  in the lines 06--09 form the loop body, \basicblock\ B(6).
+As B(6) is executed
+{\tt k} times it may be worth putting
+additional effort into the optimization of the derivative code 
+generated for B(6).
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{ccc}
+\epsfig{file=cfg_ts.ps,width=.303\textwidth} &
+\epsfig{file=cfg_tape.ps,width=.303\textwidth} &
+\epsfig{file=cfg_adj.ps,width=.31\textwidth} \\
+\em (a) & \em (b) & \em (c)
+\end{tabular}
+\caption{CFG of \reffig{fig:toy} (a) original code, (b) tangent linear model, (c) adjoint model}\label{fig:cfg}
+\end{figure}
+
+
+Conceptually, AD is based on a decomposition of the evaluation routine for
+$\bmf$ into a three-address code\footnote{We assume that there are at most binary
+arithmetic operators and intrinsic functions. The generalization is trivial.}
+of the form
+\begin{equation} \label{eqn:tac}
+v_j = \varphi_j(v_i,v_h)
+\end{equation}
+for $j=1,\ldots,q$ and $h,i=1-n,\ldots,q,$ $j>h,i.$ The $n$ {\em independent}
+variables $x_1,\ldots,x_n$ correspond to $v_{1-n},\ldots,v_0.$ We consider the 
+computation of the first derivative of the {\em dependent} variables 
+$y_1,\ldots,y_m$ represented by $m$ variables $v_j: j \in 1-n,\ldots,q$
+with respect to the independents. The resulting $m \times n$ matrix is known
+as the {\em Jacobian matrix} of $\bmf.$
+
+The {\em elemental} functions $\varphi_j,$ $j=1,\ldots,q,$ are assumed to have 
+jointly continuous partial derivatives in a neighborhood of the current 
+argument. The values of these partials can be computed in parallel with the 
+function itself for given values of the independent variables.
+Consequently, the {\em forward mode} of AD propagates directional derivatives
+as 
+\begin{equation} \label{eqn:fm}
+\dot{v}_j= \frac{\partial \varphi_j}{\partial v_h}(v_i,v_h) * \dot{v}_h + \frac{\partial \varphi_j}{\partial v_i}(v_i,v_h) * \dot{v}_i \quad \text{for}~~j=1,\ldots,q.
+\end{equation} 
+In {\em reverse mode} we compute adjoints of the variables on the right-hand 
+side in \refeqn{eqn:tac} as a function of local partial derivatives and the 
+adjoint of the variable on the left-hand side:
+\begin{equation} \label{eqn:rm}
+\begin{split} 
+\bar{v}_i&=\bar{v}_j * \frac{\partial \varphi_j}{\partial v_i}(v_i,v_h) \\
+\bar{v}_h&=\bar{v}_j * \frac{\partial \varphi_j}{\partial v_h}(v_i,v_h) \\
+\end{split} 
+\quad 
+\text{for}~~j=q,\ldots,1-n.
+\end{equation} 
+
+Equations (\ref{eqn:fm}) and (\ref{eqn:rm}) can be used to accumulate the Jacobian of $\bmf$ at a computational complexity that is proportional to
+$n$ and $m,$ respectively. One simply lets $\dot{\bmx}$ or $\bar{\bmy}$ range
+over the Cartesian basis vectors in $\R^n$ or $\R^m.$
+Basic blocks can be considered as vector functions themselves. 
+Forward and reverse mode AD,
+or, as we will see below, local combinations of the two, can be applied to
+compute the local Jacobians. If $\bmy=\bmf(\bmx)$ is computed by
+a sequence of basic blocks $F_1,\ldots,F_l$ and assuming the availability
+of the local Jacobians 
+$F'_1,\ldots,F'_l,$ then 
+equations~(\ref{eqn:fm}) and (\ref{eqn:rm}) can be generalized as follows:
+\begin{equation} \label{eqn:bbfm}
+\dot{y}_j=F'_j \dot{x}_j \quad \text{for}~~j=1,\ldots,l
+\end{equation} 
+and 
+\begin{equation} \label{eqn:bbrm}
+\bar{x}_j=(F'_j)^T \bar{y}_j \quad \text{for}~~j=l,\ldots,1\quad ,
+\end{equation} 
+where $x_j = (x^j_i \in V :  i=1,\ldots,n_j)$ and
+$y_j = (y^j_i \in V : i=1,\ldots,m_j)$ are the inputs and outputs of $F_j,$
+respectively. 
+
+The control-flow graph of the example is shown in \reffig{fig:cfg}~(a).
+Assuming that code for accumulating the local Jacobians $F'_1, \ldots, F'_4$
+of the basic blocks $F_1,\ldots,F_4$ is available (some aspects of how to generate
+such code automatically and how to optimize it is the subject of this paper), 
+the  forward and reverse modes of AD compute products
+of the Jacobian and its transposed with a vector, respectively. In 
+\reffig{fig:cfg}~(b) products of the local Jacobians $F'_i$ 
+with the directions $\dot{x}_i$ in the input space of each basic block 
+$F_i,$ $i=1,\ldots,4,$
+are propagated forward in the direction of the flow of control. 
+The direction is reversed in reverse mode. Products of the transposed
+Jacobians $(F'_i)^T$ with adjoint vectors in the respective output spaces
+are propagated reverse to the direction of the flow of control. In \reffig{fig:cfg}~(c) we have
+switched the orientation of the edges to illustrate this fact.
+
+To finish this introductory example, we make the following 
+important point: Thanks to the associativity of the chain rule it is
+possible to {\em preaccumulate} derivative information of certain parts
+of the code and use this information in the propagation of directional
+derivatives (in forward mode) or adjoints (in reverse mode). Occasionally
+it is worthwhile to put additional effort into the optimization of this
+preaccumulation code. In this paper we discuss various issues arising from
+the optimization of Jacobian code in the context of automatic source 
+transformation techniques.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Elimination Methods} \label{ssec:tools}
+Let $\bmf$ represent a basis block that is subject to preaccumulation
+as outlined in the previous section.
+The DAG  $G=(V,E)$ is induced by the code for $\bmf$ \cite{ASU86}.
+We use a numbering scheme with $n$ independent vertices 
+$x_1=v_{1-n},\ldots,x_n=v_0 \in X$, 
+$p$ intermediate vertices 
+$v_1,\ldots,v_p \in Z$,  
+$m$ dependent vertices 
+$y_1=v_{p+1},\ldots,y_m=v_{p+m} \in Y$, 
+representing the corresponding independent, intermediate, and dependent 
+variables.
+For notational simplicity and without loss of generality we assume that the 
+dependent variables are mutually independent. This situation can always be
+reached by introducing auxiliary assignments.
+Consequently, $V=X\cup Z \cup Y$. 
+The numbering is subject to the dependence relation 
+$\prec$, where $v_i \prec v_j$ (and 
+$v_h \prec v_j$ as in \refeqn{eqn:tac}), and
+$ v_i \prec v_j \Rightarrow i<j.$
+\begin{figure}[ht]
+\centering\epsfig{file=elims.eps,width=.7\linewidth}
+\caption{
+(a) Computational graph $G$ for \refeqn{eqn:sampleCode}, 
+(b) vertex elimination $G-3$, 
+(c) edge-front elimination $G-(1,3)$, 
+(d) edge-back elimination $G-(3,4)$} 
+\label{fig:elims}
+\end{figure}
+In \reffig{fig:elims}~(a) we show the DAG for $F_3$ from the previous section. 
+It represents a decomposition of the code into a sequence assignments of
+the results of the elemental operations $\varphi$ to unique intermediate 
+variables,
+for example,
+\begin{equation}\label{eqn:sampleCode}
+\begin{split}
+ v_1&=v_{-1}+v_0;~v_2=\sin(v_0);~v_3=v_1+v_2;~v_4=v_1*v_3; \\
+v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
+\end{split}
+\end{equation}
+This representation is also referred to as the {\em code list}.
+The intrinsics and operators provided by the underlying programming language 
+constitute the possible elemental operations.
+Edges $(i,j)\in E$ are labeled with partial derivatives
+$c_{ji}=\frac{\partial \varphi_j}{\partial v_i} \in \R$ of the elemental operations
+associated with vertex $j$ with respect to the corresponding arguments. 
+For instance, in the 
+example we have $c_{64}=-\sin(v_4)$.
+All edge labels form the matrix
+\[ 
+\bmC(\bmx):\R^n\mapsto \R^{(p+m)\times(n+p)}\quad .
+\]
+The computation of the 
+Jacobian $\bmf'(\bmx)$
+can be interpreted 
+as an elimination sequence in $\bmC$:
+\[
+\sigma: \R^{(p+m)\times(n+p)} \mapsto \R^{m\times n}\quad .
+\]
+Equivalently, $\sigma$ transforms $G$ into a bipartite graph $\sigma(G)$ whose 
+edge labels are the nonzero elements of $\bmf'$. Alternatively,
+Gaussian elimination can be applied to the {\em extended Jacobian} 
+$\bmC - \bmI,$ where $\bmI$ is the identity as shown, for example, in 
+\cite{Gri00}.
+
+
+The graph-based elimination steps are categorized in vertex, edge, and face 
+eliminations. 
+In $G$ a vertex $j \in V$ is eliminated by connecting its predecessors with
+its successors \cite{GrRe91}.
+An edge $(i,k)$ with
+$i \prec j$ and $j \prec k$ is labeled with
+$c_{ki}+c_{kj} \cdot c_{ji}$ if it existed before the elimination of $j.$
+We say that {\em absorption} takes place.
+Otherwise, $(i,k)$ is generated as {\em fill-in} and labeled
+with $c_{kj} \cdot c_{ji}$
+The vertex $j$ is removed from
+$G$ together with all incident edges. 
+\reffig{fig:elims}~(b) shows the result of eliminating vertex $3$
+from the graph in \reffig{fig:elims}~(a).
+
+An edge $(i,j)$ is {\em front eliminated} by connecting $i$ with all successors
+of $j$, followed by removing $(i,j)$ \cite{ElimTechAD2000}.
+The corresponding structural modifications of the c-graph in
+\reffig{fig:elims}~(a) are shown in
+\reffig{fig:elims}~(c) for front elimination of $(1,3).$
+The new edge labels are given as well.
+Edge-front elimination eventually leads to intermediate vertices in $G$
+becoming
+{\em isolated}; that is, these vertices no longer have predecessors.
+Isolated vertices are simply removed from $G$ together
+with all incident edges.
+
+Back elimination of an edge
+$(i,j) \in E$ results in connecting all predecessors of $i$
+with $j$ \cite{ElimTechAD2000}.
+The edge $(i,j)$ itself is removed from $G.$
+The back elimination of $(3,4)$ from the graph in \reffig{fig:elims}~(a) 
+is illustrated in \reffig{fig:elims}~(d). 
+Again, vertices can become isolated as a result of edge-back elimination
+because they no longer have successors.
+Such vertices are removed from $G.$
+
+Numerically the elimination is the application of 
+the chain rule, that is, a sequence of {\em fused-multiply-add} (fma) operations
+\begin{equation}\label{eqn:fma}
+c_{ki}=c_{ji}*c_{kj}\hspace*{1ex}(+c_{ki}) \hspace*{2ex}\leftarrow \mbox{optional}
+\end{equation}
+where the additions take place in the case of absorption or fill-in is created 
+as described above.
+
+Aside from special cases a single vertex or edge elimination will result in more
+than one fma. {\em Face elimination} was introduced 
+as the elimination operation with the finest granularity of exactly 
+one multiplication\footnote{Additions are not necessarily directly coupled.} 
+per elimination step.
+
+Vertex and edge elimination steps have an 
+interpretation in terms of vertices and edges
+of $G$, whereas face elimination is performed on 
+the corresponding directed line graph $\cal G$.
+Following \cite{ElimTechMP}, we define the directed line graph $\cal G=(V,E)$ 
+corresponding to $G=(V,E)$ as follows:
+$${\cal V}=
+\{\ellipse{i,j} : (i,j)\in E\} \cup 
+\{\ellipse{\sourcevertex,j}:v_j \in X\} \cup 
+\{\ellipse{i,\sinkvertex}:v_i \in Y\}$$ and 
+\begin{align*}
+{\cal E}&=\{(\ellipse{i,j},\ellipse{j,k}): (i,j),(j,k) \in E\} \\
+&\cup \{(\ellipse{\sourcevertex,j},\ellipse{j,k}): v_j\in X \wedge (j,k)\in E\} \\
+&\cup \{(\ellipse{i,j},\ellipse{j,\sinkvertex}): v_j\in Y \wedge (i,j)\in E\} 
+\quad . \\
+\end{align*}
+That is, 
+we add a source vertex \Sourcevertex\ and a sink vertex 
+\Sinkvertex\ to $G$ connecting all independents to \Sourcevertex\
+and all dependents to \Sinkvertex. $\cal G$ has   
+a vertex $ v \in \cal V$ for each edge in the extended $G$, 
+and $\cal G$ has an edge $ e \in \cal E$ for each 
+pair of adjacent edges in $G$. \reffig{fig:face_elims} gives an 
+example of constructing the directed line graph in (b) from the graph in (a).   
+All intermediate vertices $\ellipse{i,j} \in \cal V$ inherit the labels  
+$c_{ji}$. In order to formalize face elimination, it is advantageous to move away
+from the double-index notation and use one that is based on a topological
+enumeration of the edges in $G.$ Hence, ${\cal G}=({\cal V}, {\cal E})$ 
+becomes a DAG with ${\cal V} \subset I\!\!N$ and
+${\cal E} \subset I\!\!N \times I\!\!N$ and
+certain special properties.
+The set of all predecessors of $j \in {\cal V}$ is denoted as $P_j.$ 
+Similarly, $S_j$ denotes the set of its successors in $\cal G.$ 
+A vertex 
+$j \in \cal V$ is called {\em isolated} if either 
+$P_j=\emptyset$ or
+$S_j=\emptyset.$ 
+Face elimination is defined in \cite{ElimTechMP}
+between two incident intermediate vertices $i$ and $j$ in $\cal G$ as follows:
+\begin{enumerate}
+\item If there exists a vertex $k \in \cal V$ such that $P_k = P_i$ and
+$S_k = S_j,$ then
+set $c_k = c_k + c_j c_i$ {\em (absorption)};
+else ${\cal V}={\cal V} \cup \{k'\}$ with a new vertex $k'$ such that
+$P_{k'} = P_i$ and $S_{k'} = S_j$
+{\em (fill-in)} and labeled with $c_{k'} = c_j c_i.$
+\item Remove $(i,j)$ from $\cal E.$
+\item Remove $i \in \cal V$ if it is isolated. Otherwise, if there exists a vertex $i' \in \cal V$ such that
+$P_{i'} = P_i$ and $S_{i'} = S_i,$ then
+\begin{itemize}
+\item set $c_i=c_i + c_{i'}$ {\em (merge)};
+\item remove $i'.$
+\end{itemize}
+\item Repeat Step 3 for $j \in \cal V.$
+\end{enumerate}
+In \reffig{fig:face_elims}~(c) we show the elimination of $(i,j) \in \cal E$,
+where $i=\ellipse{1,3}$ and $j=\ellipse{3,4}$.
+
+\begin{figure}
+\centering
+\epsfig{file=face_elims.eps,width=.65\linewidth}
+\caption{
+(a) $G$ extended, 
+(b) $\cal G$ overlaid, 
+(c) face elimination 
+}
+\label{fig:face_elims}
+\end{figure}
+
+A complete face elimination sequence $\sigma_f$ yields a tripartite 
+directed line graph $\sigma_f({\cal G})$ that can be back transformed into 
+the bipartite graph representing the Jacobian $\bmf'$.
+
+In \cite{ElimTechMP} it was shown that vertex and edge 
+eliminations can be interpreted 
+as groups of face eliminations and that face 
+elimination sequences can undercut the number of multiplications of an 
+optimal vertex or edge elimination sequence.  
+We note that any $G$ can be transformed into the 
+corresponding $\cal G$ but that a back transformation 
+generally is not  possible once face elimination steps have been applied. 
+Therefore, face eliminations cannot precede vertex and edge 
+eliminations.
+
+In a source transformation context the operations \refeqn{eqn:fma} are 
+expressed as actual code, the Jacobian accumulation code {\tt jac}.
+The latter is based on \refeqn{eqn:tac} augmented with statements 
+that compute the $c_{ji}$ for all $i \prec j.$
+For \refeqn{eqn:sampleCode} we get\footnote{
+For better readability we write the indices of the $c_{ji}$ with commas.
+} 
+\begin{align*}
+ v_1&=v_{-1}+v_0;~c_{1,-1}=1;~c_{1,0}=1; \\
+ v_2&=\sin(v_0);~c_{2,0}=\cos(v_0); \\
+ v_3&=v_1+v_2;~c_{3,1}=1;~c_{3,2}=1; \\
+ v_4&=v_1*v_3;~c_{4,1}=v_3;~c_{4,3}=v_1; \\
+ v_5&=\sqrt{v_3};~c_{5,3}=(2\sqrt{v_3})^{-1}; \\
+ v_6&=\cos(v_4);~c_{6,4}=-\sin(v_4); \\
+ v_7&=-v_5;~c_{7,5}=-1; \quad .
+\end{align*}
+As most of the intermediate variables are used only once, their
+creation and assignment should be avoided by the source transformation tool.
+However, they are helpful for illustrative purposes as {\tt jac} can
+be written in terms of these auxiliary variables.
+For example, forward vertex elimination, that is, the elimination
+sequence (1,2,3,4,5) in $G$ (\reffig{fig:elims}), leads to the
+following Jacobian accumulation code:
+\begin{align*}
+1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
+2:\quad  &c_{3,0}\mbox{+=}c_{3,2} * c_{2,0}; \\
+3:\quad  &c_{4,-1}\mbox{+=}c_{4,3} * c_{3,-1};~c_{4,0}\mbox{+=}c_{4,3} * c_{3,0};~c_{5,-1}=c_{5,3} * c_{3,-1};~c_{5,0}=c_{5,3} * c_{3,0}; \\
+4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
+5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
+\end{align*}
+\pagebreak
+For convenience we use the increment operation $\mbox{+=}$ known from C.
+A practical measure for the cost of computing 
+$\bmf'=\sigma(\bmC(\bmx))$ is 
+the count of multiplications $\#_*$ of edge labels. 
+The cost of the forward vertex elimination sequence\footnote{Note
+that the cost of computing the Jacobian by the classical forward and reverse 
+modes is $n*|E|$ and $m*|E|,$ respectively. For \protect\refeqn{eqn:sampleCode} we have $n=m=2$ and
+$|E|=10.$ Forward (resp. reverse) vertex elimination is equivalent to the 
+{\em sparse} forward (resp. reverse) mode of AD \protect\cite{Gri00}.}
+above is 13.
+In \refsec{sec:Observations} we discuss other options for measures.
+
+
+For the source transformation performed by \OpenAD\ we have to ensure that 
+$G$ is valid for all possible values of $\bmx$. 
+
+
+
+
+ 
+
 
 
 
@@ -265,7 +728,7 @@ operate at several stages of the AD process (as seen in the diagram):
 
            \item Converts the program analyses and core computational
                  statements from whirl into XAIF
-	\end{itemize}
+        \end{itemize}
 
      \item[xaif2whirl] A bridge component that converts the 
         differentiated program represented in XAIF
@@ -311,7 +774,7 @@ effort in the whirl2f unparser.
 The OpenAD project contributed some development of the pragma /
 directive mechanism in the Open64 components.
 
-\subsubsection*{Canonicalization}
+\subsubsection*{Canonicalization}\label{sssec:Canonicalization}
 To simplify the development of the AD engine, the front end converts
 abd simplifies some programming constructs. In other words, all
 program statements that are differentiated are in \emph{canonical}
@@ -356,7 +819,7 @@ analysis.  \whirlToxaif\ uses the \OpenAnalysis\ analysis package to
 collect all of this information before proceeding with the
 translation.
 
-See \cite{Rice Tech report}.
+See \cite{RiceTechreport}.
 
 
 \subsubsection*{Postprocessor}
@@ -445,24 +908,6 @@ proof for the overall approach taken by the ACTS project.
 \subsection{Shallow Water Model}
 %-----------------------------------------------------------------------------------------
 \subsection{Derya's application}
-
-%#########################################################################################
-\section*{Ongoing Work: Reverse Mode}
-
-Ongoing efforts target the automatic generation of efficient adjoint
-code by using the reverse mode of AD. Checkpointing is realized at the 
-subroutine level allowing for the storage of inputs as well as outputs. 
-For each subroutine we generate a version that ``knows" how to store and 
-restore its arguments and results, how to run (parts of) itself for a given
-set of inputs, and how to tape and immediately adjoin (parts of) itself.
-This approach allows for a large number of reversal modes, 
-joint mode \cite{Gri00}, and joint mode with subroutine results checkpointing 
-representing special cases. 
-
-We expect to have a first version of the reverse mode with checkpointing
-running by the end of April. The full paper describes the approach in detail 
-and presents numerical results.
-
 %#########################################################################################
 \section*{Conclusion and Future Work}
 
@@ -506,7 +951,7 @@ to billions of controls. A combination of the methods outlined above is
 essential to guarantee the successful completion of this highly ambitious
 project.
 
-
+%#########################################################################################
 \bibliographystyle{acmtrans}
 \bibliography{openad}
 

@@ -1,0 +1,31 @@
+digraph cfg_adjoint {
+nodesep=.05;
+ranksep=.05;
+HEX83631a0[label="Entry(9)"];
+HEX8363248[label="B'(12)"];
+HEX8363298[label="Branch(8)"];
+HEX8363380[label="Loop(11)"];
+HEX8363688[label="B'(6)"];
+HEX83636d8[label="EndLoop(5)"];
+HEX8363780[label="B'(4)"];
+HEX83637d0[label="B'(3)"];
+HEX8363820[label="EndBranch(10)"];
+HEX83638c8[label="B'(2)"];
+HEX8363918[label="Exit(1)"];
+HEX8363a20[label="pB"];
+HEX8363db0[label="pLc"];
+HEX83631a0->HEX8363248 ;
+HEX8363248->HEX8363a20 ;
+HEX8363a20->HEX8363298 ;
+HEX8363298->HEX83637d0 [label="T"];
+HEX8363298->HEX8363db0 [label="F"];
+HEX8363db0->HEX8363380 ;
+HEX8363380->HEX8363688 [label="T"];
+HEX8363380->HEX8363780 [label="F"];
+HEX8363688->HEX83636d8 ;
+HEX83636d8->HEX8363380 ;
+HEX8363780->HEX8363820 ;
+HEX83637d0->HEX8363820 ;
+HEX8363820->HEX83638c8 ;
+HEX83638c8->HEX8363918 ;
+}

@@ -18,7 +18,9 @@
 \newcommand{\entry}{entry}
 \newcommand{\exit}{exit}
 \newcommand{\Loop}{loop}
+\newcommand{\EndLoop}{endloop}
 \newcommand{\branch}{branch}
+\newcommand{\EndBranch}{endbranch}
 \newcommand{\basicblock}{basicblock}
 \newcommand{\OpenAD}{OpenAD}
 \newcommand{\OpenADFortTk}{OpenADFortTk}
@@ -241,7 +243,7 @@ a particular value of $\bmx$ can be represented by a sequence of
 elemental operations $v_j=\phi_j(\ldots,v_i,\ldots)$. 
 The $v_i$ represent the vertices $\in V$ in the correspong corresponding computational 
 graph $G=(V,E)$. The edges $(i,j)\in E$ in this graph are the direct dependencies 
-implied by the elemental $v_j=\phi_j(\ldots,v_i,\ldots)$.
+$v_i\prec v_j$ implied by the elemental $v_j=\phi_j(\ldots,v_i,\ldots)$.
 
 The elemental operations $\phi$ are differentiable on open subdomains. 
 Each edge $(i,j)\in E$ has an attached local partial derivative 
@@ -252,11 +254,11 @@ multiplications and additions of the  $c_{ji}$.
 
 Because the code for a $\bmf$ generally contains control flow constructs there is no 
 single $G$ that represents the computation of $\bmf$ for all possible values of $\bmx$.
-
 In practice, \OpenAD\ considers subgraphs constructed 
 from the contents of a \basicblock.
 In the following we illustrate the prinicpal approach with the use 
 of a toy example.  
+Line numbers have been added for simpler referencing within the text.
 \begin{wrapfigure}{l}{.5\linewidth}
 \begin{tabbing}
 \hspace{.6cm}{\footnotesize \bf 01}\hspace{.5cm} {\tt y(k)=sin(x(1)*x(2)); k=k+1} \\
@@ -274,7 +276,6 @@ of a toy example.
 \end{tabbing}
 \caption{Toy example code}\label{fig:toy}
 \end{wrapfigure}
-Line numbers have been added for simpler referencing within the text.
 The CFG resulting from the above code is depicted in 
 \reffig{fig:cfg}(a).
 The assignment statements are contained in the {\basicblock}s B(2,3,4,6,12).
@@ -294,123 +295,109 @@ generated for B(6).
 \end{tabular}
 \caption{CFG of \reffig{fig:toy} (a) original code, (b) tangent linear model, (c) adjoint model}\label{fig:cfg}
 \end{figure}
-For B(6) the corresponding computational graph $G$  is depicted in 
+For B(6) the corresponding computational graph $G$  is depicted in
+\reffig{fig:elims}(a).  
 
-
-Conceptually, AD is based on a decomposition of the evaluation routine for
-$\bmf$ into a three-address code\footnote{We assume that there are at most binary
-arithmetic operators and intrinsic functions. The generalization is trivial.}
-of the form
-\begin{equation} \label{eqn:tac}
-v_j = \varphi_j(v_i,v_h)
-\end{equation}
-for $j=1,\ldots,q$ and $h,i=1-n,\ldots,q,$ $j>h,i.$ The $n$ {\em independent}
-variables $x_1,\ldots,x_n$ correspond to $v_{1-n},\ldots,v_0.$ We consider the 
-computation of the first derivative of the {\em dependent} variables 
-$y_1,\ldots,y_m$ represented by $m$ variables $v_j: j \in 1-n,\ldots,q$
-with respect to the independents. The resulting $m \times n$ matrix is known
-as the {\em Jacobian matrix} of $\bmf.$
-
-The {\em elemental} functions $\varphi_j,$ $j=1,\ldots,q,$ are assumed to have 
-jointly continuous partial derivatives in a neighborhood of the current 
-argument. The values of these partials can be computed in parallel with the 
-function itself for given values of the independent variables.
-Consequently, the {\em forward mode} of AD propagates directional derivatives
+Like most of the AD literature we follow a specific numbering scheme for the vertices $v_i$.
+We presume $q$ intermediate values
+$v_j = \phi_j(\ldots,v_i,\ldots), v_j\in Z$
+for $j=1,\ldots,q+m$ and $h,i=1-n,\ldots,q,$ $j>h,i$. 
+The $n$ {\em independent}
+variables $x_1,\ldots,x_n$ correspond to 
+$v_{1-n},\ldots,v_0, v_i\in X$. 
+We consider the 
+computation of derivatives of the {\em dependent} variables 
+$y_1,\ldots,y_m$ represented by $m$ variables $v_{q+1},\ldots,v_{q+m}, v_j\in Y$
+with respect to the independents. The depdendencies $v_i<v_j$ implies $i<j$. 
+The {\em forward mode} of AD propagates directional derivatives
 as 
 \begin{equation} \label{eqn:fm}
-\dot{v}_j= \frac{\partial \varphi_j}{\partial v_h}(v_i,v_h) * \dot{v}_h + \frac{\partial \varphi_j}{\partial v_i}(v_i,v_h) * \dot{v}_i \quad \text{for}~~j=1,\ldots,q.
+\dot{v}_j= \sum\limits_i\frac{\partial \phi_j}{\partial v_i}\dot{v}_i 
+\quad \text{for}~~j=1,\ldots,q+m.
 \end{equation} 
-In {\em reverse mode} we compute adjoints of the variables on the right-hand 
-side in \refeqn{eqn:tac} as a function of local partial derivatives and the 
-adjoint of the variable on the left-hand side:
+In {\em reverse mode} we compute adjoints of the arguments of the $\phi_j$
+as a function of local partial derivatives and the 
+adjoint of the variable on the left-hand side
 \begin{equation} \label{eqn:rm}
-\begin{split} 
-\bar{v}_i&=\bar{v}_j * \frac{\partial \varphi_j}{\partial v_i}(v_i,v_h) \\
-\bar{v}_h&=\bar{v}_j * \frac{\partial \varphi_j}{\partial v_h}(v_i,v_h) \\
-\end{split} 
-\quad 
-\text{for}~~j=q,\ldots,1-n.
+\overline{v}_i= \sum\limits_j\frac{\partial \phi_j}{\partial v_i}\dot{v}_i 
+\quad \text{for}~~j=1,\ldots,q+m.
 \end{equation} 
+In practice the sum in \refeqn{eqn:rm} is split into individual increments 
+associated with each statement in which $v_i$ occurs as an argument 
+$\overline{v}_i=\overline{v}_i+\overline{v}_j * \frac{\partial \phi_j}{\partial v_i}$.
 
-Equations (\ref{eqn:fm}) and (\ref{eqn:rm}) can be used to accumulate the Jacobian of $\bmf$ at a computational complexity that is proportional to
-$n$ and $m,$ respectively. One simply lets $\dot{\bmx}$ or $\bar{\bmy}$ range
-over the Cartesian basis vectors in $\R^n$ or $\R^m.$
-Basic blocks can be considered as vector functions themselves. 
-Forward and reverse mode AD,
-or, as we will see below, local combinations of the two, can be applied to
-compute the local Jacobians. If $\bmy=\bmf(\bmx)$ is computed by
-a sequence of basic blocks $F_1,\ldots,F_l$ and assuming the availability
-of the local Jacobians 
-$F'_1,\ldots,F'_l,$ then 
+Equations \refeqn{eqn:fm} and \refeqn{eqn:rm} can be used to accumulate 
+the (local) Jacobian $\bmJ_{B(6)}$
+of B(6), see also \refsec{ssec:elimMeth}. 
+For a sequence of $l$ {\basicblock}s that are part of 
+a path through the CFG for a particular value of $\bmx$ the 
 equations~(\ref{eqn:fm}) and (\ref{eqn:rm}) can be generalized as follows:
 \begin{equation} \label{eqn:bbfm}
-\dot{y}_j=F'_j \dot{x}_j \quad \text{for}~~j=1,\ldots,l
+\dot{\bmy}_j=\bmJ_j \dot{\bmx}_j \quad \text{for}~~j=1,\ldots,l
 \end{equation} 
 and 
 \begin{equation} \label{eqn:bbrm}
-\bar{x}_j=(F'_j)^T \bar{y}_j \quad \text{for}~~j=l,\ldots,1\quad ,
+\bar{\bmx}_j=\bmJ^T_j \bar{\bmy}_j \quad \text{for}~~j=l,\ldots,1\quad ,
 \end{equation} 
-where $x_j = (x^j_i \in V :  i=1,\ldots,n_j)$ and
-$y_j = (y^j_i \in V : i=1,\ldots,m_j)$ are the inputs and outputs of $F_j,$
+where $\bmx_j = (x^j_i \in V :  i=1,\ldots,n_j)$ and
+$\bmy_j = (y^j_i \in V : i=1,\ldots,m_j)$ are the inputs and outputs of the 
+{\basicblock}s
 respectively. 
-
-The control-flow graph of the example is shown in \reffig{fig:cfg}~(a).
-Assuming that code for accumulating the local Jacobians $F'_1, \ldots, F'_4$
-of the basic blocks $F_1,\ldots,F_4$ is available (some aspects of how to generate
-such code automatically and how to optimize it is the subject of this paper), 
-the  forward and reverse modes of AD compute products
-of the Jacobian and its transposed with a vector, respectively. In 
-\reffig{fig:cfg}~(b) products of the local Jacobians $F'_i$ 
-with the directions $\dot{x}_i$ in the input space of each basic block 
-$F_i,$ $i=1,\ldots,4,$
-are propagated forward in the direction of the flow of control. 
-The direction is reversed in reverse mode. Products of the transposed
-Jacobians $(F'_i)^T$ with adjoint vectors in the respective output spaces
-are propagated reverse to the direction of the flow of control. In \reffig{fig:cfg}~(c) we have
-switched the orientation of the edges to illustrate this fact.
-
-To finish this introductory example, we make the following 
-important point: Thanks to the associativity of the chain rule it is
-possible to {\em preaccumulate} derivative information of certain parts
-of the code and use this information in the propagation of directional
-derivatives (in forward mode) or adjoints (in reverse mode). Occasionally
-it is worthwhile to put additional effort into the optimization of this
-preaccumulation code. In this paper we discuss various issues arising from
-the optimization of Jacobian code in the context of automatic source 
-transformation techniques.
+In forward mode a sequence of 
+products of the local Jacobians $\bmJ_j$ 
+with the directions $\dot{x}_j$ 
+are propagated forward in the direction of the flow of control, for 
+instance simultaneouly to the computation of $\bmf$.
+ 
+In reverse mode products of the transposed
+Jacobians $\bmJ^T_j$ with adjoint vectors $\overline{\bmy}_j$
+are propagated reverse to the direction of the flow of control. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Elimination Methods} \label{ssec:tools}
-Let $\bmf$ represent a basis block that is subject to preaccumulation
+\subsection{CFG Reversal} \label{ssec:cfgReversal}
+In order to find the corresponding path to the reversed control flow graph 
+we have to record certain essential information in an augmented CFG,
+for our toy example see \reffig{fig:cfg}(b).
+The augmented CFG  keeps track of which branch was taken and counts how often a loop was 
+executed.  
+This information is pushed on  a stack and popped from that stack during the 
+reverse sweep.  
+In the example in \reffig{fig:cfg}(b) the extra {\basicblock}s pBT and pBF push 
+either a ``true'' or ``false'' value onto the stack depending on the branch. 
+In iLc we initialize a loop counter, increment in +Lc, and push the final 
+count in pLc. 
+
+\reffig{fig:cfg}(c) shows the reversed CFG for our toy example. 
+The parenthesized numbers in the node labels align the 
+node transformation to \reffig{fig:cfg}(a). 
+The \exit\ node becomes 
+the \entry, \Loop\ becomes \EndLoop, \branch\ beomes \EndBranch, and vice versa. 
+Each \basicblock\  B is replaced with its reversed version B'.  
+Finally, to find the proper path through this reversed CFG we need to retrieve 
+the information recorded in  \reffig{fig:cfg}(b). The extra nodes pB and pLc 
+pop the branch information and the loop counter respectively.  
+We enter the branch and execute the loop as indicated by the recorded information. 
+The process of the control flow reversal is described in detail in 
+\cite{NULF04CFR}. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Elimination Methods} \label{ssec:elimMeth}
+Let $\bmf$ represent a single \basicblock\ that is subject to preaccumulation
 as outlined in the previous section.
-The DAG  $G=(V,E)$ is induced by the code for $\bmf$ \cite{ASU86}.
-We use a numbering scheme with $n$ independent vertices 
-$x_1=v_{1-n},\ldots,x_n=v_0 \in X$, 
-$p$ intermediate vertices 
-$v_1,\ldots,v_p \in Z$,  
-$m$ dependent vertices 
-$y_1=v_{p+1},\ldots,y_m=v_{p+m} \in Y$, 
-representing the corresponding independent, intermediate, and dependent 
-variables.
 For notational simplicity and without loss of generality we assume that the 
-dependent variables are mutually independent. This situation can always be
+dependent variables are mutually independent. 
+This situation can always be
 reached by introducing auxiliary assignments.
-Consequently, $V=X\cup Z \cup Y$. 
-The numbering is subject to the dependence relation 
-$\prec$, where $v_i \prec v_j$ (and 
-$v_h \prec v_j$ as in \refeqn{eqn:tac}), and
-$ v_i \prec v_j \Rightarrow i<j.$
 \begin{figure}[ht]
 \centering\epsfig{file=elims.eps,width=.7\linewidth}
 \caption{
 (a) Computational graph $G$ for \refeqn{eqn:sampleCode}, 
-(b) vertex elimination $G-3$, 
-(c) edge-front elimination $G-(1,3)$, 
-(d) edge-back elimination $G-(3,4)$} 
+(b) eliminate vertex 3 from $G$, 
+(c) front eliminate edge $(1,3)$ from $G$, 
+(d) back eliminate edge $(3,4)$ from $G$} 
 \label{fig:elims}
 \end{figure}
-In \reffig{fig:elims}~(a) we show the DAG for $F_3$ from the previous section. 
+In \reffig{fig:elims}~(a) we show the DAG for B(6) from \reffig{fig:toy}. 
 It represents a decomposition of the code into a sequence assignments of
-the results of the elemental operations $\varphi$ to unique intermediate 
+the results of the elemental operations $\phi$ to unique intermediate 
 variables,
 for example,
 \begin{equation}\label{eqn:sampleCode}
@@ -419,32 +406,10 @@ for example,
 v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
 \end{split}
 \end{equation}
-This representation is also referred to as the {\em code list}.
-The intrinsics and operators provided by the underlying programming language 
-constitute the possible elemental operations.
-Edges $(i,j)\in E$ are labeled with partial derivatives
-$c_{ji}=\frac{\partial \varphi_j}{\partial v_i} \in \R$ of the elemental operations
-associated with vertex $j$ with respect to the corresponding arguments. 
-For instance, in the 
+The edges $(i,j)\in E$ are labeled with partial derivatives
+$c_{ji}$, for instance, in the 
 example we have $c_{64}=-\sin(v_4)$.
-All edge labels form the matrix
-\[ 
-\bmC(\bmx):\R^n\mapsto \R^{(p+m)\times(n+p)}\quad .
-\]
-The computation of the 
-Jacobian $\bmf'(\bmx)$
-can be interpreted 
-as an elimination sequence in $\bmC$:
-\[
-\sigma: \R^{(p+m)\times(n+p)} \mapsto \R^{m\times n}\quad .
-\]
-Equivalently, $\sigma$ transforms $G$ into a bipartite graph $\sigma(G)$ whose 
-edge labels are the nonzero elements of $\bmf'$. Alternatively,
-Gaussian elimination can be applied to the {\em extended Jacobian} 
-$\bmC - \bmI,$ where $\bmI$ is the identity as shown, for example, in 
-\cite{Gri00}.
-
-
+Jacobian preaccumulation can be interpreted as eliminations in $G$.
 The graph-based elimination steps are categorized in vertex, edge, and face 
 eliminations. 
 In $G$ a vertex $j \in V$ is eliminated by connecting its predecessors with
@@ -499,7 +464,7 @@ per elimination step.
 Vertex and edge elimination steps have an 
 interpretation in terms of vertices and edges
 of $G$, whereas face elimination is performed on 
-the corresponding directed line graph $\cal G$.
+the corresponding directed line graph $\cal G.$
 Following \cite{ElimTechMP}, we define the directed line graph $\cal G=(V,E)$ 
 corresponding to $G=(V,E)$ as follows:
 $${\cal V}=
@@ -564,29 +529,26 @@ where $i=\ellipse{1,3}$ and $j=\ellipse{3,4}$.
 }
 \label{fig:face_elims}
 \end{figure}
-
 A complete face elimination sequence $\sigma_f$ yields a tripartite 
 directed line graph $\sigma_f({\cal G})$ that can be back transformed into 
 the bipartite graph representing the Jacobian $\bmf'$.
-
-In \cite{ElimTechMP} it was shown that vertex and edge 
-eliminations can be interpreted 
-as groups of face eliminations and that face 
-elimination sequences can undercut the number of multiplications of an 
-optimal vertex or edge elimination sequence.  
 We note that any $G$ can be transformed into the 
 corresponding $\cal G$ but that a back transformation 
 generally is not  possible once face elimination steps have been applied. 
 Therefore, face eliminations cannot precede vertex and edge 
 eliminations.
 
-In a source transformation context the operations \refeqn{eqn:fma} are 
-expressed as actual code, the Jacobian accumulation code {\tt jac}.
-The latter is based on \refeqn{eqn:tac} augmented with statements 
-that compute the $c_{ji}$ for all $i \prec j.$
-For \refeqn{eqn:sampleCode} we get\footnote{
+In a source transformation context of \OpenAD\ the operations \refeqn{eqn:fma} are 
+expressed as actual code, the Jacobian accumulation code. For the 
+B(6) from our toy example in \reffig{fig:toy} the code computing 
+the local partials in conjunction with the function value, see \refeqn{eqn:sampleCode}, 
+is shown in 
+\reffig{fig:toyAndPartials}.
+\footnote{
 For better readability we write the indices of the $c_{ji}$ with commas.
 } 
+\begin{wrapfigure}{l}{.5\linewidth}
+\begin{minipage}{\linewidth}
 \begin{align*}
  v_1&=v_{-1}+v_0;~c_{1,-1}=1;~c_{1,0}=1; \\
  v_2&=\sin(v_0);~c_{2,0}=\cos(v_0); \\
@@ -594,49 +556,27 @@ For better readability we write the indices of the $c_{ji}$ with commas.
  v_4&=v_1*v_3;~c_{4,1}=v_3;~c_{4,3}=v_1; \\
  v_5&=\sqrt{v_3};~c_{5,3}=(2\sqrt{v_3})^{-1}; \\
  v_6&=\cos(v_4);~c_{6,4}=-\sin(v_4); \\
- v_7&=-v_5;~c_{7,5}=-1; \quad .
+ v_7&=-v_5;~c_{7,5}=-1;
 \end{align*}
-As most of the intermediate variables are used only once, their
-creation and assignment should be avoided by the source transformation tool.
-However, they are helpful for illustrative purposes as {\tt jac} can
-be written in terms of these auxiliary variables.
-For example, forward vertex elimination, that is, the elimination
+\end{minipage}
+\caption{Code for \refeqn{eqn:sampleCode} and the $c_{ji}$}\label{fig:toyAndPartials}
+\end{wrapfigure}
+Now the operations induced by the eliminations on the graph can 
+be expressed in terms of the auxiliary variables $c_{ji}$.
+For our example, a forward vertex elimination, that is, the elimination
 sequence (1,2,3,4,5) in $G$ (\reffig{fig:elims}), leads to the
-following Jacobian accumulation code:
+following Jacobian accumulation code.
+{
+%\small
 \begin{align*}
 1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
-2:\quad  &c_{3,0}\mbox{+=}c_{3,2} * c_{2,0}; \\
-3:\quad  &c_{4,-1}\mbox{+=}c_{4,3} * c_{3,-1};~c_{4,0}\mbox{+=}c_{4,3} * c_{3,0};~c_{5,-1}=c_{5,3} * c_{3,-1};~c_{5,0}=c_{5,3} * c_{3,0}; \\
+2:\quad  &c_{3,0}=c_{3,2} * c_{2,0}+c_{3,0}; \\
+3:\quad  &c_{4,-1}=c_{4,3} * c_{3,-1}+c_{4,-1};~c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};~c_{5,-1}=c_{5,3} * c_{3,-1}; \\
+&c_{5,0}=c_{5,3} * c_{3,0}; \\
 4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
 5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
 \end{align*}
-\pagebreak
-For convenience we use the increment operation $\mbox{+=}$ known from C.
-A practical measure for the cost of computing 
-$\bmf'=\sigma(\bmC(\bmx))$ is 
-the count of multiplications $\#_*$ of edge labels. 
-The cost of the forward vertex elimination sequence\footnote{Note
-that the cost of computing the Jacobian by the classical forward and reverse 
-modes is $n*|E|$ and $m*|E|,$ respectively. For \protect\refeqn{eqn:sampleCode} we have $n=m=2$ and
-$|E|=10.$ Forward (resp. reverse) vertex elimination is equivalent to the 
-{\em sparse} forward (resp. reverse) mode of AD \protect\cite{Gri00}.}
-above is 13.
-In \refsec{sec:Observations} we discuss other options for measures.
-
-
-For the source transformation performed by \OpenAD\ we have to ensure that 
-$G$ is valid for all possible values of $\bmx$. 
-
-
-
-
- 
-
-
-
-
-
-
+}
 
 
 %#########################################################################################
@@ -658,7 +598,7 @@ can utilize xaif, for example, \OpenSixtyFour\ and EDG/SAGE~3 as pointed out bef
 
 %-----------------------------------------------------------------------------------------
 \subsection{\xaifBooster} 
-\begin{figure}
+\begin{figure}[htb]
 \epsfig{file=principle.eps,width=4cm}
 \caption{\xaifBooster\ parses xaif code into an internal representation (IR).
 It provides an API for transformation algorithms to modify the IR. An unparser

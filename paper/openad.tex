@@ -28,6 +28,7 @@
 \newcommand{\OpenADFortTk}{OpenADFortTk}
 \newcommand{\OpenAnalysis}{OpenAnalysis}
 \newcommand{\OpenSixtyFour}{Open64}
+\newcommand{\saxpy}{saxpy}
 \newcommand{\xaif}{XAIF}
 \newcommand{\xaifBooster}{xaifBooster}
 \newcommand{\whirl}{whirl}
@@ -50,11 +51,12 @@
 
 %environments
 \newcommand{\code}[1]{{\small\tt{#1}}}
+\newcommand{\refcan}[1]{(C\ref{#1})}
+\newcommand{\refeqn}[1]{(\ref{#1})}
 \newcommand{\reffig}[1]{Figure~\ref{#1}}
 \newcommand{\reffigs}[2]{Figures~\ref{#1}, \ref{#2}}
 \newcommand{\refsec}[1]{Section~\ref{#1}}
-\newcommand{\refeqn}[1]{(\ref{#1})}
-\newcommand{\refcan}[1]{(C\ref{#1})}
+\newcommand{\reftab}[1]{Table~\ref{#1}}
 \newtheorem{Can}{Canonicalization}
 
 \markboth{Lots Of Authors et al.}{\OpenAD}
@@ -325,7 +327,7 @@ In {\em reverse mode} we compute adjoints of the arguments of the $\phi_j$
 as a function of local partial derivatives and the 
 adjoint of the variable on the left-hand side
 \begin{equation} \label{eqn:rm}
-\overline{v}_i= \sum\limits_j\frac{\partial \phi_j}{\partial v_i}\dot{v}_i 
+\overline{v}_i= \sum\limits_j\frac{\partial \phi_j}{\partial v_i}\overline{v}_j 
 \quad \text{for}~~j=1,\ldots,q+m.
 \end{equation} 
 In practice the sum in \refeqn{eqn:rm} is split into individual increments 
@@ -335,6 +337,12 @@ $\overline{v}_i=\overline{v}_i+\overline{v}_j * \frac{\partial \phi_j}{\partial 
 Equations \refeqn{eqn:fm} and \refeqn{eqn:rm} can be used to accumulate 
 the (local) Jacobian $\bmJ_{B(6)}$
 of B(6), see also \refsec{ssec:elimMeth}. 
+Obviously \refeqn{eqn:rm}  indicates that the dependencies of $\overline{v}_j$ and 
+$\overline{v}_i$ are reversed to those of $v_j$ and $v_i$. At the same time \refeqn{eqn:rm}
+requires all the values of the $\frac{\partial \phi_j}{\partial v_i}$ in reverse order. To make them 
+available we store them in a stack. In the  AD literature this is commonly called the {\em tape}. 
+
+
 For a sequence of $l$ {\basicblock}s that are part of 
 a path through the CFG for a particular value of $\bmx$ the 
 equations~(\ref{eqn:fm}) and (\ref{eqn:rm}) can be generalized as follows:
@@ -751,6 +759,9 @@ See \cite{RiceTechreport}.
 
 {\color{Red} [ how are intrinsics handled ... I refer to the catalogue later  ] }
 
+
+{\color{Red} [ the active type  ] }
+
 \subsubsection*{Postprocessor}
 The postprocessor performs various ``cleanup'' operations of the
 differentiated code. The two most important tasks are:
@@ -850,7 +861,7 @@ data structure element that is being modified.
 In the following sections we want to concentrate on the transformation 
 the algorithm executes while keeping the technical detail at a minimum. 
 
-Each algorithm is also provided with a driver that encapsulates the algorithm 
+Each algorithm comes with a driver that encapsulates the algorithm 
 in a stand-alone binary which provides the functionality described in the following 
 sections. For details on the invocation and command line options refer to 
 \refsec{ssec:manualPipeline}.
@@ -898,6 +909,8 @@ In cases of the left-hand-side variable occuring on the right-hand-side (or bein
 may-aliased to a right-hand-side variable, see )
 The result of the Linearization is code containing the potentially split 
 assignments along with assignments for each non-zero edge label $c_{ji}$.
+The generated code is executable but does by itself not compute useful 
+derivative information at the lavel for the target function $\bmf$.
  
 %-----------------------------------------------------------------------------------------
 \subsubsection{Basic Block Preaccumulation}\label{sssec:BBPreacc}
@@ -912,7 +925,7 @@ The algorithm itself is described in detail in \cite{Utk04FBB}.
 Because the results supplied by \OpenAnalysis\ are always 
 conservatively correct it may not be possible to align all 
 assignmments into a single computational graph. In such cases 
-a sequence of such graphs is created. Likewise the occurence 
+a sequence of graphs is created. Likewise, the occurence 
 of a subroutine call leads to a split in the graph construction. 
 In the context of \refsec{sec:ADIntro} one may think of the sets of 
 assignments forming each of these graphs as a separate \basicblock. 
@@ -929,11 +942,227 @@ fused multiply add expressions in terms of the edge labels $c_{ji}$.
 There are several heuristics implemented within \angel\ that control 
 the selection of elimination steps and thereby the preccumulation code 
 that is generated.  The algorithm code calls a default set of heuristics. 
-However, all heuristics use the \code{CrossCountryInterface} and therefore 
+However, all heuristics use the \code{CrossCountryInterface} library and therefore 
 different heuristics can be selected with minimal changes in algorithm code.   
 
+{\color{Red} [ for details on \angel\ see WHAT? ] } 
+
+The second step in this transformation is the generation of preaccumulation code. 
+This code consists of assignments generated from  the abstract expression objects returned by \angel, 
+and code that eventually performs the \saxpy\ operations shown in \refeqn{eqn:bbfm}. 
+Considering the input and output variables $\bmx_j$ and $\bmy_j$ of a \basicblock\ the code generation 
+also ensures proper propagation of $\dot{x_i^j}$ of variables $ x_I^j \in  \bmx_j \cap \bmy_j$ 
+by saving the $\dot{x_i^j}$ in temporaries.
+The detection of the intersection elements relies on the alias analysis provided by 
+\OpenAnalysis.
+To avoid some uncessary overhead 
+we create a sequence of \saxpy\ operations distinguishing the following categories (leaving off 
+the indices). 
+\begin{itemize}
+\item $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$
+\item $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$
+\item $\dot{y} = \dot{x}$
+\item $\dot{y} = 0$	
+\end{itemize}
+
+The generated code is executable and represents an overall forward mode 
+according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in 
+cross-country fashion. 
+
 %-----------------------------------------------------------------------------------------
-\subsubsection{Mem/Ops Tradeoff}\label{sssec:MMTradeOff}
+\subsubsection{Memory/Operations Tradeoff}\label{sssec:MMTradeOff}
+
+This algorithm can be seen as an alternative to the \angel\ library. 
+Like \angel\ it uses the \code{CrossCountryInterface}. In its implementation 
+it replaces the call to \angel\ with one to its own internal routines that
+determine an elimination sequence according to a selectable set of heuristics. 
+In difference to the \angel\ heuristics  they 
+aim for a tradeoff between the number of operations required to complete an elimantion 
+sequence on the one hand and the temporal locality of the $c_{ji}$ in memory on the other hand. 
+The rationale for these heuristics is the observation that in many modern 
+computer architectures the performance is memory bound, i.e. a few additional 
+operations can easily be absorbed if we keep all the necessary data in cache. 
+All heuristics take as an input a set $\Theta \neq \emptyset $ of target elements, that is 
+a set of vertices or edges from $G$, or faces from $\cal G$. 
+The heuristic selects a nonempty subset $\Theta'\subseteq \Theta $ from this set. 
+In order to determine a single elimination target a sequence of heuristics may be applied 
+that successively shrink the target set concluding with a tie breaker such as 
+selecting the next target that would be eliminated in forward or reverse mode. 
+\reftab{tab:memOpsHeur} describes the selection criterion of a heuristics with 
+respect to an elimination technique.  If the selection criterion is not met 
+by any target in $\Theta$, then $\Theta'=\Theta$. 
+\begin{table}[htb]
+\begin{tabular}{|l|c|c|c|}\hline
+	& \code{VERTEX} & \code{EDGE} & \code{FACE} 
+\\\hline %---------------------------------------
+\code{SIBLING} 
+&
+\begin{minipage}{.4\linewidth}
+\footnotesize
+select vertices that share at least one predecessor
+and sucessor with the most recently eliminated vertex.
+\end{minipage}
+& N/A & N/A
+\\\hline %---------------------------------------
+\code{SIBLING2} 
+&
+\begin{minipage}{.4\linewidth}
+\footnotesize
+select vertices with the maximal product of 
+the number of predecessors and the number of 
+successors shared with the most recently eliminated vertex
+\end{minipage}
+&
+\begin{minipage}{.2\linewidth}
+\footnotesize
+select edges with the same source / target and the 
+maximal number of successors / predecessors shared with the 
+successors / predecessors of 
+the most recently front / back eliminated edge
+\end{minipage}
+& N/A 
+\\\hline  %---------------------------------------
+\code{SUCCPRED} 
+&
+\begin{minipage}{.4\linewidth}
+\footnotesize
+select vertices  that were either predecessors or sucessors of
+the most recently eliminated vertex
+\end{minipage}
+& N/A & N/A 
+\\\hline %---------------------------------------
+\code{ABSORB} 
+& N/A & N /A &
+\begin{minipage}{.2\linewidth}
+select faces that are absorbed
+\end{minipage}
+\\\hline %---------------------------------------
+\code{MARKOWITZ} 
+&
+\begin{minipage}{.4\linewidth}
+\footnotesize
+select vertices with  the lowest Markowitz degree
+\end{minipage}
+&
+\begin{minipage}{.2\linewidth}
+\footnotesize
+select edges with the lowest Markowitz degree
+\end{minipage}
+&
+N/A
+\\\hline %---------------------------------------
+\code{FORWARD} 
+&\multicolumn{3}{c|}{
+select the target next in forward mode
+}
+\\\hline %---------------------------------------
+\code{REVERSE} 
+&\multicolumn{3}{c|}{
+select the target next in reverse mode
+}
+\\\hline %---------------------------------------
+\end{tabular}
+\caption{Heuristics selection criteria}\label{tab:memOpsHeur}
+\end{table}
+The driver allows a sequence of heuristics to be seletec via string supplied as 
+an argument to the commandline swith \code{-H}. The string needs to contain 
+the target selection, one of \code{Vertex}, \code{EDGE}, or \code{FACE} followed by 
+a sequence of heuristics that should include at least on of the tie breakers \code{FORWARD} or 
+\code{REVERSE}. 
+Obviously the data locality criteria still are rather simplistic but 
+the code is easily extensible for more elaborate strategies. 
+
+The generated code is executable and represents an overall forward mode 
+according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in 
+cross-country fashion. 
+
+%-----------------------------------------------------------------------------------------
+\subsubsection{CFG Reversal}\label{sssec:cfgRevAlg}
+
+\refsec{ssec:cfgReversal} explains the principal approach to the reversal 
+of the CFG. The algorithm implements this approach as a contribution to the 
+adjoint code generation in \refsec{sssec:BBRev}. 
+The \Loop\ counters and \branch\ identifiers are stored the same 
+stack datastructure that is used for the {\em tape}, see \refsec{sec:ADIntro}.  
+The reversal of loops and branches as detailed in \cite{NULF04CFR} assumes 
+CFGs to be well-structured, that is, to be free of arbitrary jump instructrions 
+such as \code{GOTO} or \code{CONTINUE}. 
+It is of course possible to reverst such graphs, for instance by enumerating
+all {\basicblock}s, recording the execution sequence and invoking them according 
+to their recorded identifier in  large  \code {SWITCH} statement in reverse order.
+Such a reversal is obviously less efficient than a code that by employing proper 
+control flow constructs aids compiler optimization. 
+For the same reason well tuned codes implementing the target function $\bmf$ will 
+avoid arbitrary jumps and therefore we have not had sufficient demand to implement 
+a CFG reversal for arbitrary jumps. 
+
+Note, that the reversal of  \Loop\ constructs such as \code{DO I=1,10} replaces 
+the loop variable \code{I} with a generated variable name, say \code{T} and we 
+loop up to  the stored execution count which we will call  \code{C} here. 
+Then the reversed \Loop\ is \code{DO T=1,C}. Quite often the loop body contains 
+array derefences such as \code{A(I)} but ${I}$ is no longer available in the 
+reversed \Loop. We call this kind of \Loop\ reversal {\em anonymous}. 
+To access the proper memory location \code{I} will have to be stored along with the 
+\Loop\ counters and \branch\ identifiers in the tape stack.
+To avoid this overhead the \Loop\ reversal may be declared {\em explicit}
+by prepending \code{C\$opead xxx simple loop} to the \Loop\ in question. 
+With this directive the original \Loop\ variable will be preserved,  
+the reversed \Loop\ in our example constructed as \code{DO I=10,1,-1} and 
+no index values for the array references in the \Loop\ body stored. 
+In general the decision when an array index needs to be stored is most  exactly answered 
+with TBR analysis \cite{HNP02}. 
+Currently we do not have such  analysis available and instead 
+(somewhat arbitrarily) define a {\em simple}
+\Loop\ which can reversed explicitly as follows. 
+\begin{itemize}
+\item \Loop\ variables are not updated within the loop,
+\item the \Loop\ condition does not use \code{.NE.},
+\item the \Loop\ condition's left-hand side consists only of the \Loop\ variable,
+\item the stride in the update expression is fixed,
+\item the stride is the right-hand side of the top level \code{+} or \code{-} operator,
+\item the loop body contains no index expression with variables that are modified within the loop body.
+\end{itemize}
+While these conditions can be relaxed in theory, in practice the effort to implement 
+the transformation will rise sharply. Therefore they represent a workable compromise 
+for the current implementation. 
+Because often multidemensional arrays  are accessed with nested loops the 
+\Loop\ directive when specified for the outermost loop will assume the validity 
+of the above conditions for everything within the \Loop\ body including nested 
+\Loop\ and \branch\ constructs. 
+
+{\color{Red} The code produced by the driver is \ldots} 
+
+%-----------------------------------------------------------------------------------------
+\subsubsection{Basic Block Preaccumulation Tape and Tape Adjoint}\label{sssec:bbTA}
+
+Together with the CFG reversal two more building blocks contribute to the 
+generation of adjoint code. 
+\refsec{sec:ADIntro} points to the need to store the $\frac{\partial \phi_j}{\partial v_i}$ on the tape. 
+The first transformation algorithm handles the writing of the tape.
+For the preaccumulation approach we store the nonzero elements of local
+Jacobians $\bmJ_j$ instead. The algorithm that tapes these elements reinterprets
+the \saxpy\ operations \code{Y=A*X+Y} generated for \refeqn{eqn:bbfm}, see \refsec{sssec:BBPreacc}, 
+and instead generates code that stores any nonconstant factors \code{A} in the tape stack. 
+
+The second tranformation algorithm creates the adjoint code for a single \basicblock.
+During the subsquent reverse sweep the previously stored factors have to retrieved from the stack and 
+the respective adjoint operations for \refeqn{eqn:bbrm} carried out. 
+The respective adjoints of the four different categories listed in \refsec{sssec:BBPreacc} are listed in 
+\reftab{tab:saxpyAdj}.
+\begin{table}
+\begin{tabular}{|l|l|}\hline
+ $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$ &  $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
+ $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$ & $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
+ $\dot{y} = \dot{x}$ 					& $\overline{x} = \overline{y}$ \\
+ $\dot{y} = 0$ 						& $\overline{y} = 0$ 
+\end{tabular}
+\caption{\saxpy\ adjoints} \label{tab:saxpyAdj}
+\end{table} 
+      
+
+
+%-----------------------------------------------------------------------------------------
+\subsubsection{Basic Block Preaccumulation Reverse}\label{sssec:BBRev}
 
 
 

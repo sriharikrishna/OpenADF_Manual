@@ -15,6 +15,7 @@
 \newcommand{\sinkvertex}{{\raisebox{-.2ex}{\includegraphics[width=2.5mm,clip]{sinkvertex.eps}}}}
 
 %names and CS terms
+\newcommand{\angel}{angel}
 \newcommand{\entry}{entry}
 \newcommand{\exit}{exit}
 \newcommand{\Loop}{loop}
@@ -839,7 +840,7 @@ These transformation algorithms are modularized to enable reuse in different
 contexts. 
 \begin{wrapfigure}{r}{.55\textwidth}
 \centering \epsfig{file=allAlgs.eps,width=.45\textwidth}
-\caption{\xaifBooster algorithms} \label{fig:allAlgs}
+\caption{\xaifBooster\ algorithms} \label{fig:allAlgs}
 \end{wrapfigure}
 \reffig{fig:allAlgs} shows the implemented algorithms with dependencies.
 To promote reuse of the transformation algorithms the original data structure 
@@ -848,6 +849,11 @@ are kept in algorithm specific instances that are associated with the
 data structure element that is being modified. 
 In the following sections we want to concentrate on the transformation 
 the algorithm executes while keeping the technical detail at a minimum. 
+
+Each algorithm is also provided with a driver that encapsulates the algorithm 
+in a stand-alone binary which provides the functionality described in the following 
+sections. For details on the invocation and command line options refer to 
+\refsec{ssec:manualPipeline}.
  
 %-----------------------------------------------------------------------------------------
 \subsubsection{Reading and Writing \xaif}
@@ -877,7 +883,7 @@ For information of the files containg the \xaif\ representation refer to
 \subsubsection{Linearization}\label{sssec:linearization}
 
 As explained in \refsec{sec:ADIntro} a necessary step is the computation of 
-the local partial derivatives $c_ji$ that can be thought of as edge labels 
+the local partial derivatives $c_{ji}$ that can be thought of as edge labels 
 in the computational graph $G$. Per canonicalization all elemental $\phi$ 
 occur in the right-hand side of an assignment. 
 For each $\phi$ we look up the definition of the respective partials in 
@@ -890,8 +896,45 @@ that can be referenced in the partial computation.
 {\color{Red} [ a figure here? ] }
 In cases of the left-hand-side variable occuring on the right-hand-side (or being 
 may-aliased to a right-hand-side variable, see )
-The result of the Linearization. 
+The result of the Linearization is code containing the potentially split 
+assignments along with assignments for each non-zero edge label $c_{ji}$.
  
+%-----------------------------------------------------------------------------------------
+\subsubsection{Basic Block Preaccumulation}\label{sssec:BBPreacc}
+
+The first step in this transformation constructs the computational graphs $G$ 
+for contiguous 
+assignment sequences in a given \basicblock. To ensure semantic 
+correctness of the graph being constructed in the presence of 
+aliasing it relies on alias analysis and define-use/use-define chains 
+supplied by \OpenAnalysis, see \refsec{ssec:openanalysis}.
+The algorithm itself is described in detail in \cite{Utk04FBB}.
+Because the results supplied by \OpenAnalysis\ are always 
+conservatively correct it may not be possible to align all 
+assignmments into a single computational graph. In such cases 
+a sequence of such graphs is created. Likewise the occurence 
+of a subroutine call leads to a split in the graph construction. 
+In the context of \refsec{sec:ADIntro} one may think of the sets of 
+assignments forming each of these graphs as a separate \basicblock. 
+The stand-alone binary for the algorithm allows to disable 
+the graph construction across assignments and restrict it to 
+the assignments right-hand sides by adding the \code{-S} command 
+line flag. 
+
+To generate preaccumulation code an elimination sequence has to be determined. 
+This is not coded directly into the transformation algorithm. Instead 
+$G$ is passed to a subroutine call from the \angel\ library \cite{angelWeb}
+which determines an elimination sequence and returns it as 
+fused multiply add expressions in terms of the edge labels $c_{ji}$.
+There are several heuristics implemented within \angel\ that control 
+the selection of elimination steps and thereby the preccumulation code 
+that is generated.  The algorithm code calls a default set of heuristics. 
+However, all heuristics use the \code{CrossCountryInterface} and therefore 
+different heuristics can be selected with minimal changes in algorithm code.   
+
+%-----------------------------------------------------------------------------------------
+\subsubsection{Mem/Ops Tradeoff}\label{sssec:MMTradeOff}
+
 
 
 {\color{Blue} [ this is old stuff from the abstract]  

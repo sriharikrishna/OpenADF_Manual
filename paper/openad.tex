@@ -394,6 +394,33 @@ the active data-structures.]
 \OpenSixtyFour\ cvs repository under {\tt
 hipersoft.cs.rice.edu/Open64} for information on the code.}
 
+The OpenAnalysis toolkit separates program analysis from 
+language-specific or back-end specific intermediate representations.
+This separation enables a single implementation of domain-specific 
+analyses such
+as activity analysis, to-be-recorded analysis, and linearity analysis
+in both the ADIC and OpenAD Fortran90 tools.  
+Currently the OpenAD Fortran toolkit uses standard analyses within 
+\OpenAnalysis such as
+control-flow graph construction, call graph construction,
+alias analysis, reaching definitions, ud- and
+du-chains, and side-effect analysis.  Activity analysis has also 
+been implemented within \OpenAnalysis.
+
+Activity analysis is performed by \OpenAnalysis based on information
+from the Fortran~90 front-end.  The independent and dependent variables of
+interest can be communicated to the front-end through the use of pragmas.
+The results of the analysis are then 
+encoded by the Fortram~90 front-end into XAIF.  The analysis indicates
+which variables are active at any time, which memory references are active, 
+and which statements are active.
+
+The activity analysis itself is based on the formulation in~\cite{UweTBRPaper}.
+The main difference is that the data-flow framework in \OpenAnalysis does not
+yet take advantage of the structured data-flow equations.  Activity analysis is
+implemented in a context-insensitive interprocedural fashion.
+
+
 %#########################################################################################
 \section{Application}
 

@@ -27,7 +27,7 @@
 \newcommand{\OpenADFortTk}{OpenADFortTk}
 \newcommand{\OpenAnalysis}{OpenAnalysis}
 \newcommand{\OpenSixtyFour}{Open64}
-\newcommand{\XAIF}{XAIF}
+\newcommand{\xaif}{XAIF}
 \newcommand{\xaifBooster}{xaifBooster}
 \newcommand{\whirl}{whirl}
 \newcommand{\whirlToxaif}{whirl2xaif}
@@ -48,7 +48,9 @@
 \newcommand{\bmy}{\mbox{\bf\em y}}
 
 %environments
+\newcommand{\code}[1]{{\small\tt{#1}}}
 \newcommand{\reffig}[1]{Figure~\ref{#1}}
+\newcommand{\reffigs}[2]{Figures~\ref{#1}, \ref{#2}}
 \newcommand{\refsec}[1]{Section~\ref{#1}}
 \newcommand{\refeqn}[1]{(\ref{#1})}
 \newcommand{\refcan}[1]{(C\ref{#1})}
@@ -78,7 +80,7 @@ built from components that permit an easy extension of the code transformations
 in a language indepdendent fashion. It uses code analysis results implemented 
 in the \OpenAnalysis\ component. 
 The interface to the language independent transformation 
-engine is an xml abstract interface format, called \XAIF\ that is  specified through an xml schema. 
+engine is an xml abstract interface format, called \xaif\ that is  specified through an xml schema. 
 The implemented transformation algorithms allow efficient derivative computations utilizing 
 locally optimized cross country  sequences of vertex, edge and face elimination steps. 
 Specifically for the generation of adjoint codes \OpenAD\ supports various code reversal 
@@ -175,10 +177,10 @@ intermediate representation of $F$ in the so-called \whirl\ format.
 code analyses such as alias, activity, side-effect analysis.
 This information is used by 
 \whirlToxaif\ to construct a representation of the numerical core of $F$ in
-\XAIF\ format shown as $F_{xaif}$.  
+\xaif\ format shown as $F_{xaif}$.  
 A differentiated version of $F_{xaif}$ is derived by an 
 algorithm that is implented in \xaifBooster\ and is again respresented 
-\XAIF\ as $F'_{xaif}$.
+\xaif\ as $F'_{xaif}$.
 The information in $F'_{xaif}$ and the original $F_{\whirl}$ are used by 
 \xaifTowhirl\ to construct a 
 \whirl\ representation $F'_{\whirl}$ of the differentiated code. 
@@ -587,7 +589,7 @@ following Jacobian accumulation code.
 \OpenAD\  is built on components that belong to a framework aimed at 
 code transformation of numerical programs. 
 The components are tied together either via programmatic interfaces or they 
-communicate via the \XAIF. The transformation of the source code follows the 
+communicate via the \xaif. The transformation of the source code follows the 
 pipeline shown in \reffig{fig:overview}. 
 The following sections explain the role and inner workings of the various 
 components in greater detail. 
@@ -626,11 +628,11 @@ operate at several stages of the pipeline in the following order.
                  computational core of the language, and 
 
            \item converts the program analyses and core computational
-                 statements from \whirl\ into \XAIF.
+                 statements from \whirl\ into \xaif.
         \end{itemize}
 
      \item \xaifTowhirl\ is bridge component that converts the 
-        differentiated program represented in \XAIF\ 
+        differentiated program represented in \xaif\ 
         to a \whirl\ representation.
 
      \item \whirlTof\ is the ``unparser'' that converts \whirl\ to
@@ -708,23 +710,23 @@ All canonicalizations are implemented as part of \whirlToxaif\, see
 %-----------------------------------------------------------------------------------------
 \subsubsection*{\whirlToxaif\ and \xaifTowhirl} \label{sssec:wtxxtw}
 
-An important part of the pipeline is the  translation of \whirl\ into \XAIF\
+An important part of the pipeline is the  translation of \whirl\ into \xaif\
 (\whirlToxaif), feeding it to the transformation engine, and then
-backtranslating the differentiated \XAIF\ into \whirl\ (\xaifTowhirl).
-Two distinguishing features of \XAIF\ shape the contours of \whirlToxaif\ 
+backtranslating the differentiated \xaif\ into \whirl\ (\xaifTowhirl).
+Two distinguishing features of \xaif\ shape the contours of \whirlToxaif\ 
 and \xaifTowhirl.  
-First, because \XAIF\ represents only the numerical
+First, because \xaif\ represents only the numerical
 core of a program, many \whirl\ statements and expressions must be
 represented using opaque markers and annotations.  
 {\color{Red} ***FIXME example*** } 
 These opaque objects, which refer to the input \whirl, are created by
-\whirlToxaif\ and depositied in special \XAIF\ constructs designed for
+\whirlToxaif\ and depositied in special \xaif\ constructs designed for
 conveying such information through the differentiation engines.  Given
-the original \whirl\ and the differentiated \XAIF\ (with the opaque
+the original \whirl\ and the differentiated \xaif\ (with the opaque
 objects intact), \xaifTowhirl\ generates new \whirl\ representing the
 differentiated code. {\color {Red} ***FIXME: build from CFG***}
 
-The second distinguishing characteristic of \XAIF\ is that it represents
+The second distinguishing characteristic of \xaif\ is that it represents
 programs in a format 
 similar to that used by  common compiler analyses.  
 For example, a program is a
@@ -732,7 +734,7 @@ collection of symbol tables and a call graph where nodes in the call
 graph are CFGs. In turn CFGs contain {\basicblock}s with 
 statements.  
 Moreover, symbols, statements and variable
-references in \XAIF\ are annotated with information from data flow
+references in \xaif\ are annotated with information from data flow
 analyses suchas alias analysis, define-use chains, and activity
 analysis.  \whirlToxaif\ uses the \OpenAnalysis\  package to
 collect all of this information before proceeding with the
@@ -746,7 +748,7 @@ See \cite{RiceTechreport}.
 {\color{Red} [ how are canonicalizations implemeneted ?  ] }
 
 
-{\color{Red} [ how are intrinsics handled ?  ] }
+{\color{Red} [ how are intrinsics handled ... I refer to the catalogue later  ] }
 
 \subsubsection*{Postprocessor}
 The postprocessor performs various ``cleanup'' operations of the
@@ -795,6 +797,103 @@ can utilize xaif, for example, \OpenSixtyFour\ and EDG/SAGE~3 as pointed out bef
 }
 %-----------------------------------------------------------------------------------------
 \subsection{\xaifBooster} 
+The transformation engine that differentiates the \xaif\ representation of 
+$\bmf$ is called \xaifBooster. It is implemented in C++ as a 
+data structure that represents all information supplied in the \xaif\ input 
+and collection of algorithms that operate on this data structure, modify 
+it and produce transformed  \xaif\ output as the result. 
+
+\begin{wrapfigure}{r}{.55\textwidth}
+\centering \epsfig{file=irInh.eps,width=.45\textwidth}
+\caption{Inheritance hierarchy} \label{fig:iri}
+\end{wrapfigure}
+
+The \xaifBooster\ data structure  
+closely resembles the respective structures one would find in a 
+compiler's internal representation. 
+It is implemented as a hierarchy of C++ classes 
+using the boost graph library \cite{boostWeb}
+and the Standard C++ Library\cite{libstdcWeb}.
+\reffigs{fig:iri,fig:irc} show simplified subsets of the classes 
+occuring in the \xaifBooster\ data structure in the inheritance 
+as well as the composition hierarchy.  
+\begin{figure}[htb]
+\centering \epsfig{file=irComp.eps,width=.45\textwidth}
+\caption{Composition hierarchy} \label{fig:irc}
+\end{figure}
+
+A complete documentation of the entire data structure 
+can be found on the \OpenAD\ website \cite{openadWeb}.
+The class hierarchy is organized top down with 
+a single \code{CallGraph} instance as the top element. 
+\reffig{fig:irc} shows  a simplified composition hierarchy.
+This defines ownership of any dynamically allocated elements as well. Where possible,
+the interfaces avoid the need for explicit dynamic allocation of members outside the methods of the 
+containing class. Only in cases of containment of polymorphic elements is explicit dynamic allocation 
+necessary. In such cases the container class interface indicates the assumption of ownership of 
+the dynamically allocated elements being supplied to the container class. An example is the 
+graph class \code{Expression} accepting vertex instances that can be \code{Constant}, \code{Intrinsic} , and so forth; 
+see also \refsec{ssec:AlgorithmsAndInheritance}.
+
+These transformation algorithms are modularized to enable reuse in different 
+contexts. 
+\begin{wrapfigure}{r}{.55\textwidth}
+\centering \epsfig{file=allAlgs.eps,width=.45\textwidth}
+\caption{\xaifBooster algorithms} \label{fig:allAlgs}
+\end{wrapfigure}
+\reffig{fig:allAlgs} shows the implemented algorithms with dependencies.
+To promote reuse of the transformation algorithms the original data structure 
+is never modified. Instead, the data representing modifications or augmentations
+are kept in algorithm specific instances that are associated with the 
+data structure element that is being modified. 
+In the following sections we want to concentrate on the transformation 
+the algorithm executes while keeping the technical detail at a minimum. 
+ 
+%-----------------------------------------------------------------------------------------
+\subsubsection{Reading and Writing \xaif}
+Parsing is done through the Xerces C++ XML parser \cite{xercesWeb}
+such that the XML element handler implementations build the \xaifBooster\ data 
+structure 
+from the top down. 
+Aside from the parsing of the actual input \xaif\ there is also the so called 
+{\em 
+catalogue of inlinable intrinsics
+} 
+supplied as an XML following a specialed schema in \xaif, see also 
+\refsec{sssec:linearization} and \refsec{sssec:wtxxtw}.
+As an additional consisency check all components that read \xaif\ data 
+have the validation according to the schema enabled. Beyond the schema 
+validation these components perform valdity checks. Therefore, 
+manual modifications of \xaif\ data , while possible, should 
+be done judiciously. 
+
+The unparsing of the transformed data structure into \xaif\ is performed 
+through a series of that traverses the data structure and the 
+respective algorithm specific data. 
+For information of the files containg the \xaif\ representation refer to 
+\refsec{ssec:manualPipeline}.
+
+%-----------------------------------------------------------------------------------------
+\subsubsection{Linearization}\label{sssec:linearization}
+
+As explained in \refsec{sec:ADIntro} a necessary step is the computation of 
+the local partial derivatives $c_ji$ that can be thought of as edge labels 
+in the computational graph $G$. Per canonicalization all elemental $\phi$ 
+occur in the right-hand side of an assignment. 
+For each $\phi$ we look up the definition of the respective partials in 
+the intrinsics catalogue. 
+{\color{Red} [ not sure  how much detail is necessary ] } 
+They are defined in terms of positional arguments. Because of this, 
+the right-hand-side expression may have to be split up into 
+subexpressions to assign intermediate values to ancillary variables 
+that can be referenced in the partial computation.  
+{\color{Red} [ a figure here? ] }
+In cases of the left-hand-side variable occuring on the right-hand-side (or being 
+may-aliased to a right-hand-side variable, see )
+The result of the Linearization. 
+ 
+
+
 {\color{Blue} [ this is old stuff from the abstract]  
 \begin{figure}[htb]
 \epsfig{file=principle.eps,width=4cm}
@@ -843,6 +942,8 @@ as activity analysis, to-be-recorded analysis, and linearity analysis
 in  \OpenAD.
 
 {\color{Red} [ what interfaces are there, schema on how it works] } 
+
+{\color{Red} [ It would be nice if this went a little into aliasing ] } 
   
 
 Standard analyses implemented within 

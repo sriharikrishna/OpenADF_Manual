@@ -235,20 +235,17 @@ within the AD community.
 
 {\tt ADDED BY MIKE AND NATHAN }
 
-The main target application of the ACTS project is the MIT general circulation
-model (MITgcm) \cite{mars-eta:97b,mars-eta:97a}. 
-It is mostly implemented in Fortran~77 to permit maintenance of an efficient
-and correct adjoint as the code evolves \cite{HHG02}. Future development will
-increasingly add Fortran~90 features. 
-The OpenADFortTK component covers the Fortran 90-specific features of
-the OpenAD system. Throughout this paper, we use ``front end'' as a
-synonym for OpenADFortTK. 
+The main target application of the ACTS project is the MIT general
+circulation model (MITgcm) \cite{mars-eta:97b,mars-eta:97a}.
+It is mostly implemented in Fortran~77 to permit maintenance of an
+efficient and correct adjoint as the code evolves \cite{HHG02}. Future
+development will increasingly add Fortran~90 features.  The
+OpenADFortTK --- OpenAD Fortran Toolkit --- component covers the
+Fortran 90-specific features of the OpenAD system. Throughout this
+paper, we use ``front-end'' as a synonym for OpenADFortTK.
 
-blah blah \ldots OpenADFortTK = OpenAD Fortran Toolkit. blah blah
-
-In spite of the appelation ``front end'', OpenADFortTK subcomponents
-operate at several stages of the AD process (as seen in the diagram).
-The OpenADFortTK subcomponents are:
+In spite of the appellation ``front end'', OpenADFortTK subcomponents
+operate at several stages of the AD process (as seen in the diagram):
 
    \begin{description}
      \item[mfef90] A classical compiler front end that parses
@@ -284,7 +281,6 @@ The OpenADFortTK subcomponents are:
 
 Both mfef90 and whirl2f are part of the Open64 project.
 
-
 In the remainder of this section, we will briefly summarize the
 subcomponents.
 
@@ -294,28 +290,30 @@ The Open64 project supplies 2 elements for the front end:
       \item mfef90
       \item whirl2f
    \end{enumerate}
-Both of these elements employ the Open64 intermediate
-representiation (IR) language called whirl. The mfef90 element is a classical
-compiler parser that reads Fortran 90 source and converts it to
-the whirl IR . Similarly, whirl2f accepts whirl IR as input, and produces
-corresponding Fortran 90 source.
 
-The whirl IR language resembles a standard assembly language.
-Whirl, however, has been designed to enable good optimization for
-high performance computing in Fortran, C, and C++. See \cite{whirl-stuff}
-for more details on whirl.
+To ensure robustness of the AD tool, we sought industrial strength
+programming-language-dependent components.  We chose the Center for
+High Performance Software Research's (Rice University) \OpenSixtyFour\
+compiler, a multi-platform version of the SGI Pro64/Open64 compiler
+suite, originally based on SGI's commercial MIPSPro compiler ({\tt
+hipersoft.cs.rice.edu/OpenSixtyFour/}).  \OpenSixtyFour\'s Fortran~90
+front end, mfef90, is a classical compiler parser that reads Fortran
+90 source and converts it to an intermediate language called WHIRL.  A
+companion tool, whirl2f, unparses WHIRL back to Fortran 90 source
+code.  WHIRL, which resembles a typical abstract syntax tree, has been
+designed to enable good optimization for high performance computing in
+Fortran, C, and C++. See \cite{whirl-stuff} for more details about the
+intermediate language. HiPerSoft's main contribution to the Open64
+community has been extending the infrastructure to support
+source-to-source transformations; thus, it has invested significant
+effort in the whirl2f unparser.
 
-The bulk of the design effort from the Open64 community is in
-ensuring that whirl can be effectively used for source-to-source
-transformation as well. Consequently, the bulk of the Open64 effort
-goes into whirl2f.
-
-The OpenAD project contributed some development of the pragma / directive
-mechanism in the Open64 components.
+The OpenAD project contributed some development of the pragma /
+directive mechanism in the Open64 components.
 
 \subsubsection*{Canonicalization}
 To simplify the development of the AD engine, the front end converts
-simplifies some programming constructs. In other words, all
+abd simplifies some programming constructs. In other words, all
 program statements that are differentiated are in \emph{canonical}
 form. For OpenAD, some of the canonicalizations performed are:
 
@@ -330,19 +328,7 @@ form. For OpenAD, some of the canonicalizations performed are:
 
 [ expand on reason for canonicalization ... ]
 
-\subsubsection*{Whirl2xaif and xaif2whirl}
-
-To ensure robustness of the AD tool, we sought industrial strength
-programming-language-dependent components.  We chose the Center for High
-Performance Software Research's (Rice University) \OpenSixtyFour\
-compiler, a multi-platform version of the SGI Pro64/Open64 compiler
-suite, originally based on SGI's commercial MIPSPro compiler 
-({\tt hipersoft.cs.rice.edu/OpenSixtyFour/}).  HiPerSoft
-has invested significant effort extending the infrastructure to
-support source-to-source transformations.  \OpenSixtyFour\'s
-Fortran~90 front end (mfef90) parses Fortran codes into an intermediate
-representation called WHIRL; a companion tool (whirl2f) unparses WHIRL
-back to Fortran source code.
+\subsubsection*{whirl2xaif and xaif2whirl}
 
 The focus of the ACTS project is on translating WHIRL into XAIF
 (\whirlToxaif), feeding it to the differentiation engine, and then
@@ -351,34 +337,27 @@ Two distinguishing features of XAIF shape the contours of \whirlToxaif
 and \xaifTowhirl.  First, because XAIF represents only the numerical
 core of a program, many WHIRL statements and expressions must be
 represented using opaque markers and annotations.  
-*** FIXME For example *** 
+{\tt ***FIXME example*** } 
 These opaque objects, which refer to the input WHIRL, are created by
 \whirlToxaif and depositied in special XAIF constructs designed for
 conveying such information through the differentiation engines.  Given
 the original WHIRL and the differentiated XAIF (with the opaque
 objects intact), \xaifTowhirl generates new WHIRL representing the
-differentiated code. *** BUILD from CFGs? ***
+differentiated code. {\tt ***FIXME: build from CFG***}
 
 The second distinguishing characteristic of XAIF is that it represents
 programs as common compiler analyses.  For example, a program is a
-call graph where nodes in the call graph are control flow graphs;
-control flow graphs contain basic blocks with statements.  Moreover,
-statements and expressions in XAIF are annotated with alias and
-activity  *** FIXME ***
+collection of symbol tables and a call graph where nodes in the call
+graph are control flow graphs; control flow graphs contain basic
+blocks with statements.  Moreover, symbols, statements and variable
+references in XAIF are annotated with information from data flow
+analyses suchas alias analysis, define-use chains, and activity
+analysis.  \whirlToxaif\ uses the \OpenAnalysis\ analysis package to
+collect all of this information before proceeding with the
+translation.
 
- \whirlToxaif\ uses the call graph and control flow graph builders
-that are part of the \OpenAnalysis\footnote{No documentation is
-available yet.  Refer to the \OpenSixtyFour\ cvs repository under {\tt
-hipersoft.cs.rice.edu/Open64} for information on the code.}
-infrastructure, whose objective is to provide a programming
-language-independent platform for the development of data and control
-flow analyses.
+See \cite{Rice Tech report}.
 
-
-sub secion of xaif2whirl: postprocessor to handle things that are not
-convenient in WHIRL
-
-*** Cite Rice Tech report.
 
 \subsubsection*{Postprocessor}
 The postprocessor performs various ``cleanup'' operations of the
@@ -399,16 +378,21 @@ Similarly, some operations introduced by the differentiation process
 are coded as function operations. To make these operations work well,
 however, they must be substituted inline, replacing the function call.
 
-
 [ Need examples of templates here (or somewhere) ]
 
+[ Does inlining serve any other purpose besides efficiency?  Yes --
+the inlined routines have strange parameter substitution to support
+the active data-structures.]
 
-[ Does inlining serve any other purpose besides efficiency? ]
+[postprocessor to handle things that are not convenient in WHIRL.]
+
 
 %-----------------------------------------------------------------------------------------
 \subsection{\OpenAnalysis} 
 
-
+\footnote{No documentation is available yet.  Refer to the
+\OpenSixtyFour\ cvs repository under {\tt
+hipersoft.cs.rice.edu/Open64} for information on the code.}
 
 %#########################################################################################
 \section{Application}

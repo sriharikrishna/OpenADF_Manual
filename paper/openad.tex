@@ -1212,26 +1212,46 @@ This separation enables a single implementation of domain-specific
 analyses such
 as activity analysis, to-be-recorded analysis, and linearity analysis
 in  \OpenAD.
-
-{\color{Red} [ what interfaces are there, schema on how it works] } 
-
-{\color{Red} [ It would be nice if this went a little into aliasing ] } 
-  
-
 Standard analyses implemented within 
 \OpenAnalysis\ such as
 CFG construction, call graph construction,
 alias analysis, reaching definitions, ud- and
-du-chains, and side-effect analysis are available to \OpenAD\ 
+du-chains, and side-effect analysis are also available to \OpenAD\ 
 via  \OpenADFortTk. 
 
-{\color{Red} [ we can pick an example for an analysis interface 
-to show how its done between OA and fortTk and why it makes sense 
-that forttk uses OA and not xaifBooster] } 
+\OpenADFortTk interfaces with \OpenAnalysis as a producer and a
+consumer.  A description of Alias analysis illustrates this
+interaction.  \XAIF requires an alias map data structure, in which
+each variable reference is mapped to a set of virtual locations that
+it may or must reference.  For example, if a global variable {\tt g}
+is passed into subroutine {\tt foo} through the reference parameter
+{\tt p}, variable references {\tt g} and {\tt p} will reference the
+same location within the subroutine {\tt foo} and therefore be aliases.  
+\OpenAnalysis determines the aliasing relationships by querying an
+abstract interface called the alias IR interface, which is a 
+language-independent interface between \OpenAnalysis and any
+intermediate representation for an imperative programming language.  
+An implementation of the alias IR interface for the Fortran~90
+intermediate representation is part of
+\OpenADFortTk.  The interface includes queries for an iterator over
+all the procedures, statements in those procedures, memory references
+in each statement, and memory reference expression and location
+abstractions that provide further information about memory references
+and symbols.  The results of the alias analysis are then provided back
+to \OpenADFortTk through an alias results interface.
 
-Activity analysis is performed by \OpenAnalysis based on information
-from the Fortran~90 front-end.  The independent and dependent variables of
-interest can be communicated to the front-end through the use of pragmas, 
+Using language-independent interfaces between \OpenAnalysis and the intermediate
+representation will enable alias analysis for multiple language
+front-ends without requiring \XAIF to include the union of all
+language features that affect aliasing (ie. pointer arithmetic and
+casting in C/C++ and equivalence in Fortran~90).
+Instead \OpenAnalysis has analysis-specific interfaces for querying
+language-specific intermediate representations.
+
+\OpenAnalysis also performs activity analysis.
+For activity analysis 
+the independent and dependent variables of
+interest are communicated to the front-end through the use of pragmas, 
 see \refsec{sssec:mfef}.
 The results of the analysis are then 
 encoded by the Fortram~90 front-end into XAIF.  The analysis indicates
@@ -1241,7 +1261,7 @@ and which statements are active.
 The activity analysis itself is based on the formulation in~\cite{UweTBRPaper}.
 The main difference is that the data-flow framework in \OpenAnalysis does not
 yet take advantage of the structured data-flow equations.  Activity analysis is
-implemented in a context-insensitive interprocedural fashion.
+implemented in a context-insensitive, flow-sensitive interprocedural fashion.
 
 
 %#########################################################################################

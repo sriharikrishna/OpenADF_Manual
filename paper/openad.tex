@@ -750,7 +750,7 @@ collect all of this information before proceeding with the
 translation.
 
 {\color{Red} [ implements OA interfaces, calls the analyses, 
-	massages the results to be presented in XAIF etc. ] }
+	massages the results to be presented in \xaif\ etc. ] }
 
 See \cite{RiceTechreport}.
 
@@ -1221,7 +1221,7 @@ via  \OpenADFortTk.
 
 \OpenADFortTk interfaces with \OpenAnalysis as a producer and a
 consumer.  A description of Alias analysis illustrates this
-interaction.  \XAIF requires an alias map data structure, in which
+interaction.  \xaif\ requires an alias map data structure, in which
 each variable reference is mapped to a set of virtual locations that
 it may or must reference.  For example, if a global variable {\tt g}
 is passed into subroutine {\tt foo} through the reference parameter
@@ -1242,7 +1242,7 @@ to \OpenADFortTk through an alias results interface.
 
 Using language-independent interfaces between \OpenAnalysis and the intermediate
 representation will enable alias analysis for multiple language
-front-ends without requiring \XAIF to include the union of all
+front-ends without requiring \xaif\ to include the union of all
 language features that affect aliasing (ie. pointer arithmetic and
 casting in C/C++ and equivalence in Fortran~90).
 Instead \OpenAnalysis has analysis-specific interfaces for querying
@@ -1254,7 +1254,7 @@ the independent and dependent variables of
 interest are communicated to the front-end through the use of pragmas, 
 see \refsec{sssec:mfef}.
 The results of the analysis are then 
-encoded by the Fortram~90 front-end into XAIF.  The analysis indicates
+encoded by the Fortram~90 front-end into \xaif\.  The analysis indicates
 which variables are active at any time, which memory references are active, 
 and which statements are active.
 

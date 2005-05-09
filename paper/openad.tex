@@ -73,23 +73,28 @@ UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen\\
 }
 
 \begin{abstract}
-The \OpenAD\ tool allows the evaluation of first and second order 
-derivatives of functions defined by a program written in Fortran90/77. 
-The derivative evaluation is performed by Fortran 90 code resulting from the 
-analyses and transformation of the original program that defines the function of interest.
-The code transformation follows the basic principles of automatic differentiation. 
-In difference to most other automatic differentiation tools \OpenAD\ is 
-built from components that permit an easy extension of the code transformations 
-in a language indepdendent fashion. It uses code analysis results implemented 
-in the \OpenAnalysis\ component. 
-The interface to the language independent transformation 
-engine is an xml abstract interface format, called \xaif\ that is  specified through an xml schema. 
-The implemented transformation algorithms allow efficient derivative computations utilizing 
-locally optimized cross country  sequences of vertex, edge and face elimination steps. 
-Specifically for the generation of adjoint codes \OpenAD\ supports various code reversal 
-schemes with hierachical checkpointing at the subroutine level. 
-The Fortran specifive front and back end to this transformation engine is the \OpenSixtyFour\ based
-\OpenAD\ Fortran tool kit, \OpenADFortTk.
+
+The \OpenAD\ tool allows the evaluation of first and second order
+derivatives of functions defined by a program written in Fortran90/77.
+The derivative evaluation is performed by Fortran 90 code resulting
+from the analyses and transformation of the original program that
+defines the function of interest.  The code transformation follows the
+basic principles of automatic differentiation.  In difference to most
+other automatic differentiation tools \OpenAD\ is built from
+components that permit an easy extension of the code transformations
+in a language indepdendent fashion. It uses code analysis results
+implemented in the \OpenAnalysis\ component.  The interface to the
+language independent transformation engine is an xml abstract
+interface format, called \xaif\ that is specified through an xml
+schema.  The implemented transformation algorithms allow efficient
+derivative computations utilizing locally optimized cross country
+sequences of vertex, edge and face elimination steps.  Specifically,
+for the generation of adjoint codes, \OpenAD\ supports various code
+reversal schemes with hierachical checkpointing at the subroutine
+level.  The Fortran specific front and back end to this transformation
+engine is the \OpenSixtyFour\ based \OpenAD\ Fortran toolkit,
+\OpenADFortTk.
+
 \end{abstract}
 
 
@@ -124,7 +129,7 @@ for a three year period that started in September 2002.
 
 The basic principles of automatic differentiation (AD), see also \refsec{ssec:ADIntro}, 
 have been known for several decades \cite{wengert}
-but only during the last 15 years the tools implementing AD have found a noticable use in 
+but only during the last 15 years have the tools implementing AD found a noticable use in 
 optimization, data assimilation, and other applications in need of efficient and accurate 
 derivative information. 
 As a consequence of the wider use of AD 
@@ -172,10 +177,10 @@ at {\tt www.mcs.anl.gov/adicserver}.
 \caption{\OpenAD\ components and pipeline} \label{fig:overview}
 \end{wrapfigure}
 The collaboration  of the \OpenAD\  components is illustrated in 
-\reffig{fig:overview}
+\reffig{fig:overview}.
 The \OpenSixtyFour\ front-end performs a lexical, 
 syntactic, and semantic analysis and produces an 
-intermediate representation of $F$ in the so-called \whirl\ format.
+intermediate representation of $F$, $F_{\whirl}$, in the so-called \whirl\ format.
 \OpenAnalysis\ is used to build call and control flow graphs and  perform 
 code analyses such as alias, activity, side-effect analysis.
 This information is used by 
@@ -595,13 +600,14 @@ following Jacobian accumulation code.
 
 %#########################################################################################
 \section{\OpenAD\ components}
-\OpenAD\  is built on components that belong to a framework aimed at 
-code transformation of numerical programs. 
-The components are tied together either via programmatic interfaces or they 
-communicate via the \xaif. The transformation of the source code follows the 
-pipeline shown in \reffig{fig:overview}. 
-The following sections explain the role and inner workings of the various 
-components in greater detail. 
+
+\OpenAD\ is built on components that belong to a framework designed
+for code transformation of numerical programs.  The components are
+tied together either via programmatic interfaces or by communication
+using the \xaif\ langauge. The transformation of the source code follows the
+pipeline shown in \reffig{fig:overview}.  The following sections
+explain the role and inner workings of the various components in
+greater detail.
 
 %-----------------------------------------------------------------------------------------
 \subsection{\OpenADFortTk\ - the Fortran~90 Front-End}
@@ -620,7 +626,7 @@ In spite of the appellation ``front end'', \OpenADFortTk\ subcomponents
 operate at several stages of the pipeline in the following order.
 	
    \begin{enumerate}	
-     \item \mfefninety is a compiler front-end in the classical sense that parses
+     \item \mfefninety\ is a compiler front-end in the classical sense that parses
        Fortran and generates an intermediate representation (IR)
        in the \whirl\ language
 
@@ -652,54 +658,56 @@ operate at several stages of the pipeline in the following order.
 
    \end{enumerate}
 
-Both \mfefninety\ and \whirlTof\ are part of the Open64 project.
-
-In the following we will explain the 
-subcomponents in more detail. 
+In the following we will explain the subcomponents in more detail.
+The invocation of the components is explained in
+\refsec{ssec:manualPipeline}
 
 %-----------------------------------------------------------------------------------------
 \subsubsection{\OpenSixtyFour\ components} \label{sssec:mfef}
-The \OpenSixtyFour\ project supplies 2 elements for the front end, 
-\mfefninety and \whirlTof
+
+The \OpenSixtyFour\ \cite{open64Web} project supplies two elements for
+the front end, \mfefninety and \whirlTof.
 
 To ensure robustness of the AD tool, we sought industrial strength
 programming-language-dependent components.  We chose the Center for
 High Performance Software Research's (Rice University) \OpenSixtyFour\
-compiler \cite{open64Web}, 
-a multi-platform version of the SGI Pro64/Open64 compiler
-suite, originally based on SGI's commercial MIPSPro compiler.  
-\OpenSixtyFour\'s Fortran
-front end, \mfefninety, is a classical compiler parser that reads Fortran
-source and converts it to an intermediate language called \whirl.  
-A companion tool, \whirlTof, unparses \whirl\ back to Fortran source
-code.  The \whirl\ representation, 
-which resembles a typical abstract syntax tree, has been
-designed to enable good optimization for high performance computing in
-Fortran, C, and C++. See \cite{whirl-stuff} for more details about the
-intermediate language. 
-HiPerSoft's main contribution to the \OpenSixtyFour\ 
-community has been extending the infrastructure to support
-source-to-source transformations; thus, it has invested significant
-effort in the \whirlTof\ unparser.
+compiler, a multi-platform version of the SGI Pro64/Open64 compiler
+suite, originally based on SGI's commercial MIPSPro compiler.
+\OpenSixtyFour's Fortran front end, \mfefninety, is a classical
+compiler parser that reads Fortran source and converts it to an
+intermediate language called \whirl.  A companion tool, \whirlTof,
+unparses \whirl\ back to Fortran source code.  The \whirl\
+representation, which resembles a typical abstract syntax tree, has
+been designed to enable good optimization for high performance
+computing in Fortran, C, and C++. See \cite{whirl-stuff} for more
+details about the intermediate language.  HiPerSoft's main
+contribution to the \OpenSixtyFour\ community has been extending the
+infrastructure to support source-to-source transformations; thus, it
+has invested significant effort in the \whirlTof\ unparser.
 
-The \OpenAD\ project contributed some development of the pragma /
-directive mechanism in the Open64 components.
+AD tools require certain knowledge that typially is not directly
+representable in programming languages such as Fortran.  For example,
+an AD tool must know what variables in the code for a $\bmf$ are
+independent and dependent.  Instead of suppling this information
+externally, such as with a configuration file, we introduced a special
+OpenAD pragma facility, encoded within a Fortran comment, and extended
+\mfefninety\ to recognize and generate a special OpenAD pragma nodes
+in \whirl.  Because the pragmas can be associated with whole
+procedures or single statements, and because the pragma facility is
+general enough to communicate arbitrary pieces of information through
+the pipeline, it therefore provides a flexible system for development
+and experimentation, as well as for the end-user.
 
-{\color{Red} [ These pragmas are ...  They  are used ....
-
-note: we will refer to them in the OA section] }
-
-The invocation of the components is explained  in \refsec{ssec:manualPipeline}
 
 %-----------------------------------------------------------------------------------------
 \subsubsection{Canonicalization}\label{sssec:Canonicalization}
-To ensure 
- the language independence of the transformation engine and  streamline
-its development, 
-the front end converts and simplifies some programming constructs into 
-\emph{canonical} form. 
-In addition to the canonicalizations mentioned in 
-\refsec{sec:ADIntro} language independence requires the following: 
+
+To ensure the language independence of the transformation engine and
+streamline its development, the front end converts and simplifies some
+programming constructs into \emph{canonical} form.  In addition to the
+canonicalizations mentioned in \refsec{sec:ADIntro} language
+independence requires the following:
+
 \begin{Can}\label{can:comBlock}
 Common blocks are converted to modules.
 \end{Can}
@@ -709,60 +717,77 @@ Non-variable actual parameters are hoisted to temporaries.
 \begin{Can}\label{can:scalar}
  Derived type references are scalarized.
 \end{Can}	
+
+
 {\color{Red}
-[ expand on reason for canonicalization ... ]
+Canonicalization is 
+
+[ expand on reason for canonicalization: 
+  1) make life easier for whirl2xaif
+  2) XAIF's limited concepts (explained below) 
+] \\
+
+[ how are canonicalizations implemented: on whirl instead of fortran ] \\
+
 }
 
-All canonicalizations are implemented as part of \whirlToxaif\, see 
+All canonicalizations are implemented as part of \whirlToxaif; see 
 \refsec{sssec:wtxxtw}.
 
 %-----------------------------------------------------------------------------------------
-\subsubsection*{\whirlToxaif\ and \xaifTowhirl} \label{sssec:wtxxtw}
+\subsubsection{\whirlToxaif\ and \xaifTowhirl}\label{sssec:wtxxtw}
 
-An important part of the pipeline is the  translation of \whirl\ into \xaif\
-(\whirlToxaif), feeding it to the transformation engine, and then
-backtranslating the differentiated \xaif\ into \whirl\ (\xaifTowhirl).
-Two distinguishing features of \xaif\ shape the contours of \whirlToxaif\ 
-and \xaifTowhirl.  
-First, because \xaif\ represents only the numerical
-core of a program, many \whirl\ statements and expressions must be
-represented using opaque markers and annotations.  
-{\color{Red} ***FIXME example*** } 
-These opaque objects, which refer to the input \whirl, are created by
-\whirlToxaif\ and depositied in special \xaif\ constructs designed for
-conveying such information through the differentiation engines.  Given
-the original \whirl\ and the differentiated \xaif\ (with the opaque
-objects intact), \xaifTowhirl\ generates new \whirl\ representing the
-differentiated code. {\color {Red} ***FIXME: build from CFG***}
+An important part of the pipeline is the translation of \whirl\ into
+\xaif\ (\whirlToxaif), feeding it to the transformation engine, and
+then backtranslating the differentiated \xaif\ into \whirl\
+(\xaifTowhirl).  Two distinguishing features of \xaif\ shape the
+contours of \whirlToxaif\ and \xaifTowhirl.  First, because \xaif\
+represents only the numerical core of a program, many \whirl\
+statements and expressions cannot be translated into \xaif\.  For
+instance, in \xaif\ there is no way to represent Fortran IO statements
+or expressions involving user-defined types or array slices.  We
+therefore introduced special statements and annotations to \xaif\ in
+which opaque information can be stored.  These opaque objects, which
+refer to the input \whirl, are created by \whirlToxaif\ and deposited
+in the special \xaif\ constructs designed for conveying such
+information through the differentiation engines.  Given the original
+\whirl\ and the differentiated \xaif\ (with the opaque objects
+intact), \xaifTowhirl\ generates new \whirl\ representing the
+differentiated code.  
 
-The second distinguishing characteristic of \xaif\ is that it represents
-programs in a format 
-similar to that used by  common compiler analyses.  
-For example, a program is a
-collection of symbol tables and a call graph where nodes in the call
-graph are CFGs. In turn CFGs contain {\basicblock}s with 
-statements.  
-Moreover, symbols, statements and variable
-references in \xaif\ are annotated with information from data flow
-analyses suchas alias analysis, define-use chains, and activity
-analysis.  \whirlToxaif\ uses the \OpenAnalysis\  package to
-collect all of this information before proceeding with the
-translation.
+The second distinguishing characteristic of \xaif\ is that it
+represents programs in a format similar to that used by common
+compiler analyses.  For example, a program is a call graph and a
+collection of associated symbol tables where nodes in the call graph
+are CFGs.  Hence, \whirl\ control flow statements are implicitly
+represented by CFG nodes and edges where the former are {\basicblock}s
+containing non-control-flow statements.  Moreover, symbol table
+entries, statements and variable references in \xaif\ are annotated
+with information from data flow analyses such as alias analysis, ud-
+and du-chains, and activity analysis.  \whirlToxaif\ uses the
+\OpenAnalysis\ package to collect all of this information before
+proceeding with the translation into \xaif.  In doing so, it
+implements the OA interface to \whirl, invokes the necessary analyses,
+and massages the results into a form consistent with \xaif.
 
-{\color{Red} [ implements OA interfaces, calls the analyses, 
-	massages the results to be presented in \xaif\ etc. ] }
-
-See \cite{RiceTechreport}.
-
-{\color{Red} [ how are canonicalizations implemeneted ?  ] }
-
+\xaifTowhirl\ backtranslates \xaif\ into \whirl\ that includes
+postprocessor directives.  It performs no transformations and
+therefore has no use any analysis information that might be included
+in the source \xaif.  Consequently, its challenges during
+backtranslation are to recover explicit statement-based control flow
+constructs from the CFG; correctly restore any \whirl\ represented by
+opaque objects (which were inserted by \whirlToxaif); and introduce
+any necessary postprocessor directives, most important of which
+indicate that active variables should be converted to structured types
+and that active references should include an approprate value or
+derivative selector.
 
 {\color{Red} [ how are intrinsics handled ... I refer to the catalogue later  ] }
 
+See \cite{RiceTechreport}.
 
-{\color{Red} [ the active type  ] }
 
-\subsubsection*{Postprocessor}
+\subsubsection{Postprocessor}
 The postprocessor performs various ``cleanup'' operations of the
 differentiated code. The two most important tasks are:
    \begin{enumerate}
@@ -787,7 +812,8 @@ however, they must be substituted inline, replacing the function call.
 the inlined routines have strange parameter substitution to support
 the active data-structures.]
 
-[postprocessor to handle things that are not convenient in WHIRL.]
+[postprocessor to handle things that are not convenient to do in whirl
+(making xaif2whirl's life easier).]
 }
 
 %-----------------------------------------------------------------------------------------
@@ -878,7 +904,7 @@ catalogue of inlinable intrinsics
 } 
 supplied as an XML following a specialed schema in \xaif, see also 
 \refsec{sssec:linearization} and \refsec{sssec:wtxxtw}.
-As an additional consisency check all components that read \xaif\ data 
+As an additional consistency check all components that read \xaif\ data 
 have the validation according to the schema enabled. Beyond the schema 
 validation these components perform valdity checks. Therefore, 
 manual modifications of \xaif\ data , while possible, should 
@@ -1206,20 +1232,17 @@ within the AD community.
 %-----------------------------------------------------------------------------------------
 \subsection{\OpenAnalysis} \label{ssec:openanalysis}
 
-The \OpenAnalysis\ toolkit, see \cite{oaWeb},  separates program analysis from 
-language-specific or front-end specific intermediate representations.
-This separation enables a single implementation of domain-specific 
-analyses such
-as activity analysis, to-be-recorded analysis, and linearity analysis
-in  \OpenAD.
-Standard analyses implemented within 
-\OpenAnalysis\ such as
-CFG construction, call graph construction,
-alias analysis, reaching definitions, ud- and
-du-chains, and side-effect analysis are also available to \OpenAD\ 
-via  \OpenADFortTk. 
+The \OpenAnalysis\ toolkit, see \cite{oaWeb}, separates program
+analysis from language-specific or front-end specific intermediate
+representations.  This separation enables a single implementation of
+domain-specific analyses such as activity analysis, to-be-recorded
+analysis, and linearity analysis in \OpenAD.  Standard analyses
+implemented within \OpenAnalysis\ such as CFG construction, call graph
+construction, alias analysis, reaching definitions, ud- and du-chains,
+and side-effect analysis are also available to \OpenAD\ via
+\OpenADFortTk.
 
-\OpenADFortTk interfaces with \OpenAnalysis as a producer and a
+\OpenADFortTk\ interfaces with \OpenAnalysis\ as a producer and a
 consumer.  A description of Alias analysis illustrates this
 interaction.  \xaif\ requires an alias map data structure, in which
 each variable reference is mapped to a set of virtual locations that
@@ -1227,9 +1250,9 @@ it may or must reference.  For example, if a global variable {\tt g}
 is passed into subroutine {\tt foo} through the reference parameter
 {\tt p}, variable references {\tt g} and {\tt p} will reference the
 same location within the subroutine {\tt foo} and therefore be aliases.  
-\OpenAnalysis determines the aliasing relationships by querying an
+\OpenAnalysis\ determines the aliasing relationships by querying an
 abstract interface called the alias IR interface, which is a 
-language-independent interface between \OpenAnalysis and any
+language-independent interface between \OpenAnalysis\ and any
 intermediate representation for an imperative programming language.  
 An implementation of the alias IR interface for the Fortran~90
 intermediate representation is part of
@@ -1238,28 +1261,26 @@ all the procedures, statements in those procedures, memory references
 in each statement, and memory reference expression and location
 abstractions that provide further information about memory references
 and symbols.  The results of the alias analysis are then provided back
-to \OpenADFortTk through an alias results interface.
+to \OpenADFortTk\ through an alias results interface.
 
-Using language-independent interfaces between \OpenAnalysis and the intermediate
-representation will enable alias analysis for multiple language
-front-ends without requiring \xaif\ to include the union of all
-language features that affect aliasing (ie. pointer arithmetic and
-casting in C/C++ and equivalence in Fortran~90).
-Instead \OpenAnalysis has analysis-specific interfaces for querying
+Using language-independent interfaces between \OpenAnalysis\ and the
+intermediate representation will enable alias analysis for multiple
+language front-ends without requiring \xaif\ to include the union of
+all language features that affect aliasing (ie. pointer arithmetic and
+casting in C/C++ and equivalence in Fortran~90).  Instead
+\OpenAnalysis\ has analysis-specific interfaces for querying
 language-specific intermediate representations.
 
-\OpenAnalysis also performs activity analysis.
-For activity analysis 
-the independent and dependent variables of
-interest are communicated to the front-end through the use of pragmas, 
-see \refsec{sssec:mfef}.
-The results of the analysis are then 
-encoded by the Fortram~90 front-end into \xaif\.  The analysis indicates
-which variables are active at any time, which memory references are active, 
-and which statements are active.
+\OpenAnalysis\ also performs activity analysis.  For activity analysis
+the independent and dependent variables of interest are communicated
+to the front-end through the use of pragmas, see \refsec{sssec:mfef}.
+The results of the analysis are then encoded by the Fortram~90
+front-end into \xaif.  The analysis indicates which variables are
+active at any time, which memory references are active, and which
+statements are active.
 
 The activity analysis itself is based on the formulation in~\cite{UweTBRPaper}.
-The main difference is that the data-flow framework in \OpenAnalysis does not
+The main difference is that the data-flow framework in \OpenAnalysis\ does not
 yet take advantage of the structured data-flow equations.  Activity analysis is
 implemented in a context-insensitive, flow-sensitive interprocedural fashion.
 

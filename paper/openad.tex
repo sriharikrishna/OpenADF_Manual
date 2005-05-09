@@ -665,8 +665,8 @@ The invocation of the components is explained in
 %-----------------------------------------------------------------------------------------
 \subsubsection{\OpenSixtyFour\ components} \label{sssec:mfef}
 
-The \OpenSixtyFour\ \cite{open64Web} project supplies two elements for
-the front end, \mfefninety and \whirlTof.
+The \OpenSixtyFour\ project \cite{open64Web} supplies two elements for
+the front end, \mfefninety\ and \whirlTof.
 
 To ensure robustness of the AD tool, we sought industrial strength
 programming-language-dependent components.  We chose the Center for
@@ -685,18 +685,25 @@ contribution to the \OpenSixtyFour\ community has been extending the
 infrastructure to support source-to-source transformations; thus, it
 has invested significant effort in the \whirlTof\ unparser.
 
-AD tools require certain knowledge that typially is not directly
+AD tools require certain knowledge that typically is not directly
 representable in programming languages such as Fortran.  For example,
-an AD tool must know what variables in the code for a $\bmf$ are
+an AD tool must know what variables in the code for $\bmf$ are
 independent and dependent.  Instead of suppling this information
 externally, such as with a configuration file, we introduced a special
-OpenAD pragma facility, encoded within a Fortran comment, and extended
-\mfefninety\ to recognize and generate a special OpenAD pragma nodes
-in \whirl.  Because the pragmas can be associated with whole
-procedures or single statements, and because the pragma facility is
-general enough to communicate arbitrary pieces of information through
-the pipeline, it therefore provides a flexible system for development
-and experimentation, as well as for the end-user.
+OpenAD pragma facility, encoded within Fortran comments, and extended
+\OpenSixtyFour\ to generate and unparse OpenAD pragma nodes in \whirl.
+Similar to many other special-purpose Fortran pragmas systems such as
+OpenMP \cite{OpenMP-website}, in order to specify that a variable
+$y$ is dependent, a user could write \code{!\$openad dependent(y)},
+where \code{\$openad} is the special prefix that demarcates OpenAD
+pragmas.  Unlike most pragma systems, we introduced a generic
+\code{!\$openad xxx} pragma\footnote{The mneumonic behind name is that
+as $x$ is the typical variable name, so \code{!\$openad xxx} is the
+`variable' pragma.} that can communicate arbitrary pieces of
+text--associated with whole procedures, single statements, or groups
+of statements--through the pipeline.  This generic pragma provides a
+flexible system for experimentation and eliminates the significant
+development costs associated with modifying \OpenSixtyFour.
 
 
 %-----------------------------------------------------------------------------------------
@@ -1131,7 +1138,7 @@ reversed \Loop. We call this kind of \Loop\ reversal {\em anonymous}.
 To access the proper memory location \code{I} will have to be stored along with the 
 \Loop\ counters and \branch\ identifiers in the tape stack.
 To avoid this overhead the \Loop\ reversal may be declared {\em explicit}
-by prepending \code{C\$opead xxx simple loop} to the \Loop\ in question. 
+by prepending \code{C\$openad xxx simple loop} to the \Loop\ in question. 
 With this directive the original \Loop\ variable will be preserved,  
 the reversed \Loop\ in our example constructed as \code{DO I=10,1,-1} and 
 no index values for the array references in the \Loop\ body stored. 

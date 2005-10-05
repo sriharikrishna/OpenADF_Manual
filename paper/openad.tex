@@ -1,18 +1,21 @@
-\documentclass[acmtocl,acmnow]{acmtrans2m}
+%\documentclass[acmtocl,acmnow,hyperref]{acmtrans2m}
+\documentclass[11pt]{article}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{url}
-\usepackage{wrapfig}
-\usepackage[usenames]{color}
-\usepackage[dvips]{epsfig,psfrag}
-
-%graphics
-\newcommand{\ellipse}[1]{{\raisebox{-1ex}{\protect\psfrag{a}[][]{\small$#1$}%
-\protect\includegraphics[width=10mm,height=5mm,clip]{vertex.eps}}}}
-\newcommand{\Sourcevertex}{{\raisebox{-.2ex}{\includegraphics[width=3.5mm,clip]{sourcevertex.eps}}}}
-\newcommand{\Sinkvertex}{{\raisebox{-.2ex}{\includegraphics[width=3.5mm,clip]{sinkvertex.eps}}}}
-\newcommand{\sourcevertex}{{\raisebox{-.2ex}{\includegraphics[width=2.5mm,clip]{sourcevertex.eps}}}}
-\newcommand{\sinkvertex}{{\raisebox{-.2ex}{\includegraphics[width=2.5mm,clip]{sinkvertex.eps}}}}
+\usepackage[pdftex,usenames]{color}
+\usepackage[pdftex]{graphicx}  
+\DeclareGraphicsExtensions{.pdf}  
+\usepackage[pdftex,bookmarks=true,bookmarksnumbered=true,hypertexnames=false,breaklinks=true]{hyperref}
+\hypersetup{
+  pdfauthor = {Jean Utke},
+  pdftitle = {OpenAD: A tool for automatic differentiation of Fortran codes},
+  pdfsubject = {TOMS article},
+  pdfkeywords = {OpenAD,automatic differentiation, algorithms},
+  pdfcreator = {LaTeX with hyperref package},
+  pdfproducer = {dvips + ps2pdf}
+}
+\pdfadjustspacing=1
 
 %names and CS terms
 \newcommand{\angel}{angel}
@@ -52,25 +55,28 @@
 %environments
 \newcommand{\code}[1]{{\small\tt{#1}}}
 \newcommand{\refcan}[1]{(C\ref{#1})}
-\newcommand{\refeqn}[1]{(\ref{#1})}
-\newcommand{\reffig}[1]{Figure~\ref{#1}}
-\newcommand{\reffigs}[2]{Figures~\ref{#1}, \ref{#2}}
-\newcommand{\refsec}[1]{Section~\ref{#1}}
-\newcommand{\reftab}[1]{Table~\ref{#1}}
+\newcommand{\refsec}[1]{{Sec.~\ref{#1}}} 
+\newcommand{\refsecBS}[1]{{Section~\ref{#1}}} 
+\newcommand{\reffig}[1]{{Fig.~\ref{#1}}} 
+\newcommand{\reffigBS}[1]{{Figure\ref{#1}}} 
+\newcommand{\reftab}[1]{{Table~\ref{#1}}} 
+\newcommand{\refalg}[1]{{Alg.~\ref{#1}}} 
+\newcommand{\refalgBS}[1]{{Algorithm~{#1}}} 
+\newcommand{\refeqn}[1]{{(\ref{#1})}} 
+\newcommand{\refdef}[1]{{Def.~(\ref{#1})}} 
 \newtheorem{Can}{Canonicalization}
 
-\markboth{Lots Of Authors et al.}{\OpenAD}
+%\markboth{Lots Of Authors et al.}{OpenAD}
 
-\title{\OpenAD: A tool for automatic differentiation 
-of Fortran90 codes}
+\begin{document}
+
+\title{OpenAD: A tool for automatic differentiation of Fortran90 codes}
 
 \author{PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
 MIKE FAGAN, NATHAN TALLENT \\Rice University\\
 MICHELLE STROUT, JEAN UTKE \\Argonne National Laboratory 
 \and
-UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen\\
-{\color{Red}[ fix the ordering ]}
-}
+UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
 
 \begin{abstract}
 
@@ -98,52 +104,57 @@ engine is the \OpenSixtyFour\ based \OpenAD\ Fortran toolkit,
 \end{abstract}
 
 
-\category{G.1.4}{Quadrature and Numerical Differentiation}{Automatic differentiation}
-\category{D.3.4}{Processors}{Code generation, Compilers}
-\category{F.3.2}{Semantics of Programming Languages}{Program analysis}
-\category{G.1.6}{Optimization}{Gradient methods}
+% \category{G.1.4}{Quadrature and Numerical Differentiation}{Automatic differentiation}
+% \category{D.3.4}{Processors}{Code generation, Compilers}
+% \category{F.3.2}{Semantics of Programming Languages}{Program analysis}
+% \category{G.1.6}{Optimization}{Gradient methods}
 
-\terms{Algorithms, Performance}
+% \terms{Algorithms, Performance}
 
-\keywords{Automatic differentiation,  source transformation, adjoint compiler}
-
-\begin{document}
+% \keywords{Automatic differentiation,  source transformation, adjoint compiler}
 
 
-\begin{bottomstuff} 
-P.~Heimbach, C.~Hill, D.~Ozyurt, and C.~Wunsch, Massachusetts Institute of Technology, 
-Boston, MA 02139;\newline
-M.~Fagan, N.~Tallent, Rice University, 
-Houston, TX 77251;\newline
-M.~Strout, J.~Utke, Argonne National Laboratory, 
-Argonne, IL 60439;\newline
-U.~Naumann, Rheinisch Westf\"alische Techinische Hochschule Aachen, 
-D-52056 Aachen, Germany;\newline
-Funding for the ACTS project is provided by NSF under ITR contract OCE-0205590
-for a three year period that started in September 2002.
-\end{bottomstuff}
-\maketitle
+
+% \begin{bottomstuff} 
+% P.~Heimbach, C.~Hill, D.~Ozyurt, and C.~Wunsch, Massachusetts Institute of Technology, 
+% Boston, MA 02139;\newline
+% M.~Fagan, N.~Tallent, Rice University, 
+% Houston, TX 77251;\newline
+% M.~Strout, J.~Utke, Argonne National Laboratory, 
+% Argonne, IL 60439;\newline
+% U.~Naumann, Rheinisch Westf\"alische Techinische Hochschule Aachen, 
+% D-52056 Aachen, Germany;\newline
+% Funding for the ACTS project is provided by NSF under ITR contract OCE-0205590
+% for a three year period that started in September 2002.
+% \end{bottomstuff}
+% \maketitle
 
 %#########################################################################################
 \section{Introduction} \label{sec:Introduction}
 
-The basic principles of automatic differentiation (AD), see also \refsec{ssec:ADIntro}, 
+The basic principles of automatic differentiation (AD), see also \refsec{sec:ADIntro}, 
 have been known for several decades \cite{wengert}
-but only during the last 15 years have the tools implementing AD found a noticable use in 
+but only during the last 15 years have the tools implementing AD found a significant use in 
 optimization, data assimilation, and other applications in need of efficient and accurate 
 derivative information. 
 As a consequence of the wider use of AD 
 a variety of tools have been developed that address specific 
 application requirements or programming languages. 
-The website {\tt www.autodiff.org} provides a good overview of the tools that 
+The website AD community's website 
+at {\tt www.autodiff.org} provides a good overview of the tools that 
 are currently available. 
-One may characterize two user groups of AD tools. On one side are the casual users 
-with small scale problems applying AD mostly in a black box fashion and demanding 
-minimal user intervention. 
+One can categorize two user groups of AD tools. 
+On one side are the casual users 
+with small-scale problems applying AD mostly in a black-box fashion 
+and demanding minimal user intervention. 
+This category also includes the use of AD tools in  computational 
+frameworks such as NEOS \cite{neosWeb}.
 On the other side are experienced AD users aiming for highly efficient 
-derivative computations. Their need for efficiency is dictated by the 
+derivative computations.
+Their need for efficiency is dictated by the 
 computational complexity of models that easily reaches the limits of  current 
-supercomputers. With the emphasis on efficiency some sacrifices on the support of 
+supercomputers. 
+With the emphasis on efficiency some sacrifices on the support of 
 language features are acceptable for this user group. 
 
 One of the most demanding applications of AD is the computation of gradients for 
@@ -152,35 +163,47 @@ An evaluation of the available tools revealed some shortcomings from the perspec
 of the tool users as well as the tool developers. 
 
 From  the AD tool  users point of view ... 
-{\color{Red} [ FILL IN ] } 
+{\color{red} [ FILL IN ] } 
 
 From the AD tool developers point of view ...
-{\color{Red} [ FILL IN ] } 
+{\color{red} [ FILL IN ] } 
 
 These issues became the motivation for the 
-Adjoint Compiler Technology \& Standards (ACTS) project\footnote{ 
-see {\tt www.stce.rwth-aachen.de/ACTS}
-}. 
+Adjoint Compiler Technology \& Standards (ACTS) project.\footnote{ 
+see \url{www.stce.rwth-aachen.de/ACTS}
+} 
 This project is a collaborative
-research and development effort between MIT, Argonne National Laboratory, 
+research and development effort of MIT, Argonne National Laboratory, 
 Univeristy of Chicago, and Rice University. 
 It focusses on  next-generation tool development and 
 application of AD to problems in oceanography and chemical engineering.
 The main result of this effort is an infrastructure for the language independent 
 development and use of AD algorithms. 
-\OpenAD\ is the Fotran90 incarnation of the infrastructure.\footnote{
-The C/C++ oriented ADIC version 2.0 is based on the same infrastructure and can be found
-at {\tt www.mcs.anl.gov/adicserver}.
+\OpenAD\footnote { 
+see \url{www.mcs.anl.gov/openad} 
 }
-\begin{wrapfigure}{r}{6cm}
-\epsfig{file=overview.eps,width=6cm}
+is the Fortran incarnation of the infrastructure.
+The C/C++ oriented tool ADIC v2.0\footnote{
+see \url{www.mcs.anl.gov/adicserver}
+} 
+is based on the same infrastructure but is 
+not subject of this article.
+\begin{figure}
+\centering\includegraphics[width=.4\textwidth]{overview}
 \caption{\OpenAD\ components and pipeline} \label{fig:overview}
-\end{wrapfigure}
-The collaboration  of the \OpenAD\  components is illustrated in 
+\end{figure}
+\OpenAD\ has  a modular design. 
+The collaboration  of the \OpenAD\ components is illustrated in 
 \reffig{fig:overview}.
-The \OpenSixtyFour\ front-end performs a lexical, 
+Our input is some numerical model given as a Fortran program 
+$F$.
+The \OpenSixtyFour\footnote{
+see \url{hipersoft.cs.rice.edu/open64}
+}
+front-end performs a lexical, 
 syntactic, and semantic analysis and produces an 
-intermediate representation of $F$, $F_{\whirl}$, in the so-called \whirl\ format.
+intermediate representation of $F$, here denoted by $F_{\whirl}$, 
+in the so-called \whirl\ format.
 \OpenAnalysis\ is used to build call and control flow graphs and  perform 
 code analyses such as alias, activity, side-effect analysis.
 This information is used by 
@@ -224,33 +247,10 @@ on AD \cite{CG91,BBCG96,CFG+01,BCH+05}.
 We assume a vector valued function $\bmy=\bmf(\bmx): \R^n\mapsto \R^m$ that is implemented 
 as a computer program in a language such as Fortran, C, or C++. 
 The computer program 
-induces a {\em call graph} (CG) \cite{Aho}
+induces a {\em call graph} (CG) \cite{ASU86}
 whose vertices are subroutines and whose edges 
 represent calls potentially made during the computation of $\bmy$ for particular 
 values of $\bmx$. 
-Every subroutine consists of a {\em control flow graph} (CFG) that 
-represents the typical control flow constructs such as \entry, \exit, \Loop, \branch, 
-and \basicblock. 
-A \basicblock\ consists of a sequence of assignments and subroutine calls. 
-In the following we assume some canonicalizations are performed. 
-These canonicalizations are implemented in the front end discussed in 
-\refsec{sssec:Canonicalization}.
-\begin{Can} \label{can:funcToSub}
-All constructs occuring in \basicblock\ that are neither assignments nor subroutine calls (such as function calls, built-in I/O statements) 
-are canonicalized into subroutine calls.
-\end{Can}
-\begin{Can} \label{can:assignSideEffectFree}
-An assignment effects a single variable on the left-hand side and 
-the right-hand-side expression is side-effect free.
-\end{Can}
-\begin{Can} \label{can:assignElemental}
-The right-hand-side expression consists only of elemental operations $\phi$ typically 
-defined in a programming language as built-in operators and intrinsics.
-\end{Can}
-\begin{Can} \label{can:assignFunction}
-User defined functions and calls to these functions in right-hand-side expressions 
-are canonicalized to subroutined calls.
-\end{Can}
 Without loss of generality we can assume that an evaluation of $\bmf(\bmx)$ for  
 a particular value of $\bmx$ can be represented by a sequence of 
 elemental operations $v_j=\phi_j(\ldots,v_i,\ldots)$. 
@@ -265,6 +265,206 @@ The central principle of AD is
 the application of the chain rule to the elemental $\phi$, that is 
 multiplications and additions of the  $c_{ji}$.  
 
+%-----------------------------------------------------------------------------------------
+\subsection{Elimination Methods} \label{ssec:elimMeth}
+Let $\bmf$ represent a single \basicblock\ that is subject to preaccumulation
+as outlined in the previous section.
+For notational simplicity and without loss of generality we assume that the 
+dependent variables are mutually independent. 
+This situation can always be
+reached by introducing auxiliary assignments.
+\begin{figure}
+\centering\includegraphics[width=.7\textwidth]{elims}
+\caption{
+(a) Computational graph $G$ for \refeqn{eqn:sampleCode}, 
+(b) eliminate vertex 3 from $G$, 
+(c) front eliminate edge $(1,3)$ from $G$, 
+(d) back eliminate edge $(3,4)$ from $G$} 
+\label{fig:elims}
+\end{figure}
+In \reffig{fig:elims}~(a) we show the DAG for B(6) from \reffig{fig:toy}. 
+It represents a decomposition of the code into a sequence assignments of
+the results of the elemental operations $\phi$ to unique intermediate 
+variables,
+for example,
+\begin{equation}\label{eqn:sampleCode}
+\begin{split}
+ v_1&=v_{-1}+v_0;~v_2=\sin(v_0);~v_3=v_1+v_2;~v_4=v_1*v_3; \\
+v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
+\end{split}
+\end{equation}
+The edges $(i,j)\in E$ are labeled with partial derivatives
+$c_{ji}$, for instance, in the 
+example we have $c_{64}=-\sin(v_4)$.
+Jacobian preaccumulation can be interpreted as eliminations in $G$.
+The graph-based elimination steps are categorized in vertex, edge, and face 
+eliminations. 
+In $G$ a vertex $j \in V$ is eliminated by connecting its predecessors with
+its successors \cite{GrRe91}.
+An edge $(i,k)$ with
+$i \prec j$ and $j \prec k$ is labeled with
+$c_{ki}+c_{kj} \cdot c_{ji}$ if it existed before the elimination of $j.$
+We say that {\em absorption} takes place.
+Otherwise, $(i,k)$ is generated as {\em fill-in} and labeled
+with $c_{kj} \cdot c_{ji}$
+The vertex $j$ is removed from
+$G$ together with all incident edges. 
+\reffig{fig:elims}~(b) shows the result of eliminating vertex $3$
+from the graph in \reffig{fig:elims}~(a).
+
+An edge $(i,j)$ is {\em front eliminated} by connecting $i$ with all successors
+of $j$, followed by removing $(i,j)$ \cite{Nau00a}.
+The corresponding structural modifications of the c-graph in
+\reffig{fig:elims}~(a) are shown in
+\reffig{fig:elims}~(c) for front elimination of $(1,3).$
+The new edge labels are given as well.
+Edge-front elimination eventually leads to intermediate vertices in $G$
+becoming
+{\em isolated}; that is, these vertices no longer have predecessors.
+Isolated vertices are simply removed from $G$ together
+with all incident edges.
+
+Back elimination of an edge
+$(i,j) \in E$ results in connecting all predecessors of $i$
+with $j$ \cite{Nau00a}.
+The edge $(i,j)$ itself is removed from $G.$
+The back elimination of $(3,4)$ from the graph in \reffig{fig:elims}~(a) 
+is illustrated in \reffig{fig:elims}~(d). 
+Again, vertices can become isolated as a result of edge-back elimination
+because they no longer have successors.
+Such vertices are removed from $G.$
+
+Numerically the elimination is the application of 
+the chain rule, that is, a sequence of {\em fused-multiply-add} (fma) operations
+\begin{equation}\label{eqn:fma}
+c_{ki}=c_{ji}*c_{kj}\hspace*{1ex}(+c_{ki}) \hspace*{2ex}\gets \mbox{optional}
+\end{equation}
+where the additions take place in the case of absorption or fill-in is created 
+as described above.
+
+Aside from special cases a single vertex or edge elimination will result in more
+than one fma. {\em Face elimination} was introduced 
+as the elimination operation with the finest granularity of exactly 
+one multiplication\footnote{Additions are not necessarily directly coupled.} 
+per elimination step.
+
+Vertex and edge elimination steps have an 
+interpretation in terms of vertices and edges
+of $G$, whereas face elimination is performed on 
+the corresponding directed line graph $\cal G.$
+Following \cite{ElimTechMP}, we define the directed line graph $\cal G=(V,E)$ 
+corresponding to $G=(V,E)$ as follows:
+$${\cal V}=
+\{\framebox{$i,j$} : (i,j)\in E\} \cup 
+\{\framebox{$\oplus,j$}:v_j \in X\} \cup 
+\{\framebox{$i,\ominus$}:v_i \in Y\}$$ and 
+\begin{align*}
+{\cal E}&=\{(\framebox{$i,j$},\framebox{$j,k$}): (i,j),(j,k) \in E\} \\
+&\cup \{(\framebox{$\oplus,j$},\framebox{$j,k$}): v_j\in X \land (j,k)\in E\} \\
+&\cup \{(\framebox{$i,j$},\framebox{$j,\ominus$}): v_j\in Y \land (i,j)\in E\} 
+\quad . \\
+\end{align*}
+That is, 
+we add a source vertex $\oplus$ and a sink vertex 
+$\ominus$ to $G$ connecting all independents to $\oplus$
+and all dependents to $\ominus$. $\cal G$ has   
+a vertex $ v \in \cal V$ for each edge in the extended $G$, 
+and $\cal G$ has an edge $ e \in \cal E$ for each 
+pair of adjacent edges in $G$. \reffig{fig:face_elims} gives an 
+example of constructing the directed line graph in (b) from the graph in (a).   
+All intermediate vertices $\framebox{$i,j$} \in \cal V$ inherit the labels  
+$c_{ji}$. In order to formalize face elimination, it is advantageous to move away
+from the double-index notation and use one that is based on a topological
+enumeration of the edges in $G.$ Hence, ${\cal G}=({\cal V}, {\cal E})$ 
+becomes a DAG with ${\cal V} \subset I\!\!N$ and
+${\cal E} \subset I\!\!N \times I\!\!N$ and
+certain special properties.
+The set of all predecessors of $j \in {\cal V}$ is denoted as $P_j.$ 
+Similarly, $S_j$ denotes the set of its successors in $\cal G.$ 
+A vertex 
+$j \in \cal V$ is called {\em isolated} if either 
+$P_j=\emptyset$ or
+$S_j=\emptyset.$ 
+Face elimination is defined in \cite{ElimTechMP}
+between two incident intermediate vertices $i$ and $j$ in $\cal G$ as follows:
+\begin{enumerate}
+\item If there exists a vertex $k \in \cal V$ such that $P_k = P_i$ and
+$S_k = S_j,$ then
+set $c_k = c_k + c_j c_i$ {\em (absorption)};
+else ${\cal V}={\cal V} \cup \{k'\}$ with a new vertex $k'$ such that
+$P_{k'} = P_i$ and $S_{k'} = S_j$
+{\em (fill-in)} and labeled with $c_{k'} = c_j c_i.$
+\item Remove $(i,j)$ from $\cal E.$
+\item Remove $i \in \cal V$ if it is isolated. Otherwise, if there exists a vertex $i' \in \cal V$ such that
+$P_{i'} = P_i$ and $S_{i'} = S_i,$ then
+\begin{itemize}
+\item set $c_i=c_i + c_{i'}$ {\em (merge)};
+\item remove $i'.$
+\end{itemize}
+\item Repeat Step 3 for $j \in \cal V.$
+\end{enumerate}
+In \reffig{fig:face_elims}~(c) we show the elimination of $(i,j) \in \cal E$,
+where $i=\framebox{$1,3$}$ and $j=\framebox{$3,4$}$.
+
+\begin{figure}
+\centering\includegraphics[width=.65\textwidth]{face_elims}
+\caption{
+(a) $G$ extended, 
+(b) $\cal G$ overlaid, 
+(c) face elimination 
+}
+\label{fig:face_elims}
+\end{figure}
+A complete face elimination sequence $\sigma_f$ yields a tripartite 
+directed line graph $\sigma_f({\cal G})$ that can be back transformed into 
+the bipartite graph representing the Jacobian $\bmf'$.
+We note that any $G$ can be transformed into the 
+corresponding $\cal G$ but that a back transformation 
+generally is not  possible once face elimination steps have been applied. 
+Therefore, face eliminations cannot precede vertex and edge 
+eliminations.
+
+In a source transformation context of \OpenAD\ the operations \refeqn{eqn:fma} are 
+expressed as actual code, the Jacobian accumulation code. For the 
+B(6) from our toy example in \reffig{fig:toy} the code computing 
+the local partials in conjunction with the function value, see \refeqn{eqn:sampleCode}, 
+is shown in 
+\reffig{fig:toyAndPartials}.
+\footnote{
+For better readability we write the indices of the $c_{ji}$ with commas.
+} 
+\begin{figure}
+\begin{minipage}{\linewidth}
+\begin{align*}
+ v_1&=v_{-1}+v_0;~c_{1,-1}=1;~c_{1,0}=1; \\
+ v_2&=\sin(v_0);~c_{2,0}=\cos(v_0); \\
+ v_3&=v_1+v_2;~c_{3,1}=1;~c_{3,2}=1; \\
+ v_4&=v_1*v_3;~c_{4,1}=v_3;~c_{4,3}=v_1; \\
+ v_5&=\sqrt{v_3};~c_{5,3}=(2\sqrt{v_3})^{-1}; \\
+ v_6&=\cos(v_4);~c_{6,4}=-\sin(v_4); \\
+ v_7&=-v_5;~c_{7,5}=-1;
+\end{align*}
+\end{minipage}
+\caption{Code for \refeqn{eqn:sampleCode} and the $c_{ji}$}\label{fig:toyAndPartials}
+\end{figure}
+Now the operations induced by the eliminations on the graph can 
+be expressed in terms of the auxiliary variables $c_{ji}$.
+For our example, a forward vertex elimination, that is, the elimination
+sequence (1,2,3,4,5) in $G$ (\reffig{fig:elims}), leads to the
+following Jacobian accumulation code.
+{
+%\small
+\begin{align*}
+1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
+2:\quad  &c_{3,0}=c_{3,2} * c_{2,0}+c_{3,0}; \\
+3:\quad  &c_{4,-1}=c_{4,3} * c_{3,-1}+c_{4,-1};~c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};~c_{5,-1}=c_{5,3} * c_{3,-1}; \\
+&c_{5,0}=c_{5,3} * c_{3,0}; \\
+4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
+5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
+\end{align*}
+}
+%-----------------------------------------------------------------------------------------
+\subsection{Control Flow Reversal} \label{ssec:cfReversal}
 Because the code for a $\bmf$ generally contains control flow constructs there is no 
 single $G$ that represents the computation of $\bmf$ for all possible values of $\bmx$.
 In practice, \OpenAD\ considers subgraphs constructed 
@@ -272,7 +472,7 @@ from the contents of a \basicblock.
 In the following we illustrate the prinicpal approach with the use 
 of a toy example.  
 Line numbers have been added for simpler referencing within the text.
-\begin{wrapfigure}{l}{.5\linewidth}
+\begin{figure}
 \begin{tabbing}
 \hspace{.6cm}{\footnotesize \bf 01}\hspace{.5cm} {\tt y(k)=sin(x(1)*x(2)); k=k+1} \\
 \hspace{.6cm}{\footnotesize \bf 02}\hspace{.5cm} {\tt if} \={\tt (mod(k,2) .eq. 1) then } \\
@@ -288,7 +488,7 @@ Line numbers have been added for simpler referencing within the text.
 \hspace{.6cm}{\footnotesize \bf 12}\hspace{.5cm} {\tt y(k)=y(k)+x(1)*x(2) } 
 \end{tabbing}
 \caption{Toy example code}\label{fig:toy}
-\end{wrapfigure}
+\end{figure}
 The CFG resulting from the above code is depicted in 
 \reffig{fig:cfg}(a).
 The assignment statements are contained in the {\basicblock}s B(2,3,4,6,12).
@@ -301,9 +501,12 @@ generated for B(6).
 \begin{figure}[ht]
 \centering
 \begin{tabular}{ccc}
-\epsfig{file=cfg_ts.ps,width=.303\textwidth} &
-\epsfig{file=cfg_tape.ps,width=.303\textwidth} &
-\epsfig{file=cfg_adj.ps,width=.31\textwidth} \\
+\includegraphics[width=.303\textwidth]{cfg_ts}
+&
+\includegraphics[width=.303\textwidth]{cfg_tape}
+&
+\includegraphics[width=.31\textwidth]{cfg_adj}
+\\
 \em (a) & \em (b) & \em (c)
 \end{tabular}
 \caption{CFG of \reffig{fig:toy} (a) original code, (b) tangent linear model, (c) adjoint model}\label{fig:cfg}
@@ -371,8 +574,6 @@ instance simultaneouly to the computation of $\bmf$.
 In reverse mode products of the transposed
 Jacobians $\bmJ^T_j$ with adjoint vectors $\overline{\bmy}_j$
 are propagated reverse to the direction of the flow of control. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{CFG Reversal} \label{ssec:cfgReversal}
 In order to find the corresponding path to the reversed control flow graph 
 we have to record certain essential information in an augmented CFG,
 for our toy example see \reffig{fig:cfg}(b).
@@ -397,206 +598,9 @@ pop the branch information and the loop counter respectively.
 We enter the branch and execute the loop as indicated by the recorded information. 
 The process of the control flow reversal is described in detail in 
 \cite{NULF04CFR}. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Elimination Methods} \label{ssec:elimMeth}
-Let $\bmf$ represent a single \basicblock\ that is subject to preaccumulation
-as outlined in the previous section.
-For notational simplicity and without loss of generality we assume that the 
-dependent variables are mutually independent. 
-This situation can always be
-reached by introducing auxiliary assignments.
-\begin{figure}[ht]
-\centering\epsfig{file=elims.eps,width=.7\linewidth}
-\caption{
-(a) Computational graph $G$ for \refeqn{eqn:sampleCode}, 
-(b) eliminate vertex 3 from $G$, 
-(c) front eliminate edge $(1,3)$ from $G$, 
-(d) back eliminate edge $(3,4)$ from $G$} 
-\label{fig:elims}
-\end{figure}
-In \reffig{fig:elims}~(a) we show the DAG for B(6) from \reffig{fig:toy}. 
-It represents a decomposition of the code into a sequence assignments of
-the results of the elemental operations $\phi$ to unique intermediate 
-variables,
-for example,
-\begin{equation}\label{eqn:sampleCode}
-\begin{split}
- v_1&=v_{-1}+v_0;~v_2=\sin(v_0);~v_3=v_1+v_2;~v_4=v_1*v_3; \\
-v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
-\end{split}
-\end{equation}
-The edges $(i,j)\in E$ are labeled with partial derivatives
-$c_{ji}$, for instance, in the 
-example we have $c_{64}=-\sin(v_4)$.
-Jacobian preaccumulation can be interpreted as eliminations in $G$.
-The graph-based elimination steps are categorized in vertex, edge, and face 
-eliminations. 
-In $G$ a vertex $j \in V$ is eliminated by connecting its predecessors with
-its successors \cite{GrRe91}.
-An edge $(i,k)$ with
-$i \prec j$ and $j \prec k$ is labeled with
-$c_{ki}+c_{kj} \cdot c_{ji}$ if it existed before the elimination of $j.$
-We say that {\em absorption} takes place.
-Otherwise, $(i,k)$ is generated as {\em fill-in} and labeled
-with $c_{kj} \cdot c_{ji}$
-The vertex $j$ is removed from
-$G$ together with all incident edges. 
-\reffig{fig:elims}~(b) shows the result of eliminating vertex $3$
-from the graph in \reffig{fig:elims}~(a).
 
-An edge $(i,j)$ is {\em front eliminated} by connecting $i$ with all successors
-of $j$, followed by removing $(i,j)$ \cite{ElimTechAD2000}.
-The corresponding structural modifications of the c-graph in
-\reffig{fig:elims}~(a) are shown in
-\reffig{fig:elims}~(c) for front elimination of $(1,3).$
-The new edge labels are given as well.
-Edge-front elimination eventually leads to intermediate vertices in $G$
-becoming
-{\em isolated}; that is, these vertices no longer have predecessors.
-Isolated vertices are simply removed from $G$ together
-with all incident edges.
-
-Back elimination of an edge
-$(i,j) \in E$ results in connecting all predecessors of $i$
-with $j$ \cite{ElimTechAD2000}.
-The edge $(i,j)$ itself is removed from $G.$
-The back elimination of $(3,4)$ from the graph in \reffig{fig:elims}~(a) 
-is illustrated in \reffig{fig:elims}~(d). 
-Again, vertices can become isolated as a result of edge-back elimination
-because they no longer have successors.
-Such vertices are removed from $G.$
-
-Numerically the elimination is the application of 
-the chain rule, that is, a sequence of {\em fused-multiply-add} (fma) operations
-\begin{equation}\label{eqn:fma}
-c_{ki}=c_{ji}*c_{kj}\hspace*{1ex}(+c_{ki}) \hspace*{2ex}\gets \mbox{optional}
-\end{equation}
-where the additions take place in the case of absorption or fill-in is created 
-as described above.
-
-Aside from special cases a single vertex or edge elimination will result in more
-than one fma. {\em Face elimination} was introduced 
-as the elimination operation with the finest granularity of exactly 
-one multiplication\footnote{Additions are not necessarily directly coupled.} 
-per elimination step.
-
-Vertex and edge elimination steps have an 
-interpretation in terms of vertices and edges
-of $G$, whereas face elimination is performed on 
-the corresponding directed line graph $\cal G.$
-Following \cite{ElimTechMP}, we define the directed line graph $\cal G=(V,E)$ 
-corresponding to $G=(V,E)$ as follows:
-$${\cal V}=
-\{\ellipse{i,j} : (i,j)\in E\} \cup 
-\{\ellipse{\sourcevertex,j}:v_j \in X\} \cup 
-\{\ellipse{i,\sinkvertex}:v_i \in Y\}$$ and 
-\begin{align*}
-{\cal E}&=\{(\ellipse{i,j},\ellipse{j,k}): (i,j),(j,k) \in E\} \\
-&\cup \{(\ellipse{\sourcevertex,j},\ellipse{j,k}): v_j\in X \land (j,k)\in E\} \\
-&\cup \{(\ellipse{i,j},\ellipse{j,\sinkvertex}): v_j\in Y \land (i,j)\in E\} 
-\quad . \\
-\end{align*}
-That is, 
-we add a source vertex \Sourcevertex\ and a sink vertex 
-\Sinkvertex\ to $G$ connecting all independents to \Sourcevertex\
-and all dependents to \Sinkvertex. $\cal G$ has   
-a vertex $ v \in \cal V$ for each edge in the extended $G$, 
-and $\cal G$ has an edge $ e \in \cal E$ for each 
-pair of adjacent edges in $G$. \reffig{fig:face_elims} gives an 
-example of constructing the directed line graph in (b) from the graph in (a).   
-All intermediate vertices $\ellipse{i,j} \in \cal V$ inherit the labels  
-$c_{ji}$. In order to formalize face elimination, it is advantageous to move away
-from the double-index notation and use one that is based on a topological
-enumeration of the edges in $G.$ Hence, ${\cal G}=({\cal V}, {\cal E})$ 
-becomes a DAG with ${\cal V} \subset I\!\!N$ and
-${\cal E} \subset I\!\!N \times I\!\!N$ and
-certain special properties.
-The set of all predecessors of $j \in {\cal V}$ is denoted as $P_j.$ 
-Similarly, $S_j$ denotes the set of its successors in $\cal G.$ 
-A vertex 
-$j \in \cal V$ is called {\em isolated} if either 
-$P_j=\emptyset$ or
-$S_j=\emptyset.$ 
-Face elimination is defined in \cite{ElimTechMP}
-between two incident intermediate vertices $i$ and $j$ in $\cal G$ as follows:
-\begin{enumerate}
-\item If there exists a vertex $k \in \cal V$ such that $P_k = P_i$ and
-$S_k = S_j,$ then
-set $c_k = c_k + c_j c_i$ {\em (absorption)};
-else ${\cal V}={\cal V} \cup \{k'\}$ with a new vertex $k'$ such that
-$P_{k'} = P_i$ and $S_{k'} = S_j$
-{\em (fill-in)} and labeled with $c_{k'} = c_j c_i.$
-\item Remove $(i,j)$ from $\cal E.$
-\item Remove $i \in \cal V$ if it is isolated. Otherwise, if there exists a vertex $i' \in \cal V$ such that
-$P_{i'} = P_i$ and $S_{i'} = S_i,$ then
-\begin{itemize}
-\item set $c_i=c_i + c_{i'}$ {\em (merge)};
-\item remove $i'.$
-\end{itemize}
-\item Repeat Step 3 for $j \in \cal V.$
-\end{enumerate}
-In \reffig{fig:face_elims}~(c) we show the elimination of $(i,j) \in \cal E$,
-where $i=\ellipse{1,3}$ and $j=\ellipse{3,4}$.
-
-\begin{figure}
-\centering
-\epsfig{file=face_elims.eps,width=.65\linewidth}
-\caption{
-(a) $G$ extended, 
-(b) $\cal G$ overlaid, 
-(c) face elimination 
-}
-\label{fig:face_elims}
-\end{figure}
-A complete face elimination sequence $\sigma_f$ yields a tripartite 
-directed line graph $\sigma_f({\cal G})$ that can be back transformed into 
-the bipartite graph representing the Jacobian $\bmf'$.
-We note that any $G$ can be transformed into the 
-corresponding $\cal G$ but that a back transformation 
-generally is not  possible once face elimination steps have been applied. 
-Therefore, face eliminations cannot precede vertex and edge 
-eliminations.
-
-In a source transformation context of \OpenAD\ the operations \refeqn{eqn:fma} are 
-expressed as actual code, the Jacobian accumulation code. For the 
-B(6) from our toy example in \reffig{fig:toy} the code computing 
-the local partials in conjunction with the function value, see \refeqn{eqn:sampleCode}, 
-is shown in 
-\reffig{fig:toyAndPartials}.
-\footnote{
-For better readability we write the indices of the $c_{ji}$ with commas.
-} 
-\begin{wrapfigure}{l}{.5\linewidth}
-\begin{minipage}{\linewidth}
-\begin{align*}
- v_1&=v_{-1}+v_0;~c_{1,-1}=1;~c_{1,0}=1; \\
- v_2&=\sin(v_0);~c_{2,0}=\cos(v_0); \\
- v_3&=v_1+v_2;~c_{3,1}=1;~c_{3,2}=1; \\
- v_4&=v_1*v_3;~c_{4,1}=v_3;~c_{4,3}=v_1; \\
- v_5&=\sqrt{v_3};~c_{5,3}=(2\sqrt{v_3})^{-1}; \\
- v_6&=\cos(v_4);~c_{6,4}=-\sin(v_4); \\
- v_7&=-v_5;~c_{7,5}=-1;
-\end{align*}
-\end{minipage}
-\caption{Code for \refeqn{eqn:sampleCode} and the $c_{ji}$}\label{fig:toyAndPartials}
-\end{wrapfigure}
-Now the operations induced by the eliminations on the graph can 
-be expressed in terms of the auxiliary variables $c_{ji}$.
-For our example, a forward vertex elimination, that is, the elimination
-sequence (1,2,3,4,5) in $G$ (\reffig{fig:elims}), leads to the
-following Jacobian accumulation code.
-{
-%\small
-\begin{align*}
-1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
-2:\quad  &c_{3,0}=c_{3,2} * c_{2,0}+c_{3,0}; \\
-3:\quad  &c_{4,-1}=c_{4,3} * c_{3,-1}+c_{4,-1};~c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};~c_{5,-1}=c_{5,3} * c_{3,-1}; \\
-&c_{5,0}=c_{5,3} * c_{3,0}; \\
-4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
-5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
-\end{align*}
-}
-
+%-----------------------------------------------------------------------------------------
+\subsection{Call Graph Reversal} \label{ssec:cgReversal}
 
 %#########################################################################################
 \section{\OpenAD\ components}
@@ -611,6 +615,30 @@ greater detail.
 
 %-----------------------------------------------------------------------------------------
 \subsection{\OpenADFortTk\ - the Fortran~90 Front-End}
+
+Every subroutine consists of a {\em control flow graph} (CFG) that 
+represents the typical control flow constructs such as \entry, \exit, \Loop, \branch, 
+and \basicblock. 
+A \basicblock\ consists of a sequence of assignments and subroutine calls. 
+In the following we assume some canonicalizations are performed. 
+These canonicalizations are implemented in the front end discussed in 
+\refsec{sssec:Canonicalization}.
+\begin{Can} \label{can:funcToSub}
+All constructs occuring in \basicblock\ that are neither assignments nor subroutine calls (such as function calls, built-in I/O statements) 
+are canonicalized into subroutine calls.
+\end{Can}
+\begin{Can} \label{can:assignSideEffectFree}
+An assignment effects a single variable on the left-hand side and 
+the right-hand-side expression is side-effect free.
+\end{Can}
+\begin{Can} \label{can:assignElemental}
+The right-hand-side expression consists only of elemental operations $\phi$ typically 
+defined in a programming language as built-in operators and intrinsics.
+\end{Can}
+\begin{Can} \label{can:assignFunction}
+User defined functions and calls to these functions in right-hand-side expressions 
+are canonicalized to subroutined calls.
+\end{Can}
 
 The main target application of the ACTS project is the MIT general
 circulation model (MITgcm) \cite{mars-eta:97b,mars-eta:97a}.
@@ -679,7 +707,7 @@ intermediate language called \whirl.  A companion tool, \whirlTof,
 unparses \whirl\ back to Fortran source code.  The \whirl\
 representation, which resembles a typical abstract syntax tree, has
 been designed to enable good optimization for high performance
-computing in Fortran, C, and C++. See \cite{whirl-stuff} for more
+computing in Fortran, C, and C++. See \cite{open64Web} for more
 details about the intermediate language.  HiPerSoft's main
 contribution to the \OpenSixtyFour\ community has been extending the
 infrastructure to support source-to-source transformations; thus, it
@@ -726,7 +754,7 @@ Non-variable actual parameters are hoisted to temporaries.
 \end{Can}	
 
 
-{\color{Red}
+{\color{red}
 Canonicalization is 
 
 [ expand on reason for canonicalization: 
@@ -789,9 +817,8 @@ indicate that active variables should be converted to structured types
 and that active references should include an approprate value or
 derivative selector.
 
-{\color{Red} [ how are intrinsics handled ... I refer to the catalogue later  ] }
+{\color{red} [ how are intrinsics handled ... I refer to the catalogue later  ] }
 
-See \cite{RiceTechreport}.
 
 
 \subsubsection{Postprocessor}
@@ -812,7 +839,7 @@ Similarly, some operations introduced by the differentiation process
 are coded as function operations. To make these operations work well,
 however, they must be substituted inline, replacing the function call.
 
-{\color{Red}
+{\color{red}
 [ Need examples of templates here (or somewhere) ]
 
 [ Does inlining serve any other purpose besides efficiency?  Yes --
@@ -825,8 +852,8 @@ the active data-structures.]
 
 %-----------------------------------------------------------------------------------------
 \subsection{xaif} \label{ssec:xaif}
-{\color{Red} [ FILL IN $\to$ Uwe] } 
-{\color{Blue} [this is old stuff from the abstract] 
+{\color{red} [ FILL IN $\to$ Uwe] } 
+{\color{blue} [this is old stuff from the abstract] 
 An XML-based ({\tt www.w3c.org/XML}) hierarchy of directed graphs, referred to as xaif 
 \cite{HNN02}, is used for the 
 internal representation of the numerical core of the implementation
@@ -848,10 +875,10 @@ data structure that represents all information supplied in the \xaif\ input
 and collection of algorithms that operate on this data structure, modify 
 it and produce transformed  \xaif\ output as the result. 
 
-\begin{wrapfigure}{r}{.55\textwidth}
-\centering \epsfig{file=irInh.eps,width=.45\textwidth}
+\begin{figure}
+\centering \includegraphics[width=.45\textwidth]{irInh}
 \caption{Inheritance hierarchy} \label{fig:iri}
-\end{wrapfigure}
+\end{figure}
 
 The \xaifBooster\ data structure  
 closely resembles the respective structures one would find in a 
@@ -859,11 +886,11 @@ compiler's internal representation.
 It is implemented as a hierarchy of C++ classes 
 using the boost graph library \cite{boostWeb}
 and the Standard C++ Library\cite{libstdcWeb}.
-\reffigs{fig:iri,fig:irc} show simplified subsets of the classes 
+\reffigBS{fig:iri} and \reffig{fig:irc} show simplified subsets of the classes 
 occuring in the \xaifBooster\ data structure in the inheritance 
 as well as the composition hierarchy.  
 \begin{figure}[htb]
-\centering \epsfig{file=irComp.eps,width=.45\textwidth}
+\centering \includegraphics[width=.45\textwidth]{irComp}
 \caption{Composition hierarchy} \label{fig:irc}
 \end{figure}
 
@@ -877,15 +904,14 @@ the interfaces avoid the need for explicit dynamic allocation of members outside
 containing class. Only in cases of containment of polymorphic elements is explicit dynamic allocation 
 necessary. In such cases the container class interface indicates the assumption of ownership of 
 the dynamically allocated elements being supplied to the container class. An example is the 
-graph class \code{Expression} accepting vertex instances that can be \code{Constant}, \code{Intrinsic} , and so forth; 
-see also \refsec{ssec:AlgorithmsAndInheritance}.
+graph class \code{Expression} accepting vertex instances that can be \code{Constant}, \code{Intrinsic} , and so forth.
 
 These transformation algorithms are modularized to enable reuse in different 
 contexts. 
-\begin{wrapfigure}{r}{.55\textwidth}
-\centering \epsfig{file=allAlgs.eps,width=.45\textwidth}
+\begin{figure}
+\centering \includegraphics[width=.45\textwidth]{allAlgs}
 \caption{\xaifBooster\ algorithms} \label{fig:allAlgs}
-\end{wrapfigure}
+\end{figure}
 \reffig{fig:allAlgs} shows the implemented algorithms with dependencies.
 To promote reuse of the transformation algorithms the original data structure 
 is never modified. Instead, the data representing modifications or augmentations
@@ -932,12 +958,12 @@ in the computational graph $G$. Per canonicalization all elemental $\phi$
 occur in the right-hand side of an assignment. 
 For each $\phi$ we look up the definition of the respective partials in 
 the intrinsics catalogue. 
-{\color{Red} [ not sure  how much detail is necessary ] } 
+{\color{red} [ not sure  how much detail is necessary ] } 
 They are defined in terms of positional arguments. Because of this, 
 the right-hand-side expression may have to be split up into 
 subexpressions to assign intermediate values to ancillary variables 
 that can be referenced in the partial computation.  
-{\color{Red} [ a figure here? ] }
+{\color{red} [ a figure here? ] }
 In cases of the left-hand-side variable occuring on the right-hand-side (or being 
 may-aliased to a right-hand-side variable, see )
 The result of the Linearization is code containing the potentially split 
@@ -978,7 +1004,7 @@ that is generated.  The algorithm code calls a default set of heuristics.
 However, all heuristics use the \code{CrossCountryInterface} library and therefore 
 different heuristics can be selected with minimal changes in algorithm code.   
 
-{\color{Red} [ for details on \angel\ see WHAT? ] } 
+{\color{red} [ for details on \angel\ see WHAT? ] } 
 
 The second step in this transformation is the generation of preaccumulation code. 
 This code consists of assignments generated from  the abstract expression objects returned by \angel, 
@@ -1112,7 +1138,7 @@ cross-country fashion.
 %-----------------------------------------------------------------------------------------
 \subsubsection{CFG Reversal}\label{sssec:cfgRevAlg}
 
-\refsec{ssec:cfgReversal} explains the principal approach to the reversal 
+\refsec{ssec:cfReversal} explains the principal approach to the reversal 
 of the CFG. The algorithm implements this approach as a contribution to the 
 adjoint code generation in \refsec{sssec:BBRev}. 
 The \Loop\ counters and \branch\ identifiers are stored the same 
@@ -1163,7 +1189,7 @@ Because often multidemensional arrays  are accessed with nested loops the
 of the above conditions for everything within the \Loop\ body including nested 
 \Loop\ and \branch\ constructs. 
 
-{\color{Red} The code produced by the driver is \ldots} 
+{\color{red} The code produced by the driver is \ldots} 
 
 %-----------------------------------------------------------------------------------------
 \subsubsection{Basic Block Preaccumulation Tape and Tape Adjoint}\label{sssec:bbTA}
@@ -1199,9 +1225,9 @@ The respective adjoints of the four different categories listed in \refsec{sssec
 
 
 
-{\color{Blue} [ this is old stuff from the abstract]  
-\begin{figure}[htb]
-\epsfig{file=principle.eps,width=4cm}
+{\color{blue} [ this is old stuff from the abstract]  
+\begin{figure}
+\centering \includegraphics[width=4cm]{principle}
 \caption{\xaifBooster\ parses xaif code into an internal representation (IR).
 It provides an API for transformation algorithms to modify the IR. An unparser
 returns the transformed xaif code.} \label{fig:xaifBooster}
@@ -1286,7 +1312,7 @@ front-end into \xaif.  The analysis indicates which variables are
 active at any time, which memory references are active, and which
 statements are active.
 
-The activity analysis itself is based on the formulation in~\cite{UweTBRPaper}.
+The activity analysis itself is based on the formulation in~\cite{HNP02}.
 The main difference is that the data-flow framework in \OpenAnalysis\ does not
 yet take advantage of the structured data-flow equations.  Activity analysis is
 implemented in a context-insensitive, flow-sensitive interprocedural fashion.
@@ -1371,12 +1397,13 @@ essential to guarantee the successful completion of this highly ambitious
 project.
 
 %#########################################################################################
-\bibliographystyle{acmtrans}
+%\bibliographystyle{acmtrans}
+\bibliographystyle{plain}
 \bibliography{openad}
 
 
-\begin{received}
-Received May 2005;
-\end{received}
+%\begin{received}
+%Received May 2005;
+%\end{received}
 
 \end{document}

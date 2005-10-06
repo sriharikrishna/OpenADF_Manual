@@ -291,6 +291,9 @@ whose vertices are subroutines and whose edges
 represent calls potentially made during the computation of $\bmy$ for all 
 values of $\bmx$ in the domain of $\bmf$. 
 
+%-----------------------------------------------------------------------------------------
+\subsection{Computational Graphs} \label{ssec:computationalGraphs}
+
 Without loss of generality we can assume that an evaluation of $\bmf(\bmx)$ for  
 a specific value of $\bmx$ can be represented by a sequence of 
 elemental operations $v_j=\phi_j(\ldots,v_i,\ldots)$. 
@@ -304,6 +307,43 @@ The central principle of AD is
 the application of the chain rule to the elemental $\phi$, that is 
 multiplications and additions of the  $c_{ji}$.  
 
+Like most of the AD literature we follow a specific numbering scheme for the vertices $v_i$.
+We presume $q$ intermediate values
+$v_j = \phi_j(\ldots,v_i,\ldots), v_j\in Z$
+for $j=1,\ldots,q+m$ and $h,i=1-n,\ldots,q,$ $j>h,i$. 
+The $n$ {\em independent}
+variables $x_1,\ldots,x_n$ correspond to 
+$v_{1-n},\ldots,v_0, v_i\in X$. 
+We consider the 
+computation of derivatives of the {\em dependent} variables 
+$y_1,\ldots,y_m$ represented by $m$ variables $v_{q+1},\ldots,v_{q+m}, v_j\in Y$
+with respect to the independents. 
+The depdendency $v_i<v_j$ implies $i<j$. 
+The {\em forward mode} of AD propagates directional derivatives
+as 
+\begin{equation} \label{eqn:fm}
+\dot{v}_j= \sum\limits_i\frac{\partial \phi_j}{\partial v_i}\dot{v}_i 
+\quad \text{for}~~j=1,\ldots,q+m.
+\end{equation} 
+In {\em reverse mode} we compute adjoints of the arguments of the $\phi_j$
+as a function of local partial derivatives and the 
+adjoint of the variable on the left-hand side
+\begin{equation} \label{eqn:rm}
+\overline{v}_i= \sum\limits_j\frac{\partial \phi_j}{\partial v_i}\overline{v}_j 
+\quad \text{for}~~j=1,\ldots,q+m.
+\end{equation} 
+In practice the sum in \refeqn{eqn:rm} is split into individual increments 
+associated with each statement in which $v_i$ occurs as an argument 
+$\overline{v}_i=\overline{v}_i+\overline{v}_j * \frac{\partial \phi_j}{\partial v_i}$.
+
+Equations \refeqn{eqn:fm} and \refeqn{eqn:rm} can be used to accumulate 
+the (local) Jacobian $\bmJ(G)$
+of $G$, see also \refsec{ssec:elimMeth}. 
+% Obviously \refeqn{eqn:rm}  indicates that the dependencies of $\overline{v}_j$ and 
+% $\overline{v}_i$ are reversed to those of $v_j$ and $v_i$. At the same time \refeqn{eqn:rm}
+% requires all the values of the $\frac{\partial \phi_j}{\partial v_i}$ in reverse order. To make them 
+% available we store them in a stack. In the  AD literature this is commonly called the {\em tape}. 
+
 In a source transformation context we want to generate code for all $\bmf(\bmx)$
 in the domain and because the above construction disregards control flow it is 
 impractical here. Instead we simply consider the statements contained in a 
@@ -312,12 +352,33 @@ construct our computational (sub) graph for a \basicblock.
 
 %-----------------------------------------------------------------------------------------
 \subsection{Elimination Methods} \label{ssec:elimMeth}
-Let $\bmf$ represent a single \basicblock\ that is subject to preaccumulation
-as outlined in the previous section.
+Let $\bmf$ represent a single \basicblock\ that is subject to preaccumulation.
 For notational simplicity and without loss of generality we assume that the 
 dependent variables are mutually independent. 
 This situation can always be
 reached by introducing auxiliary assignments.
+Lets consider the small example in \reffig{fig:toyBB}.
+\begin{figure}
+\begin{verbatim}
+t1   = x(1) + x(2)
+t2   = t1 + sin(x(2)
+y(1) = cos(t1 * t2)
+y(2) = -sqrt(t2)
+\end{verbatim}
+\caption{Example of \basicblock\ code }\label{fig:toyBB}
+\end{figure}
+We can represent this in terms of 
+the results of the elemental operations $\phi$ assigned to unique intermediate 
+variables
+\begin{equation}\label{eqn:sampleCode}
+\begin{split}
+ v_1&=v_{-1}+v_0;~v_2=\sin(v_0);~v_3=v_1+v_2;~v_4=v_1*v_3; \\
+v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
+\end{split}
+\end{equation}
+In the tool this modified representation is created as part of the Linearization, see 
+\refsec{sssec:linearization}.
+In \reffig{fig:elims}~(a) we show the computational graph $G$ for this representation.
 \begin{figure}
 \centering\includegraphics[width=.7\textwidth]{elims}
 \caption{
@@ -327,20 +388,11 @@ reached by introducing auxiliary assignments.
 (d) back eliminate edge $(3,4)$ from $G$} 
 \label{fig:elims}
 \end{figure}
-In \reffig{fig:elims}~(a) we show the DAG for B(6) from \reffig{fig:toy}. 
-It represents a decomposition of the code into a sequence assignments of
-the results of the elemental operations $\phi$ to unique intermediate 
-variables,
-for example,
-\begin{equation}\label{eqn:sampleCode}
-\begin{split}
- v_1&=v_{-1}+v_0;~v_2=\sin(v_0);~v_3=v_1+v_2;~v_4=v_1*v_3; \\
-v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
-\end{split}
-\end{equation}
 The edges $(i,j)\in E$ are labeled with partial derivatives
 $c_{ji}$, for instance, in the 
 example we have $c_{64}=-\sin(v_4)$.
+In the tool this Graph is generated as part of the algorithm described in 
+\refsec{sssec:BBPreacc}.
 Jacobian preaccumulation can be interpreted as eliminations in $G$.
 The graph-based elimination steps are categorized in vertex, edge, and face 
 eliminations. 
@@ -472,6 +524,8 @@ corresponding $\cal G$ but that a back transformation
 generally is not  possible once face elimination steps have been applied. 
 Therefore, face eliminations cannot precede vertex and edge 
 eliminations.
+In the tool these eliminations are implemented in the algorithms described in 
+\refsec{sssec:MMTradeOff} and \refsec{sssec:angel}.
 
 In a source transformation context of \OpenAD\ the operations \refeqn{eqn:fma} are 
 expressed as actual code, the Jacobian accumulation code. For the 
@@ -496,13 +550,15 @@ For better readability we write the indices of the $c_{ji}$ with commas.
 \end{minipage}
 \caption{Code for \refeqn{eqn:sampleCode} and the $c_{ji}$}\label{fig:toyAndPartials}
 \end{figure}
+In the tool the operations in \reffig{fig:toyAndPartials} are generated by the 
+transformation algorithm discussed in \refsec{sssec:linearization}.
 Now the operations induced by the eliminations on the graph can 
 be expressed in terms of the auxiliary variables $c_{ji}$.
 For our example, a forward vertex elimination, that is, the elimination
 sequence (1,2,3,4,5) in $G$ (\reffig{fig:elims}), leads to the
 following Jacobian accumulation code.
-{
-%\small
+\begin{figure}
+\begin{minipage}{\linewidth}
 \begin{align*}
 1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
 2:\quad  &c_{3,0}=c_{3,2} * c_{2,0}+c_{3,0}; \\
@@ -511,16 +567,20 @@ following Jacobian accumulation code.
 4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
 5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
 \end{align*}
-}
+\end{minipage}
+\caption{Code for \refeqn{eqn:sampleCode} and the $c_{ji}$}\label{fig:toyAccumulation}
+\end{figure}
+In the tool the operations shown in \reffig{fig:toyAccumulation} are generated by the 
+transformation algorithm discussed in \refsec{sssec:BBPreacc}. 
 %-----------------------------------------------------------------------------------------
 \subsection{Control Flow Reversal} \label{ssec:cfReversal}
 Because the code for a $\bmf$ generally contains control flow constructs there is no 
 single $G$ that represents the computation of $\bmf$ for all possible values of $\bmx$.
-In practice, \OpenAD\ considers subgraphs constructed 
+We explained in \refsec{ssec:computationalGraphs} that \OpenAD\ considers subgraphs constructed 
 from the contents of a \basicblock.
-In the following we illustrate the prinicpal approach with the use 
-of a toy example.  
-Line numbers have been added for simpler referencing within the text.
+In the example shown in \reffig{fig:toy} we put the \basicblock\ code shown in 
+\reffig{fig:toyBB} into a context with control flow. For easier reference we 
+added line numbers.  
 \begin{figure}
 \begin{tabbing}
 \hspace{.6cm}{\footnotesize \bf 01}\hspace{.5cm} {\tt y(k)=sin(x(1)*x(2)); k=k+1} \\
@@ -529,7 +589,7 @@ Line numbers have been added for simpler referencing within the text.
 \hspace{.6cm}{\footnotesize \bf 04}\hspace{.5cm} {\tt else } \\
 \hspace{.6cm}{\footnotesize \bf 05}\hspace{.5cm} \>{\tt do} \={\tt i=1,k } \\
 \hspace{.6cm}{\footnotesize \bf 06}\hspace{.5cm} \>\>{\tt t1=x(1)+x(2) } \\
-\hspace{.6cm}{\footnotesize \bf 07}\hspace{.5cm} \>\>{\tt t2=t1*sin(x(1)) } \\
+\hspace{.6cm}{\footnotesize \bf 07}\hspace{.5cm} \>\>{\tt t2=t1+sin(x(1)) } \\
 \hspace{.6cm}{\footnotesize \bf 08}\hspace{.5cm} \>\>{\tt x(1)=cos(t1*t2) } \\
 \hspace{.6cm}{\footnotesize \bf 09}\hspace{.5cm} \>\>{\tt x(2)=-sqrt(t2) } \\
 \hspace{.6cm}{\footnotesize \bf 10}\hspace{.5cm} \>{\tt end do } \\
@@ -550,11 +610,11 @@ generated for B(6).
 \begin{figure}[ht]
 \centering
 \begin{tabular}{ccc}
-\includegraphics[width=.303\textwidth]{cfg_ts}
+\includegraphics[width=.5\textwidth]{cfg_ts}
 &
-\includegraphics[width=.303\textwidth]{cfg_tape}
+\includegraphics[width=.5\textwidth]{cfg_tape}
 &
-\includegraphics[width=.31\textwidth]{cfg_adj}
+\includegraphics[width=.6\textwidth]{cfg_adj}
 \\
 \em (a) & \em (b) & \em (c)
 \end{tabular}
@@ -562,42 +622,6 @@ generated for B(6).
 \end{figure}
 For B(6) the corresponding computational graph $G$  is depicted in
 \reffig{fig:elims}(a).  
-
-Like most of the AD literature we follow a specific numbering scheme for the vertices $v_i$.
-heWe presume $q$ intermediate values
-$v_j = \phi_j(\ldots,v_i,\ldots), v_j\in Z$
-for $j=1,\ldots,q+m$ and $h,i=1-n,\ldots,q,$ $j>h,i$. 
-The $n$ {\em independent}
-variables $x_1,\ldots,x_n$ correspond to 
-$v_{1-n},\ldots,v_0, v_i\in X$. 
-We consider the 
-computation of derivatives of the {\em dependent} variables 
-$y_1,\ldots,y_m$ represented by $m$ variables $v_{q+1},\ldots,v_{q+m}, v_j\in Y$
-with respect to the independents. The depdendencies $v_i<v_j$ implies $i<j$. 
-The {\em forward mode} of AD propagates directional derivatives
-as 
-\begin{equation} \label{eqn:fm}
-\dot{v}_j= \sum\limits_i\frac{\partial \phi_j}{\partial v_i}\dot{v}_i 
-\quad \text{for}~~j=1,\ldots,q+m.
-\end{equation} 
-In {\em reverse mode} we compute adjoints of the arguments of the $\phi_j$
-as a function of local partial derivatives and the 
-adjoint of the variable on the left-hand side
-\begin{equation} \label{eqn:rm}
-\overline{v}_i= \sum\limits_j\frac{\partial \phi_j}{\partial v_i}\overline{v}_j 
-\quad \text{for}~~j=1,\ldots,q+m.
-\end{equation} 
-In practice the sum in \refeqn{eqn:rm} is split into individual increments 
-associated with each statement in which $v_i$ occurs as an argument 
-$\overline{v}_i=\overline{v}_i+\overline{v}_j * \frac{\partial \phi_j}{\partial v_i}$.
-
-Equations \refeqn{eqn:fm} and \refeqn{eqn:rm} can be used to accumulate 
-the (local) Jacobian $\bmJ_{B(6)}$
-of B(6), see also \refsec{ssec:elimMeth}. 
-Obviously \refeqn{eqn:rm}  indicates that the dependencies of $\overline{v}_j$ and 
-$\overline{v}_i$ are reversed to those of $v_j$ and $v_i$. At the same time \refeqn{eqn:rm}
-requires all the values of the $\frac{\partial \phi_j}{\partial v_i}$ in reverse order. To make them 
-available we store them in a stack. In the  AD literature this is commonly called the {\em tape}. 
 
 
 For a sequence of $l$ {\basicblock}s that are part of 
@@ -917,7 +941,7 @@ algorithmic issues. Potentially, front-ends for various programming languages
 can utilize xaif, for example, \OpenSixtyFour\ and EDG/SAGE~3 as pointed out before.
 }
 %-----------------------------------------------------------------------------------------
-\subsection{\xaifBooster} 
+\subsection{\xaifBooster} \label{ssec:xaifBooster}
 The transformation engine that differentiates the \xaif\ representation of 
 $\bmf$ is called \xaifBooster. It is implemented in C++ as a 
 data structure that represents all information supplied in the \xaif\ input 
@@ -1184,6 +1208,8 @@ The generated code is executable and represents an overall forward mode
 according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in 
 cross-country fashion. 
 
+%-----------------------------------------------------------------------------------------
+\subsubsection{Using the ANGEL Library}\label{sssec:angel}
 %-----------------------------------------------------------------------------------------
 \subsubsection{CFG Reversal}\label{sssec:cfgRevAlg}
 

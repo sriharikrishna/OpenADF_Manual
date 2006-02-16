@@ -29,6 +29,7 @@
 \newcommand{\EndBranch}{endbranch}
 \newcommand{\basicblock}{basicblock}
 \newcommand{\mfefninety}{mfef90}
+\newcommand{\OpenADF}{OpenAD/F}
 \newcommand{\OpenAD}{OpenAD}
 \newcommand{\OpenADFortTk}{OpenADFortTk}
 \newcommand{\OpenAnalysis}{OpenAnalysis}
@@ -73,7 +74,7 @@
 
 \begin{document}
 
-%\title{OpenAD: A tool for automatic differentiation of Fortran90 codes}
+%\title{OpenAD/F: A tool for automatic differentiation of Fortran codes}
 
 
 %\author{PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
@@ -83,7 +84,7 @@
 %UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
 
 \begin{center}
-{\Large OpenAD: A tool for automatic differentiation \\ of Fortran90 codes}\\[1ex]
+{\Large OpenAD/F: A tool for automatic differentiation \\ of Fortran codes}\\[1ex]
 {\tiny
 PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
 MIKE FAGAN, NATHAN TALLENT \\Rice University\\
@@ -93,27 +94,30 @@ UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
 
 \begin{abstract}
 
-The \OpenAD\ tool allows the evaluation of first and second order
+The \OpenADF\ tool allows the evaluation of first and second order
 derivatives of functions defined by a program written in Fortran90/77.
+
+{\color{red} JU: Ehmm - qualify the above } 
+
 The derivative evaluation is performed by Fortran 90 code resulting
-from the analyses and transformation of the original program that
+from the analysis and transformation of the original program that
 defines the function of interest.  The code transformation follows the
 basic principles of automatic differentiation.  In difference to most
-other automatic differentiation tools \OpenAD\ is built from
-components that permit an easy extension of the code transformations
-in a language indepdendent fashion. It uses code analysis results
+other automatic differentiation tools \OpenADF\ uses components 
+provided by the \OpenAD\ framework which supports a relatively 
+easy extension of the code transformations
+in a language indepdendent fashion. 
+It uses code analysis results
 implemented in the \OpenAnalysis\ component.  The interface to the
 language independent transformation engine is an xml abstract
 interface format, called \xaif\ that is specified through an xml
 schema.  The implemented transformation algorithms allow efficient
 derivative computations utilizing locally optimized cross country
 sequences of vertex, edge and face elimination steps.  Specifically,
-for the generation of adjoint codes, \OpenAD\ supports various code
+for the generation of adjoint codes, \OpenADF\ supports various code
 reversal schemes with hierachical checkpointing at the subroutine
 level.  The Fortran specific front and back end to this transformation
-engine is the \OpenSixtyFour\ based \OpenAD\ Fortran toolkit,
-\OpenADFortTk.
-
+engine is based on the \OpenSixtyFour\ compiler.
 \end{abstract}
 
 
@@ -150,11 +154,11 @@ have been known for several decades \cite{wengert}
 but only during the last 15 years have the tools implementing AD found a significant use in 
 optimization, data assimilation, and other applications in need of efficient and accurate 
 derivative information. 
-As a consequence of the wider use of AD 
+As a consequence of the wider use of AD, 
 a variety of tools have been developed that address specific 
 application requirements or programming languages. 
 The  AD community's website \cite{autodiffWeb} 
-provides a good overview of the tools that 
+provides a comprehensive overview of the tools that 
 are currently available. 
 One can categorize two user groups of AD tools. 
 On one side are the casual users 
@@ -170,36 +174,41 @@ supercomputers.
 With the emphasis on efficiency some sacrifices on the support of 
 language features are acceptable for this user group.  
 
+\subsection{Motivation}
 One of the most demanding applications of AD is the computation of gradients for 
 data assimilation on large scale models used in oceanography and climate research. 
 These applications clearly fall in the category of advanced uses.
 An evaluation of the available tools revealed some shortcomings from the perspectives 
 of the tool users as well as the tool developers. 
 
-From  the AD tool  users point of view there is a need for a substantial 
-flexibility of the AD tools. We pointed out that the most demanding  numerical models 
+From  the AD tool  {\em users point of view} there is a need for a substantial 
+flexibility of the AD tools. 
+We pointed out that the most demanding  numerical models 
 operate on the limit of the computing capacity of state of the art facilities. 
 Usually the model code itself is specifically adapted to fit certain 
 hardware characteristics. 
 Consequently the AD tools code generation should be adapted in the same fashion. 
-Some of these specific solutions may folded into a generic code transformation but 
-many do not justify the effort. 
-Consequently the AD tool should offer flexibility at various  levels  up to the 
-point of ablility to change the tools source code. 
-This is the rationale for developing an open source tool where all 
-components are freely available and may be modified by any user to suit specific 
+Some of these specific solutions may be folded into the generic code transformation engine 
+but in many situation this is not appropriate.
+Consequently the AD tool should offer flexibility at various levels of the 
+transformation from simple textual preprocessing of the code down to the 
+changes the to the generice code transformation engine.
+This is the user rationale for developing an open source tool where {\em all} 
+components may be modified by to suit specific 
 needs.  
 A modular tool design with clearly defined interfaces supports such 
-low level interventions. Furthermore such a design instigates a staged 
-transformation, see \refsec{ssec:manualPipeline}. 
-Each transformation stage allows higher level user interventions. 
+user interventions. 
+As this design instigates a staged 
+transformation, see \refsec{ssec:manualPipeline}, 
+each transformation stage presents a opportunity to check and modify the 
+results. 
 
-From the AD tool developers point of view it is very apparent that 
+From the AD tool {\em developers point of view} it is very apparent that 
 many AD tools share the same basic algorithms while on the other hand 
 there is a relatively steep hurdle to establish a working environment 
 for the source to source transformation. 
 This is true for a parsing front-end that turns the textual program into a 
-compiler-like internal representation,  an environment that allows the 
+compiler-like internal representation, an environment that allows the 
 transformations  of this internal representation and finally the unparser that 
 returns the transformed internal representation back into a textual format of the 
 original programming language. An modular, open-source tool that faciliates 
@@ -218,17 +227,19 @@ It focusses on  next-generation tool development and
 application of AD to problems in oceanography and chemical engineering.
 The main result of this effort is an infrastructure for the language independent 
 development and use of AD algorithms. 
-\OpenAD \cite{openadWeb}
-is the Fortran incarnation of the infrastructure.
+
+\subsection{Overview}
+\OpenADF \cite{openadWeb}
+is the Fortran incarnation of the AD framework \OpenAD.
 The C/C++ oriented tool ADIC v2.0 \cite{adicWeb}
-is based on the same infrastructure but is 
+is based on the same framework but is 
 not subject of this article.
 \begin{figure}
 \centering\includegraphics[width=.5\textwidth]{overview}
-\caption{\OpenAD\ components and pipeline} \label{fig:overview}
+\caption{\OpenADF\ components and pipeline} \label{fig:overview}
 \end{figure}
-\OpenAD\ has  a modular design. 
-The collaboration  of the \OpenAD\ components is illustrated in 
+\OpenADF\ has  a modular design. 
+The collaboration  of the \OpenADF\ components is illustrated in 
 \reffig{fig:overview}.
 Our input is some numerical model given as a Fortran program 
 $\bmf$.
@@ -252,31 +263,30 @@ The unparser of
 \OpenSixtyFour\ transforms $\bmfp_{\whirl}$ into Fortran90, thus completing
 the semantic transformation of a program $\bmf$ into
 a differentiated program $\bmfp$.
-The dotted line encloses the language specific front-end that can potentially
+The gray shaded area encloses the language specific front-end that can potentially
 be replaced by front-ends for languages other than Fortran. 
-For example, an 
-effort running parallel to the ACTS project at Argonne National Laboratory is 
-developing a new version of ADIC \cite{HoNo01} by coupling a C/C++ 
+For instance, the new version of ADIC \cite{HoNo01} couples a C/C++ 
 front-end 
-based on an EDG parser \cite{edgWeb} and uses ROSE in combination with SAGE~3 \cite{roseWeb} 
-as internal representation with \OpenAD.
+based on the EDG parser \cite{edgWeb} and uses ROSE in combination with SAGE~3 \cite{roseWeb} 
+as internal representation in combination with language independent components of \OpenAD.
 
-This paper discusses the components of \OpenAD,
-including the underlying design decisions, algorithmic aspects, and
-numerical results.
- 
+In \refsec{sec:ADIntro} we discuss the basic concepts of AD as relevant for 
+the description of \OpenAD, \refsec{sec:openadcomponents} discusses the components 
+that make up \OpenADF, and \refsec{sec:Usage} details the usage of the tool. 
+Two applications further illustrate the tool usage in \refsec{sec:application} and 
+we conclude with a section on future devlepments.
+
 %#########################################################################################
 \section{AD Concepts}\label{sec:ADIntro}
 
 In this section we present the terminology and basic concepts that 
-we will refer to throughout 
-this paper. 
-A much more detailed introduction to AD can be found in \cite{Gri00}.
+we will refer to throughout this paper. 
+A detailed introduction to AD can be found in \cite{Gri00}.
 The interested reader should also consider the proceedings of AD 
 conferences \cite{CG91,BBCG96,CFG+01,BCH+05}.
 
-In this section we present the concepts and resulting transformations 
-with respect to teh source code 
+We present the concepts and resulting transformations 
+with respect to the input source code 
 in a bottom up fashion.  
 We first consider elemental numerical operations, 
 then their control flow context within a subroutine and finally the entire program 
@@ -285,16 +295,11 @@ consisting of several subroutines in a call graph.
 We view a given numerical model as a 
 vector valued function $\bmy=\bmf(\bmx): \R^n\mapsto \R^m$ that is implemented 
 as a computer program in a language such as Fortran, C, or C++. 
-Generally, the computer program 
-induces a {\em call graph} (CG) \cite{ASU86}
-whose vertices are subroutines and whose edges 
-represent calls potentially made during the computation of $\bmy$ for all 
-values of $\bmx$ in the domain of $\bmf$. 
 
 %-----------------------------------------------------------------------------------------
 \subsection{Computational Graphs} \label{ssec:computationalGraphs}
 
-Without loss of generality we can assume that an evaluation of $\bmf(\bmx)$ for  
+Without loss of generality we can simply assume that an evaluation of $\bmf(\bmx)$ for  
 a specific value of $\bmx$ can be represented by a sequence of 
 elemental operations $v_j=\phi_j(\ldots,v_i,\ldots)$. 
 The $v_i$ represent the vertices $\in V$ in the correspong corresponding computational 
@@ -332,7 +337,7 @@ adjoint of the variable on the left-hand side
 \overline{v}_i= \sum\limits_j\frac{\partial \phi_j}{\partial v_i}\overline{v}_j 
 \quad \text{for}~~j=1,\ldots,q+m.
 \end{equation} 
-In practice the sum in \refeqn{eqn:rm} is split into individual increments 
+In practice, the sum in \refeqn{eqn:rm} is often split into individual increments 
 associated with each statement in which $v_i$ occurs as an argument 
 $\overline{v}_i=\overline{v}_i+\overline{v}_j * \frac{\partial \phi_j}{\partial v_i}$.
 
@@ -357,26 +362,30 @@ For notational simplicity and without loss of generality we assume that the
 dependent variables are mutually independent. 
 This situation can always be
 reached by introducing auxiliary assignments.
-Lets consider the small example in \reffig{fig:toyBB}.
-\begin{figure}
+Consider the small example in \reffig{fig:toyBB}.
+\begin{figure}[h]
+\begin{center}
+\begin{minipage}{.4\textwidth}
 \begin{verbatim}
 t1   = x(1) + x(2)
 t2   = t1 + sin(x(2)
 y(1) = cos(t1 * t2)
 y(2) = -sqrt(t2)
 \end{verbatim}
-\caption{Example of \basicblock\ code }\label{fig:toyBB}
+\end{minipage}
+\end{center}
+\caption{Example of code contained in a \basicblock}\label{fig:toyBB}
 \end{figure}
-We can represent this in terms of 
-the results of the elemental operations $\phi$ assigned to unique intermediate 
-variables
+Reformulating the example in terms of 
+results of elemental operations $\phi$ assigned to unique intermediate 
+variables $v$ we have 
 \begin{equation}\label{eqn:sampleCode}
 \begin{split}
  v_1&=v_{-1}+v_0;~v_2=\sin(v_0);~v_3=v_1+v_2;~v_4=v_1*v_3; \\
 v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
 \end{split}
 \end{equation}
-In the tool this modified representation is created as part of the Linearization, see 
+In the tool this modified representation is created as part of the linearization transformation, see 
 \refsec{sssec:linearization}.
 In \reffig{fig:elims}~(a) we show the computational graph $G$ for this representation.
 \begin{figure}
@@ -391,7 +400,7 @@ In \reffig{fig:elims}~(a) we show the computational graph $G$ for this represent
 The edges $(i,j)\in E$ are labeled with partial derivatives
 $c_{ji}$, for instance, in the 
 example we have $c_{64}=-\sin(v_4)$.
-In the tool this Graph is generated as part of the algorithm described in 
+In the tool, this graph is generated as part of the algorithm described in 
 \refsec{sssec:BBPreacc}.
 Jacobian preaccumulation can be interpreted as eliminations in $G$.
 The graph-based elimination steps are categorized in vertex, edge, and face 
@@ -434,9 +443,10 @@ Such vertices are removed from $G.$
 Numerically the elimination is the application of 
 the chain rule, that is, a sequence of {\em fused-multiply-add} (fma) operations
 \begin{equation}\label{eqn:fma}
-c_{ki}=c_{ji}*c_{kj}\hspace*{1ex}(+c_{ki}) \hspace*{2ex}\mbox{(the addition is optional)}
+c_{ki}=c_{ji}*c_{kj}\hspace*{1ex}(+c_{ki}) 
 \end{equation}
-where the additions take place in the case of absorption or fill-in is created 
+where the additions in parenthesis take place only  in the case of 
+absorption or otherwise fill-in is created 
 as described above.
 
 Aside from special cases a single vertex or edge elimination will result in more
@@ -472,7 +482,8 @@ and all dependents to $\ominus$. $\cal G$ has
 a vertex $ v \in \cal V$ for each edge in the extended $G$, 
 and $\cal G$ has an edge $ e \in \cal E$ for each 
 pair of adjacent edges in $G$. \reffig{fig:face_elims} gives an 
-example of constructing the directed line graph in (b) from the graph in (a).   
+example of constructing the directed line graph in (b) from the graph in (a) 
+which is the graph from \reffig{fig:elims}(a) extended by the source and sink vertex.   
 All intermediate vertices $\framebox{$i,j$} \in \cal V$ inherit the labels  
 $c_{ji}$. In order to formalize face elimination, it is advantageous to move away
 from the double-index notation and use one that is based on a topological
@@ -517,58 +528,91 @@ where $i=\framebox{$1,3$}$ and $j=\framebox{$3,4$}$.
 \label{fig:face_elims}
 \end{figure}
 A complete face elimination sequence $\sigma_f$ yields a tripartite 
-directed line graph $\sigma_f({\cal G})$ that can be back transformed into 
+directed line graph $\sigma_f({\cal G})$ that can be transformed back into 
 the bipartite graph representing the Jacobian $\bmfp$.
 We note that any $G$ can be transformed into the 
 corresponding $\cal G$ but that a back transformation 
 generally is not  possible once face elimination steps have been applied. 
-Therefore, face eliminations cannot precede vertex and edge 
+Therefore, face eliminations can generally not precede vertex and edge 
 eliminations.
-In the tool these eliminations are implemented in the algorithms described in 
+In \OpenAD\ these eliminations are implemented in the algorithms described in 
 \refsec{sssec:MMTradeOff} and \refsec{sssec:angel}.
 
-In a source transformation context of \OpenAD\ the operations \refeqn{eqn:fma} are 
-expressed as actual code, the Jacobian accumulation code. For the 
-B(6) from our toy example in \reffig{fig:toy} the code computing 
-the local partials in conjunction with the function value, see \refeqn{eqn:sampleCode}, 
+In a source transformation context of \OpenADF\ the operations \refeqn{eqn:fma} are 
+expressed as actual code, the Jacobian accumulation code. For our example code 
+from \reffig{fig:toyBB} the code computing 
+the local partials in conjunction with the function value 
 is shown in 
 \reffig{fig:toyAndPartials}.
 \footnote{
 For better readability we write the indices of the $c_{ji}$ with commas.
 } 
 \begin{figure}
-\begin{minipage}{\linewidth}
+\begin{center}
+\begin{minipage}{.3\linewidth}
 \begin{align*}
- v_1&=v_{-1}+v_0;~c_{1,-1}=1;~c_{1,0}=1; \\
- v_2&=\sin(v_0);~c_{2,0}=\cos(v_0); \\
- v_3&=v_1+v_2;~c_{3,1}=1;~c_{3,2}=1; \\
- v_4&=v_1*v_3;~c_{4,1}=v_3;~c_{4,3}=v_1; \\
- v_5&=\sqrt{v_3};~c_{5,3}=(2\sqrt{v_3})^{-1}; \\
- v_6&=\cos(v_4);~c_{6,4}=-\sin(v_4); \\
- v_7&=-v_5;~c_{7,5}=-1;
+ v_1&=v_{-1}+v_0; \\
+ v_2&=\sin(v_0); \\
+ v_3&=v_1+v_2; \\
+ v_4&=v_1*v_3; \\
+ v_5&=\sqrt{v_3};\\
+ v_6&=\cos(v_4); \\
+ v_7&=-v_5;
 \end{align*}
 \end{minipage}
-\caption{Code for \refeqn{eqn:sampleCode} and the $c_{ji}$}\label{fig:toyAndPartials}
+\begin{minipage}{.3\linewidth}
+\begin{align*}
+ c_{1,-1}&=1; \\
+ c_{2,0}&=\cos(v_0); \\
+ c_{3,1}&=1; \\
+ c_{4,1}&=v_3; \\
+ c_{5,3}&=(2\sqrt{v_3})^{-1}; \\
+ c_{6,4}&=-\sin(v_4); \\
+ c_{7,5}&=-1;
+\end{align*}
+\end{minipage}
+\begin{minipage}{.2\linewidth}
+\begin{align*}
+ c_{1,0}&=1; \\
+  &\\
+ c_{3,2}&=1; \\
+ c_{4,3}&=v_1; \\
+  &\\
+  &\\
+  &
+\end{align*}
+\end{minipage}
+\end{center}	
+\caption{Pseudo code for \refeqn{eqn:sampleCode} and the computation of the $c_{ji}$}\label{fig:toyAndPartials}
 \end{figure}
-In the tool the operations in \reffig{fig:toyAndPartials} are generated by the 
+In \OpenADF\ the operations in \reffig{fig:toyAndPartials} are generated by the 
 transformation algorithm discussed in \refsec{sssec:linearization}.
-Now the operations induced by the eliminations on the graph can 
+The operations induced by the eliminations on the graph can 
 be expressed in terms of the auxiliary variables $c_{ji}$.
-For our example, a forward vertex elimination, that is, the elimination
-sequence (1,2,3,4,5) in $G$ (\reffig{fig:elims}), leads to the
+For our example, a forward vertex elimination in the order  (1,2,3,4,5) 
+in $G$ (\reffig{fig:elims}), leads to the
 following Jacobian accumulation code.
-\begin{figure}
-\begin{minipage}{\linewidth}
-\begin{align*}
-1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
-2:\quad  &c_{3,0}=c_{3,2} * c_{2,0}+c_{3,0}; \\
-3:\quad  &c_{4,-1}=c_{4,3} * c_{3,-1}+c_{4,-1};~c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};~c_{5,-1}=c_{5,3} * c_{3,-1}; \\
-&c_{5,0}=c_{5,3} * c_{3,0}; \\
-4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
-5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
-\end{align*}
-\end{minipage}
-\caption{Code for \refeqn{eqn:sampleCode} and the $c_{ji}$}\label{fig:toyAccumulation}
+\begin{figure}[h]
+%\begin{minipage}{\linewidth}
+%\begin{align*}
+%1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
+%2:\quad  &c_{3,0}=c_{3,2} * c_{2,0}+c_{3,0}; \\
+%3:\quad  &c_{4,-1}=c_{4,3} * c_{3,-1}+c_{4,-1};~c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};~c_{5,-1}=c_{5,3} * c_{3,-1}; \\
+%&c_{5,0}=c_{5,3} * c_{3,0}; \\
+%4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
+%5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
+%\end{align*}
+%\end{minipage}
+\begin{tabular}{l@{\hspace{1ex}}r@{\hspace{0.1ex}}l@{\hspace{1ex}}l@{\hspace{1ex}}l}
+1: &$c_{3,-1}$&$=c_{3,1} * c_{1,-1};         $&$c_{3,0}=c_{3,1} * c_{1,0};        $&$c_{4,-1}=c_{4,1} * c_{1,-1};$\\
+   &$c_{4,0} $&$=c_{4,1} * c_{1,0};          $&                                    &                              \\
+2: &$c_{3,0} $&$=c_{3,2} * c_{2,0}+c_{3,0};  $&                                    &                              \\
+3: &$c_{4,-1}$&$=c_{4,3} * c_{3,-1}+c_{4,-1};$&$c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};$&$c_{5,-1}=c_{5,3} * c_{3,-1};$\\
+   &$c_{5,0} $&$=c_{5,3} * c_{3,0};          $&                                    &                              \\
+4: &$c_{6,-1}$&$=c_{6,4} * c_{4,-1};         $&$c_{6,0}=c_{6,4} * c_{4,0};        $&                              \\
+5: &$c_{7,-1}$&$=c_{7,5} * c_{5,-1};         $&$c_{7,0}=c_{7,5} * c_{5,0};        $&            
+\end{tabular}
+\caption{Pseudo code for vertex eliminations for \refeqn{eqn:sampleCode}}\label{fig:toyAccumulation}
 \end{figure}
 In the tool the operations shown in \reffig{fig:toyAccumulation} are generated by the 
 transformation algorithm discussed in \refsec{sssec:BBPreacc}. 
@@ -576,29 +620,33 @@ transformation algorithm discussed in \refsec{sssec:BBPreacc}.
 \subsection{Control Flow Reversal} \label{ssec:cfReversal}
 Because the code for a $\bmf$ generally contains control flow constructs there is no 
 single $G$ that represents the computation of $\bmf$ for all possible values of $\bmx$.
-We explained in \refsec{ssec:computationalGraphs} that \OpenAD\ considers subgraphs constructed 
+We explained in \refsec{ssec:computationalGraphs} that \OpenADF\ considers subgraphs constructed 
 from the contents of a \basicblock.
 In the example shown in \reffig{fig:toy} we put the \basicblock\ code shown in 
-\reffig{fig:toyBB} into a context with control flow. For easier reference we 
-added line numbers.  
+\reffig{fig:toyBB} into a control flow context, see lines 06--09.
 \begin{figure}
+\begin{center}
+\begin{minipage}{.5\textwidth}
 \begin{tabbing}
-\hspace{.6cm}{\footnotesize \bf 01}\hspace{.5cm} {\tt y(k)=sin(x(1)*x(2)); k=k+1} \\
+\hspace{.6cm}{\footnotesize \bf 00}\hspace{.5cm} {\tt y(k) = sin(x(1)*x(2))} \\
+\hspace{.6cm}{\footnotesize \bf 01}\hspace{.5cm} {\tt k    = k+1} \\
 \hspace{.6cm}{\footnotesize \bf 02}\hspace{.5cm} {\tt if} \={\tt (mod(k,2) .eq. 1) then } \\
-\hspace{.6cm}{\footnotesize \bf 03}\hspace{.5cm} \>{\tt y(k)=2*y(k-1)}  \\
+\hspace{.6cm}{\footnotesize \bf 03}\hspace{.5cm} \>{\tt y(k) = 2*y(k-1)}  \\
 \hspace{.6cm}{\footnotesize \bf 04}\hspace{.5cm} {\tt else } \\
 \hspace{.6cm}{\footnotesize \bf 05}\hspace{.5cm} \>{\tt do} \={\tt i=1,k } \\
-\hspace{.6cm}{\footnotesize \bf 06}\hspace{.5cm} \>\>{\tt t1=x(1)+x(2) } \\
-\hspace{.6cm}{\footnotesize \bf 07}\hspace{.5cm} \>\>{\tt t2=t1+sin(x(1)) } \\
-\hspace{.6cm}{\footnotesize \bf 08}\hspace{.5cm} \>\>{\tt x(1)=cos(t1*t2) } \\
-\hspace{.6cm}{\footnotesize \bf 09}\hspace{.5cm} \>\>{\tt x(2)=-sqrt(t2) } \\
+\hspace{.6cm}{\footnotesize \bf 06}\hspace{.5cm} \>\>{\tt t1   = x(1)+x(2) } \\
+\hspace{.6cm}{\footnotesize \bf 07}\hspace{.5cm} \>\>{\tt t2   = t1+sin(x(1)) } \\
+\hspace{.6cm}{\footnotesize \bf 08}\hspace{.5cm} \>\>{\tt x(1) = cos(t1*t2) } \\
+\hspace{.6cm}{\footnotesize \bf 09}\hspace{.5cm} \>\>{\tt x(2) = -sqrt(t2) } \\
 \hspace{.6cm}{\footnotesize \bf 10}\hspace{.5cm} \>{\tt end do } \\
 \hspace{.6cm}{\footnotesize \bf 11}\hspace{.5cm} {\tt end if } \\
-\hspace{.6cm}{\footnotesize \bf 12}\hspace{.5cm} {\tt y(k)=y(k)+x(1)*x(2) } 
+\hspace{.6cm}{\footnotesize \bf 12}\hspace{.5cm} {\tt y(k) = y(k)+x(1)*x(2) } 
 \end{tabbing}
-\caption{Toy example code}\label{fig:toy}
+\end{minipage}
+\end{center}
+\caption{Toy example code with control flow}\label{fig:toy}
 \end{figure}
-The CFG resulting from the above code is depicted in 
+The control flow graph (CFG) \cite{ASU86} resulting from the above code is depicted in 
 \reffig{fig:cfg}(a).
 The assignment statements are contained in the {\basicblock}s B(2,3,4,6,12).
 For instance, 
@@ -675,10 +723,16 @@ The process of the control flow reversal is described in detail in
 %-----------------------------------------------------------------------------------------
 \subsection{Call Graph Reversal} \label{ssec:cgReversal}
 
-%#########################################################################################
-\section{\OpenAD\ components}
+Generally, the computer program 
+induces a {\em call graph} (CG) \cite{ASU86}
+whose vertices are subroutines and whose edges 
+represent calls potentially made during the computation of $\bmy$ for all 
+values of $\bmx$ in the domain of $\bmf$. 
 
-\OpenAD\ is built on components that belong to a framework designed
+%#########################################################################################
+\section{\OpenADF\ components}\label{sec:openadcomponents}
+
+\OpenADF\ is built on components that belong to a framework designed
 for code transformation of numerical programs.  The components are
 tied together either via programmatic interfaces or by communication
 using the \xaif\ langauge. The transformation of the source code follows the
@@ -924,7 +978,7 @@ the active data-structures.]
 }
 
 %-----------------------------------------------------------------------------------------
-\subsection{xaif} \label{ssec:xaif}
+\subsection{\xaif} \label{ssec:xaif}
 {\color{red} [ FILL IN $\to$ Uwe] } 
 {\color{blue} [this is old stuff from the abstract] 
 An XML-based \cite{xmlWeb} hierarchy of directed graphs, referred to as xaif 
@@ -968,7 +1022,7 @@ as well as the composition hierarchy.
 \end{figure}
 
 A complete documentation of the entire data structure 
-can be found on the \OpenAD\ website \cite{openadWeb}.
+can be found on the \OpenADF\ website \cite{openadWeb}.
 The class hierarchy is organized top down with 
 a single \code{CallGraph} instance as the top element. 
 \reffig{fig:irc} shows  a simplified composition hierarchy.
@@ -1344,10 +1398,10 @@ The \OpenAnalysis\ toolkit, see \cite{oaWeb}, separates program
 analysis from language-specific or front-end specific intermediate
 representations.  This separation enables a single implementation of
 domain-specific analyses such as activity analysis, to-be-recorded
-analysis, and linearity analysis in \OpenAD.  Standard analyses
+analysis, and linearity analysis in \OpenADF.  Standard analyses
 implemented within \OpenAnalysis\ such as CFG construction, call graph
 construction, alias analysis, reaching definitions, ud- and du-chains,
-and side-effect analysis are also available to \OpenAD\ via
+and side-effect analysis are also available to \OpenADF\ via
 \OpenADFortTk.
 
 \OpenADFortTk\ interfaces with \OpenAnalysis\ as a producer and a
@@ -1394,20 +1448,20 @@ implemented in a context-insensitive, flow-sensitive interprocedural fashion.
 
 
 %#########################################################################################
-\section{Tool Usage}
-The following contains brief instructions how to obtain and use \OpenAD. 
+\section{Tool Usage} \label{sec:Usage}
+The following contains brief instructions how to obtain and use \OpenADF. 
 While the principal approach will remain the same, future development may 
 introduce slight changes. The reader is encouraged to refer to the 
-up to date instructions on the \OpenAD\ website \cite{openadWeb}.
+up to date instructions on the \OpenADF\ website \cite{openadWeb}.
 \subsection{Download and Build} 
 \subsection{Automatic Pipeline}
 \subsection{Manual Pipeline}\label{ssec:manualPipeline}
 
 
 %#########################################################################################
-\section{Application}
+\section{Application}\label{sec:application}
 
-The reference application for the first prototype of an \OpenAD\ implementation
+The reference application for the first prototype of an \OpenADF\ implementation
 is a simplified oceanographic box model for investigating
 thermohaline circulation. It relates to the
 ocean circulation's role in the variability of the climate system,
@@ -1418,11 +1472,11 @@ code in both forward and reverse modes.
 See \cite{maro-eta:99} for an applications of
 TAF's predecessor TAMC to the MITgcm.
 
-\OpenAD\ has been used to generate tangent-linear and 
+\OpenADF\ has been used to generate tangent-linear and 
 adjoint versions of the box model. We established numerical identity between
-the Jacobians provided by TAF and \OpenAD.
+the Jacobians provided by TAF and \OpenADF.
 The successful 
-application of \OpenAD\ to the box model code is considered as a feasibility 
+application of \OpenADF\ to the box model code is considered as a feasibility 
 proof for the overall approach taken by the ACTS project.  
 %-----------------------------------------------------------------------------------------
 \subsection{Shallow Water Model}
@@ -1431,11 +1485,11 @@ proof for the overall approach taken by the ACTS project.
 %#########################################################################################
 \section{Conclusion and Future Work}
 
-\OpenAD\ is an AD tool development infrastructure. Its well-separated components
+\OpenADF\ is an AD tool development infrastructure. Its well-separated components
 allow developers to focus on various aspects of source-to-source 
 transformation AD, including parsing and unparsing of different programming
 languages, data and control flow analysis, and (semantic) transformation 
-algorithms. The intention of \OpenAD\ is to provide the AD community with 
+algorithms. The intention of \OpenADF\ is to provide the AD community with 
 an open, extensible, and easy-to-use platform for research and development
 in the field. Its intention is not to render obsolete existing source transformation
 tools such as ADIFOR \cite{adiforWeb}, 
@@ -1443,12 +1497,12 @@ the differentiation-enabled NAG Fortran 95
 compiler,\footnote{{\tt http://www.nag.co.uk/nagware/research/ad\_overview.asp}} TAF,\footnote{{\tt http://www.FastOpt.de}} and TAPENADE.\footnote{{\tt http://tapenade.inria.fr:8080/tapenade/index.jsp}} 
 Their closer coupling with the language-specific internal representation of 
 the program has the potential to make the
-exploitation of certain language features easier. \OpenAD\ is supposed to 
+exploitation of certain language features easier. \OpenADF\ is supposed to 
 complement these tools by providing well-defined APIs to an open internal 
 representation that can be used by a large number of AD developers.
 Users of AD technology will benefit from the expected wide
 variety of combinations of front-ends and algorithms that is made possible
-by \OpenAD.
+by \OpenADF.
 
 During the remainder of the ACTS project we will focus on the implementation
 of robust and efficient data flow algorithms in \OpenAnalysis, including alias, 
@@ -1461,7 +1515,7 @@ A second set of target
 applications in chemical engineering \cite{FTB97} requires combinations of first and 
 second derivatives in addition to methods for exploiting structure and sparsity
 of the underlying computation. We intend to investigate ways to compute these
-combinations efficiently by integrating \OpenAD\ into the relevant 
+combinations efficiently by integrating \OpenADF\ into the relevant 
 numerical algorithms.
 
 Ultimately, our aim is to generate correct, efficient, scalable, and easily 

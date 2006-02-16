@@ -1,6 +1,15 @@
 TARGET=openad
 
-$(TARGET).pdf: $(TARGET).tex $(TARGET).bbl $(TARGET).aux
+# dot converts to PS and ps2pdf converts to pdf (see below)
+PDF_FROM_DOT=$(basename $(wildcard *.dot))
+
+# directly exported from dia to pdf:
+PDF_FROM_DIA=$(basename $(wildcard *.dia))
+
+# directly exported from xfig to pdf:
+PDF_FROM_FIG=$(basename $(wildcard *.fig))
+
+$(TARGET).pdf: $(addsuffix .pdf,$(PDF_FROM_DOT) $(PDF_FROM_DIA) $(PDF_FROM_FIG)) $(TARGET).tex $(TARGET).bbl $(TARGET).aux
 	pdflatex $(TARGET) 
 
 $(TARGET).bbl $(TARGET).aux: $(TARGET).bib 
@@ -13,5 +22,11 @@ $(TARGET).bbl $(TARGET).aux: $(TARGET).bib
 
 clean: 
 	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,bbl,blg,dvi}
+
+%.ps : %.dot
+	dot -Tps2 $< -o $@
+
+%.pdf : %.ps
+	ps2pdf $<
 
 .PHONY: clean

@@ -2,7 +2,8 @@ subroutine head(x,y,k)
 double precision x(2),y(k)
 integer i,k
 
-  y(k)=sin(x(1)*x(2)); k=k+1 
+  y(k)=sin(x(1)*x(2)) 
+  k=k+1 
   if (imod(k,2) .eq. 1) then  
     y(k)=2*y(k-1)  
   else  

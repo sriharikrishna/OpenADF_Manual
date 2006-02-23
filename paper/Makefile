@@ -3,7 +3,7 @@ TARGET=openad
 # dot converts to PS and ps2pdf converts to pdf (see below)
 PDF_FROM_DOT=$(basename $(wildcard *.dot))
 
-# directly exported from dia to pdf:
+# dia exports to eps and epstopdf converts to pdf:
 PDF_FROM_DIA=$(basename $(wildcard *.dia))
 
 # directly exported from xfig to pdf:
@@ -28,5 +28,8 @@ clean:
 
 %.pdf : %.ps
 	ps2pdf $<
+
+%.pdf : %.eps
+	epstopdf $<
 
 .PHONY: clean

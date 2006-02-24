@@ -867,7 +867,10 @@ using the \xaif\ langauge. The transformation of the source code follows the
 pipeline shown in \reffig{fig:overview}.  
 In \refsec{ssec:openadcomponents} we describe the language-indepdendent 
 components of \OpenAD\ framework and \refsec{ssec:fortfe} provides details 
-in the Fortran front-end. 
+in the Fortran front-end.
+The regular setup procedure for \OpenADF, see also \refsec{ssec:dab}, 
+will retrieve all componenents into an {\tt OpenAD/} directory to which 
+we refer from here on.  
 
 %-----------------------------------------------------------------------------------------
 \subsection{Language Independent Components (\OpenAD)}\label{ssec:openadcomponents}
@@ -934,6 +937,7 @@ The main difference is that the data-flow framework in \OpenAnalysis\ does not
 yet take advantage of the structured data-flow equations.  Activity analysis is
 implemented in a context-insensitive, flow-sensitive interprocedural fashion.
 
+All sources for \OpenAnalysis\ can be found under {\tt OpenAD/OpenAnalysis/}.
 %-----------------------------------------------------------------------------------------
 \subsubsection{Representing the Numerical Core (\xaif)} \label{sssec:xaif}
 {\color{red} JU: rewritten } 
@@ -1009,13 +1013,39 @@ that is extended by a construct to represent inlinable subroutine calls and
 a specific list of control flow graphs that the post processor places in predefined 
 locations in the subroutine template.    
 
+The \xaif\ schema and examples can be found under {\tt OpenAD/xaif/}.
+
 %-----------------------------------------------------------------------------------------
 \subsubsection{Transforming the Numerical Core (\xaifBooster)} \label{sssec:xaifBooster}
 The transformation engine that differentiates the \xaif\ representation of 
 $\bmf$ is called \xaifBooster. It is implemented in C++ based on a 
 data structure that represents all information supplied in the \xaif\ input 
 together with collection of algorithms that operate on this data structure, modify 
-it and produce transformed \xaif\ output as the result. 
+it and produce transformed \xaif\ output as the result. All sources for \xaifBooster\ can be found under {\tt OpenAD/xaifBooster/}. The principal setup of the source tree underneath is as follows
+\begin{table}
+\small
+\begin{tabular}{ll}
+{\tt Makefile} & the top level {\tt Makefile}\\
+{\tt utils/} & utility classes (debugging, generic traversal, etc.)\\
+{\tt tools/}  & code generator supporting \xaif\ parser \\
+{\tt boostWrapper/}& wrapper classes for the boost graph library \\
+{\tt system/} & all basic data structure, \xaif\ (un)parsing\\
+{\tt algorithms/}& \\
+\quad{\tt CodeReplacement} & support library for subroutine templates\\
+\quad{\tt CrossCountryInterface} & support library for elimination strategies\\
+\quad{\tt DerivativePropagator} & support library for Jacobian vector products\\
+\quad{\tt InlinableXMLRepresentation } & support library for inlinable subroutine calls\\ 
+\quad{\tt Linearization} & Linearization transformation\\ 
+\quad{\tt BasicBlockPreaccumulation} & elimination with \angel\ and \\
+& preaccumulation at the \basicblock\ level\\
+\quad{\tt  MemOpsTradeoffPreaccumulation} & as above but with different heuristics than \angel\\
+\quad{\tt ControlFlowReversal} & control flow graph reversal\\
+\quad{\tt BasicBlockPreaccumulationReverse } & adjoint code\\
+\quad{\tt BasicBlockPreaccumulationTape } & taping code supporting adjoint\\
+\quad{\tt BasicBlockPreaccumulationTapeAdjoint } & reverse sweep portion supporting adjoint\\
+\end{tabular}
+\caption{Directory structure in \xaifBooster}\label{tab:dirStruct}
+\end{table}
 
 \begin{figure}
 \centering \includegraphics[width=.45\textwidth]{irInh}
@@ -1057,16 +1087,28 @@ contexts.
 \caption{\xaifBooster\ algorithms} \label{fig:allAlgs}
 \end{figure}
 \reffig{fig:allAlgs} shows the implemented algorithms with dependencies.
-To avoid conflicts the transformation algorithms the original data structure 
-is never modified. Instead, the data representing modifications or augmentations
-are kept in algorithm specific instances that are associated with the 
-data structure element that is being modified. 
+To avoid conflicts the transformation algorithms the data structure representing the input code  
+is never directly modified. 
+Instead, any data representing modifications or augmentations of the 
+original representation element in a class {\tt <name>}
+are held in algorithm specific instances of class {\tt <name>Alg}.
+The association is done via mutual references accessible 
+through {\tt get<name>AlgBase()} and {\tt getContaining<name>()} respectively.
+The instantiation of the algorithm specific classes follows 
+the factory design pattern. The factory instances in turn are controlled 
+by a transformation algorithm specific {\tt AlgFactoryManager} classes. 
+Further details can be found in \cite{sea2003}, howeverer, the code 
+code for this mechanism is fairly self-explanatory.  
+  
 In the following sections we want to concentrate on the transformation 
 the algorithms execute while deferring to the generated code 
-documentation for most technical details. 
+documentation for most technical details.
 
-Each algorithm comes with a driver that encapsulates the algorithm 
-in a stand-alone binary which provides the functionality described in the following 
+ 
+
+Each algorithm has a driver that encapsulates the algorithm 
+in a stand-alone binary which provides the functionality described 
+in the following 
 sections. For details on the invocation and command line options refer to 
 \refsec{ssec:manualPipeline}.
 
@@ -1074,14 +1116,7 @@ sections. For details on the invocation and command line options refer to
 \paragraph{Reading and Writing \xaif}
 Parsing is done through the Xerces C++ XML parser \cite{xercesWeb}
 such that the XML element handler implementations build the \xaifBooster\ data 
-structure 
-from the top down. 
-Aside from the parsing of the actual input \xaif\ there is also the so called 
-{\em 
-catalogue of inlinable intrinsics
-} 
-supplied as an XML following a specialed schema in \xaif, see also 
-\refsec{sssec:linearization} and \refsec{sssec:wtxxtw}.
+structure from the top down. 
 As an additional consistency check all components that read \xaif\ data 
 have the validation according to the schema enabled. Beyond the schema 
 validation these components perform valdity checks. Therefore, 
@@ -1093,6 +1128,14 @@ through a series of that traverses the data structure and the
 respective algorithm specific data. 
 For information of the files containg the \xaif\ representation refer to 
 \refsec{ssec:manualPipeline}.
+
+Aside from the parsing of the actual input \xaif\ there is also the so called 
+{\em 
+catalogue of inlinable intrinsics
+} 
+supplied as an XML following a specialized schema in \xaif, see also 
+\refsec{sssec:linearization} and \refsec{sssec:wtxxtw}.
+
 
 %-----------------------------------------------------------------------------------------
 \paragraph{Linearization}\label{sssec:linearization}
@@ -1675,7 +1718,7 @@ The following contains brief instructions how to obtain and use \OpenADF.
 While the principal approach will remain the same, future development may 
 introduce slight changes. The reader is encouraged to refer to the 
 up to date instructions on the \OpenADF\ website \cite{openadWeb}.
-\subsection{Download and Build} 
+\subsection{Download and Build}\label{ssec:dab}
 \subsection{Automatic Pipeline}
 \subsection{Manual Pipeline}\label{ssec:manualPipeline}
 

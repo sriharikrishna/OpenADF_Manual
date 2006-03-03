@@ -692,7 +692,32 @@ products of the local Jacobians $\bmJ_j$
 with the directions $\dot{x}_j$ 
 are propagated forward in the direction of the flow of control, for 
 instance simultaneouly to the computation of $\bmf$.
-
+In our example \basicblock\ B(6) is the third \basicblock\ ($j=3$) and we have
+$\bmx_3=\bmy_j=($\code{x(1)}$,$\code{x(2)}$)$ and 
+consequently have the operations for the Jacobian vector product shown 
+in \reffig{fig:JacVec}.  
+\begin{figure}[h]
+\begin{center}
+\begin{minipage}{.3\linewidth}
+\begin{align*}
+t_1&=\dot{\tt x}\mbox{\tt (1)} ; \\
+\dot{\tt x}\mbox{\tt (1)}&=c_{6,-1}*t_1; \\
+\dot{\tt x}\mbox{\tt (2)}&=c_{7,-1}*t_1; 
+\end{align*}
+\end{minipage}
+\begin{minipage}{.3\linewidth}
+\begin{align*}
+t_2&=\dot{\tt x}\mbox{\tt (2)}; \\
+\dot{\tt x}\mbox{\tt (1)}&=\dot{\tt x}\mbox{\tt (1)}+c_{6,0}*t_2; \\
+\dot{\tt x}\mbox{\tt (2)}&=\dot{\tt x}\mbox{\tt (2)}+c_{7,0}*t_2; 
+\end{align*}
+\end{minipage}
+\end{center}	
+\caption{Pseudo code for $\bmJ_3\dot{\bmx}_3$ relating to the loop body in \reffig{fig:toy}}\label{fig:toyPreacc}
+\end{figure}
+Note that the code overwrites \code{x(1)} and \code{x(2)} and therefore 
+we have to preserve the original derivatives in temporaries $t_1$ and $t_2$.
+ 
 In {\em reverse mode} products of the transposed
 Jacobians $\bmJ^T_j$ with adjoint vectors $\overline{\bmy}_j$
 are propagated reverse to the direction of the flow of control.
@@ -1021,37 +1046,11 @@ The transformation engine that differentiates the \xaif\ representation of
 $\bmf$ is called \xaifBooster. It is implemented in C++ based on a 
 data structure that represents all information supplied in the \xaif\ input 
 together with collection of algorithms that operate on this data structure, modify 
-it and produce transformed \xaif\ output as the result. All sources for \xaifBooster\ can be found under {\tt OpenAD/xaifBooster/}. The principal setup of the source tree underneath is as follows
-\begin{table}
-\small
-\begin{tabular}{ll}
-{\tt Makefile} & the top level {\tt Makefile}\\
-{\tt utils/} & utility classes (debugging, generic traversal, etc.)\\
-{\tt tools/}  & code generator supporting \xaif\ parser \\
-{\tt boostWrapper/}& wrapper classes for the boost graph library \\
-{\tt system/} & all basic data structure, \xaif\ (un)parsing\\
-{\tt algorithms/}& \\
-\quad{\tt CodeReplacement} & support library for subroutine templates\\
-\quad{\tt CrossCountryInterface} & support library for elimination strategies\\
-\quad{\tt DerivativePropagator} & support library for Jacobian vector products\\
-\quad{\tt InlinableXMLRepresentation } & support library for inlinable subroutine calls\\ 
-\quad{\tt Linearization} & Linearization transformation\\ 
-\quad{\tt BasicBlockPreaccumulation} & elimination with \angel\ and \\
-& preaccumulation at the \basicblock\ level\\
-\quad{\tt  MemOpsTradeoffPreaccumulation} & as above but with different heuristics than \angel\\
-\quad{\tt ControlFlowReversal} & control flow graph reversal\\
-\quad{\tt BasicBlockPreaccumulationReverse } & adjoint code\\
-\quad{\tt BasicBlockPreaccumulationTape } & taping code supporting adjoint\\
-\quad{\tt BasicBlockPreaccumulationTapeAdjoint } & reverse sweep portion supporting adjoint\\
-\end{tabular}
-\caption{Directory structure in \xaifBooster}\label{tab:dirStruct}
-\end{table}
-
+it and produce transformed \xaif\ output as the result. All sources for \xaifBooster\ can be found under {\tt OpenAD/xaifBooster/}. The principal setup of the source tree is shown in \reftab{tab:dirStruct}.
 \begin{figure}
 \centering \includegraphics[width=.45\textwidth]{irInh}
 \caption{Simplified class inheritance in \xaifBooster} \label{fig:iri}
 \end{figure}
-
 The \xaifBooster\ data structure  
 closely resembles the information one would find in a 
 compiler's high level internal representation. 
@@ -1070,7 +1069,7 @@ The class hierarchy is organized top down with
 a single \code{CallGraph} instance as the top element. 
 The top down structure is also imposed on the ownership of dynamically 
 allocated elements. 
-Whereever possible, the class interfaces hide dynamic 
+Whereever possible, the class interfaces encapsulate dynamic 
 allocation of members.  
 Only in cases of containment of polymorphic elements is explicit dynamic allocation 
 ouside of the owning class' members appropriate. 
@@ -1086,7 +1085,7 @@ contexts.
 \centering \includegraphics[width=.45\textwidth]{allAlgs}
 \caption{\xaifBooster\ algorithms} \label{fig:allAlgs}
 \end{figure}
-\reffig{fig:allAlgs} shows the implemented algorithms with dependencies.
+\reffig{fig:allAlgs} shows some implemented algorithms with dependencies.
 To avoid conflicts the transformation algorithms the data structure representing the input code  
 is never directly modified. 
 Instead, any data representing modifications or augmentations of the 
@@ -1104,18 +1103,21 @@ In the following sections we want to concentrate on the transformation
 the algorithms execute while deferring to the generated code 
 documentation for most technical details.
 
- 
-
-Each algorithm has a driver that encapsulates the algorithm 
+Each algorithm has a driver {\tt t.pp} (compiled into a binary {\tt t}) 
+found in {\tt algorithms/<the\_algorithm\_name>/test/} 
+that encapsulates the algorithm 
 in a stand-alone binary which provides the functionality described 
 in the following 
 sections. For details on the invocation and command line options refer to 
 \refsec{ssec:manualPipeline}.
 
 %-----------------------------------------------------------------------------------------
-\paragraph{Reading and Writing \xaif}
+\paragraph{Reading and Writing \xaif}\label{ssssec:readWriteXaif}
+Reading and Writing the \xaif\ is part of basic infrastructure
+found in the sources in {\tt system/}.
 Parsing is done through the Xerces C++ XML parser \cite{xercesWeb}
-such that the XML element handler implementations build the \xaifBooster\ data 
+such that the XML element handler implementations, see {\tt system/src/XAIFBaseParserHandlers.cpp},
+build the \xaifBooster\ data 
 structure from the top down. 
 As an additional consistency check all components that read \xaif\ data 
 have the validation according to the schema enabled. Beyond the schema 
@@ -1133,85 +1135,110 @@ Aside from the parsing of the actual input \xaif\ there is also the so called
 {\em 
 catalogue of inlinable intrinsics
 } 
-supplied as an XML following a specialized schema in \xaif, see also 
+supplied as an XML following a specialized schema in \xaif, see  
 \refsec{sssec:linearization} and \refsec{sssec:wtxxtw}.
-
+There is also a driver at this level found in {\tt system/test/t.cpp} used 
+to verify reading and writing functionality. It can be used to establish 
+that the tool pipeline preserves the semantics of the original program when 
+no transformation is involved. 
 
 %-----------------------------------------------------------------------------------------
 \paragraph{Linearization}\label{sssec:linearization}
 
-As explained in \refsec{sec:ADIntro} a necessary step is the computation of 
+\refsec{sec:ADIntro} explained the computation of 
 the local partial derivatives $c_{ji}$ that can be thought of as edge labels 
-in the computational graph $G$. Per canonicalization all elemental $\phi$ 
-occur in the right-hand side of an assignment. 
+in the computational graph $G$. 
+Per canonicalization (see \refsec{sssec:Canonicalization}) 
+all elemental $\phi$ 
+occur only in the right-hand side of an assignment. 
 For each $\phi$ we look up the definition of the respective partials in 
 the intrinsics catalogue. 
 {\color{red} [ not sure  how much detail is necessary ] } 
-They are defined in terms of positional arguments. Because of this, 
+The partials are defined in terms of positional arguments, see 
+\reffig{fig:divExample}. 
+\begin{figure}
+\centering \includegraphics[width=5cm]{divIntrinsic}
+\caption{Partial expressions for the division operator} \label{fig:divExample}
+\end{figure}
+
+Because of this, 
 the right-hand-side expression may have to be split up into 
 subexpressions to assign intermediate values to ancillary variables 
-that can be referenced in the partial computation.  
-{\color{red} [ a figure here? ] }
-In cases of the left-hand-side variable occuring on the right-hand-side (or being 
-may-aliased to a right-hand-side variable, see )
-The result of the Linearization is code containing the potentially split 
+that can be referenced in the partial computation, for an example see 
+the code shown in \reffig{fig:toyAndPartials}.  
+In cases of the left-hand-side variable occuring on the right-hand-side 
+(or being may-aliased to a right-hand-side variable, 
+see \refsec{sssec:openanalysis}) we also require an extra assignment to 
+delay the (potiential) overwrite until after the partials depending on 
+the original variable value have been computed.
+The result of the Linearization is a representation for 
+code containing the potentially split 
 assignments along with assignments for each non-zero edge label $c_{ji}$.
-The generated code is executable but does by itself not compute useful 
-derivative information at the lavel for the target function $\bmf$.
+These representations are contained in the {\tt xaifBoosterLinearization::AssignmentAlg} instances associated with each assignment in the \xaif.
+The generated code after unparsing to Fortran 
+is compilable but does by itself not compute useful 
+derivative information at the lavel for the target function $\bmf$. The 
+transformation driver is 
+used to verify the results of the linearization transformation.
 
 %-----------------------------------------------------------------------------------------
 \paragraph{Basic Block Preaccumulation}\label{sssec:BBPreacc}
 
-The first step in this transformation constructs the computational graphs $G$ 
+This transformation generates a code representation that can be used 
+to compute derivatives in forward mode. It builds upon the Linearization
+done in \refsec{sssec:linearization}. 
+The first step constructs the 
+computational graphs $G$ 
 for contiguous 
 assignment sequences in a given \basicblock. To ensure semantic 
 correctness of the graph being constructed in the presence of 
 aliasing it relies on alias analysis and define-use/use-define chains 
 supplied by \OpenAnalysis, see \refsec{ssec:openanalysis}.
 The algorithm itself is described in detail in \cite{Utk04FBB}.
-Because the results supplied by \OpenAnalysis\ are always 
-conservatively correct it may not be possible to align all 
+Because the analysis results supplied by \OpenAnalysis\ are always 
+conservatively correct it may not be possible to flatten all 
 assignmments into a single computational graph. In such cases 
 a sequence of graphs is created. Likewise, the occurence 
 of a subroutine call leads to a split in the graph construction. 
 In the context of \refsec{sec:ADIntro} one may think of the sets of 
 assignments forming each of these graphs as a separate \basicblock. 
-The stand-alone binary for the algorithm allows to disable 
+The driver for the algorithm allows to disable 
 the graph construction across assignments and restrict it to 
-the assignments right-hand sides by adding the \code{-S} command 
+single right-hand sides by adding the \code{-S} command 
 line flag. 
 
-To generate preaccumulation code an elimination sequence has to be determined. 
-This is not coded directly into the transformation algorithm. Instead 
-$G$ is passed to a subroutine call from the \angel\ library \cite{angelWeb}
-which determines an elimination sequence and returns it as 
-fused multiply add expressions in terms of the edge labels $c_{ji}$.
+Based on the constructed $G$ an elimination sequence has to be determined.
+To allow a choice for the computation of the elimination sequence 
+the code uses the interface coded in {\tt algorithms/CrossCountryInterface/}
+and by default calls the \angel\ library \cite{angelWeb}.
+\angel\ determines an elimination sequence and returns it as 
+fused multiply add expressions in terms of the edge references.
 There are several heuristics implemented within \angel\ that control 
 the selection of elimination steps and thereby the preccumulation code 
 that is generated.  The algorithm code calls a default set of heuristics. 
-However, all heuristics use the \code{CrossCountryInterface} library and therefore 
+However, all heuristics use the \code{CrossCountryInterface} and therefore 
 different heuristics can be selected with minimal changes in algorithm code.   
 
-{\color{red} [ for details on \angel\ see WHAT? ] } 
-
-The second step in this transformation is the generation of preaccumulation code. 
-This code consists of assignments generated from  the abstract expression objects returned by \angel, 
-and code that eventually performs the \saxpy\ operations shown in \refeqn{eqn:bbfm}. 
+The second step in this transformation is the generation of 
+preaccumulation code. 
+First it  turns the abstract expression graphs returned by \angel\ 
+into assignments and resolves the edge references into 
+the  labels $c_{ji}$. The resulting code resembles what 
+we show in  \reffig{fig:toyAccumulation}. 
+Then it generates the code that eventually performs the \saxpy\ 
+operations shown in \refeqn{eqn:bbfm}. 
 Considering the input and output variables $\bmx_j$ and $\bmy_j$ of a \basicblock\ the code generation 
 also ensures proper propagation of $\dot{x_i^j}$ of variables $ x_I^j \in  \bmx_j \cap \bmy_j$ 
-by saving the $\dot{x_i^j}$ in temporaries.
+by saving the $\dot{x_i^j}$ in temporaries. The example in \reffig{fig:toyPreacc} illustrates this case. 
 The detection of the intersection elements relies on the alias analysis provided by 
 \OpenAnalysis.
-To avoid some uncessary overhead 
-we create a sequence of \saxpy\ operations distinguishing the following categories (leaving off 
-the indices). 
-\begin{itemize}
-\item $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$
-\item $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$
-\item $\dot{y} = \dot{x}$
-\item $\dot{y} = 0$	
-\end{itemize}
-
+To reduce overhead 
+the generated \saxpy\ operations we generate \saxpy\ calls following the 
+interface specified in \code{algorithms/DerivativePropagator/} for the following four cases:  
+$\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$, 
+$\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$, 
+$\dot{y} = \dot{x}$, and 
+$\dot{y} = 0$.	
 The generated code is executable and represents an overall forward mode 
 according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in 
 cross-country fashion. 
@@ -1793,6 +1820,35 @@ essential to guarantee the successful completion of this highly ambitious
 project.
 
 %#########################################################################################
+\section*{Appendix}
+\begin{table}
+\tiny
+\begin{center}
+\begin{tabular}{ll}
+{\tt Makefile} & the top level {\tt Makefile}\\
+{\tt utils/} & utility classes (debugging, generic traversal, etc.)\\
+{\tt tools/}  & code generator supporting \xaif\ parser \\
+{\tt boostWrapper/}& wrapper classes for the boost graph library \\
+{\tt system/} & all basic data structures, \xaif\ (un)parsing, \refsec{ssssec:readWriteXaif}\\
+{\tt algorithms/}& see the subdirectories below\\
+\quad{\tt CodeReplacement} & support library for subroutine templates\\
+\quad{\tt CrossCountryInterface} & support library for elimination strategies, \refsec{sssec:BBPreacc}\\
+\quad{\tt DerivativePropagator} & support library for Jacobian vector products\\
+\quad{\tt InlinableXMLRepresentation } & support library for inlinable subroutine calls\\ 
+\quad{\tt Linearization} & Linearization transformation, \refsec{sssec:linearization}\\ 
+\quad{\tt BasicBlockPreaccumulation} & elimination with \angel\ and \\
+& preaccumulation at the \basicblock\ level, \refsec{sssec:BBPreacc}\\
+\quad{\tt  MemOpsTradeoffPreaccumulation} & as above but with different heuristics than \angel\\
+\quad{\tt ControlFlowReversal} & control flow graph reversal\\
+\quad{\tt BasicBlockPreaccumulationReverse } & adjoint code\\
+\quad{\tt BasicBlockPreaccumulationTape } & taping code supporting adjoint\\
+\quad{\tt BasicBlockPreaccumulationTapeAdjoint } & reverse sweep portion supporting adjoint\\
+\end{tabular}
+\end{center}
+\caption{Directory structure in \xaifBooster}\label{tab:dirStruct}
+\end{table}
+
+
 %\bibliographystyle{acmtrans}
 \bibliographystyle{plain}
 \bibliography{openad}

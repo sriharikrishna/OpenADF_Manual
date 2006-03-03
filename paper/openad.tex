@@ -1,4 +1,4 @@
-%\documentclass[acmtocl,acmnow,hyperref]{acmtrans2m}
+% \documentclass[acmtocl,acmnow,hyperref]{acmtrans2m}
 \documentclass[11pt]{article}
 \usepackage{verbatimfiles}
 \usepackage{amssymb}
@@ -9,12 +9,12 @@
 \DeclareGraphicsExtensions{.pdf}  
 \usepackage[pdftex,bookmarks=true,bookmarksnumbered=true,hypertexnames=false,breaklinks=true]{hyperref}
 \hypersetup{
-pdfauthor = {Jean Utke},
-pdftitle = {OpenAD: A tool for automatic differentiation of Fortran codes},
-pdfsubject = {TOMS article},
-pdfkeywords = {OpenAD,automatic differentiation, algorithms},
-pdfcreator = {LaTeX with hyperref package},
-pdfproducer = {dvips + ps2pdf}sh	
+  pdfauthor = {Jean Utke},
+  pdftitle = {OpenAD: A tool for automatic differentiation of Fortran codes},
+  pdfsubject = {TOMS article},
+  pdfkeywords = {OpenAD,automatic differentiation, algorithms},
+  pdfcreator = {LaTeX with hyperref package},
+  pdfproducer = {dvips + ps2pdf}sh	
 }
 \pdfadjustspacing=1
 
@@ -24,7 +24,7 @@ pdfproducer = {dvips + ps2pdf}sh
 
 \fboxsep.5mm
 
-%names and CS terms
+% names and CS terms
 \newcommand{\angel}{angel}
 \newcommand{\entry}{entry}
 \newcommand{\exit}{exit}
@@ -47,7 +47,7 @@ pdfproducer = {dvips + ps2pdf}sh
 \newcommand{\whirlTof}{whirl2f}
 \newcommand{\xaifTowhirl}{xaif2whirl}
 
-%math
+% math
 \newcommand{\R}{I\!\!R}
 \newcommand{\bmC}{\mbox{\bf\em C}}
 \newcommand{\bmf}{\mbox{\bf\em f}}
@@ -61,7 +61,7 @@ pdfproducer = {dvips + ps2pdf}sh
 \newcommand{\bmx}{\mbox{\bf\em x}}
 \newcommand{\bmy}{\mbox{\bf\em y}}
 
-%environments
+% environments
 \newcommand{\code}[1]{{\small\tt{#1}}}
 \newcommand{\refcan}[1]{(C\ref{#1})}
 \newcommand{\refsec}[1]{{Sec.~\ref{#1}}} 
@@ -75,54 +75,54 @@ pdfproducer = {dvips + ps2pdf}sh
 \newcommand{\refdef}[1]{{Def.~(\ref{#1})}} 
 \newtheorem{Can}{Canonicalization}
 
-%\markboth{Lots Of Authors et al.}{OpenAD}
+% \markboth{Lots Of Authors et al.}{OpenAD}
 
 \begin{document}
 
-%\title{OpenAD/F: A tool for automatic differentiation of Fortran codes}
+% \title{OpenAD/F: A tool for automatic differentiation of Fortran codes}
 
 
-%\author{PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
-%MIKE FAGAN, NATHAN TALLENT \\Rice University\\
-%MICHELLE STROUT, JEAN UTKE \\Argonne National Laboratory 
-%\and
-%UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
+% \author{PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
+%   MIKE FAGAN, NATHAN TALLENT \\Rice University\\
+%   MICHELLE STROUT, JEAN UTKE \\Argonne National Laboratory 
+%   \and
+%   UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
 
 \begin{center}
-{\Large OpenAD/F: A tool for automatic differentiation \\ of Fortran codes}\\[1ex]
-{\tiny
-PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
-MIKE FAGAN, NATHAN TALLENT \\Rice University\\
-MICHELLE STROUT, JEAN UTKE \\Argonne National Laboratory \\
-UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
+  {\Large OpenAD/F: A tool for automatic differentiation \\ of Fortran codes}\\[1ex]
+  {\tiny
+    PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
+    MIKE FAGAN, NATHAN TALLENT \\Rice University\\
+    MICHELLE STROUT, JEAN UTKE \\Argonne National Laboratory \\
+    UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
 \end{center}
 
 \begin{abstract}
 
-The \OpenADF\ tool allows the evaluation of first and second order
-derivatives of functions defined by a program written in Fortran90/77.
+  The \OpenADF\ tool allows the evaluation of first and second order
+  derivatives of functions defined by a program written in Fortran90/77.
 
-{\color{red} JU: Ehmm - qualify the above } 
+  {\color{red} JU: Ehmm - qualify the above } 
 
-The derivative evaluation is performed by Fortran 90 code resulting
-from the analysis and transformation of the original program that
-defines the function of interest.  The code transformation follows the
-basic principles of automatic differentiation.  In difference to most
-other automatic differentiation tools \OpenADF\ uses components 
-provided by the \OpenAD\ framework which supports a relatively 
-easy extension of the code transformations
-in a language indepdendent fashion. 
-It uses code analysis results
-implemented in the \OpenAnalysis\ component.  The interface to the
-language independent transformation engine is an xml abstract
-interface format, called \xaif\ that is specified through an xml
-schema.  The implemented transformation algorithms allow efficient
-derivative computations utilizing locally optimized cross country
-sequences of vertex, edge and face elimination steps.  Specifically,
-for the generation of adjoint codes, \OpenADF\ supports various code
-reversal schemes with hierachical checkpointing at the subroutine
-level.  The Fortran specific front and back end to this transformation
-engine is based on the \OpenSixtyFour\ compiler.
+  The derivative evaluation is performed by Fortran 90 code resulting
+  from the analysis and transformation of the original program that
+  defines the function of interest.  The code transformation follows the
+  basic principles of automatic differentiation.  In difference to most
+  other automatic differentiation tools \OpenADF\ uses components 
+  provided by the \OpenAD\ framework which supports a relatively 
+  easy extension of the code transformations
+  in a language indepdendent fashion. 
+  It uses code analysis results
+  implemented in the \OpenAnalysis\ component.  The interface to the
+  language independent transformation engine is an xml abstract
+  interface format, called \xaif\ that is specified through an xml
+  schema.  The implemented transformation algorithms allow efficient
+  derivative computations utilizing locally optimized cross country
+  sequences of vertex, edge and face elimination steps.  Specifically,
+  for the generation of adjoint codes, \OpenADF\ supports various code
+  reversal schemes with hierachical checkpointing at the subroutine
+  level.  The Fortran specific front and back end to this transformation
+  engine is based on the \OpenSixtyFour\ compiler.
 \end{abstract}
 
 
@@ -138,20 +138,20 @@ engine is based on the \OpenSixtyFour\ compiler.
 
 
 % \begin{bottomstuff} 
-% P.~Heimbach, C.~Hill, D.~Ozyurt, and C.~Wunsch, Massachusetts Institute of Technology, 
-% Boston, MA 02139;\newline
-% M.~Fagan, N.~Tallent, Rice University, 
-% Houston, TX 77251;\newline
-% M.~Strout, J.~Utke, Argonne National Laboratory, 
-% Argonne, IL 60439;\newline
-% U.~Naumann, Rheinisch Westf\"alische Techinische Hochschule Aachen, 
-% D-52056 Aachen, Germany;\newline
-% Funding for the ACTS project is provided by NSF under ITR contract OCE-0205590
-% for a three year period that started in September 2002.
+%   P.~Heimbach, C.~Hill, D.~Ozyurt, and C.~Wunsch, Massachusetts Institute of Technology, 
+%   Boston, MA 02139;\newline
+%   M.~Fagan, N.~Tallent, Rice University, 
+%   Houston, TX 77251;\newline
+%   M.~Strout, J.~Utke, Argonne National Laboratory, 
+%   Argonne, IL 60439;\newline
+%   U.~Naumann, Rheinisch Westf\"alische Techinische Hochschule Aachen, 
+%   D-52056 Aachen, Germany;\newline
+%   Funding for the ACTS project is provided by NSF under ITR contract OCE-0205590
+%   for a three year period that started in September 2002.
 % \end{bottomstuff}
 % \maketitle
 
-%#########################################################################################
+% #########################################################################################
 \section{Introduction} \label{sec:Introduction}
 
 The basic principles of automatic differentiation (AD), see also \refsec{sec:ADIntro}, 
@@ -240,8 +240,8 @@ The C/C++ oriented tool ADIC v2.0 \cite{adicWeb}
 is based on the same framework but is 
 not subject of this article.
 \begin{figure}
-\centering\includegraphics[width=.5\textwidth]{overview}
-\caption{\OpenADF\ components and pipeline} \label{fig:overview}
+  \centering\includegraphics[width=.5\textwidth]{overview}
+  \caption{\OpenADF\ components and pipeline} \label{fig:overview}
 \end{figure}
 \OpenADF\ has  a modular design. 
 The collaboration  of the \OpenADF\ components is illustrated in 
@@ -281,7 +281,7 @@ that make up \OpenADF, and \refsec{sec:Usage} details the usage of the tool.
 Two applications further illustrate the tool usage in \refsec{sec:application} and 
 we conclude with a section on future devlepments.
 
-%#########################################################################################
+% #########################################################################################
 \section{AD Concepts}\label{sec:ADIntro}
 
 In this section we present the terminology and basic concepts that 
@@ -301,7 +301,7 @@ We view a given numerical model as a
 vector valued function $\bmy=\bmf(\bmx): \R^n\mapsto \R^m$ that is implemented 
 as a computer program in a language such as Fortran, C, or C++. 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsection{Computational Graphs} \label{ssec:computationalGraphs}
 
 Without loss of generality we can simply assume that an evaluation of $\bmf(\bmx)$ for  
@@ -332,15 +332,15 @@ The depdendency $v_i<v_j$ implies $i<j$.
 The {\em forward mode} of AD propagates directional derivatives
 as 
 \begin{equation} \label{eqn:fm}
-\dot{v}_j= \sum\limits_i\frac{\partial \phi_j}{\partial v_i}\dot{v}_i 
-\quad \text{for}~~j=1,\ldots,q+m.
+  \dot{v}_j= \sum\limits_i\frac{\partial \phi_j}{\partial v_i}\dot{v}_i 
+  \quad \text{for}~~j=1,\ldots,q+m.
 \end{equation} 
 In {\em reverse mode} we compute adjoints of the arguments of the $\phi_j$
 as a function of local partial derivatives and the 
 adjoint of the variable on the left-hand side
 \begin{equation} \label{eqn:rm}
-\overline{v}_i= \sum\limits_j\frac{\partial \phi_j}{\partial v_i}\overline{v}_j 
-\quad \text{for}~~j=1,\ldots,q+m.
+  \overline{v}_i= \sum\limits_j\frac{\partial \phi_j}{\partial v_i}\overline{v}_j 
+  \quad \text{for}~~j=1,\ldots,q+m.
 \end{equation} 
 In practice, the sum in \refeqn{eqn:rm} is often split into individual increments 
 associated with each statement in which $v_i$ occurs as an argument 
@@ -360,7 +360,7 @@ impractical here. Instead we simply consider the statements contained in a
 \basicblock\  as a section of code below the granularity of control flow and 
 construct our computational (sub) graph for a \basicblock.   
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsection{Elimination Methods} \label{ssec:elimMeth}
 Let $\bmf$ represent a single \basicblock\ that is subject to preaccumulation.
 For notational simplicity and without loss of generality we assume that the 
@@ -369,33 +369,33 @@ This situation can always be
 reached by introducing auxiliary assignments.
 Consider the small example in \reffig{fig:toyBB}.
 \begin{figure}[h]
-\begin{center}
-\begin{minipage}{.4\textwidth}
-\verbatimfile{code/straightLine.f90}
-\end{minipage}
-\end{center}
-\caption{Example of code contained in a \basicblock}\label{fig:toyBB}
+  \begin{center}
+    \begin{minipage}{.4\textwidth}
+      \verbatimfile{code/straightLine.f90}
+    \end{minipage}
+  \end{center}
+  \caption{Example of code contained in a \basicblock}\label{fig:toyBB}
 \end{figure}
 Reformulating the example in terms of 
 results of elemental operations $\phi$ assigned to unique intermediate 
 variables $v$ we have 
 \begin{equation}\label{eqn:sampleCode}
-\begin{split}
-v_1&=v_{-1}+v_0;~v_2=\sin(v_0);~v_3=v_1+v_2;~v_4=v_1*v_3; \\
-v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
-\end{split}
+  \begin{split}
+    v_1&=v_{-1}+v_0;~v_2=\sin(v_0);~v_3=v_1+v_2;~v_4=v_1*v_3; \\
+    v_5&=\sqrt{v_3};~v_6=\cos(v_4);~v_7=-v_5 \quad .\\
+  \end{split}
 \end{equation}
 In the tool this modified representation is created as part of the linearization transformation, see 
 \refsec{sssec:linearization}.
 In \reffig{fig:elims}~(a) we show the computational graph $G$ for this representation.
 \begin{figure}
-\centering\includegraphics[width=.7\textwidth]{elims}
-\caption{
-(a) Computational graph $G$ for \refeqn{eqn:sampleCode}, 
-(b) eliminate vertex 3 from $G$, 
-(c) front eliminate edge $(1,3)$ from $G$, 
-(d) back eliminate edge $(3,4)$ from $G$} 
-\label{fig:elims}
+  \centering\includegraphics[width=.7\textwidth]{elims}
+  \caption{
+    (a) Computational graph $G$ for \refeqn{eqn:sampleCode}, 
+    (b) eliminate vertex 3 from $G$, 
+    (c) front eliminate edge $(1,3)$ from $G$, 
+    (d) back eliminate edge $(3,4)$ from $G$} 
+  \label{fig:elims}
 \end{figure}
 The edges $(i,j)\in E$ are labeled with partial derivatives
 $c_{ji}$, for instance, in the 
@@ -443,7 +443,7 @@ Such vertices are removed from $G.$
 Numerically the elimination is the application of 
 the chain rule, that is, a sequence of {\em fused-multiply-add} (fma) operations
 \begin{equation}\label{eqn:fma}
-c_{ki}=c_{ji}*c_{kj}\hspace*{1ex}(+c_{ki}) 
+  c_{ki}=c_{ji}*c_{kj}\hspace*{1ex}(+c_{ki}) 
 \end{equation}
 where the additions in parenthesis take place only  in the case of 
 absorption or otherwise fill-in is created 
@@ -469,11 +469,11 @@ corresponding to $G=(V,E)$ as follows:
 \] 
 and 
 \begin{align*}
-{\cal E}
-&=    \left\{\big(\;\framebox{$i,j$}     \,,\framebox{$j,k$}      \;\big): (i,j),(j,k) \in E        \right\} \\
-&\cup \left\{\big(\;\framebox{$\oplus,j$}\,,\framebox{$j,k$}      \;\big): v_j\in X \land (j,k)\in E\right\} \\
-&\cup \left\{\big(\;\framebox{$i,j$}     \,,\framebox{$j,\ominus$}\;\big): v_j\in Y \land (i,j)\in E\right\} 
-\quad . \\
+  {\cal E}
+  &=    \left\{\big(\;\framebox{$i,j$}     \,,\framebox{$j,k$}      \;\big): (i,j),(j,k) \in E        \right\} \\
+  &\cup \left\{\big(\;\framebox{$\oplus,j$}\,,\framebox{$j,k$}      \;\big): v_j\in X \land (j,k)\in E\right\} \\
+  &\cup \left\{\big(\;\framebox{$i,j$}     \,,\framebox{$j,\ominus$}\;\big): v_j\in Y \land (i,j)\in E\right\} 
+  \quad . \\
 \end{align*}
 That is, 
 we add a source vertex $\oplus$ and a sink vertex 
@@ -501,31 +501,31 @@ Face elimination is defined in \cite{ElimTechMP}
 between two incident intermediate vertices $i$ and $j$ in $\cal G$ as follows:
 \begin{enumerate}
 \item If there exists a vertex $k \in \cal V$ such that $P_k = P_i$ and
-$S_k = S_j,$ then
-set $c_k = c_k + c_j c_i$ {\em (absorption)};
-else ${\cal V}={\cal V} \cup \{k'\}$ with a new vertex $k'$ such that
-$P_{k'} = P_i$ and $S_{k'} = S_j$
-{\em (fill-in)} and labeled with $c_{k'} = c_j c_i.$
+  $S_k = S_j,$ then
+  set $c_k = c_k + c_j c_i$ {\em (absorption)};
+  else ${\cal V}={\cal V} \cup \{k'\}$ with a new vertex $k'$ such that
+  $P_{k'} = P_i$ and $S_{k'} = S_j$
+  {\em (fill-in)} and labeled with $c_{k'} = c_j c_i.$
 \item Remove $(i,j)$ from $\cal E.$
 \item Remove $i \in \cal V$ if it is isolated. Otherwise, if there exists a vertex $i' \in \cal V$ such that
-$P_{i'} = P_i$ and $S_{i'} = S_i,$ then
-\begin{itemize}
-\item set $c_i=c_i + c_{i'}$ {\em (merge)};
-\item remove $i'.$
-\end{itemize}
+  $P_{i'} = P_i$ and $S_{i'} = S_i,$ then
+  \begin{itemize}
+  \item set $c_i=c_i + c_{i'}$ {\em (merge)};
+  \item remove $i'.$
+  \end{itemize}
 \item Repeat Step 3 for $j \in \cal V.$
 \end{enumerate}
 In \reffig{fig:face_elims}~(c) we show the elimination of $(i,j) \in \cal E$,
 where $i=\framebox{$1,3$}$ and $j=\framebox{$3,4$}$.
 
 \begin{figure}
-\centering\includegraphics[width=.65\textwidth]{face_elims}
-\caption{
-(a) $G$ extended, 
-(b) $\cal G$ overlaid, 
-(c) face elimination 
-}
-\label{fig:face_elims}
+  \centering\includegraphics[width=.65\textwidth]{face_elims}
+  \caption{
+    (a) $G$ extended, 
+    (b) $\cal G$ overlaid, 
+    (c) face elimination 
+  }
+  \label{fig:face_elims}
 \end{figure}
 A complete face elimination sequence $\sigma_f$ yields a tripartite 
 directed line graph $\sigma_f({\cal G})$ that can be transformed back into 
@@ -545,45 +545,45 @@ the local partials in conjunction with the function value
 is shown in 
 \reffig{fig:toyAndPartials}.
 \footnote{
-For better readability we write the indices of the $c_{ji}$ with commas.
+  For better readability we write the indices of the $c_{ji}$ with commas.
 } 
 \begin{figure}
-\begin{center}
-\begin{minipage}{.3\linewidth}
-\begin{align*}
-v_1&=v_{-1}+v_0; \\
-v_2&=\sin(v_0); \\
-v_3&=v_1+v_2; \\
-v_4&=v_1*v_3; \\
-v_5&=\sqrt{v_3};\\
-v_6&=\cos(v_4); \\
-v_7&=-v_5;
-\end{align*}
-\end{minipage}
-\begin{minipage}{.3\linewidth}
-\begin{align*}
-c_{1,-1}&=1; \\
-c_{2,0}&=\cos(v_0); \\
-c_{3,1}&=1; \\
-c_{4,1}&=v_3; \\
-c_{5,3}&=(2\sqrt{v_3})^{-1}; \\
-c_{6,4}&=-\sin(v_4); \\
-c_{7,5}&=-1;
-\end{align*}
-\end{minipage}
-\begin{minipage}{.2\linewidth}
-\begin{align*}
-c_{1,0}&=1; \\
-&\\
-c_{3,2}&=1; \\
-c_{4,3}&=v_1; \\
-&\\
-&\\
-&
-\end{align*}
-\end{minipage}
-\end{center}	
-\caption{Pseudo code for \refeqn{eqn:sampleCode} and the computation of the $c_{ji}$}\label{fig:toyAndPartials}
+  \begin{center}
+    \begin{minipage}{.3\linewidth}
+      \begin{align*}
+        v_1&=v_{-1}+v_0; \\
+        v_2&=\sin(v_0); \\
+        v_3&=v_1+v_2; \\
+        v_4&=v_1*v_3; \\
+        v_5&=\sqrt{v_3};\\
+        v_6&=\cos(v_4); \\
+        v_7&=-v_5;
+      \end{align*}
+    \end{minipage}
+    \begin{minipage}{.3\linewidth}
+      \begin{align*}
+        c_{1,-1}&=1; \\
+        c_{2,0}&=\cos(v_0); \\
+        c_{3,1}&=1; \\
+        c_{4,1}&=v_3; \\
+        c_{5,3}&=(2\sqrt{v_3})^{-1}; \\
+        c_{6,4}&=-\sin(v_4); \\
+        c_{7,5}&=-1;
+      \end{align*}
+    \end{minipage}
+    \begin{minipage}{.2\linewidth}
+      \begin{align*}
+        c_{1,0}&=1; \\
+        &\\
+        c_{3,2}&=1; \\
+        c_{4,3}&=v_1; \\
+        &\\
+        &\\
+        &
+      \end{align*}
+    \end{minipage}
+  \end{center}	
+  \caption{Pseudo code for \refeqn{eqn:sampleCode} and the computation of the $c_{ji}$}\label{fig:toyAndPartials}
 \end{figure}
 In \OpenADF\ the operations in \reffig{fig:toyAndPartials} are generated by the 
 transformation algorithm discussed in \refsec{sssec:linearization}.
@@ -593,30 +593,30 @@ For our example, a forward vertex elimination in the order  (1,2,3,4,5)
 in $G$ (\reffig{fig:elims}), leads to the
 following Jacobian accumulation code.
 \begin{figure}[h]
-%\begin{minipage}{\linewidth}
-%\begin{align*}
-%1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
-%2:\quad  &c_{3,0}=c_{3,2} * c_{2,0}+c_{3,0}; \\
-%3:\quad  &c_{4,-1}=c_{4,3} * c_{3,-1}+c_{4,-1};~c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};~c_{5,-1}=c_{5,3} * c_{3,-1}; \\
-%&c_{5,0}=c_{5,3} * c_{3,0}; \\
-%4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
-%5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
-%\end{align*}
-%\end{minipage}
-\begin{tabular}{l@{\hspace{1ex}}r@{\hspace{0.1ex}}l@{\hspace{1ex}}l@{\hspace{1ex}}l}
-1: &$c_{3,-1}$&$=c_{3,1} * c_{1,-1};         $&$c_{3,0}=c_{3,1} * c_{1,0};        $&$c_{4,-1}=c_{4,1} * c_{1,-1};$\\
-&$c_{4,0} $&$=c_{4,1} * c_{1,0};          $&                                    &                              \\
-2: &$c_{3,0} $&$=c_{3,2} * c_{2,0}+c_{3,0};  $&                                    &                              \\
-3: &$c_{4,-1}$&$=c_{4,3} * c_{3,-1}+c_{4,-1};$&$c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};$&$c_{5,-1}=c_{5,3} * c_{3,-1};$\\
-&$c_{5,0} $&$=c_{5,3} * c_{3,0};          $&                                    &                              \\
-4: &$c_{6,-1}$&$=c_{6,4} * c_{4,-1};         $&$c_{6,0}=c_{6,4} * c_{4,0};        $&                              \\
-5: &$c_{7,-1}$&$=c_{7,5} * c_{5,-1};         $&$c_{7,0}=c_{7,5} * c_{5,0};        $&            
-\end{tabular}
-\caption{Pseudo code for vertex eliminations for \refeqn{eqn:sampleCode}}\label{fig:toyAccumulation}
+  % \begin{minipage}{\linewidth}
+  %   \begin{align*}
+  %     1:\quad  &c_{3,-1}=c_{3,1} * c_{1,-1};~c_{3,0}=c_{3,1} * c_{1,0};~c_{4,-1}=c_{4,1} * c_{1,-1};~c_{4,0}=c_{4,1} * c_{1,0}; \\
+  %     2:\quad  &c_{3,0}=c_{3,2} * c_{2,0}+c_{3,0}; \\
+  %     3:\quad  &c_{4,-1}=c_{4,3} * c_{3,-1}+c_{4,-1};~c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};~c_{5,-1}=c_{5,3} * c_{3,-1}; \\
+  %     &c_{5,0}=c_{5,3} * c_{3,0}; \\
+  %     4:\quad  &c_{6,-1}=c_{6,4} * c_{4,-1};~c_{6,0}=c_{6,4} * c_{4,0}; \\
+  %     5:\quad  &c_{7,-1}=c_{7,5} * c_{5,-1};~c_{7,0}=c_{7,5} * c_{5,0} \quad .
+  %   \end{align*}
+  % \end{minipage}
+  \begin{tabular}{l@{\hspace{1ex}}r@{\hspace{0.1ex}}l@{\hspace{1ex}}l@{\hspace{1ex}}l}
+    1: &$c_{3,-1}$&$=c_{3,1} * c_{1,-1};         $&$c_{3,0}=c_{3,1} * c_{1,0};        $&$c_{4,-1}=c_{4,1} * c_{1,-1};$\\
+    &$c_{4,0} $&$=c_{4,1} * c_{1,0};          $&                                    &                              \\
+    2: &$c_{3,0} $&$=c_{3,2} * c_{2,0}+c_{3,0};  $&                                    &                              \\
+    3: &$c_{4,-1}$&$=c_{4,3} * c_{3,-1}+c_{4,-1};$&$c_{4,0}=c_{4,3} * c_{3,0}+c_{4,0};$&$c_{5,-1}=c_{5,3} * c_{3,-1};$\\
+    &$c_{5,0} $&$=c_{5,3} * c_{3,0};          $&                                    &                              \\
+    4: &$c_{6,-1}$&$=c_{6,4} * c_{4,-1};         $&$c_{6,0}=c_{6,4} * c_{4,0};        $&                              \\
+    5: &$c_{7,-1}$&$=c_{7,5} * c_{5,-1};         $&$c_{7,0}=c_{7,5} * c_{5,0};        $&            
+  \end{tabular}
+  \caption{Pseudo code for vertex eliminations for \refeqn{eqn:sampleCode}}\label{fig:toyAccumulation}
 \end{figure}
 In the tool the operations shown in \reffig{fig:toyAccumulation} are generated by the 
 transformation algorithm discussed in \refsec{sssec:BBPreacc}. 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsection{Control Flow Reversal} \label{ssec:cfReversal}
 Because the code for a $\bmf$ generally contains control flow constructs there is no 
 single  computational graph 
@@ -626,26 +626,26 @@ from the contents of a \basicblock.
 In the example shown in \reffig{fig:toy} we put the \basicblock\ code shown in 
 \reffig{fig:toyBB} into a control flow context, see lines 06--09.
 \begin{figure}
-\begin{center}
-\begin{minipage}{.5\textwidth}
-\begin{tabbing}
-\hspace{.6cm}{\footnotesize \bf 00}\hspace{.5cm} {\tt y(k) = sin(x(1)*x(2))} \\
-\hspace{.6cm}{\footnotesize \bf 01}\hspace{.5cm} {\tt k    = k+1} \\
-\hspace{.6cm}{\footnotesize \bf 02}\hspace{.5cm} {\tt if} \={\tt (mod(k,2) .eq. 1) then } \\
-\hspace{.6cm}{\footnotesize \bf 03}\hspace{.5cm} \>{\tt y(k) = 2*y(k-1)}  \\
-\hspace{.6cm}{\footnotesize \bf 04}\hspace{.5cm} {\tt else } \\
-\hspace{.6cm}{\footnotesize \bf 05}\hspace{.5cm} \>{\tt do} \={\tt i=1,k } \\
-\hspace{.6cm}{\footnotesize \bf 06}\hspace{.5cm} \>\>{\tt t1   = x(1)+x(2) } \\
-\hspace{.6cm}{\footnotesize \bf 07}\hspace{.5cm} \>\>{\tt t2   = t1+sin(x(1)) } \\
-\hspace{.6cm}{\footnotesize \bf 08}\hspace{.5cm} \>\>{\tt x(1) = cos(t1*t2) } \\
-\hspace{.6cm}{\footnotesize \bf 09}\hspace{.5cm} \>\>{\tt x(2) = -sqrt(t2) } \\
-\hspace{.6cm}{\footnotesize \bf 10}\hspace{.5cm} \>{\tt end do } \\
-\hspace{.6cm}{\footnotesize \bf 11}\hspace{.5cm} {\tt end if } \\
-\hspace{.6cm}{\footnotesize \bf 12}\hspace{.5cm} {\tt y(k) = y(k)+x(1)*x(2) } 
-\end{tabbing}
-\end{minipage}
-\end{center}
-\caption{Toy example code with control flow}\label{fig:toy}
+  \begin{center}
+    \begin{minipage}{.5\textwidth}
+      \begin{tabbing}
+        \hspace{.6cm}{\footnotesize \bf 00}\hspace{.5cm} {\tt y(k) = sin(x(1)*x(2))} \\
+        \hspace{.6cm}{\footnotesize \bf 01}\hspace{.5cm} {\tt k    = k+1} \\
+        \hspace{.6cm}{\footnotesize \bf 02}\hspace{.5cm} {\tt if} \={\tt (mod(k,2) .eq. 1) then } \\
+        \hspace{.6cm}{\footnotesize \bf 03}\hspace{.5cm} \>{\tt y(k) = 2*y(k-1)}  \\
+        \hspace{.6cm}{\footnotesize \bf 04}\hspace{.5cm} {\tt else } \\
+        \hspace{.6cm}{\footnotesize \bf 05}\hspace{.5cm} \>{\tt do} \={\tt i=1,k } \\
+        \hspace{.6cm}{\footnotesize \bf 06}\hspace{.5cm} \>\>{\tt t1   = x(1)+x(2) } \\
+        \hspace{.6cm}{\footnotesize \bf 07}\hspace{.5cm} \>\>{\tt t2   = t1+sin(x(1)) } \\
+        \hspace{.6cm}{\footnotesize \bf 08}\hspace{.5cm} \>\>{\tt x(1) = cos(t1*t2) } \\
+        \hspace{.6cm}{\footnotesize \bf 09}\hspace{.5cm} \>\>{\tt x(2) = -sqrt(t2) } \\
+        \hspace{.6cm}{\footnotesize \bf 10}\hspace{.5cm} \>{\tt end do } \\
+        \hspace{.6cm}{\footnotesize \bf 11}\hspace{.5cm} {\tt end if } \\
+        \hspace{.6cm}{\footnotesize \bf 12}\hspace{.5cm} {\tt y(k) = y(k)+x(1)*x(2) } 
+      \end{tabbing}
+    \end{minipage}
+  \end{center}
+  \caption{Toy example code with control flow}\label{fig:toy}
 \end{figure}
 The control flow graph (CFG) \cite{ASU86} resulting from the above code is depicted in 
 \reffig{fig:cfg}(a).
@@ -653,22 +653,22 @@ The assignment statements are contained in the {\basicblock}s B(2,4,6,9).
 For instance, 
 the statements from \reffig{fig:toyBB} now  in lines 06--09 form the loop body, \basicblock\ B(6).
 As B(6) is executed
-{\tt k} times it may be worth putting
+\code{k} times it may be worth putting
 additional effort into the optimization of the derivative code 
 generated for B(6) by optimizing the elimination sequence as illustrated in 
 \refsec{ssec:elimMeth}.
 \begin{figure}[ht]
-\centering
-\begin{tabular}{ccc}
-\includegraphics[width=.25\textwidth]{cfg_ts}
-&
-\includegraphics[width=.25\textwidth]{cfg_tape}
-&
-\includegraphics[width=.25\textwidth]{cfg_adj}
-\\
-\em (a) & \em (b) & \em (c)
-\end{tabular}
-\caption{CFG of \reffig{fig:toy} (a) original, (b) trace generating, (c) reversed}\label{fig:cfg}
+  \centering
+  \begin{tabular}{ccc}
+    \includegraphics[width=.25\textwidth]{cfg_ts}
+    &
+    \includegraphics[width=.25\textwidth]{cfg_tape}
+    &
+    \includegraphics[width=.25\textwidth]{cfg_adj}
+    \\
+    \em (a) & \em (b) & \em (c)
+  \end{tabular}
+  \caption{CFG of \reffig{fig:toy} (a) original, (b) trace generating, (c) reversed}\label{fig:cfg}
 \end{figure}
 For B(6) the corresponding computational graph $G$  see 
 \reffig{fig:elims}(a).  
@@ -677,11 +677,11 @@ For a sequence of $l$ {\basicblock}s that are part of
 a path through the CFG for a particular value of $\bmx$ the 
 equations~(\ref{eqn:fm}) and (\ref{eqn:rm}) can be generalized as follows:
 \begin{equation} \label{eqn:bbfm}
-\dot{\bmy}_j=\bmJ_j \dot{\bmx}_j \quad \text{for}~~j=1,\ldots,l
+  \dot{\bmy}_j=\bmJ_j \dot{\bmx}_j \quad \text{for}~~j=1,\ldots,l
 \end{equation} 
 and 
 \begin{equation} \label{eqn:bbrm}
-\bar{\bmx}_j=\bmJ^T_j \bar{\bmy}_j \quad \text{for}~~j=l,\ldots,1\quad ,
+  \bar{\bmx}_j=\bmJ^T_j \bar{\bmy}_j \quad \text{for}~~j=l,\ldots,1\quad ,
 \end{equation} 
 where $\bmx_j = (x^j_i \in V :  i=1,\ldots,n_j)$ and
 $\bmy_j = (y^j_i \in V : i=1,\ldots,m_j)$ are the inputs and outputs of the 
@@ -697,27 +697,21 @@ $\bmx_3=\bmy_j=($\code{x(1)}$,$\code{x(2)}$)$ and
 consequently have the operations for the Jacobian vector product shown 
 in \reffig{fig:JacVec}.  
 \begin{figure}[h]
-\begin{center}
-\begin{minipage}{.3\linewidth}
-\begin{align*}
-t_1&=\dot{\tt x}\mbox{\tt (1)} ; \\
-\dot{\tt x}\mbox{\tt (1)}&=c_{6,-1}*t_1; \\
-\dot{\tt x}\mbox{\tt (2)}&=c_{7,-1}*t_1; 
-\end{align*}
-\end{minipage}
-\begin{minipage}{.3\linewidth}
-\begin{align*}
-t_2&=\dot{\tt x}\mbox{\tt (2)}; \\
-\dot{\tt x}\mbox{\tt (1)}&=\dot{\tt x}\mbox{\tt (1)}+c_{6,0}*t_2; \\
-\dot{\tt x}\mbox{\tt (2)}&=\dot{\tt x}\mbox{\tt (2)}+c_{7,0}*t_2; 
-\end{align*}
-\end{minipage}
-\end{center}	
-\caption{Pseudo code for $\bmJ_3\dot{\bmx}_3$ relating to the loop body in \reffig{fig:toy}}\label{fig:toyPreacc}
+  \begin{center}
+    \begin{align*}
+      t_1&=\dot{\tt x}\mbox{\tt (1)} ; \\
+      t_2&=\dot{\tt x}\mbox{\tt (2)}; \\
+      \dot{\tt x}\mbox{\tt (1)}&=c_{6,-1}*t_1; \\
+      \dot{\tt x}\mbox{\tt (1)}&=\dot{\tt x}\mbox{\tt (1)}+c_{6,0}*t_2; \\
+      \dot{\tt x}\mbox{\tt (2)}&=c_{7,-1}*t_1; \\
+      \dot{\tt x}\mbox{\tt (2)}&=\dot{\tt x}\mbox{\tt (2)}+c_{7,0}*t_2; 
+    \end{align*}
+  \end{center}	
+  \caption{Pseudo code for $\bmJ_3\dot{\bmx}_3$ for the loop body in \reffig{fig:toy}}\label{fig:toyPreacc}
 \end{figure}
 Note that the code overwrites \code{x(1)} and \code{x(2)} and therefore 
 we have to preserve the original derivatives in temporaries $t_1$ and $t_2$.
- 
+
 In {\em reverse mode} products of the transposed
 Jacobians $\bmJ^T_j$ with adjoint vectors $\overline{\bmy}_j$
 are propagated reverse to the direction of the flow of control.
@@ -728,6 +722,31 @@ which is commonly called the {\em tape}..They are retrieved from the
 tape for computing \refeqn{eqn:bbrm} during the reverse execution. 
 It is possible to organize the store and retrieve such that the tape can be 
 implemented as a stack.
+\begin{figure}[h]
+  \begin{center}
+    \begin{minipage}[b]{.2\linewidth}
+      \code{push(}$c_{6,-1}$\code{);}\\
+      \code{push(}$c_{6,0}$\code{);}\\
+      \code{push(}$c_{7,-1}$\code{);}\\
+      \code{push(}$c_{7,0}$\code{);}\\
+      \\ \\ \\
+      \centerline{(a)}
+    \end{minipage}
+    \begin{minipage}[b]{.2\linewidth}
+      \small
+      \begin{align*}
+        t_2&=\code{pop()}*\bar{\tt x}\mbox{\tt (2)};\\
+        t_1&=\code{pop()}*\bar{\tt x}\mbox{\tt (2)};\\
+        t_2&=t_2+\code{pop()}*\bar{\tt x}\mbox{\tt (1)};\\
+        t_1&=t_1+\code{pop()}*\bar{\tt x}\mbox{\tt (1)};\\
+        \bar{\tt x}\mbox{\tt (2)}& =t_2;\\
+        \bar{\tt x}\mbox{\tt (1)}& =t_1;
+      \end{align*}
+      \centerline{(a)}
+    \end{minipage}
+  \end{center}	
+  \caption{Pseudo code for writing the tape (a) and consuming the tape for  $\bmJ_3^T\bar{\bmy}_3$ (b) for  the loop body in \reffig{fig:toy}}\label{fig:toyPreacc}
+\end{figure}
 
 In order to find the corresponding path to the reversed control flow graph 
 we also have to generate a trace which is done with an augmented CFG,
@@ -756,7 +775,7 @@ We enter the branch and execute the loop as indicated by the recorded informatio
 The process of the control flow reversal is described in detail in 
 \cite{NULF04CFR}. 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsection{Call Graph Reversal} \label{ssec:cgReversal}
 
 Generally, the computer program 
@@ -772,26 +791,26 @@ reversal /cite{grie00} for any subroutine in the call graph .
 These concepts are easier understood with the help of the dynamic call tree,
 see also \cite{iccs2005}.
 \begin{figure}
-\centering
-\begin{tabular}{p{.5\linewidth}p{.3\linewidth}}
-\begin{minipage}[b]{\linewidth}
-\footnotesize
-\tt subroutine A()\\
-\hspace*{3ex}call B(); call D(); call B();\\
-end subroutine A\\[.2em]
-subroutine B()\\
-\hspace*{3ex}call C()\\
-end subroutine B\\[.2em]
-subroutine C()\\
-\hspace*{3ex}call E()\\
-end subroutine C
-\end{minipage}
-&
-\vspace*{-3.2cm}
-\centering{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_ns}}
-\end{tabular}
-\caption{Dynamic call tree of a simple calling hierarchy}
-\label{fig:simple_dct}
+  \centering
+  \begin{tabular}{p{.5\linewidth}p{.3\linewidth}}
+    \begin{minipage}[b]{\linewidth}
+      \footnotesize
+      \tt subroutine A()\\
+      \hspace*{3ex}call B(); call D(); call B();\\
+      end subroutine A\\[.2em]
+      subroutine B()\\
+      \hspace*{3ex}call C()\\
+      end subroutine B\\[.2em]
+      subroutine C()\\
+      \hspace*{3ex}call E()\\
+      end subroutine C
+    \end{minipage}
+    &
+    \vspace*{-3.2cm}
+    \centering{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_ns}}
+  \end{tabular}
+  \caption{Dynamic call tree of a simple calling hierarchy}
+  \label{fig:simple_dct}
 \end{figure}
 where ach vertex represents an actual invocation of a subroutine for a 
 given execution of the program, see \reffig{fig:simple_dct} and 
@@ -802,69 +821,69 @@ means that first the tape for the entire program is written. Then
 we follow with the reverse steps that read the tape, see \reffig{fig:split}. 
 
 \begin{table}[t]
-\begin{center}
-\begin{tabular}{clcl}
-\includegraphics[origin=c,angle=-90,width=0.7cm]{box}  
-& 
-\begin{minipage}[b]{.3\linewidth}
-$n$-th invocation
-of subroutine {\tt S}
-\end{minipage} 
-& 
-\includegraphics[origin=c,angle=-90,width=0.7cm]{call} & 
-\begin{minipage}[b]{.3\linewidth}
-subroutine call\\[-2mm]
-\end{minipage} 
-\\ 
-\includegraphics[origin=c,angle=-90,width=0.7cm]{rf}  & 
-\begin{minipage}[b]{.3\linewidth}
-run forward \\[-2mm]
-\end{minipage}
-& 
-\includegraphics[origin=c,angle=-90,width=0.7cm]{order}  & 
-\begin{minipage}[b]{.3\linewidth}
-order of execution \\[-2mm]
-\end{minipage}
-\\
-\includegraphics[origin=c,angle=-90,width=0.7cm]{sac}  & 
-\begin{minipage}[b]{.3\linewidth}
-store checkpoint \\[-2mm]
-\end{minipage}
-& 
-\includegraphics[origin=c,angle=-90,width=0.7cm]{rac}  & 
-\begin{minipage}[b]{.3\linewidth}
-restore checkpoint \\[-2mm]
-\end{minipage}
-\\
-\includegraphics[origin=c,angle=-90,width=0.7cm]{ta}  & 
-\begin{minipage}[b]{.3\linewidth}
-run forward and tape \\[-2mm]
-\end{minipage}
-& 
-\includegraphics[origin=c,angle=-90,width=0.7cm]{ad}  & 
-\begin{minipage}[b]{.3\linewidth}
-run adjoint \\[-2mm]
-\end{minipage}
-\\
-\end{tabular}
-\end{center}
-\vspace*{-.5cm}
-\caption{Symbols for call tree reversal}
-\label{tab:leg}
+  \begin{center}
+    \begin{tabular}{clcl}
+      \includegraphics[origin=c,angle=-90,width=0.7cm]{box}  
+      & 
+      \begin{minipage}[b]{.3\linewidth}
+        $n$-th invocation
+        of subroutine {\tt S}
+      \end{minipage} 
+      & 
+      \includegraphics[origin=c,angle=-90,width=0.7cm]{call} & 
+      \begin{minipage}[b]{.3\linewidth}
+        subroutine call\\[-2mm]
+      \end{minipage} 
+      \\ 
+      \includegraphics[origin=c,angle=-90,width=0.7cm]{rf}  & 
+      \begin{minipage}[b]{.3\linewidth}
+        run forward \\[-2mm]
+      \end{minipage}
+      & 
+      \includegraphics[origin=c,angle=-90,width=0.7cm]{order}  & 
+      \begin{minipage}[b]{.3\linewidth}
+        order of execution \\[-2mm]
+      \end{minipage}
+      \\
+      \includegraphics[origin=c,angle=-90,width=0.7cm]{sac}  & 
+      \begin{minipage}[b]{.3\linewidth}
+        store checkpoint \\[-2mm]
+      \end{minipage}
+      & 
+      \includegraphics[origin=c,angle=-90,width=0.7cm]{rac}  & 
+      \begin{minipage}[b]{.3\linewidth}
+        restore checkpoint \\[-2mm]
+      \end{minipage}
+      \\
+      \includegraphics[origin=c,angle=-90,width=0.7cm]{ta}  & 
+      \begin{minipage}[b]{.3\linewidth}
+        run forward and tape \\[-2mm]
+      \end{minipage}
+      & 
+      \includegraphics[origin=c,angle=-90,width=0.7cm]{ad}  & 
+      \begin{minipage}[b]{.3\linewidth}
+        run adjoint \\[-2mm]
+      \end{minipage}
+      \\
+    \end{tabular}
+  \end{center}
+  \vspace*{-.5cm}
+  \caption{Symbols for call tree reversal}
+  \label{tab:leg}
 \end{table}
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_split_ns}}
-\vspace*{-.5cm}
-\caption{Dynamic call tree for split reversal}
-\label{fig:split}
+  \centerline{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_split_ns}}
+  \vspace*{-.5cm}
+  \caption{Dynamic call tree for split reversal}
+  \label{fig:split}
 \end{figure}
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_joint_ns}}
-\vspace*{-3cm}
-\caption{DCT of adjoint obtained by joint reversal mode}
-\label{fig:joint}
+  \centerline{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_joint_ns}}
+  \vspace*{-3cm}
+  \caption{DCT of adjoint obtained by joint reversal mode}
+  \label{fig:joint}
 \end{figure}
 
 Using joint reversal for all subroutines in a program 
@@ -882,7 +901,7 @@ For many applications neither an all split nor all joint reversal
 is efficient. Often a mix of split and joint reversals statically  
 applied to subtrees of the call tree is suitable.  
 
-%#########################################################################################
+% #########################################################################################
 \section{Components of \OpenADF}\label{sec:openadfcomponents}
 
 \OpenADF\ is built on components that belong to a framework designed
@@ -894,10 +913,10 @@ In \refsec{ssec:openadcomponents} we describe the language-indepdendent
 components of \OpenAD\ framework and \refsec{ssec:fortfe} provides details 
 in the Fortran front-end.
 The regular setup procedure for \OpenADF, see also \refsec{ssec:dab}, 
-will retrieve all componenents into an {\tt OpenAD/} directory to which 
+will retrieve all componenents into an \code{OpenAD/} directory to which 
 we refer from here on.  
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsection{Language Independent Components (\OpenAD)}\label{ssec:openadcomponents}
 
 The component design of the tool aims for reuse of the different components 
@@ -907,7 +926,7 @@ also for the reuse of the individual components in different contexts.
 A second, equally important concern is the flexibility of the tool.  
 This section covers the language independent components that make up the core \OpenAD\ framework. 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsubsection{Static Code Analyses (\OpenAnalysis)} \label{sssec:openanalysis}
 
 The \OpenAnalysis\ toolkit, see \cite{oaWeb}, separates program
@@ -924,10 +943,10 @@ and side-effect analysis are also available via
 consumer.  A description of Alias analysis illustrates this
 interaction.  \xaif\ requires an alias map data structure, in which
 each variable reference is mapped to a set of virtual locations that
-it may or must reference.  For example, if a global variable {\tt g}
-is passed into subroutine {\tt foo} through the reference parameter
-{\tt p}, variable references {\tt g} and {\tt p} will reference the
-same location within the subroutine {\tt foo} and therefore be aliases.  
+it may or must reference.  For example, if a global variable \code{g}
+is passed into subroutine \code{foo} through the reference parameter
+\code{p}, variable references \code{g} and \code{p} will reference the
+same location within the subroutine \code{foo} and therefore be aliases.  
 \OpenAnalysis\ determines the aliasing relationships by querying an
 abstract interface called the alias IR interface, which is a 
 language-independent interface between \OpenAnalysis\ and any
@@ -962,8 +981,8 @@ The main difference is that the data-flow framework in \OpenAnalysis\ does not
 yet take advantage of the structured data-flow equations.  Activity analysis is
 implemented in a context-insensitive, flow-sensitive interprocedural fashion.
 
-All sources for \OpenAnalysis\ can be found under {\tt OpenAD/OpenAnalysis/}.
-%-----------------------------------------------------------------------------------------
+All sources for \OpenAnalysis\ can be found under \code{OpenAD/OpenAnalysis/}.
+% -----------------------------------------------------------------------------------------
 \subsubsection{Representing the Numerical Core (\xaif)} \label{sssec:xaif}
 {\color{red} JU: rewritten } 
 
@@ -979,7 +998,8 @@ to be retained by the language specific front-end to reassemble the
 complete program from the (transformed) numerical core.
 Among the generic language features not considered part of the numerical core are: 
 \begin{itemize}
-\item user type definitions and user type specific access operations, see also \refsec{sssec:Canonicalization}
+  \parskip = -2pt
+\item user type definitions and member access, see also \refsec{sssec:Canonicalization}
 \item pointer arithmetic
 \item I/O operations  
 \item memory management, see also \refsec{sec:concl}
@@ -1038,18 +1058,18 @@ that is extended by a construct to represent inlinable subroutine calls and
 a specific list of control flow graphs that the post processor places in predefined 
 locations in the subroutine template.    
 
-The \xaif\ schema and examples can be found under {\tt OpenAD/xaif/}.
+The \xaif\ schema and examples can be found under \code{OpenAD/xaif/}.
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsubsection{Transforming the Numerical Core (\xaifBooster)} \label{sssec:xaifBooster}
 The transformation engine that differentiates the \xaif\ representation of 
 $\bmf$ is called \xaifBooster. It is implemented in C++ based on a 
 data structure that represents all information supplied in the \xaif\ input 
 together with collection of algorithms that operate on this data structure, modify 
-it and produce transformed \xaif\ output as the result. All sources for \xaifBooster\ can be found under {\tt OpenAD/xaifBooster/}. The principal setup of the source tree is shown in \reftab{tab:dirStruct}.
+it and produce transformed \xaif\ output as the result. All sources for \xaifBooster\ can be found under \code{OpenAD/xaifBooster/}. The principal setup of the source tree is shown in \reftab{tab:dirStruct}.
 \begin{figure}
-\centering \includegraphics[width=.45\textwidth]{irInh}
-\caption{Simplified class inheritance in \xaifBooster} \label{fig:iri}
+  \centering \includegraphics[width=.45\textwidth]{irInh}
+  \caption{Simplified class inheritance in \xaifBooster} \label{fig:iri}
 \end{figure}
 The \xaifBooster\ data structure  
 closely resembles the information one would find in a 
@@ -1060,8 +1080,8 @@ and the Standard C++ Library\cite{libstdcWeb}.
 occuring in the \xaifBooster\ data structure in the inheritance 
 as well as the composition hierarchy.  
 \begin{figure}[htb]
-\centering \includegraphics[width=.45\textwidth]{irComp}
-\caption{Simplified class composition in \xaifBooster} \label{fig:irc}
+  \centering \includegraphics[width=.45\textwidth]{irComp}
+  \caption{Simplified class composition in \xaifBooster} \label{fig:irc}
 \end{figure}
 A doxygen generated documentation of the entire data structure 
 can be found on the \OpenAD\ website \cite{openadWeb}.
@@ -1082,41 +1102,41 @@ An example is the graph class \code{Expression} accepting vertex instances that 
 The transformation algorithms are modularized to enable reuse in different 
 contexts. 
 \begin{figure}
-\centering \includegraphics[width=.45\textwidth]{allAlgs}
-\caption{\xaifBooster\ algorithms} \label{fig:allAlgs}
+  \centering \includegraphics[width=.45\textwidth]{allAlgs}
+  \caption{\xaifBooster\ algorithms} \label{fig:allAlgs}
 \end{figure}
 \reffig{fig:allAlgs} shows some implemented algorithms with dependencies.
 To avoid conflicts the transformation algorithms the data structure representing the input code  
 is never directly modified. 
 Instead, any data representing modifications or augmentations of the 
-original representation element in a class {\tt <name>}
-are held in algorithm specific instances of class {\tt <name>Alg}.
+original representation element in a class \code{<name>}
+are held in algorithm specific instances of class \code{<name>Alg}.
 The association is done via mutual references accessible 
-through {\tt get<name>AlgBase()} and {\tt getContaining<name>()} respectively.
+through \code{get<name>AlgBase()} and \code{getContaining<name>()} respectively.
 The instantiation of the algorithm specific classes follows 
 the factory design pattern. The factory instances in turn are controlled 
-by a transformation algorithm specific {\tt AlgFactoryManager} classes. 
+by a transformation algorithm specific \code{AlgFactoryManager} classes. 
 Further details can be found in \cite{sea2003}, howeverer, the code 
 code for this mechanism is fairly self-explanatory.  
-  
+
 In the following sections we want to concentrate on the transformation 
 the algorithms execute while deferring to the generated code 
 documentation for most technical details.
 
-Each algorithm has a driver {\tt t.pp} (compiled into a binary {\tt t}) 
-found in {\tt algorithms/<the\_algorithm\_name>/test/} 
+Each algorithm has a driver \code{t.pp} (compiled into a binary \code{t}) 
+found in \code{algorithms/<the\_algorithm\_name>/test/} 
 that encapsulates the algorithm 
 in a stand-alone binary which provides the functionality described 
 in the following 
 sections. For details on the invocation and command line options refer to 
 \refsec{ssec:manualPipeline}.
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \paragraph{Reading and Writing \xaif}\label{ssssec:readWriteXaif}
 Reading and Writing the \xaif\ is part of basic infrastructure
-found in the sources in {\tt system/}.
+found in the sources in \code{system/}.
 Parsing is done through the Xerces C++ XML parser \cite{xercesWeb}
-such that the XML element handler implementations, see {\tt system/src/XAIFBaseParserHandlers.cpp},
+such that the XML element handler implementations, see \code{system/src/XAIFBaseParserHandlers.cpp},
 build the \xaifBooster\ data 
 structure from the top down. 
 As an additional consistency check all components that read \xaif\ data 
@@ -1133,16 +1153,16 @@ For information of the files containg the \xaif\ representation refer to
 
 Aside from the parsing of the actual input \xaif\ there is also the so called 
 {\em 
-catalogue of inlinable intrinsics
+  catalogue of inlinable intrinsics
 } 
 supplied as an XML following a specialized schema in \xaif, see  
 \refsec{sssec:linearization} and \refsec{sssec:wtxxtw}.
-There is also a driver at this level found in {\tt system/test/t.cpp} used 
+There is also a driver at this level found in \code{system/test/t.cpp} used 
 to verify reading and writing functionality. It can be used to establish 
 that the tool pipeline preserves the semantics of the original program when 
 no transformation is involved. 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \paragraph{Linearization}\label{sssec:linearization}
 
 \refsec{sec:ADIntro} explained the computation of 
@@ -1157,8 +1177,8 @@ the intrinsics catalogue.
 The partials are defined in terms of positional arguments, see 
 \reffig{fig:divExample}. 
 \begin{figure}
-\centering \includegraphics[width=5cm]{divIntrinsic}
-\caption{Partial expressions for the division operator} \label{fig:divExample}
+  \centering \includegraphics[width=5cm]{divIntrinsic}
+  \caption{Partial expressions for the division operator} \label{fig:divExample}
 \end{figure}
 
 Because of this, 
@@ -1174,14 +1194,14 @@ the original variable value have been computed.
 The result of the Linearization is a representation for 
 code containing the potentially split 
 assignments along with assignments for each non-zero edge label $c_{ji}$.
-These representations are contained in the {\tt xaifBoosterLinearization::AssignmentAlg} instances associated with each assignment in the \xaif.
+These representations are contained in the \code{xaifBoosterLinearization::AssignmentAlg} instances associated with each assignment in the \xaif.
 The generated code after unparsing to Fortran 
 is compilable but does by itself not compute useful 
 derivative information at the lavel for the target function $\bmf$. The 
 transformation driver is 
 used to verify the results of the linearization transformation.
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \paragraph{Basic Block Preaccumulation}\label{sssec:BBPreacc}
 
 This transformation generates a code representation that can be used 
@@ -1209,7 +1229,7 @@ line flag.
 
 Based on the constructed $G$ an elimination sequence has to be determined.
 To allow a choice for the computation of the elimination sequence 
-the code uses the interface coded in {\tt algorithms/CrossCountryInterface/}
+the code uses the interface coded in \code{algorithms/CrossCountryInterface/}
 and by default calls the \angel\ library \cite{angelWeb}.
 \angel\ determines an elimination sequence and returns it as 
 fused multiply add expressions in terms of the edge references.
@@ -1243,7 +1263,7 @@ The generated code is executable and represents an overall forward mode
 according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in 
 cross-country fashion. 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \paragraph{Memory/Operations Tradeoff}\label{sssec:MMTradeOff}
 
 This algorithm can be seen as an alternative to the \angel\ library. 
@@ -1266,77 +1286,77 @@ selecting the next target that would be eliminated in forward or reverse mode.
 respect to an elimination technique.  If the selection criterion is not met 
 by any target in $\Theta$, then $\Theta'=\Theta$. 
 \begin{table}[htb]
-\begin{tabular}{|l|c|c|c|}\hline
-& \code{VERTEX} & \code{EDGE} & \code{FACE} 
-\\\hline %---------------------------------------
-\code{SIBLING} 
-&
-\begin{minipage}{.4\linewidth}
-\footnotesize
-select vertices that share at least one predecessor
-and sucessor with the most recently eliminated vertex.
-\end{minipage}
-& N/A & N/A
-\\\hline %---------------------------------------
-\code{SIBLING2} 
-&
-\begin{minipage}{.4\linewidth}
-\footnotesize
-select vertices with the maximal product of 
-the number of predecessors and the number of 
-successors shared with the most recently eliminated vertex
-\end{minipage}
-&
-\begin{minipage}{.2\linewidth}
-\footnotesize
-select edges with the same source / target and the 
-maximal number of successors / predecessors shared with the 
-successors / predecessors of 
-the most recently front / back eliminated edge
-\end{minipage}
-& N/A 
-\\\hline  %---------------------------------------
-\code{SUCCPRED} 
-&
-\begin{minipage}{.4\linewidth}
-\footnotesize
-select vertices  that were either predecessors or sucessors of
-the most recently eliminated vertex
-\end{minipage}
-& N/A & N/A 
-\\\hline %---------------------------------------
-\code{ABSORB} 
-& N/A & N /A &
-\begin{minipage}{.2\linewidth}
-select faces that are absorbed
-\end{minipage}
-\\\hline %---------------------------------------
-\code{MARKOWITZ} 
-&
-\begin{minipage}{.4\linewidth}
-\footnotesize
-select vertices with  the lowest Markowitz degree
-\end{minipage}
-&
-\begin{minipage}{.2\linewidth}
-\footnotesize
-select edges with the lowest Markowitz degree
-\end{minipage}
-&
-N/A
-\\\hline %---------------------------------------
-\code{FORWARD} 
-&\multicolumn{3}{c|}{
-select the target next in forward mode
-}
-\\\hline %---------------------------------------
-\code{REVERSE} 
-&\multicolumn{3}{c|}{
-select the target next in reverse mode
-}
-\\\hline %---------------------------------------
-\end{tabular}
-\caption{Heuristics selection criteria}\label{tab:memOpsHeur}
+  \begin{tabular}{|l|c|c|c|}\hline
+    & \code{VERTEX} & \code{EDGE} & \code{FACE} 
+    \\\hline %---------------------------------------
+    \code{SIBLING} 
+    &
+    \begin{minipage}{.4\linewidth}
+      \footnotesize
+      select vertices that share at least one predecessor
+      and sucessor with the most recently eliminated vertex.
+    \end{minipage}
+    & N/A & N/A
+    \\\hline %---------------------------------------
+    \code{SIBLING2} 
+    &
+    \begin{minipage}{.4\linewidth}
+      \footnotesize
+      select vertices with the maximal product of 
+      the number of predecessors and the number of 
+      successors shared with the most recently eliminated vertex
+    \end{minipage}
+    &
+    \begin{minipage}{.2\linewidth}
+      \footnotesize
+      select edges with the same source / target and the 
+      maximal number of successors / predecessors shared with the 
+      successors / predecessors of 
+      the most recently front / back eliminated edge
+    \end{minipage}
+    & N/A 
+    \\\hline  %---------------------------------------
+    \code{SUCCPRED} 
+    &
+    \begin{minipage}{.4\linewidth}
+      \footnotesize
+      select vertices  that were either predecessors or sucessors of
+      the most recently eliminated vertex
+    \end{minipage}
+    & N/A & N/A 
+    \\\hline %---------------------------------------
+    \code{ABSORB} 
+    & N/A & N /A &
+    \begin{minipage}{.2\linewidth}
+      select faces that are absorbed
+    \end{minipage}
+    \\\hline %---------------------------------------
+    \code{MARKOWITZ} 
+    &
+    \begin{minipage}{.4\linewidth}
+      \footnotesize
+      select vertices with  the lowest Markowitz degree
+    \end{minipage}
+    &
+    \begin{minipage}{.2\linewidth}
+      \footnotesize
+      select edges with the lowest Markowitz degree
+    \end{minipage}
+    &
+    N/A
+    \\\hline %---------------------------------------
+    \code{FORWARD} 
+    &\multicolumn{3}{c|}{
+      select the target next in forward mode
+    }
+    \\\hline %---------------------------------------
+    \code{REVERSE} 
+    &\multicolumn{3}{c|}{
+      select the target next in reverse mode
+    }
+    \\\hline %---------------------------------------
+  \end{tabular}
+  \caption{Heuristics selection criteria}\label{tab:memOpsHeur}
 \end{table}
 The driver allows a sequence of heuristics to be seletec via string supplied as 
 an argument to the commandline swith \code{-H}. The string needs to contain 
@@ -1350,49 +1370,56 @@ The generated code is executable and represents an overall forward mode
 according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in 
 cross-country fashion. 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \paragraph{Using the ANGEL Library}\label{sssec:angel}
-%-----------------------------------------------------------------------------------------
+{\color{red} [ JU: This was a placeholder to talk about the \angel\ lib 
+  but I think I will remove this unless somebody stronly objects]}
+% -----------------------------------------------------------------------------------------
 \paragraph{CFG Reversal}\label{sssec:cfgRevAlg}
 
 \refsec{ssec:cfReversal} explains the principal approach to the reversal 
-of the CFG. The algorithm implements this approach as a contribution to the 
-adjoint code generation in \refsec{sssec:BBRev}. 
+of the CFG. The CFG reversal as implemented in this transformation is 
+by itself not useful othern than for checking the correctness without 
+interference from other transformations. It is a major building block for 
+the  
+adjoint code generater described in \refsec{sssec:BBRev}. 
 The \Loop\ counters and \branch\ identifiers are stored the same 
-stack datastructure that is used for the {\em tape}, see \refsec{sec:ADIntro}.  
+stack datastructure that is used for the {\em tape} (introduced in 
+\refsec{ssec:cfReversal} and also used in \refsec{sssec:bbTA}.  
 The reversal of loops and branches as detailed in \cite{NULF04CFR} assumes 
-CFGs to be well-structured, that is, to be free of arbitrary jump instructrions 
+CFGs to be well-structured, that is, essentially to be free of arbitrary jump instructions 
 such as \code{GOTO} or \code{CONTINUE}. 
-It is of course possible to reverst such graphs, for instance by enumerating
+It is of course possible to reverse such graphs, for instance by enumerating
 all {\basicblock}s, recording the execution sequence and invoking them according 
 to their recorded identifier in  large  \code {SWITCH} statement in reverse order.
-Such a reversal is obviously less efficient than a code that by employing proper 
-control flow constructs aids compiler optimization. 
+Such a reversal is obviously less efficient than a code that, by employing proper 
+control flow constructs, aids compiler optimization. 
 For the same reason well tuned codes implementing the target function $\bmf$ will 
-avoid arbitrary jumps and therefore we have not had sufficient demand to implement 
+avoid arbitrary jumps and therefore we have not seen sufficient demand to implement 
 a CFG reversal for arbitrary jumps. 
 
-Note, that the reversal of  \Loop\ constructs such as \code{DO I=1,10} replaces 
-the loop variable \code{I} with a generated variable name, say \code{T} and we 
-loop up to  the stored execution count which we will call  \code{C} here. 
-Then the reversed \Loop\ is \code{DO T=1,C}. Quite often the loop body contains 
-array derefences such as \code{A(I)} but ${I}$ is no longer available in the 
+The reversal of  \Loop\ constructs such as \code{do i=1,10} replaces 
+the loop variable \code{i} with a generated variable name, say \code{t} and we 
+loop up to  the stored execution count which we will call  \code{c} here. 
+Then the reversed \Loop\ is \code{do t=1,c}. Quite often the loop body contains 
+array derefences such as \code{a(i)} but \code{i} is no longer available in the 
 reversed \Loop. We call this kind of \Loop\ reversal {\em anonymous}. 
-To access the proper memory location \code{I} will have to be stored along with the 
+To access the proper memory location \code{i} will have to be stored along with the 
 \Loop\ counters and \branch\ identifiers in the tape stack.
 To avoid this overhead the \Loop\ reversal may be declared {\em explicit}
-by prepending \code{C\$openad xxx simple loop} to the \Loop\ in question. 
+by prepending \code{c\$openad xxx simple loop} to the \Loop\ in question. 
 With this directive the original \Loop\ variable will be preserved,  
-the reversed \Loop\ in our example constructed as \code{DO I=10,1,-1} and 
-no index values for the array references in the \Loop\ body stored. 
-In general the decision when an array index needs to be stored is most  exactly answered 
-with TBR analysis \cite{HNP02}. 
+the reversed \Loop\ in our example constructed as \code{do i=10,1,-1} and 
+no index values for the array references in the \Loop\ body are stored. 
+In general the decision when an array index needs to be stored is better answered 
+with a code analysis similar to TBR analysis \cite{HNP02}. 
 Currently we do not have such  analysis available and instead 
-(somewhat arbitrarily) define a {\em simple}
+as a compromise define the {\em simple}
 \Loop\ which can reversed explicitly as follows. 
 \begin{itemize}
+  \parskip = -2pt
 \item \Loop\ variables are not updated within the loop,
-\item the \Loop\ condition does not use \code{.NE.},
+\item the \Loop\ condition does not use \code{.ne.},
 \item the \Loop\ condition's left-hand side consists only of the \Loop\ variable,
 \item the stride in the update expression is fixed,
 \item the stride is the right-hand side of the top level \code{+} or \code{-} operator,
@@ -1404,12 +1431,10 @@ for the current implementation.
 Because often multidemensional arrays  are accessed with nested loops the 
 \Loop\ directive when specified for the outermost loop will assume the validity 
 of the above conditions for everything within the \Loop\ body including nested 
-\Loop\ and \branch\ constructs. 
-
-{\color{red} The code produced by the driver is \ldots} 
-
-%-----------------------------------------------------------------------------------------
-\paragraph{Basic Block Preaccumulation Tape and Tape Adjoint}\label{sssec:bbTA}
+\Loop\ and \branch\ constructs. More details on this aspect can be found in 
+\cite{scam_jss_se}. 
+% -----------------------------------------------------------------------------------------
+\paragraph{Writing and Consuming the Tape}\label{sssec:bbTA}
 
 Together with the CFG reversal two more building blocks contribute to the 
 generation of adjoint code. 
@@ -1426,62 +1451,62 @@ the respective adjoint operations for \refeqn{eqn:bbrm} carried out.
 The respective adjoints of the four different categories listed in \refsec{sssec:BBPreacc} are listed in 
 \reftab{tab:saxpyAdj}.
 \begin{table}
-\begin{tabular}{|l|l|}\hline
-$\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$ &  $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
-$\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$ & $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
-$\dot{y} = \dot{x}$ 					& $\overline{x} = \overline{y}$ \\
-$\dot{y} = 0$ 						& $\overline{y} = 0$ 
-\end{tabular}
-\caption{\saxpy\ adjoints} \label{tab:saxpyAdj}
+  \begin{tabular}{|l|l|}\hline
+    $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$ &  $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
+    $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$ & $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
+    $\dot{y} = \dot{x}$ 					& $\overline{x} = \overline{y}$ \\
+    $\dot{y} = 0$ 						& $\overline{y} = 0$ 
+  \end{tabular}
+  \caption{\saxpy\ adjoints} \label{tab:saxpyAdj}
 \end{table} 
 
 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \paragraph{Basic Block Preaccumulation Reverse}\label{sssec:BBRev}
 
 
 
 {\color{blue} [ this is old stuff from the abstract]  
-\begin{figure}
-\centering \includegraphics[width=4cm]{principle}
-\caption{\xaifBooster\ parses xaif code into an internal representation (IR).
-It provides an API for transformation algorithms to modify the IR. An unparser
-returns the transformed xaif code.} \label{fig:xaifBooster}
-\end{figure}
-The C++ code \xaifBooster\ is a collection of utilities and routines for the
-(semantic) transformation of programs given in xaif. Its principal architecture 
-is illustrated in \reffig{fig:xaifBooster}. One of the major concerns during
-the development of \xaifBooster\ has been the clean separation of the internal
-representation (an enhanced object image of xaif) from algorithms that operate 
-on this data structure. This goal has been achieved by applying the design 
-patterns \cite{DesignPatterns} factory, visitor, and decorator as described in \cite{UtNa03}.
-The result is an API that gives AD developers the opportunity
-to implement new algorithms in a source transformation environment without
-having to implement full compiler front- and back-ends. Building on
-this API, we have implemented a tangent-linear algorithm that uses statement-
-\cite{SEUpreacc} and basic-block-level preaccumulation of local 
-gradients/Jacobians. Near-optimal face elimination \cite{ElimTechMP} sequences 
-are computed by the software tool 
-ANGEL \cite{AGN03,SAGA} ({\tt angellib.sourceforge.net}) and transformed into 
-Jacobian code by
-an \xaifBooster\ algorithm. A simple adjoint version of the code is obtained
-by taping the local Jacobians 
-and by computing the corresponding ``transposed Jacobian-vector" products 
-during an interpretive reverse sweep through the tape. This approach is
-essentially equivalent to split program reversal \cite{Gri00} and allows
-for an easy coupling of tangent-linear and adjoint versions of small to 
-medium-sized codes as described in \cite{NaHe03}. 
+  \begin{figure}
+    \centering \includegraphics[width=4cm]{principle}
+    \caption{\xaifBooster\ parses xaif code into an internal representation (IR).
+      It provides an API for transformation algorithms to modify the IR. An unparser
+      returns the transformed xaif code.} \label{fig:xaifBooster}
+  \end{figure}
+  The C++ code \xaifBooster\ is a collection of utilities and routines for the
+  (semantic) transformation of programs given in xaif. Its principal architecture 
+  is illustrated in \reffig{fig:xaifBooster}. One of the major concerns during
+  the development of \xaifBooster\ has been the clean separation of the internal
+  representation (an enhanced object image of xaif) from algorithms that operate 
+  on this data structure. This goal has been achieved by applying the design 
+  patterns \cite{DesignPatterns} factory, visitor, and decorator as described in \cite{UtNa03}.
+  The result is an API that gives AD developers the opportunity
+  to implement new algorithms in a source transformation environment without
+  having to implement full compiler front- and back-ends. Building on
+  this API, we have implemented a tangent-linear algorithm that uses statement-
+  \cite{SEUpreacc} and basic-block-level preaccumulation of local 
+  gradients/Jacobians. Near-optimal face elimination \cite{ElimTechMP} sequences 
+  are computed by the software tool 
+  ANGEL \cite{AGN03,SAGA} (\code{angellib.sourceforge.net}) and transformed into 
+  Jacobian code by
+  an \xaifBooster\ algorithm. A simple adjoint version of the code is obtained
+  by taping the local Jacobians 
+  and by computing the corresponding ``transposed Jacobian-vector" products 
+  during an interpretive reverse sweep through the tape. This approach is
+  essentially equivalent to split program reversal \cite{Gri00} and allows
+  for an easy coupling of tangent-linear and adjoint versions of small to 
+  medium-sized codes as described in \cite{NaHe03}. 
 
-Details of the automatic generation of adjoint code in split mode are presented
-in the full version of the paper. Furthermore, additional information is 
-provided on \xaifBooster\ as a platform for implementing new AD algorithms with 
-the objective to establish an open quasi-standard development infrastructure
-within the AD community.
+  Details of the automatic generation of adjoint code in split mode are presented
+  in the full version of the paper. Furthermore, additional information is 
+  provided on \xaifBooster\ as a platform for implementing new AD algorithms with 
+  the objective to establish an open quasi-standard development infrastructure
+  within the AD community.
 }
 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsection{\OpenADFortTk\ - the Fortran~90 Front-End}\label{ssec:fortfe}
 
 Every subroutine consists of a {\em control flow graph} (CFG) that 
@@ -1492,20 +1517,20 @@ In the following we assume some canonicalizations are performed.
 These canonicalizations are implemented in the front end discussed in 
 \refsec{sssec:Canonicalization}.
 \begin{Can} \label{can:funcToSub}
-All constructs occuring in \basicblock\ that are neither assignments nor subroutine calls (such as function calls, built-in I/O statements) 
-are canonicalized into subroutine calls.
+  All constructs occuring in \basicblock\ that are neither assignments nor subroutine calls (such as function calls, built-in I/O statements) 
+  are canonicalized into subroutine calls.
 \end{Can}
 \begin{Can} \label{can:assignSideEffectFree}
-An assignment effects a single variable on the left-hand side and 
-the right-hand-side expression is side-effect free.
+  An assignment effects a single variable on the left-hand side and 
+  the right-hand-side expression is side-effect free.
 \end{Can}
 \begin{Can} \label{can:assignElemental}
-The right-hand-side expression consists only of elemental operations $\phi$ typically 
-defined in a programming language as built-in operators and intrinsics.
+  The right-hand-side expression consists only of elemental operations $\phi$ typically 
+  defined in a programming language as built-in operators and intrinsics.
 \end{Can}
 \begin{Can} \label{can:assignFunction}
-User defined functions and calls to these functions in right-hand-side expressions 
-are canonicalized to subroutined calls.
+  User defined functions and calls to these functions in right-hand-side expressions 
+  are canonicalized to subroutined calls.
 \end{Can}
 
 The main target application of the ACTS project is the MIT general
@@ -1523,34 +1548,34 @@ operate at several stages of the pipeline in the following order.
 
 \begin{enumerate}	
 \item \mfefninety\ is a compiler front-end in the classical sense that parses
-Fortran and generates an intermediate representation (IR)
-in the \whirl\ language
+  Fortran and generates an intermediate representation (IR)
+  in the \whirl\ language
 
 \item The {\em canonicalizer} converts  
-programming constructs into the canonical form required by 
-\refcan{can:funcToSub} - \refcan{can:assignFunction}. 
-This component modifies \whirl\ in core.
+  programming constructs into the canonical form required by 
+  \refcan{can:funcToSub} - \refcan{can:assignFunction}. 
+  This component modifies \whirl\ in core.
 
 \item \whirlToxaif\ is a bridge component that
-\begin{itemize}
-\item drives the various program analyses (see \refsec{ssec:openanalysis}),
+  \begin{itemize}
+  \item drives the various program analyses (see \refsec{ssec:openanalysis}),
 
-\item filters out program statements that are not in the
-computational core of the language, and 
+  \item filters out program statements that are not in the
+    computational core of the language, and 
 
-\item converts the program analyses and core computational
-statements from \whirl\ into \xaif.
-\end{itemize}
+  \item converts the program analyses and core computational
+    statements from \whirl\ into \xaif.
+  \end{itemize}
 
 \item \xaifTowhirl\ is bridge component that converts the 
-differentiated program represented in \xaif\ 
-to a \whirl\ representation.
+  differentiated program represented in \xaif\ 
+  to a \whirl\ representation.
 
 \item \whirlTof\ is the ``unparser'' that converts \whirl\ to
-Fortran.
+  Fortran.
 
 \item The {\em postprocessor} is the  final part of the transformation that
-performs template expansion as well as inlining substitutions.
+  performs template expansion as well as inlining substitutions.
 
 \end{enumerate}
 
@@ -1558,7 +1583,7 @@ In the following we will explain the subcomponents in more detail.
 The invocation of the components is explained in
 \refsec{ssec:manualPipeline}
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsubsection{\OpenSixtyFour\ components} \label{sssec:mfef}
 
 The \OpenSixtyFour\ project \cite{open64Web} supplies two elements for
@@ -1594,15 +1619,15 @@ $y$ is dependent, a user could write \code{!\$openad dependent(y)},
 where \code{\$openad} is the special prefix that demarcates OpenAD
 pragmas.  Unlike most pragma systems, we introduced a generic
 \code{!\$openad xxx} pragma\footnote{The mneumonic behind name is that
-as $x$ is the typical variable name, so \code{!\$openad xxx} is the
-`variable' pragma.} that can communicate arbitrary pieces of
+  as $x$ is the typical variable name, so \code{!\$openad xxx} is the
+  `variable' pragma.} that can communicate arbitrary pieces of
 text--associated with whole procedures, single statements, or groups
 of statements--through the pipeline.  This generic pragma provides a
 flexible system for experimentation and eliminates the significant
 development costs associated with modifying \OpenSixtyFour.
 
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsubsection{Canonicalization}\label{sssec:Canonicalization}
 
 To ensure the language independence of the transformation engine and
@@ -1612,50 +1637,50 @@ canonicalizations mentioned in \refsec{sec:ADIntro} language
 independence requires the following:
 
 \begin{Can}\label{can:comBlock}
-Common blocks are converted to modules.
+  Common blocks are converted to modules.
 \end{Can}
 \begin{Can}\label{can:param}
-Non-variable actual parameters are hoisted to temporaries.
+  Non-variable actual parameters are hoisted to temporaries.
 \end{Can}
 \begin{Can}\label{can:scalar}
-Derived type references are scalarized.
+  Derived type references are scalarized.
 \end{Can}	
 
 
 {\color{red}
-Canonicalization is 
+  Canonicalization is 
 
-[ expand on reason for canonicalization: 
-1) make life easier for whirl2xaif
-2) XAIF's limited concepts (explained below) 
-] \\
+  [ expand on reason for canonicalization: 
+  1) make life easier for whirl2xaif
+  2) XAIF's limited concepts (explained below) 
+  ] \\
 
-[ how are canonicalizations implemented: on whirl instead of fortran ] \\
+  [ how are canonicalizations implemented: on whirl instead of fortran ] \\
 
 }
 
 All canonicalizations are implemented as part of \whirlToxaif; see 
 \refsec{sssec:wtxxtw}.
 
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsubsection{\whirlToxaif\ and \xaifTowhirl}\label{sssec:wtxxtw}
 
 \begin{figure}
-\scriptsize
-\verbatimfile{code/daerfj.f90}
-\caption{Example Fortran code}\label{fig:exampleFortranCode}
+  \scriptsize
+  \verbatimfile{code/daerfj.f90}
+  \caption{Example Fortran code}\label{fig:exampleFortranCode}
 \end{figure}
 
 \begin{figure}
-\scriptsize
-\verbatimfile{code/daerfj.whirl}
-\caption{Part of whirl for \reffig{fig:exampleFortranCode}}\label{fig:exampleWhirlCode}
+  \scriptsize
+  \verbatimfile{code/daerfj.whirl}
+  \caption{Part of whirl for \reffig{fig:exampleFortranCode}}\label{fig:exampleWhirlCode}
 \end{figure}
 
 \begin{figure}
-\scriptsize
-\verbatimfile{code/daerfj.xaif}
-\caption{Part of \xaif\ for \reffig{fig:exampleFortranCode}}\label{fig:exampleXaifCode}
+  \scriptsize
+  \verbatimfile{code/daerfj.xaif}
+  \caption{Part of \xaif\ for \reffig{fig:exampleFortranCode}}\label{fig:exampleXaifCode}
 \end{figure}
 
 
@@ -1727,19 +1752,19 @@ are coded as function operations. To make these operations work well,
 however, they must be substituted inline, replacing the function call.
 
 {\color{red}
-[ Need examples of templates here (or somewhere) ]
+  [ Need examples of templates here (or somewhere) ]
 
-[ Does inlining serve any other purpose besides efficiency?  Yes --
-the inlined routines have strange parameter substitution to support
-the active data-structures.]
+  [ Does inlining serve any other purpose besides efficiency?  Yes --
+  the inlined routines have strange parameter substitution to support
+  the active data-structures.]
 
-[postprocessor to handle things that are not convenient to do in whirl
-(making xaif2whirl's life easier).]
+  [postprocessor to handle things that are not convenient to do in whirl
+  (making xaif2whirl's life easier).]
 }
 
 
 
-%#########################################################################################
+% #########################################################################################
 \section{Tool Usage} \label{sec:Usage}
 The following contains brief instructions how to obtain and use \OpenADF. 
 While the principal approach will remain the same, future development may 
@@ -1750,7 +1775,7 @@ up to date instructions on the \OpenADF\ website \cite{openadWeb}.
 \subsection{Manual Pipeline}\label{ssec:manualPipeline}
 
 
-%#########################################################################################
+% #########################################################################################
 \section{Application}\label{sec:application}
 
 The reference application for the first prototype of an \OpenADF\ implementation
@@ -1770,11 +1795,11 @@ the Jacobians provided by TAF and \OpenADF.
 The successful 
 application of \OpenADF\ to the box model code is considered as a feasibility 
 proof for the overall approach taken by the ACTS project.  
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsection{Shallow Water Model}
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \subsection{Derya's application}
-%#########################################################################################
+% #########################################################################################
 \section{Conclusion and Future Work}\label{sec:concl}
 
 {\color{red} dynamic memory}
@@ -1788,7 +1813,7 @@ an open, extensible, and easy-to-use platform for research and development
 in the field. Its intention is not to render obsolete existing source transformation
 tools such as ADIFOR \cite{adiforWeb}, 
 the differentiation-enabled NAG Fortran 95 
-compiler,\footnote{{\tt http://www.nag.co.uk/nagware/research/ad\_overview.asp}} TAF,\footnote{{\tt http://www.FastOpt.de}} and TAPENADE.\footnote{{\tt http://tapenade.inria.fr:8080/tapenade/index.jsp}} 
+compiler,\footnote{\code{http://www.nag.co.uk/nagware/research/ad\_overview.asp}} TAF,\footnote{\code{http://www.FastOpt.de}} and TAPENADE.\footnote{\code{http://tapenade.inria.fr:8080/tapenade/index.jsp}} 
 Their closer coupling with the language-specific internal representation of 
 the program has the potential to make the
 exploitation of certain language features easier. \OpenADF\ is supposed to 
@@ -1819,43 +1844,43 @@ to billions of controls. A combination of the methods outlined above is
 essential to guarantee the successful completion of this highly ambitious
 project.
 
-%#########################################################################################
+% #########################################################################################
 \section*{Appendix}
 \begin{table}
-\tiny
-\begin{center}
-\begin{tabular}{ll}
-{\tt Makefile} & the top level {\tt Makefile}\\
-{\tt utils/} & utility classes (debugging, generic traversal, etc.)\\
-{\tt tools/}  & code generator supporting \xaif\ parser \\
-{\tt boostWrapper/}& wrapper classes for the boost graph library \\
-{\tt system/} & all basic data structures, \xaif\ (un)parsing, \refsec{ssssec:readWriteXaif}\\
-{\tt algorithms/}& see the subdirectories below\\
-\quad{\tt CodeReplacement} & support library for subroutine templates\\
-\quad{\tt CrossCountryInterface} & support library for elimination strategies, \refsec{sssec:BBPreacc}\\
-\quad{\tt DerivativePropagator} & support library for Jacobian vector products\\
-\quad{\tt InlinableXMLRepresentation } & support library for inlinable subroutine calls\\ 
-\quad{\tt Linearization} & Linearization transformation, \refsec{sssec:linearization}\\ 
-\quad{\tt BasicBlockPreaccumulation} & elimination with \angel\ and \\
-& preaccumulation at the \basicblock\ level, \refsec{sssec:BBPreacc}\\
-\quad{\tt  MemOpsTradeoffPreaccumulation} & as above but with different heuristics than \angel\\
-\quad{\tt ControlFlowReversal} & control flow graph reversal\\
-\quad{\tt BasicBlockPreaccumulationReverse } & adjoint code\\
-\quad{\tt BasicBlockPreaccumulationTape } & taping code supporting adjoint\\
-\quad{\tt BasicBlockPreaccumulationTapeAdjoint } & reverse sweep portion supporting adjoint\\
-\end{tabular}
-\end{center}
-\caption{Directory structure in \xaifBooster}\label{tab:dirStruct}
+  \tiny
+  \begin{center}
+    \begin{tabular}{ll}
+      {\tt Makefile} & the top level {\tt Makefile}\\
+      {\tt utils/} & utility classes (debugging, generic traversal, etc.)\\
+      {\tt tools/}  & code generator supporting \xaif\ parser \\
+      {\tt boostWrapper/}& wrapper classes for the boost graph library \\
+      {\tt system/} & all basic data structures, \xaif\ (un)parsing, \refsec{ssssec:readWriteXaif}\\
+      {\tt algorithms/}& see the subdirectories below\\
+      \quad{\tt CodeReplacement} & support library for subroutine templates\\
+      \quad{\tt CrossCountryInterface} & support library for elimination strategies, \refsec{sssec:BBPreacc}\\
+      \quad{\tt DerivativePropagator} & support library for Jacobian vector products\\
+      \quad{\tt InlinableXMLRepresentation } & support library for inlinable subroutine calls\\ 
+      \quad{\tt Linearization} & Linearization transformation, \refsec{sssec:linearization}\\ 
+      \quad{\tt BasicBlockPreaccumulation} & elimination with \angel\ and \\
+      & preaccumulation at the \basicblock\ level, \refsec{sssec:BBPreacc}\\
+      \quad{\tt  MemOpsTradeoffPreaccumulation} & as above but with different heuristics than \angel\\
+      \quad{\tt ControlFlowReversal} & control flow graph reversal\\
+      \quad{\tt BasicBlockPreaccumulationReverse } & adjoint code\\
+      \quad{\tt BasicBlockPreaccumulationTape } & taping code supporting adjoint\\
+      \quad{\tt BasicBlockPreaccumulationTapeAdjoint } & reverse sweep portion supporting adjoint\\
+    \end{tabular}
+  \end{center}
+  \caption{Directory structure in \xaifBooster}\label{tab:dirStruct}
 \end{table}
 
 
-%\bibliographystyle{acmtrans}
+% \bibliographystyle{acmtrans}
 \bibliographystyle{plain}
 \bibliography{openad}
 
 
-%\begin{received}
-%Received May 2005;
-%\end{received}
+% \begin{received}
+%   Received May 2005;
+% \end{received}
 
 \end{document}

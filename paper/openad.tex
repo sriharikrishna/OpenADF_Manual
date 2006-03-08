@@ -179,7 +179,7 @@ supercomputers.
 With the emphasis on efficiency some sacrifices on the support of 
 language features are acceptable for this user group.  
 
-\subsection{Motivation}
+\subsection{Motivation for an open source AD tool}
 One of the most demanding applications of AD is the computation of gradients for 
 data assimilation on large scale models used in oceanography and climate research. 
 These applications clearly fall in the category of advanced uses.
@@ -718,9 +718,11 @@ are propagated reverse to the direction of the flow of control.
 The $\bmJ^T_j$ can be computed by augmenting the original code with 
 linearization and Jacobian accumulation statements, see \refsec{ssec:elimMeth}.
 The preaccumulated  $\bmJ^T_j$ are stored during the forward execution
-which is commonly called the {\em tape}..They are retrieved from the 
-tape for computing \refeqn{eqn:bbrm} during the reverse execution. 
-It is possible to organize the store and retrieve such that the tape can be 
+which is commonly called the {\em tape}, see \reffig{fig:toyPreaccRev}(a) for an 
+example. They are retrieved from the 
+tape for computing \refeqn{eqn:bbrm} during the reverse execution, see \reffig{fig:toyPreaccRev}(b) for 
+an example. 
+It is always possible to organize the store and retrieve such that the tape can be 
 implemented as a stack.
 \begin{figure}[h]
   \begin{center}
@@ -745,7 +747,7 @@ implemented as a stack.
       \centerline{(a)}
     \end{minipage}
   \end{center}	
-  \caption{Pseudo code for writing the tape (a) and consuming the tape for  $\bmJ_3^T\bar{\bmy}_3$ (b) for  the loop body in \reffig{fig:toy}}\label{fig:toyPreacc}
+  \caption{Pseudo code for writing the tape (a) and consuming the tape for  $\bmJ_3^T\bar{\bmy}_3$ (b) for  the loop body in \reffig{fig:toy}}\label{fig:toyPreaccRev}
 \end{figure}
 
 In order to find the corresponding path to the reversed control flow graph 
@@ -787,7 +789,7 @@ values of $\bmx$ in the domain of $\bmf$.
 For a large number of problems it is possible to statically 
 predetermine either 
 {\em split} or {\em joint} 
-reversal /cite{grie00} for any subroutine in the call graph .
+reversal \cite{grie00} for any subroutine in the call graph .
 These concepts are easier understood with the help of the dynamic call tree,
 see also \cite{iccs2005}.
 \begin{figure}
@@ -1230,7 +1232,7 @@ line flag.
 Based on the constructed $G$ an elimination sequence has to be determined.
 To allow a choice for the computation of the elimination sequence 
 the code uses the interface coded in \code{algorithms/CrossCountryInterface/}
-and by default calls the \angel\ library \cite{angelWeb}.
+and by default calls the \angel\ library \cite{angelWeb,AGN03,SAGA}.
 \angel\ determines an elimination sequence and returns it as 
 fused multiply add expressions in terms of the edge references.
 There are several heuristics implemented within \angel\ that control 
@@ -1248,17 +1250,19 @@ we show in  \reffig{fig:toyAccumulation}.
 Then it generates the code that eventually performs the \saxpy\ 
 operations shown in \refeqn{eqn:bbfm}. 
 Considering the input and output variables $\bmx_j$ and $\bmy_j$ of a \basicblock\ the code generation 
-also ensures proper propagation of $\dot{x_i^j}$ of variables $ x_I^j \in  \bmx_j \cap \bmy_j$ 
-by saving the $\dot{x_i^j}$ in temporaries. The example in \reffig{fig:toyPreacc} illustrates this case. 
+also ensures proper propagation of $\dot{x}_i^j$ of variables $ x_i^j \in  \bmx_j \cap \bmy_j$ 
+by saving the $\dot{x}_i^j$ in temporaries. The example in \reffig{fig:toyPreacc} illustrates this case. 
 The detection of the intersection elements relies on the alias analysis provided by 
 \OpenAnalysis.
 To reduce overhead 
 the generated \saxpy\ operations we generate \saxpy\ calls following the 
-interface specified in \code{algorithms/DerivativePropagator/} for the following four cases:  
-$\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$, 
-$\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$, 
-$\dot{y} = \dot{x}$, and 
-$\dot{y} = 0$.	
+interface specified in \code{algorithms/DerivativePropagator/} for the following four cases:
+\begin{equation}\label{eqn:fourSaxpy}  
+\mbox{(a):}\;\;\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x},\; 
+\mbox{(b):}\;\;\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y},\; 
+\mbox{(c):}\;\;\dot{y} = \dot{x},\;
+\mbox{(d):}\;\;\dot{y} = 0\quad .
+\end{equation}	
 The generated code is executable and represents an overall forward mode 
 according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in 
 cross-country fashion. 
@@ -1379,7 +1383,7 @@ cross-country fashion.
 
 \refsec{ssec:cfReversal} explains the principal approach to the reversal 
 of the CFG. The CFG reversal as implemented in this transformation is 
-by itself not useful othern than for checking the correctness without 
+by itself not useful as unparsed code other than for checking the correctness without 
 interference from other transformations. It is a major building block for 
 the  
 adjoint code generater described in \refsec{sssec:BBRev}. 
@@ -1436,74 +1440,46 @@ of the above conditions for everything within the \Loop\ body including nested
 % -----------------------------------------------------------------------------------------
 \paragraph{Writing and Consuming the Tape}\label{sssec:bbTA}
 
-Together with the CFG reversal two more building blocks contribute to the 
-generation of adjoint code. 
-\refsec{sec:ADIntro} points to the need to store the $\frac{\partial \phi_j}{\partial v_i}$ on the tape. 
-The first transformation algorithm handles the writing of the tape.
-For the preaccumulation approach we store the nonzero elements of local
-Jacobians $\bmJ_j$ instead. The algorithm that tapes these elements reinterprets
-the \saxpy\ operations \code{Y=A*X+Y} generated for \refeqn{eqn:bbfm}, see \refsec{sssec:BBPreacc}, 
-and instead generates code that stores any nonconstant factors \code{A} in the tape stack. 
-
-The second tranformation algorithm creates the adjoint code for a single \basicblock.
-During the subsquent reverse sweep the previously stored factors have to retrieved from the stack and 
-the respective adjoint operations for \refeqn{eqn:bbrm} carried out. 
-The respective adjoints of the four different categories listed in \refsec{sssec:BBPreacc} are listed in 
-\reftab{tab:saxpyAdj}.
+\refsec{sec:ADIntro} explains the need to store the $\frac{\partial \phi_j}{\partial v_i}$ 
+on the tape. 
+The writing transformation\footnote{
+see {\tt algorithms/BasicBlockPreaccumulationTape/}
+}
+stores the nonzero elements of local
+Jacobians $\bmJ_j$. It is implemented as an extension of the 
+preaccumulation in \refsec{sssec:BBPreacc} but instead of using the Jacobian elements 
+in the forward 
+\saxpy\ operations as in \refeqn{eqn:bbfm} we store them 
+on a stack as shown for the example code in \reffig{fig:toyPreacc}(a). 
+The tape consuming transformation algorithm\footnote{ 
+see {\tt algorithms/BasicBlockPreaccumulationTapeAdjoint/}
+} 
+reinterprets
+the \saxpy\ operations generated in \refsec{sssec:BBPreacc} 
+according to \reftab{tab:saxpyAdj}.
 \begin{table}
-  \begin{tabular}{|l|l|}\hline
-    $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$ &  $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
-    $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$ & $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
-    $\dot{y} = \dot{x}$ 					& $\overline{x} = \overline{y}$ \\
-    $\dot{y} = 0$ 						& $\overline{y} = 0$ 
+\begin{center}
+  \begin{tabular}{l|l}
+forward & adjoint\\\hline
+    (a): $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x}$           & $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x},\;\;\overline{y}=0$ \\
+    (b): $\dot{y} = \frac{\partial y }{\partial x }\cdot \dot{x} + \dot{y}$ & $\overline{x} = \frac{\partial y }{\partial x }\cdot \overline{y} + \overline{x}$ \\
+    (c): $\dot{y} = \dot{x}$ 					            & $\overline{x} = \overline{y},\;\;\overline{y}=0$\\
+    (d): $\dot{y} = 0$ 						            & $\overline{y} = 0$ 
   \end{tabular}
-  \caption{\saxpy\ adjoints} \label{tab:saxpyAdj}
+\end{center}
+  \caption{\saxpy\ operations  from \refeqn{fourSaxpy} and their corresponding adjoints} \label{tab:saxpyAdj}
 \end{table} 
-
-
-
+The tape writing and consumption implemented in these transformations are 
+by themselves not useful as unparsed code other than for checking the correctness without 
+interference from other transformations. 
+They are, however, major building blocks for the  
+adjoint code generater described in \refsec{sssec:BBRev}.
 % -----------------------------------------------------------------------------------------
 \paragraph{Basic Block Preaccumulation Reverse}\label{sssec:BBRev}
 
-
-
-{\color{blue} [ this is old stuff from the abstract]  
-  \begin{figure}
-    \centering \includegraphics[width=4cm]{principle}
-    \caption{\xaifBooster\ parses xaif code into an internal representation (IR).
-      It provides an API for transformation algorithms to modify the IR. An unparser
-      returns the transformed xaif code.} \label{fig:xaifBooster}
-  \end{figure}
-  The C++ code \xaifBooster\ is a collection of utilities and routines for the
-  (semantic) transformation of programs given in xaif. Its principal architecture 
-  is illustrated in \reffig{fig:xaifBooster}. One of the major concerns during
-  the development of \xaifBooster\ has been the clean separation of the internal
-  representation (an enhanced object image of xaif) from algorithms that operate 
-  on this data structure. This goal has been achieved by applying the design 
-  patterns \cite{DesignPatterns} factory, visitor, and decorator as described in \cite{UtNa03}.
-  The result is an API that gives AD developers the opportunity
-  to implement new algorithms in a source transformation environment without
-  having to implement full compiler front- and back-ends. Building on
-  this API, we have implemented a tangent-linear algorithm that uses statement-
-  \cite{SEUpreacc} and basic-block-level preaccumulation of local 
-  gradients/Jacobians. Near-optimal face elimination \cite{ElimTechMP} sequences 
-  are computed by the software tool 
-  ANGEL \cite{AGN03,SAGA} (\code{angellib.sourceforge.net}) and transformed into 
-  Jacobian code by
-  an \xaifBooster\ algorithm. A simple adjoint version of the code is obtained
-  by taping the local Jacobians 
-  and by computing the corresponding ``transposed Jacobian-vector" products 
-  during an interpretive reverse sweep through the tape. This approach is
-  essentially equivalent to split program reversal \cite{Gri00} and allows
-  for an easy coupling of tangent-linear and adjoint versions of small to 
-  medium-sized codes as described in \cite{NaHe03}. 
-
-  Details of the automatic generation of adjoint code in split mode are presented
-  in the full version of the paper. Furthermore, additional information is 
-  provided on \xaifBooster\ as a platform for implementing new AD algorithms with 
-  the objective to establish an open quasi-standard development infrastructure
-  within the AD community.
-}
+This transformation represents the combination of the various transformation up until this 
+point into a coherent representation that, unparsed into code and post-processed, compiles 
+as an adjoint model. For the postprocessing steps refer to \refsec{sssec:PostProcessor}.
 
 
 % -----------------------------------------------------------------------------------------
@@ -1866,8 +1842,8 @@ project.
       \quad{\tt  MemOpsTradeoffPreaccumulation} & as above but with different heuristics than \angel\\
       \quad{\tt ControlFlowReversal} & control flow graph reversal\\
       \quad{\tt BasicBlockPreaccumulationReverse } & adjoint code\\
-      \quad{\tt BasicBlockPreaccumulationTape } & taping code supporting adjoint\\
-      \quad{\tt BasicBlockPreaccumulationTapeAdjoint } & reverse sweep portion supporting adjoint\\
+      \quad{\tt BasicBlockPreaccumulationTape } & taping code supporting adjoint, \refsec{sssec:bbTA}\\
+      \quad{\tt BasicBlockPreaccumulationTapeAdjoint } & reverse sweep portion supporting adjoint,\refsec{sssec:bbTA}\\
     \end{tabular}
   \end{center}
   \caption{Directory structure in \xaifBooster}\label{tab:dirStruct}

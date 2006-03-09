@@ -1492,6 +1492,14 @@ A \basicblock\ consists of a sequence of assignments and subroutine calls.
 In the following we assume some canonicalizations are performed. 
 These canonicalizations are implemented in the front end discussed in 
 \refsec{sssec:Canonicalization}.
+{\color{red}
+
+MF // copied to Canonicalization section. Drop from here ??
+
+\begin{Can}\label{can:comBlock}
+what went here??
+\end{Can}
+
 \begin{Can} \label{can:funcToSub}
   All constructs occuring in \basicblock\ that are neither assignments nor subroutine calls (such as function calls, built-in I/O statements) 
   are canonicalized into subroutine calls.
@@ -1508,7 +1516,7 @@ These canonicalizations are implemented in the front end discussed in
   User defined functions and calls to these functions in right-hand-side expressions 
   are canonicalized to subroutined calls.
 \end{Can}
-
+}
 The main target application of the ACTS project is the MIT general
 circulation model (MITgcm) \cite{mars-eta:97b,mars-eta:97a}.
 It is mostly implemented in Fortran~77 to permit maintenance of an
@@ -1605,21 +1613,133 @@ development costs associated with modifying \OpenSixtyFour.
 
 % -----------------------------------------------------------------------------------------
 \subsubsection{Canonicalization}\label{sssec:Canonicalization}
+As indicated in \refsec{sec:ADIntro}, language independence for the transformation
+engine is achieved by restricting the input language to the numerical core sublanguage.
+The development of the transformation engine, however, can be streamlined by
+(further) restricting the numerical core programs to a \emph{canonical}(i.e. simpler) form.
+Please note that canonical form does \emph{not} restrict the expressiveness of the candidate input programs.
+The canonical form merely serves to ensure that the transformation engine can be focused on
+a smaller subset of semantically equivalent forms. The process of putting a program into canonical form
+is called canonicalization. The rest of this subsection describes the canonical form and the mechanisms that
+ensure that the canonical form is realized.
 
-To ensure the language independence of the transformation engine and
-streamline its development, the front end converts and simplifies some
-programming constructs into \emph{canonical} form.  In addition to the
-canonicalizations mentioned in \refsec{sec:ADIntro} language
-independence requires the following:
+Part of the canonical form has already been described elsewhere, and is repeated here for convenience
+
+\begin{Can} \label{can:funcToSub}
+  All constructs occuring in \basicblock\ that are neither assignments nor subroutine calls (such as function calls, built-in I/O statements) 
+  are canonicalized into subroutine calls.
+  For example,
+  \begin{verbatim}
+      read x,y
+  \end{verbatim}
+    becomes
+  \begin{verbatim}
+      call canonical_read(x,y)
+  \end{verbatim}
+\end{Can}
+\begin{Can} \label{can:assignSideEffectFree}
+  An assignment effects a single variable on the left-hand side and 
+  the right-hand-side expression is side-effect free.
+
+  For Fortran programs, single variable on the left-hand side is syntactically required.
+  This side-effects free right hand side property obtains when the user-defined functions that have side effects
+  are factored into a separate assignment statement. Rather than determine which user-defined functions have side
+  effects, {\OpenAD} pragmatically factors \emph{all} user-defined functions out of the right hand sides of assignments.
+
+  \begin{tabular}{p{24ex}cp{20ex}}
+\verb|xxx = yyy * user(a,b)| & $\Rightarrow$ & 
+   \begin{verbatim}
+tmp = user(a,b)
+xxx = yyy * tmp
+   \end{verbatim}
+   \\
+  \end{tabular}
+
+\end{Can}
+\begin{Can} \label{can:assignElemental}
+  The right-hand-side expression of an assignment consists only of elemental operations $\phi$ typically 
+  defined in a programming language as built-in operators and intrinsics.
+
+  The only other construct that can appear on the right-hand side of assignment statements would be user-defined
+  functions. The transformation from Canonicalization~\ref{can:assignSideEffectFree} covers everything but
+  the newly created temporary assignments of the form
+  \begin{quote}
+\begin{verbatim}
+tmp = user(a,b)
+\end{verbatim}
+  \end{quote}
+These assignment statements are converted to subroutine calls as per the requirement of Canonicalization~\ref{can:assignFunction}.
+So, the combination of Canonicalization~\ref{can:assignSideEffectFree} and Canonicalization~\ref{can:assignFunction} ensures
+that this canonical form requirement is met.
+\end{Can}
+\begin{Can} \label{can:assignFunction}
+  User defined functions and calls to these functions in right-hand-side expressions 
+  are canonicalized to subroutined calls.
+
+  The transformation to achieve this canonical form consists of changing the user-defined routine name to a
+  canonically derived subroutine name, and adding the left-hand side to the argument list:
+
+  \begin{tabular}{lcl}
+   \verb|xxx = user(a,b)| & $\Rightarrow$ & \verb|call s_user(xxx,a,b)|
+  \end{tabular}
+
+\end{Can}
+
+Additional canonicalizations found to be important are:
 
 \begin{Can}\label{can:comBlock}
   Common blocks are converted to modules.
+
+  The purpose of this canonicalization is to ensure proper initialization of global variables.
+
+  The method of conversion is to simply declare the elements of the common block as actual variables
+  of the associated module. Care must be taken to privatize and declare any symbolic size parameters
+  for elements of the common block.
+
+  \begin{tabular}{p{40ex}cp{30ex}}
+\begin{verbatim}
+   integer,paramter :: s=10
+   real :: a,b
+
+   common /foo/ a(s),b
+\end{verbatim} & $\Rightarrow$ &
+\begin{verbatim}
+   module foo_cb
+   private s
+   integer,paramter :: s=10
+   real :: a(s),b
+   end module
+\end{verbatim}
+   \end{tabular}
 \end{Can}
 \begin{Can}\label{can:param}
   Non-variable actual parameters are hoisted to temporaries.
+
+  Any value passed to a routine could conceivably need augmentation. Furthermore, only variables
+  can be augmented. Consequently, {\OpenAD} hoists all non-variable actual paramters into temporaries.
+
+  \begin{tabular}{p{40ex}p{2ex}p{30ex}}
+\begin{verbatim}
+call foo(x*y)
+\end{verbatim} & $\Rightarrow$ &
+\begin{verbatim}
+tmp = x*y
+call foo(tmp)
+\end{verbatim}
+   \end{tabular}
 \end{Can}
 \begin{Can}\label{can:scalar}
-  Derived type references are scalarized.
+  Derived type references are replaced.
+
+  Derived type reference is not part of the numerical core, so any derived type reference
+  must be transformed. The transformation (called \emph{scalarization}) consists of converting
+  the derived type reference into a canonically named scalar variable. \bf{NOTE:} To ensure
+  correctness, this transformation must be undone before the final augmented source is produced.
+
+  \begin{tabular}{lcl}
+\verb|x = s%v * y| & $\Rightarrow$ & \verb|x = s_v * y| \\
+  \end{tabular}
+  
 \end{Can}	
 
 
@@ -1631,12 +1751,12 @@ independence requires the following:
   2) XAIF's limited concepts (explained below) 
   ] \\
 
-  [ how are canonicalizations implemented: on whirl instead of fortran ] \\
+  [ how are canonicalizations implemented: some are done with separate canonicalizer, others done in whirl2xaif] \\
 
 }
 
-All canonicalizations are implemented as part of \whirlToxaif; see 
-\refsec{sssec:wtxxtw}.
+%% All canonicalizations are implemented as part of \whirlToxaif; see 
+%% \refsec{sssec:wtxxtw}.
 
 % -----------------------------------------------------------------------------------------
 \subsubsection{\whirlToxaif\ and \xaifTowhirl}\label{sssec:wtxxtw}

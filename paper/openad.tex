@@ -89,7 +89,7 @@
 %   UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
 
 \begin{center}
-  {\Large OpenAD/F: A tool for automatic differentiation \\ of Fortran codes}\\[1ex]
+  {\Large OpenAD/F: A modular open source tool for automatic differentiation \\ of Fortran codes}\\[1ex]
   {\tiny
     PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
     MIKE FAGAN, NATHAN TALLENT \\Rice University\\
@@ -1477,139 +1477,124 @@ adjoint code generater described in \refsec{sssec:BBRev}.
 % -----------------------------------------------------------------------------------------
 \paragraph{Basic Block Preaccumulation Reverse}\label{sssec:BBRev}
 
-This transformation represents the combination of the various transformation up until this 
-point into a coherent representation that, unparsed into code and post-processed, compiles 
-as an adjoint model. For the postprocessing steps refer to \refsec{sssec:PostProcessor}.
-
+This transformation\footnote{
+see {\tt algorithms/BasicBlockPreaccumulationReverse}
+}
+represents the combination of the various transformation 
+into a coherent representation that, unparsed into code and post-processed, compiles 
+as an adjoint model. 
+For the postprocessing steps refer to \refsec{sssec:PostProcessor}.
+The driver offers command line options
+\begin{itemize}
+\item to change subroutine argument intents 
+such that checkpointing can take place; while checkpointing will 
+generally be needed this option is usefull 
+for certain application scenarios where the intent change can be avoided.
+\item  to validate the \xaif\ input against the schema; the validation takes 
+considerable time for large \xaif\ files
+\item to specify a list of subroutines 
+that have a wrappers which should be called in its place
+\item to force the renaming of all non-external subroutines which may be necessary 
+for applications which expose only portions of the code to \OpenADF.
+\end{itemize}
 
 % -----------------------------------------------------------------------------------------
-\subsection{\OpenADFortTk\ - the Fortran~90 Front-End}\label{ssec:fortfe}
+\subsection{Language Dependent Components (\OpenADFortTk)}\label{ssec:fortfe}
 
-Every subroutine consists of a {\em control flow graph} (CFG) that 
-represents the typical control flow constructs such as \entry, \exit, \Loop, \branch, 
-and \basicblock. 
-A \basicblock\ consists of a sequence of assignments and subroutine calls. 
-In the following we assume some canonicalizations are performed. 
-These canonicalizations are implemented in the front end discussed in 
-\refsec{sssec:Canonicalization}.
-{\color{red}
-
-MF // copied to Canonicalization section. Drop from here ??
-
-\begin{Can}\label{can:comBlock}
-what went here??
-\end{Can}
-
-\begin{Can} \label{can:funcToSub}
-  All constructs occuring in \basicblock\ that are neither assignments nor subroutine calls (such as function calls, built-in I/O statements) 
-  are canonicalized into subroutine calls.
-\end{Can}
-\begin{Can} \label{can:assignSideEffectFree}
-  An assignment effects a single variable on the left-hand side and 
-  the right-hand-side expression is side-effect free.
-\end{Can}
-\begin{Can} \label{can:assignElemental}
-  The right-hand-side expression consists only of elemental operations $\phi$ typically 
-  defined in a programming language as built-in operators and intrinsics.
-\end{Can}
-\begin{Can} \label{can:assignFunction}
-  User defined functions and calls to these functions in right-hand-side expressions 
-  are canonicalized to subroutined calls.
-\end{Can}
-}
-The main target application of the ACTS project is the MIT general
-circulation model (MITgcm) \cite{mars-eta:97b,mars-eta:97a}.
-It is mostly implemented in Fortran~77 to permit maintenance of an
-efficient and correct adjoint as the code evolves \cite{HHG02}. Future
-development will increasingly add Fortran~90 features.  The
-\OpenADFortTk\ (OpenAD Fortran Toolkit) 
-component covers the
-Fortran-specific features of the OpenAD system. Throughout this
-paper, we use ``front-end'' as a synonym for \OpenADFortTk.
-
-In spite of the appellation ``front end'', \OpenADFortTk\ subcomponents
-operate at several stages of the pipeline in the following order.
-
+For simplicity we consider all language dependent components part 
+of the \OpenAD\ Fortran Tool Kit (\OpenADFortTk). The following 
+sections provide details for the various subcomponents that 
+are used in transformation pipeline in the following sequence.
 \begin{enumerate}	
-\item \mfefninety\ is a compiler front-end in the classical sense that parses
-  Fortran and generates an intermediate representation (IR)
-  in the \whirl\ language
-
 \item The {\em canonicalizer} converts  
-  programming constructs into the canonical form required by 
-  \refcan{can:funcToSub} - \refcan{can:assignFunction}. 
-  This component modifies \whirl\ in core.
+  programming constructs into a canonical form described in \refsec{sssec:Canonicalization}. 
+
+\item The compiler front-end \mfefninety\  parses
+  Fortran and generates an intermediate representation (IR)
+  in the \whirl\ format, see \refsec{sssec:mfef}
 
 \item \whirlToxaif\ is a bridge component that
   \begin{itemize}
   \item drives the various program analyses (see \refsec{ssec:openanalysis}),
+  \item translates the numerical core of the program and  
+	the results of the program analyses from \whirl\ to \xaif.
+  \end{itemize} see also \refsec{sssec:wtxxtw}
 
-  \item filters out program statements that are not in the
-    computational core of the language, and 
-
-  \item converts the program analyses and core computational
-    statements from \whirl\ into \xaif.
-  \end{itemize}
-
-\item \xaifTowhirl\ is bridge component that converts the 
-  differentiated program represented in \xaif\ 
-  to a \whirl\ representation.
+\item \xaifTowhirl\ is bridge component that translates the 
+  differentiated numerical core represented in \xaif\ 
+  into the \whirl\ format. see \refsec{sssec:wtxxtw}.
 
 \item \whirlTof\ is the ``unparser'' that converts \whirl\ to
-  Fortran.
+  Fortran, see \refsec{ssec:fortfe}
 
 \item The {\em postprocessor} is the  final part of the transformation that
-  performs template expansion as well as inlining substitutions.
+  performs template expansion as well as inlining substitutions, see \refsec{sssec:PostProcessor}
 
 \end{enumerate}
 
-In the following we will explain the subcomponents in more detail.
-The invocation of the components is explained in
-\refsec{ssec:manualPipeline}
-
 % -----------------------------------------------------------------------------------------
-\subsubsection{\OpenSixtyFour\ components} \label{sssec:mfef}
+\subsubsection{Compiler Front-End Components (from \OpenSixtyFour)} \label{sssec:mfef}
 
-The \OpenSixtyFour\ project \cite{open64Web} supplies two elements for
-the front end, \mfefninety\ and \whirlTof.
-
-To ensure robustness of the AD tool, we sought industrial strength
-programming-language-dependent components.  We chose the Center for
-High Performance Software Research's (Rice University) \OpenSixtyFour\
-compiler, a multi-platform version of the SGI Pro64/Open64 compiler
+The choice of \OpenSixtyFour\ for some of the programming-language-dependent 
+components ensures some initial robustness of the tool that is afforded by an 
+industrial-strength compiler. 
+The Center for High Performance Software Research (HiPerSoft) at Rice University 
+developes \OpenSixtyFour\ \cite{open64Web} as a 
+multi-platform version of the SGI Pro64/Open64 compiler
 suite, originally based on SGI's commercial MIPSPro compiler.
-\OpenSixtyFour's Fortran front end, \mfefninety, is a classical
-compiler parser that reads Fortran source and converts it to an
-intermediate language called \whirl.  A companion tool, \whirlTof,
-unparses \whirl\ back to Fortran source code.  The \whirl\
-representation, which resembles a typical abstract syntax tree, has
-been designed to enable good optimization for high performance
-computing in Fortran, C, and C++. See \cite{open64Web} for more
-details about the intermediate language.  HiPerSoft's main
-contribution to the \OpenSixtyFour\ community has been extending the
-infrastructure to support source-to-source transformations; thus, it
+
+\OpenADF\ uses the parser, an internal representation and the unparser 
+of the \OpenSixtyFour\ project.
+The classical compiler parser \mfefninety\ produces a representation of the Fortran 
+input in a format known as very high level or source level \whirl\ . 
+The \whirl\ representation can unparsed into Fortran using the 
+tool \whirlTof.
+The source level \whirl\
+representation resembles a typical abstract syntax tree with the 
+addition of machine type deductions. 
+The original design of \whirl\ in particular the descent to 
+lower levels closer to machine code  enables good optimization 
+for high performance
+computing in Fortran, C, and C++. HiPerSoft's main
+contribution to the \OpenSixtyFour\ community has been the source 
+level extension to \whirl\
+which is geared towards supporting source-to-source transformations and 
+it 
 has invested significant effort in the \whirlTof\ unparser.
 
-AD tools require certain knowledge that typically is not directly
-representable in programming languages such as Fortran.  For example,
-an AD tool must know what variables in the code for $\bmf$ are
-independent and dependent.  Instead of suppling this information
-externally, such as with a configuration file, we introduced a special
-OpenAD pragma facility, encoded within Fortran comments, and extended
-\OpenSixtyFour\ to generate and unparse OpenAD pragma nodes in \whirl.
-Similar to many other special-purpose Fortran pragmas systems such as
-OpenMP \cite{OpenMP-website}, in order to specify that a variable
-$y$ is dependent, a user could write \code{!\$openad dependent(y)},
-where \code{\$openad} is the special prefix that demarcates OpenAD
-pragmas.  Unlike most pragma systems, we introduced a generic
-\code{!\$openad xxx} pragma\footnote{The mneumonic behind name is that
+For the purpose of AD, user-supplied hints and required 
+input is typically not directly
+representable in programming languages such as Fortran.  
+For example,
+an AD tool must know which variables in the code for $\bmf$ are
+independent and which are dependent. 
+While it is possible to supply this information externally, 
+for instance with a configuration file, we introduced a special
+pragma facility, encoded within Fortran comments. 
+While pragmas are intrusive they have the added advantage to be 
+parsed by the front-end and be associated with a given context in the code.
+Thereby code and AD information is easier kept in sync.  
+For \OpenADF\ we extended the
+\OpenSixtyFour\ components to generate and unparse these pragma nodes represented in \whirl.
+The behavior is 
+similar to many other special-purpose Fortran pragma systems such as
+OpenMP \cite{OpenMP-website}. 
+To specify a variable
+$y$ as a dependent, the user writes \code{!\$openad dependent(y)},
+where \code{\$openad} is the special prefix that identifies \OpenAD\
+pragmas.   
+To provide flexibility we introduced a generic
+\code{!\$openad xxx <some text>} pragma\footnote{
+The mnemonic behind name is that
   as $x$ is the typical variable name, so \code{!\$openad xxx} is the
-  `variable' pragma.} that can communicate arbitrary pieces of
-text--associated with whole procedures, single statements, or groups
-of statements--through the pipeline.  This generic pragma provides a
-flexible system for experimentation and eliminates the significant
+  {\em variable} pragma.} 
+that can communicate arbitrary pieces of
+text through the pipeline. 
+These generic pragmas can be associated with whole procedures, 
+single statements, or groups
+of statements. They provides an easy way 
+to implement additional user hints while eliminating the significant
 development costs associated with modifying \OpenSixtyFour.
-
 
 % -----------------------------------------------------------------------------------------
 \subsubsection{Canonicalization}\label{sssec:Canonicalization}

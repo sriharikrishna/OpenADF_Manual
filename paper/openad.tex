@@ -106,8 +106,14 @@
 
   The derivative evaluation is performed by Fortran 90 code resulting
   from the analysis and transformation of the original program that
-  defines the function of interest.  The code transformation follows the
-  basic principles of automatic differentiation.  In difference to most
+  defines the function of interest. 
+  \OpenADF\ has been designed with a particular emphasis on  modularity, 
+  flexibility and the use of open source components. 
+  While the code transformation follows the
+  basic principles of automatic differentiation the tool implements 
+  new algorithmic approaches at various levels, e.g. for the basic block 
+  preaccumulation  and the call graph reversal.
+  In difference to most
   other automatic differentiation tools \OpenADF\ uses components 
   provided by the \OpenAD\ framework which supports a relatively 
   easy extension of the code transformations
@@ -180,12 +186,19 @@ With the emphasis on efficiency some sacrifices on the support of
 language features are acceptable for this user group.  
 
 % -----------------------------------------------------------------------------------------
-\subsection{Motivation for an open source AD tool}
+\subsection{Motivation}
+
 One of the most demanding applications of AD is the computation of gradients for 
 data assimilation on large scale models used in oceanography and climate research. 
 These applications clearly fall in the category of advanced uses.
 An evaluation of the available tools revealed some shortcomings from the perspectives 
-of the tool users as well as the tool developers. 
+of the tool users as well as the tool developers and are the rationale for 
+designing a new tool with particular emphasis on   
+\begin{itemize}
+\item flexibility,
+\item modularity, and
+\item the use of open source compenents.
+\end{itemize} 
 
 From  the AD tool  {\em users point of view} there is a need for a substantial 
 flexibility of the AD tools. 
@@ -278,7 +291,7 @@ based on the EDG parser \cite{edgWeb} and uses ROSE in combination with SAGE~3 \
 as internal representation in combination with language independent components of \OpenAD.
 
 In \refsec{sec:ADIntro} we discuss the basic concepts of AD as relevant for 
-the description of \OpenAD, \refsec{sec:openadcomponents} discusses the components 
+the description of \OpenAD, \refsec{sec:openadfcomponents} discusses the components 
 that make up \OpenADF, and \refsec{sec:Usage} details the usage of the tool. 
 Two applications further illustrate the tool usage in \refsec{sec:application} and 
 we conclude with a section on future devlepments.
@@ -373,6 +386,7 @@ Consider the small example in \reffig{fig:toyBB}.
 \begin{figure}[h]
   \begin{center}
     \begin{minipage}{.4\textwidth}
+      \fontsize{8pt}{9pt}
       \verbatimfile{code/straightLine.f90}
     \end{minipage}
   \end{center}
@@ -698,7 +712,7 @@ instance simultaneouly to the computation of $\bmf$.
 In our example \basicblock\ B(6) is the third \basicblock\ ($j=3$) and we have
 $\bmx_3=\bmy_j=($\code{x(1)}$,$\code{x(2)}$)$ and 
 consequently have the operations for the Jacobian vector product shown 
-in \reffig{fig:JacVec}.  
+in \reffig{fig:toyPreacc}.  
 \begin{figure}[h]
   \begin{center}
     \begin{align*}
@@ -1047,7 +1061,7 @@ Further documentation for individual elements can be found directly in the
 schema annotations. 
 
 The \xaif\ also contains the results of the code analyses provided 
-by \OpenAnalysis, see \refsec{sssec:OpenAnalysis}. Some are exressed 
+by \OpenAnalysis, see \refsec{sssec:openanalysis}. Some are exressed 
 either as additional attributes on certain \xaif\ elements, e.g. for activity information. 
 Side-effect analysis provides lists of variable references per subroutine, i.e. a call graph vertex element.
 DuUd chains are expressed as list of ids found in the assignment \xaif\ element.
@@ -1219,7 +1233,7 @@ for contiguous
 assignment sequences in a given \basicblock. To ensure semantic 
 correctness of the graph being constructed in the presence of 
 aliasing it relies on alias analysis and define-use/use-define chains 
-supplied by \OpenAnalysis, see \refsec{ssec:openanalysis}.
+supplied by \OpenAnalysis, see \refsec{sssec:openanalysis}.
 The algorithm itself is described in detail in \cite{Utk04FBB}.
 Because the analysis results supplied by \OpenAnalysis\ are always 
 conservatively correct it may not be possible to flatten all 
@@ -1415,7 +1429,7 @@ reversed \Loop. We call this kind of \Loop\ reversal {\em anonymous}.
 To access the proper memory location \code{i} will have to be stored along with the 
 \Loop\ counters and \branch\ identifiers in the tape stack.
 To avoid this overhead the \Loop\ reversal may be declared {\em explicit}
-by prepending \code{c\$openad xxx simple loop} to the \Loop\ in question. 
+by prepending \code{!\$openad xxx simple loop} to the \Loop\ in question. 
 With this directive the original \Loop\ variable will be preserved,  
 the reversed \Loop\ in our example constructed as \code{do i=10,1,-1} and 
 no index values for the array references in the \Loop\ body are stored. 
@@ -1471,7 +1485,7 @@ according to \reftab{tab:saxpyAdj}.
       (d): $\dot{y} = 0$ 						            & $\overline{y} = 0$ 
     \end{tabular}
   \end{center}
-  \caption{\saxpy\ operations  from \refeqn{fourSaxpy} and their corresponding adjoints} \label{tab:saxpyAdj}
+  \caption{\saxpy\ operations  from \refeqn{eqn:fourSaxpy} and their corresponding adjoints} \label{tab:saxpyAdj}
 \end{table} 
 The tape writing and consumption implemented in these transformations are 
 by themselves not useful as unparsed code other than for checking the correctness without 
@@ -1488,6 +1502,11 @@ represents the combination of the various transformation
 into a coherent representation that, unparsed into code and post-processed, compiles 
 as an adjoint model. 
 For the postprocessing steps refer to \refsec{sssec:PostProcessor}.
+Additional functionality is the generation of code that is able write and 
+read checkpoints at a subroutine level, see also \refsec{ssec:cgReversal}. 
+This part of the transformation relies heavily on the results of side-effect analysis, see 
+\refsec{sssec:openanalysis} and the inlinable subroutine call mechanism of 
+the postprocessor, see \refsec{sssec:inline}, to accomplish the checkpointing. 
 The driver offers command line options
 \begin{itemize}
 \item to change subroutine argument intents 
@@ -1519,7 +1538,7 @@ are used in transformation pipeline in the following sequence.
 
 \item \whirlToxaif\ is a bridge component that
   \begin{itemize}
-  \item drives the various program analyses (see \refsec{ssec:openanalysis}),
+  \item drives the various program analyses (see \refsec{sssec:openanalysis}),
   \item translates the numerical core of the program and  
     the results of the program analyses from \whirl\ to \xaif.
   \end{itemize} see also \refsec{sssec:wtxxtw}
@@ -1621,12 +1640,12 @@ in Python. All sources can be found under \code{OpenADFortTk/tools/canonicalize/
   \begin{table}
     \begin{tabular}{cc}
       \begin{minipage}{.4\linewidth}
-        \small
+        \fontsize{8pt}{9pt}
         \verbatimfile{code/funcCall.f}
       \end{minipage}
       & 
       \begin{minipage}{.4\linewidth}
-        \small
+        \fontsize{8pt}{9pt}
         \verbatimfile{code/funcToSub.f}
       \end{minipage}
       \\
@@ -1650,12 +1669,12 @@ in Python. All sources can be found under \code{OpenADFortTk/tools/canonicalize/
   \begin{table}
     \begin{tabular}{cc}
       \begin{minipage}{.45\textwidth}
-        \small
+        \fontsize{8pt}{9pt}
         \verbatimfile{code/funcDef.f}	
       \end{minipage}
       & 
       \begin{minipage}{.4\textwidth}
-        \small
+        \fontsize{8pt}{9pt}
         \verbatimfile{code/subDef.f}	
       \end{minipage}
       \\
@@ -1683,7 +1702,7 @@ in Python. All sources can be found under \code{OpenADFortTk/tools/canonicalize/
         \end{minipage}
         & 
         \begin{minipage}{.3\textwidth}
-          \small
+          \fontsize{8pt}{9pt}
           \verbatimfile{code/hoist.f}	
         \end{minipage}
         \\
@@ -1706,11 +1725,12 @@ to support the implementation with a specific active type.
     \begin{center}
       \begin{tabular}{cc}
         \begin{minipage}{.3\linewidth}
+          \fontsize{8pt}{9pt}
           \verbatimfile{code/commonBlock.f}	
         \end{minipage}
         & 
         \begin{minipage}{.3\textwidth}
-          \small
+          \fontsize{8pt}{9pt}
           \verbatimfile{code/cbModule.f}	
         \end{minipage}
         \\
@@ -1725,7 +1745,7 @@ maintainable code we prefer simplicity over more sophisticated transformations
 e.g. a module generator which abstracts dimension information shared between common blocks. 
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{\whirlToxaif\ and \xaifTowhirl}\label{sssec:wtxxtw}
+\subsubsection{Translating between \whirl\ and \xaif}\label{sssec:wtxxtw}
 
 \begin{figure}
   \scriptsize
@@ -1792,46 +1812,186 @@ As indicated above it has to take care of restoring filtered out
 statements and type information. Because the differentiated \xaif\ 
 relies on postprocessing, see \refsec{sssec:PostProcessor}, 
 its other major challenge is the 
-creation of \whirl\ that contains the postprocessor directives related to 
+creation of \whirl\ that contains the postprocessor directives related to
+three tasks to be accomplished by the postprocessor. 
 \begin{itemize} 
-\item the declaration and use of the active variables,
-\item the directives regarding inlinable subroutine calls, and
-\item the directives regarding identifiers for subroutine template replacements.
+\item The declaration and use of the active variables;
+\item The placement of inlinable subroutine calls;
+\item The demarkation of the various alternative subroutine bodies used in the subroutine template replacements.
 \end{itemize}  
-{\color{red} [ how are intrinsics handled ... I refer to the catalogue later  ] }
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Postprocessor}\label{sssec:PostProcessor}
-The postprocessor performs various ``cleanup'' operations of the
-differentiated code. The two most important tasks are:
-\begin{enumerate}
-\item template expansion
-\item inline substitution
-\end{enumerate}
+\subsubsection{Postprocessing}\label{sssec:PostProcessor}
+The postprocessor performs the three tasks outlined at the end of \refsec{sssec:wtxxtw}.
 
-Template expansion is intimately connected with the differentiation
-algorithms. Some parts of the code use different recomputation/storage
-strategies, as well as different taping patterns. These various
-strategies are encoded in Fortran templates, and expanded by the
-post processor.
-
-Similarly, some operations introduced by the differentiation process
-are coded as function operations. To make these operations work well,
-however, they must be substituted inline, replacing the function call.
-
-{\color{red}
-  [ Need examples of templates here (or somewhere) ]
-
-  [ Does inlining serve any other purpose besides efficiency?  Yes --
-  the inlined routines have strange parameter substitution to support
-  the active data-structures.]
-
-  [postprocessor to handle things that are not convenient to do in whirl
-  (making xaif2whirl's life easier).]
+\paragraph{Use of the Active Type}\label{sssec:activeType}
+The simplest postprocessing task is the concretization of the active variable declarations 
+and uses. The main rationale for postponing the concretization of the active type is flexibility 
+with respect to the actual active type implementation. The current postprocessor is 
+written in Perl\footnote{ 
+The source code can be found under {\tt OpenADFortTk/tools/multiprocess/}.
+A rewrite in Python resuing the same Fortran parsing functionality of the canonicalizer is underway.
 }
+and therefore is much easier to adapt to a changing active type implementation than to 
+find find the proper \whirl\ representation and modify \xaifTowhirl\ to create it.
+However, it should be noted right away, that the ease of adaptation is clearly correlated to the 
+simplicity and in particular the locality of the transformation. The advantage disappears with 
+increased complexity of the transformation.   
+For an active variable, for example  \code{v},  the representation created 
+by \xaifTowhirl\ in \whirl\ and then unparsed to Fortran,
+shows up as \code{TYPE (OpenADTy\_active) v}. 
+The type remains abstract because the accesses to the conceptual value and derivative components 
+are represented as function calls \code{\_\_value\_\_(v)} and \code{\_\_deriv\_\_(v)} respectively.
+The concretized versions created by the postprocessor for the current active type implementation are 
+\code{type(active) v} for the declaration and simply \code{v\%v} for the value \code{v\%d} for 
+the derivative component respectively. 
 
+\paragraph{Inlinable Subroutine Calls}\label{sssec:inline}
+The second task, the expansion of inlinable subroutine calls, is more complex because 
+any call expansion has now the scope of a subroutine body. The calls unparsed from \whirl\ to 
+Fortran are regular subroutine call statements. They are however preceded by an inline  pragma
+\code{!\$openad inline <name(parameters)>}  
+that directs the postprocessor to expand the following call according to a definition 
+found in an input file\footnote{
+specified with command line option {\tt -i} which defaults to {\tt ad\_inline.f}
+}
+For example, pushing a preaccumulated sub-Jacobian value as in  \reffig{fig:toyPreaccRev}(a) might appear 
+in the code as\\
+\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/inlinePush.f}
+\end{minipage}\\
+for which we have a definition in \code{ad\_inline.f} as \\
+\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/inlinePushDef.f}
+\end{minipage}\\
+The postprocessor ignores the \code{DECLS} section and  expands this to\\
+\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/inlinePushExpanded.f}
+\end{minipage}\\
+%For example, using a preaccumulated sub-Jacobian value in a \saxpy\  as in  \reffig{what} might appear 
+%in the code as
+%\verbatimfile{code/inlineSaxpy.f}
+%for which we have a definition in \code{ad\_inline.f} as 
+%\verbatimfile{code/inlineSaxpyDef.f}
+%and the postprocessor expands this to
+%\verbatimfile{code/inlineSaxpyExpanded.f}
+Note, that for flexibility 
+any calls with inline directives for which the postprocessor cannot find an inline definition remain 
+unchanged. For example we may instead compile the above definition for \code{Push} and link 
+it instead.
 
+\paragraph{Subroutine Templates}\label{sssec:templates}
+The third task, the subroutine template expansion is somewhat related the inlining. 
+In our example above, the tape storage referred to in the \code{Push} need to be 
+defined and in the design the subroutine template is the intended place for these definitions, 
+in our example achieved through including the \code{use} statement in the template code, 
+see \reffig{fig:jointACTemplate}.
+The main purpose of the subroutine template expansion however is to orchestrate the 
+call graph reversal. The reversal schemes introduced in \refsec{ssec:cgReversal}
+can be realized by carrying state through the call tree. 
 
+The basic building blocks from the transformations in \refsec{sssec:xaifBooster}
+are variants \code{S}$_i$ of the body of an original subroutine body \code{S}$_0$, 
+each accomplishing one of the tasks shown as one of the squares with arrows in \reftab{tab:leg}. 
+For instance, the taping variant is created by the transformation in \refsec{sssec:bbTA} or
+the checkpointing by the transformation in \refsec{sssec:BBRev}. 
+To integrate the $S_i$ 
+into a particular reversal scheme, we need to be able to make all subroutine calls 
+in the same fashion as in the original code and, at the same time, 
+control which task each subroutine call accomplishes.  
+We replace the original subroutine body with a branch structure in which each branch contains 
+one $S_i$. 
+The execution of each branch is determined by a global control structure whose members 
+represent the state of execution in the reversal scheme.
+The branches contain code for pre- and post-state transitions enclosing the respective $S_i$.
+This ensures that the transformations producing the $S_i$
+do not depend on any particular reversal scheme.
+\begin{figure}
+\hspace*{8ex}\begin{tabular}{l@{\hspace{.3cm}}c@{\hspace{1cm}}l@{\hspace{.3cm}}c}
+(a)&
+\begin{minipage}[t]{3cm}
+\vspace*{-.3cm}
+\includegraphics[height=3cm,angle=-90,origin=c]{code_template}
+\end{minipage}&
+(b)& 
+\begin{minipage}[t]{4cm}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/splitTemplate.pf}
+\end{minipage}
+\\
+\end{tabular}
+\caption{Subroutine template components (a), split-mode Fortran90 template (b) } \label{fig:codeTemplate}
+\end{figure}
+The postprocessor
+inserts the \code{S}$_i$ into a subroutine template, schematically 
+shown in \reffig{fig:codeTemplate}(a).
+The template is written in Fortran. Each subroutine in the 
+postprocessor Fortran input is transformed according to either 
+a default subroutine template found in a \code{ad\_template.f} file or 
+in a file specified in a \code{!\$openad XXX Template <file name>}
+pragma to be located in the subroutine body. 
+The input Fortran also contains \code{!\$openad begin replacement <}$i$\code{>} paired 
+with pragmas \code{!\$openad end replacement}. Each such pair delimits a code variant \code{S}$_i$ 
+and the postprocessor matched the respective identifier $i$ (an integer) with the 
+identifier given in the template \code{PLACEHOLDER\_PRAGMA}.  
+
+Split reversal is the simplest static call graph reversal. We first execute the entire computation 
+with the augmented forward code $(S_2)$ and then 
+follow with the adjoint $(S_3)$. 
+From the task pattern 
+shown in \reffig{fig:split} it is 
+apparent that, aside from the top-level routine, there is 
+no change to the state structure within the call tree.
+Therefore, there is no need for state changes within the template. 
+Since no checkpointing is needed either, we have only two tasks: 
+producing the tape and the adjoint run.
+\reffig{fig:codeTemplate}(b) shows a simple split-mode template.
+The state is contained in \code{rev\_mode}, a static Fortran90 variable in module \code{OpenAD\_rev}
+of type \code{modeType} also defined in this module.  
+In order to perform a split-mode reversal for the entire computation, a driver routine 
+calls the top-level subroutine first in taping mode and then in adjoint mode.
+
+\reffig{fig:joint} illustrates the task pattern for a joint reversal scheme that requires state changes 
+in the template and requires more code alternatives. \reffig{fig:jointACTemplate} shows a 
+simplified joint mode template. 
+The state transitions in the template directly relate to the pattern 
+shown in \reffig{fig:joint}. Each prestate change applies to the callees of the current 
+subroutine. Since the argument store $(S_4)$ and restore $(S_6)$ do not contain any subroutine calls they 
+do not need state changes. 
+Looking at \reffig{fig:joint}, 
+one realizes that the callees of 
+any subroutine executed in plain forward mode $(S_1)$ 
+never store the arguments (only callees of subroutines in 
+taping mode do). 
+This explains lines 18, 25, and 30. 
+Furthermore, all callees of a routine currently in 
+taping mode are not to be taped but instead run in plain forward mode, as reflected in lines 27 and 28. 
+Joint mode in particular means that a subroutine called in taping mode $(S_2)$ has its adjoint $(S_3)$ executed immediately 
+after $S_2$. 
+This is facilitated by line 33, which makes the condition in line 35 true, and we execute 
+$S_3$  without leaving the subroutine.  
+Any subroutine executed in adjoint mode has its direct 
+callees called in taping mode, which in turn triggers their respective adjoint run. This is done in 
+lines 37--39.   
+Finally, we have to account for sequence of callees in a subroutine; that is, when we are done with this subroutine, 
+the next subroutine (in reverse order) needs to be adjoined. This process is triggered by calling the subroutine in taping mode, as done 
+in lines 41--43. 
+The respective top-level routine is called by the driver with the state structure having both {\tt tape} and 
+{\tt adjoint} set to {\tt true}. 
+\begin{figure}
+\begin{center}
+\vspace*{-1cm}
+\begin{minipage}{.8\linewidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/jointTemplate.pf}
+\end{minipage}
+\end{center}
+\caption{Joint mode Fortran90 template with argument checkpointing} \label{fig:jointACTemplate}
+\end{figure}
+ 
 % #########################################################################################
 \section{Tool Usage} \label{sec:Usage}
 The following contains brief instructions how to obtain and use \OpenADF. 
@@ -1841,12 +2001,94 @@ up to date instructions on the \OpenADF\ website \cite{openadWeb}.
 
 % -----------------------------------------------------------------------------------------
 \subsection{Download and Build}\label{ssec:dab}
+All components are open source and readily available for download from 
+the HiPerSoft CVS server at Rice University. Instructions to set up for anonymous 
+CVS access are found at \url{http://hipersoft.cs.rice.edu/cvs/index.html#anonymous}.
+The download is a 2 stage process where initially a skeleton repository is 
+retrieved via \code{cvs co OpenAD}. This contains a few scripts and setup to 
+retrieve and build all components. Then procede as follows.
+\begin{enumerate}
+\item go into the \OpenADF\ download/build environment which was retrieved as described above:\\
+\code {cd OpenAD}
+\item retrieve all components from their various repositories by invoking\\
+\code{./bin/goad}
+\item set the environment for building and using \OpenADF\ for
+\begin{itemize}
+\item shell/ksh/bash etc users with\\
+\code{source ./setenv.sh}
+\item csh/tcsh etc. users with\\
+\code{source ./setenv.csh}
+\end{itemize}
+\item We assume the GNU c/c++/f77 compilers versions 3.3.x to 3.4.4\footnote{
+\OpenSixtyFour\ currently does not compile with gcc 4.x.
+} 
+and GNU make (gmake) to be in your \code{PATH}.
+The complete set of all components can be build by invoking\\
+\code{make}
+\end{enumerate}
+To update the sources to the latest version simply repeat the above steps 1 through 4 which 
+executes CVS updates and performs a mostly incremental build.
 
 % -----------------------------------------------------------------------------------------
 \subsection{Automatic Pipeline}
-
+The components of \OpenADF\ transform the code in a predetermined sequence of steps, 
+the {\em pipeline}. 
+Depending on the particular problem there are certain variations to the pipeline 
+that achieve a better performance of the generated code. 
+The most common pipeline setups are encapsulated in a Perl script. 
+The script is part of the skeleton environment that is used to download and build \OpenADF\  
+and relies on the same environment setup.
+Therefore user starts with steps 1 and 2 from \refsec{ssec:dab}. 
+The script is contained in the file
+\code{OpenAD/tools/openad/openad}.
+Invoking it with the \code{-h} option displays the 
+script usage of which the mode choices are the most important.
+\begin{description}
+\item[\code{--bb-rev}] the default mode that produces adjoint code as explained in \refsec{sssec:BBRev},
+\item[\code{--bb}] the tangent-linear mode as explained in \refsec{sssec:BBPreacc}, and
+\item[\code{--memopstradeoff}] the tangent-linear mode with heuristics addressing data locality and operations count for the elimination sequence as explained in \refsec{sssec:MMTradeOff}.
+\end{description}
+As an example we use a code assumed to be in a file called head.f and transform this code 
+by invoking \code{openad head.f}
+which produces the adjoint version of \code{head.f} emitting the following messages.\\
+\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/openadScriptOutput.txt}
+\end{minipage}\\
+For larger projects it is obviously appropriate to customize the sequence 
+by adding the steps outlined in \refsec{ssec:manualPipeline} to a \code{Makefile}. 
+ 
 % -----------------------------------------------------------------------------------------
 \subsection{Manual Pipeline}\label{ssec:manualPipeline}
+The following illustrates the pipeline that could be implemented 
+in a \code{Makefile} where we use successive file name postfixes to 
+retain the transformation results at each stage.\\
+\begin{tabular}{|l|l|l|}\hline
+\# & \multicolumn{2}{c|}{}\\\hline
+1 & in (Fortran) & \code{head.f}\\\cline{2-3}
+  & out (Fortran) & \code{head.canon.f} \\\cline{2-3}
+  & command & \code{perl canon.pl head.f head.canon.f}\\\cline{2-3}
+  & \multicolumn{2}{l|}{
+\begin{minipage}{.8\textwidth}
+\scriptsize
+The script is located at \\{\tt OpenAD/OpenADFortTk/tools/multi-process/canon.pl}.
+\end{minipage}
+}\\\hline
+2 & in (Fortran) & \code{head.canon.f} \\\cline{2-3}
+  & out (\whirl) & \code{head.canon.B} \\\cline{2-3}
+  & command & \code{mfef90 -F -ffixed head.canon.f}\\\cline{2-3}
+  & \multicolumn{2}{l|}{
+\begin{minipage}{.8\textwidth}
+\scriptsize
+The binary is located at \\{\tt OpenAD/Open64/osprey1.0/targ\_ia32\_ia64\_linux/crayf90/sgi/mfef90}.\\
+The {\tt -F} flag enables C preprocessing if needed, the {\tt -ffixed} indicates fixed format input.
+\end{minipage}
+}\\\hline
+\end{tabular}
+
+
+
+invoked as {\tt perl multi-pp.pl [-i <inline definitions>] [-t <template definitions>] <fortran file>}.
 
 
 % #########################################################################################

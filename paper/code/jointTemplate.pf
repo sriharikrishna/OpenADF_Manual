@@ -1,0 +1,45 @@
+ 1:subroutine template()       
+ 2:  use OpenAD_tape  
+ 3:  use OpenAD_rev   
+ 4:  use OpenAD_checkpoints    
+ 5: !$TEMPLATE_PRAGMA_DECLARATIONS
+ 6:  type(modeType) :: orig_mode
+ 7: 
+ 8:  if (rev_mode%arg_store) then 
+ 9: ! store arguments 
+10: !$PLACEHOLDER_PRAGMA$ id=4
+11:  end if 
+12:  if (rev_mode%arg_restore) then
+13: ! restore arguments 
+14: !$PLACEHOLDER_PRAGMA$ id=6
+15:  end if
+16:  if (rev_mode%plain) then
+17:    orig_mode=rev_mode
+18:    rev_mode%arg_store=.FALSE.     
+19: ! run the original code   
+20: !$PLACEHOLDER_PRAGMA$ id=1
+21:    rev_mode=orig_mode
+22:  end if 
+23:  if (rev_mode%tape) then
+24: ! run augmented forward code
+25:    rev_mode%arg_store=.TRUE.
+26:    rev_mode%arg_restore=.FALSE.
+27:    rev_mode%plain=.TRUE.
+28:    rev_mode%tape=.FALSE.
+29: !$PLACEHOLDER_PRAGMA$ id=2
+30:    rev_mode%arg_store=.FALSE.
+31:    rev_mode%arg_restore=.FALSE.
+32:    rev_mode%plain=.FALSE.
+33:    rev_mode%adjoint=.TRUE.
+34:  end if 
+35:  if (rev_mode%adjoint) then
+36: ! run the adjoint code
+37:    rev_mode%arg_restore=.TRUE.
+38:    rev_mode%tape=.TRUE.
+39:    rev_mode%adjoint=.FALSE.
+40: !$PLACEHOLDER_PRAGMA$ id=3
+41:    rev_mode%plain=.FALSE.
+42:    rev_mode%tape=.TRUE.
+43:    rev_mode%adjoint=.FALSE.
+44:  end if 
+45:end subroutine template

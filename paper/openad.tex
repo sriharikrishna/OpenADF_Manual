@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{url}
+\usepackage{longtable}
 \usepackage[pdftex,usenames]{color}
 \usepackage[pdftex]{graphicx}  
 \DeclareGraphicsExtensions{.pdf}  
@@ -55,6 +56,7 @@
 \newcommand{\bmg}{\mbox{\bf\em g}}
 \newcommand{\bmI}{\mbox{\bf\em I}}
 \newcommand{\bmJ}{\mbox{\bf\em J}}
+\newcommand{\bmS}{\mbox{\bf\em S}}
 \newcommand{\bmu}{\mbox{\bf\em u}}
 \newcommand{\bmv}{\mbox{\bf\em v}}
 \newcommand{\bmw}{\mbox{\bf\em w}}
@@ -117,16 +119,16 @@
   other automatic differentiation tools \OpenADF\ uses components 
   provided by the \OpenAD\ framework which supports a relatively 
   easy extension of the code transformations
-  in a language indepdendent fashion. 
+  in a language independent fashion. 
   It uses code analysis results
   implemented in the \OpenAnalysis\ component.  The interface to the
-  language independent transformation engine is an xml abstract
-  interface format, called \xaif\ that is specified through an xml
+  language independent transformation engine is an XML abstract
+  interface format, called \xaif\ that is specified through an XML
   schema.  The implemented transformation algorithms allow efficient
   derivative computations utilizing locally optimized cross country
   sequences of vertex, edge and face elimination steps.  Specifically,
   for the generation of adjoint codes, \OpenADF\ supports various code
-  reversal schemes with hierachical checkpointing at the subroutine
+  reversal schemes with hierarchical checkpointing at the subroutine
   level.  The Fortran specific front and back end to this transformation
   engine is based on the \OpenSixtyFour\ compiler.
 \end{abstract}
@@ -197,7 +199,7 @@ designing a new tool with particular emphasis on
 \begin{itemize}
 \item flexibility,
 \item modularity, and
-\item the use of open source compenents.
+\item the use of open source components.
 \end{itemize} 
 
 From  the AD tool  {\em users point of view} there is a need for a substantial 
@@ -211,7 +213,7 @@ Some of these specific solutions may be folded into the generic code transformat
 but in many situation this is not appropriate.
 Consequently the AD tool should offer flexibility at various levels of the 
 transformation from simple textual preprocessing of the code down to the 
-changes the to the generice code transformation engine.
+changes the to the generic code transformation engine.
 This is the user rationale for developing an open source tool where {\em all} 
 components may be modified by to suit specific 
 needs.  
@@ -230,7 +232,7 @@ This is true for a parsing front-end that turns the textual program into a
 compiler-like internal representation, an environment that allows the 
 transformations  of this internal representation and finally the unparser that 
 returns the transformed internal representation back into a textual format of the 
-original programming language. An modular, open-source tool that faciliates 
+original programming language. An modular, open-source tool that facilitates 
 the integration of new transformation into an existing environment 
 allows for a much quicker implementation of new or modified  transformations.
 Finally, a modular design permits the reuse of the same transformation algorithms 
@@ -241,8 +243,8 @@ These issues became the motivation for the
 Adjoint Compiler Technology \& Standards (ACTS) project \cite{actsWeb}.
 This project is a collaborative
 research and development effort of MIT, Argonne National Laboratory, 
-Univeristy of Chicago, and Rice University. 
-It focusses on  next-generation tool development and 
+University of Chicago, and Rice University. 
+It focuses on  next-generation tool development and 
 application of AD to problems in oceanography and chemical engineering.
 The main result of this effort is an infrastructure for the language independent 
 development and use of AD algorithms. 
@@ -274,7 +276,7 @@ This information is used by
 \whirlToxaif\ to construct a representation of the numerical core of $\bmf$ in
 \xaif\ format shown as $\bmf_{xaif}$.  
 A differentiated version of $\bmf_{xaif}$ is derived by an 
-algorithm that is implented in \xaifBooster\ and is again respresented 
+algorithm that is implemented in \xaifBooster\ and is again represented 
 \xaif\ as $\bmfp_{xaif}$.
 The information in $\bmfp_{xaif}$ and the original $\bmf_{\whirl}$ are used by 
 \xaifTowhirl\ to construct a 
@@ -294,7 +296,7 @@ In \refsec{sec:ADIntro} we discuss the basic concepts of AD as relevant for
 the description of \OpenAD, \refsec{sec:openadfcomponents} discusses the components 
 that make up \OpenADF, and \refsec{sec:Usage} details the usage of the tool. 
 Two applications further illustrate the tool usage in \refsec{sec:application} and 
-we conclude with a section on future devlepments.
+we conclude with a section on future developments.
 
 % #########################################################################################
 \section{AD Concepts}\label{sec:ADIntro}
@@ -303,7 +305,7 @@ In this section we present the terminology and basic concepts that
 we will refer to throughout this paper. 
 A detailed introduction to AD can be found in \cite{Gri00}.
 The interested reader should also consider the proceedings of AD 
-conferences \cite{CG91,BBCG96,CFG+01,BCH+05}.
+conferences \cite{CG91,BBCG96,CFG+01,BCH+06}.
 
 We present the concepts and resulting transformations 
 with respect to the input source code 
@@ -314,15 +316,18 @@ consisting of several subroutines in a call graph.
 
 We view a given numerical model as a 
 vector valued function $\bmy=\bmf(\bmx): \R^n\mapsto \R^m$ that is implemented 
-as a computer program in a language such as Fortran, C, or C++. 
-
+as a computer program in a language such as Fortran, C, or C++ and the objective is to  
+compute products of Jacobians with see matrices $\bmS$.
+\begin{equation}\label{eqn:JacVecProds}
+\bmJ \bmS \quad \mbox{and} \quad \bmJ^T \bmS
+\end{equation}
 % -----------------------------------------------------------------------------------------
 \subsection{Computational Graphs} \label{ssec:computationalGraphs}
 
 Without loss of generality we can simply assume that an evaluation of $\bmf(\bmx)$ for  
 a specific value of $\bmx$ can be represented by a sequence of 
 elemental operations $v_j=\phi_j(\ldots,v_i,\ldots)$. 
-The $v_i$ represent the vertices $\in V$ in the correspong corresponding computational 
+The $v_i$ represent the vertices $\in V$ in the corresponding computational 
 graph $G=(V,E)$. The edges $(i,j)\in E$ in this graph are the direct dependencies 
 $v_i\prec v_j$ implied by the elemental $v_j=\phi_j(\ldots,v_i,\ldots)$.
 The elemental operations $\phi$ are differentiable on open subdomains. 
@@ -343,7 +348,7 @@ We consider the
 computation of derivatives of the {\em dependent} variables 
 $y_1,\ldots,y_m$ represented by $m$ variables $v_{q+1},\ldots,v_{q+m}, v_j\in Y$
 with respect to the independents. 
-The depdendency $v_i<v_j$ implies $i<j$. 
+The dependency $v_i<v_j$ implies $i<j$. 
 The {\em forward mode} of AD propagates directional derivatives
 as 
 \begin{equation} \label{eqn:fm}
@@ -708,7 +713,7 @@ In {\em forward mode} a sequence of
 products of the local Jacobians $\bmJ_j$ 
 with the directions $\dot{x}_j$ 
 are propagated forward in the direction of the flow of control, for 
-instance simultaneouly to the computation of $\bmf$.
+instance simultaneously to the computation of $\bmf$.
 In our example \basicblock\ B(6) is the third \basicblock\ ($j=3$) and we have
 $\bmx_3=\bmy_j=($\code{x(1)}$,$\code{x(2)}$)$ and 
 consequently have the operations for the Jacobian vector product shown 
@@ -774,8 +779,8 @@ This augmented CFG  keeps track of which branch was taken and counts how
 often a loop was 
 executed.  
 This information is pushed on  a stack and popped from that stack during the 
-reverse sweep see also \cite{scam2004}. Because the control flow trace 
-adheresto the stack model it often is also considered part of the tape. 
+reverse sweep see also \cite{NULF04CFR}. Because the control flow trace 
+adheres to the stack model it often is also considered part of the tape. 
 In the example in \reffig{fig:cfg}(b) the extra {\basicblock}s pBT and pBF push 
 a boolean (T or F) onto the stack depending on the branch. 
 In iLc we initialize a loop counter, increment the loop counter in +Lc, 
@@ -785,7 +790,7 @@ and push the final count in pLc.
 The parenthesized numbers in the node labels align the 
 node transformation to \reffig{fig:cfg}(a). 
 The \exit\ node becomes 
-the \entry, \Loop\ becomes \EndLoop, \branch\ beomes \EndBranch, and vice versa. 
+the \entry, \Loop\ becomes \EndLoop, \branch\ becomes \EndBranch, and vice versa. 
 Each \basicblock\  B is replaced with its reversed version B'.  
 Finally, to find the proper path through this reversed CFG we need to retrieve 
 the information recorded in  \reffig{fig:cfg}(b). The extra nodes pB and pLc 
@@ -806,9 +811,9 @@ values of $\bmx$ in the domain of $\bmf$.
 For a large number of problems it is possible to statically 
 predetermine either 
 {\em split} or {\em joint} 
-reversal \cite{grie00} for any subroutine in the call graph .
+reversal \cite{Gri00} for any subroutine in the call graph .
 These concepts are easier understood with the help of the dynamic call tree,
-see also \cite{iccs2005}.
+see also \cite{NaUt05STAG}.
 \begin{figure}
   \centering
   \begin{tabular}{p{.5\linewidth}p{.3\linewidth}}
@@ -831,7 +836,7 @@ see also \cite{iccs2005}.
   \caption{Dynamic call tree of a simple calling hierarchy}
   \label{fig:simple_dct}
 \end{figure}
-where ach vertex represents an actual invocation of a subroutine for a 
+where each vertex represents an actual invocation of a subroutine for a 
 given execution of the program, see \reffig{fig:simple_dct} and 
 \reftab{tab:leg} for an explanation of the symbols. 
 The order of calls is implied by following the edges in left to right order. 
@@ -912,7 +917,7 @@ that invocation. In our example this implies that we have to generate
 a tape for {\tt C}$^2$ while the caller {\tt B}$^2$ is being reversed, 
 i.e. this is not the proper context to simply reexecute {\tt C}$^2$. 
 We can either reexecute the entire program up to the  {\tt C}$^2$
-call and then start taping, or (preferrably) we store the arguments while 
+call and then start taping, or (preferably) we store the arguments while 
 running forward and restore them before starting the taping. 
 The ensuing dynamic call tree for our example is 
 shown in \reffig{fig:joint}. 
@@ -926,13 +931,13 @@ applied to subtrees of the call tree is suitable.
 \OpenADF\ is built on components that belong to a framework designed
 for code transformation of numerical programs.  The components are
 tied together either via programmatic interfaces or by communication
-using the \xaif\ langauge. The transformation of the source code follows the
+using the \xaif\ language. The transformation of the source code follows the
 pipeline shown in \reffig{fig:overview}.  
-In \refsec{ssec:openadcomponents} we describe the language-indepdendent 
+In \refsec{ssec:openadcomponents} we describe the language-independent 
 components of \OpenAD\ framework and \refsec{ssec:fortfe} provides details 
 in the Fortran front-end.
 The regular setup procedure for \OpenADF, see also \refsec{ssec:dab}, 
-will retrieve all componenents into an \code{OpenAD/} directory to which 
+will retrieve all components into an \code{OpenAD/} directory to which 
 we refer from here on.  
 
 % -----------------------------------------------------------------------------------------
@@ -990,7 +995,7 @@ language-specific intermediate representations.
 \OpenAnalysis\ also performs activity analysis.  For activity analysis
 the independent and dependent variables of interest are communicated
 to the front-end through the use of pragmas, see \refsec{sssec:mfef}.
-The results of the analysis are then encoded by the Fortram~90
+The results of the analysis are then encoded by the Fortran~90
 front-end into \xaif.  The analysis indicates which variables are
 active at any time, which memory references are active, and which
 statements are active.
@@ -1004,7 +1009,6 @@ All sources for \OpenAnalysis\ can be found under \code{OpenAD/OpenAnalysis/}.
 
 % -----------------------------------------------------------------------------------------
 \subsubsection{Representing the Numerical Core (\xaif)} \label{sssec:xaif}
-{\color{red} JU: rewritten } 
 
 To obtain a language independent representation of programs across multiple 
 programming languages one might choose the union of all language features. 
@@ -1025,7 +1029,7 @@ Among the generic language features not considered part of the numerical core ar
 \item memory management, see also \refsec{sec:concl}
 \item preprocessor directives
 \end{itemize}
-For a more general discussion regarding this compromise see also \cite{sea2000something}.
+For a more general discussion regarding this compromise see also \cite{UtNa04SLD}.
 It is apparent that certain aspects of the adjoint code such as 
 checkpointing, see \refsec{ssec:cgReversal}, and taping, see \refsec{ssec:cfReversal},
 can involve memory allocation and various I/O schemes and therefore 
@@ -1061,14 +1065,14 @@ Further documentation for individual elements can be found directly in the
 schema annotations. 
 
 The \xaif\ also contains the results of the code analyses provided 
-by \OpenAnalysis, see \refsec{sssec:openanalysis}. Some are exressed 
+by \OpenAnalysis, see \refsec{sssec:openanalysis}. Some are expressed 
 either as additional attributes on certain \xaif\ elements, e.g. for activity information. 
 Side-effect analysis provides lists of variable references per subroutine, i.e. a call graph vertex element.
 DuUd chains are expressed as list of ids found in the assignment \xaif\ element.
-Alias information is epxressed as set of virtual addresses. 
+Alias information is expressed as set of virtual addresses. 
 DuUd chains and alias information is collected in maps indexed by keys associated with the call 
 graph. References to individual entries held in these maps are expressed via foreign key 
-attributs in the elements. 
+attributes in the elements. 
 
 The source transformation at the code of \OpenAD\ potentially changes and augments 
 all elements of the \xaif. While it would in principle be possible  
@@ -1097,7 +1101,7 @@ compiler's high level internal representation.
 the boost graph library \cite{boostWeb}
 and the Standard C++ Library\cite{libstdcWeb}.
 \reffigBS{fig:iri} and \reffig{fig:irc} show simplified subsets of the classes 
-occuring in the \xaifBooster\ data structure in the inheritance 
+occurring in the \xaifBooster\ data structure in the inheritance 
 as well as the composition hierarchy.  
 \begin{figure}[htb]
   \centering \includegraphics[width=.45\textwidth]{irComp}
@@ -1109,10 +1113,10 @@ The class hierarchy is organized top down with
 a single \code{CallGraph} instance as the top element. 
 The top down structure is also imposed on the ownership of dynamically 
 allocated elements. 
-Whereever possible, the class interfaces encapsulate dynamic 
+Wherever possible, the class interfaces encapsulate dynamic 
 allocation of members.  
 Only in cases of containment of polymorphic elements is explicit dynamic allocation 
-ouside of the owning class' members appropriate. 
+outside of the owning class' members appropriate. 
 In these cases the container class interface naming and documentation 
 indicates the assumption of ownership of 
 the dynamically allocated elements being supplied to the container class. 
@@ -1136,7 +1140,7 @@ through \code{get<name>AlgBase()} and \code{getContaining<name>()} respectively.
 The instantiation of the algorithm specific classes follows 
 the factory design pattern. The factory instances in turn are controlled 
 by a transformation algorithm specific \code{AlgFactoryManager} classes. 
-Further details can be found in \cite{sea2003}, howeverer, the code 
+Further details can be found in \cite{UtNa03STI}, however, the code 
 code for this mechanism is fairly self-explanatory.  
 
 In the following sections we want to concentrate on the transformation 
@@ -1161,19 +1165,19 @@ build the \xaifBooster\ data
 structure from the top down. 
 As an additional consistency check all components that read \xaif\ data 
 have the validation according to the schema enabled. Beyond the schema 
-validation these components perform valdity checks. Therefore, 
+validation these components perform validity checks. Therefore, 
 manual modifications of \xaif\ data , while possible, should 
 be done judiciously. 
 
 The unparsing of the transformed data structure into \xaif\ is performed 
 through a series of that traverses the data structure and the 
 respective algorithm specific data. 
-For information of the files containg the \xaif\ representation refer to 
+For information of the files containing the \xaif\ representation refer to 
 \refsec{ssec:manualPipeline}.
 
 Aside from the parsing of the actual input \xaif\ there is also the so called 
 {\em 
-  catalogue of inlinable intrinsics
+  catalog of inlinable intrinsics
 } 
 supplied as an XML following a specialized schema in \xaif, see  
 \refsec{sssec:linearization} and \refsec{sssec:wtxxtw}.
@@ -1192,7 +1196,7 @@ Per canonicalization (see \refsec{sssec:Canonicalization})
 all elemental $\phi$ 
 occur only in the right-hand side of an assignment. 
 For each $\phi$ we look up the definition of the respective partials in 
-the intrinsics catalogue. 
+the intrinsics catalog. 
 {\color{red} [ not sure  how much detail is necessary ] } 
 The partials are defined in terms of positional arguments, see 
 \reffig{fig:divExample}. 
@@ -1206,10 +1210,10 @@ the right-hand-side expression may have to be split up into
 subexpressions to assign intermediate values to ancillary variables 
 that can be referenced in the partial computation, for an example see 
 the code shown in \reffig{fig:toyAndPartials}.  
-In cases of the left-hand-side variable occuring on the right-hand-side 
+In cases of the left-hand-side variable occurring on the right-hand-side 
 (or being may-aliased to a right-hand-side variable, 
 see \refsec{sssec:openanalysis}) we also require an extra assignment to 
-delay the (potiential) overwrite until after the partials depending on 
+delay the (potential) overwrite until after the partials depending on 
 the original variable value have been computed.
 The result of the Linearization is a representation for 
 code containing the potentially split 
@@ -1217,7 +1221,7 @@ assignments along with assignments for each non-zero edge label $c_{ji}$.
 These representations are contained in the \code{xaifBoosterLinearization::AssignmentAlg} instances associated with each assignment in the \xaif.
 The generated code after unparsing to Fortran 
 is compilable but does by itself not compute useful 
-derivative information at the lavel for the target function $\bmf$. The 
+derivative information at the level for the target function $\bmf$. The 
 transformation driver is 
 used to verify the results of the linearization transformation.
 
@@ -1237,8 +1241,8 @@ supplied by \OpenAnalysis, see \refsec{sssec:openanalysis}.
 The algorithm itself is described in detail in \cite{Utk04FBB}.
 Because the analysis results supplied by \OpenAnalysis\ are always 
 conservatively correct it may not be possible to flatten all 
-assignmments into a single computational graph. In such cases 
-a sequence of graphs is created. Likewise, the occurence 
+assignments into a single computational graph. In such cases 
+a sequence of graphs is created. Likewise, the occurrence 
 of a subroutine call leads to a split in the graph construction. 
 In the context of \refsec{sec:ADIntro} one may think of the sets of 
 assignments forming each of these graphs as a separate \basicblock. 
@@ -1254,7 +1258,7 @@ and by default calls the \angel\ library \cite{angelWeb,AGN03,SAGA}.
 \angel\ determines an elimination sequence and returns it as 
 fused multiply add expressions in terms of the edge references.
 There are several heuristics implemented within \angel\ that control 
-the selection of elimination steps and thereby the preccumulation code 
+the selection of elimination steps and thereby the preaccumulation code 
 that is generated.  The algorithm code calls a default set of heuristics. 
 However, all heuristics use the \code{CrossCountryInterface} and therefore 
 different heuristics can be selected with minimal changes in algorithm code.   
@@ -1293,7 +1297,7 @@ Like \angel\ it uses the \code{CrossCountryInterface}. In its implementation
 it replaces the call to \angel\ with one to its own internal routines that
 determine an elimination sequence according to a selectable set of heuristics. 
 In difference to the \angel\ heuristics  they 
-aim for a tradeoff between the number of operations required to complete an elimantion 
+aim for a tradeoff between the number of operations required to complete an elimination 
 sequence on the one hand and the temporal locality of the $c_{ji}$ in memory on the other hand. 
 The rationale for these heuristics is the observation that in many modern 
 computer architectures the performance is memory bound, i.e. a few additional 
@@ -1316,7 +1320,7 @@ by any target in $\Theta$, then $\Theta'=\Theta$.
     \begin{minipage}{.4\linewidth}
       \footnotesize
       select vertices that share at least one predecessor
-      and sucessor with the most recently eliminated vertex.
+      and successor with the most recently eliminated vertex.
     \end{minipage}
     & N/A & N/A
     \\\hline %---------------------------------------
@@ -1342,7 +1346,7 @@ by any target in $\Theta$, then $\Theta'=\Theta$.
     &
     \begin{minipage}{.4\linewidth}
       \footnotesize
-      select vertices  that were either predecessors or sucessors of
+      select vertices  that were either predecessors or successors of
       the most recently eliminated vertex
     \end{minipage}
     & N/A & N/A 
@@ -1380,8 +1384,8 @@ by any target in $\Theta$, then $\Theta'=\Theta$.
   \end{tabular}
   \caption{Heuristics selection criteria}\label{tab:memOpsHeur}
 \end{table}
-The driver allows a sequence of heuristics to be seletec via string supplied as 
-an argument to the commandline swith \code{-H}. The string needs to contain 
+The driver allows a sequence of heuristics to be selected via string supplied as 
+an argument to the commandline switch \code{-H}. The string needs to contain 
 the target selection, one of \code{Vertex}, \code{EDGE}, or \code{FACE} followed by 
 a sequence of heuristics that should include at least on of the tie breakers \code{FORWARD} or 
 \code{REVERSE}. 
@@ -1395,7 +1399,7 @@ cross-country fashion.
 % -----------------------------------------------------------------------------------------
 \paragraph{Using the ANGEL Library}\label{sssec:angel}
 {\color{red} [ JU: This was a placeholder to talk about the \angel\ lib 
-  but I think I will remove this unless somebody stronly objects]}
+  but I think I will remove this unless somebody strongly objects]}
 % -----------------------------------------------------------------------------------------
 \paragraph{CFG Reversal}\label{sssec:cfgRevAlg}
 
@@ -1404,9 +1408,9 @@ of the CFG. The CFG reversal as implemented in this transformation is
 by itself not useful as unparsed code other than for checking the correctness without 
 interference from other transformations. It is a major building block for 
 the  
-adjoint code generater described in \refsec{sssec:BBRev}. 
+adjoint code generator described in \refsec{sssec:BBRev}. 
 The \Loop\ counters and \branch\ identifiers are stored the same 
-stack datastructure that is used for the {\em tape} (introduced in 
+stack data structure that is used for the {\em tape} (introduced in 
 \refsec{ssec:cfReversal} and also used in \refsec{sssec:bbTA}.  
 The reversal of loops and branches as detailed in \cite{NULF04CFR} assumes 
 CFGs to be well-structured, that is, essentially to be free of arbitrary jump instructions 
@@ -1424,7 +1428,7 @@ The reversal of  \Loop\ constructs such as \code{do i=1,10} replaces
 the loop variable \code{i} with a generated variable name, say \code{t} and we 
 loop up to  the stored execution count which we will call  \code{c} here. 
 Then the reversed \Loop\ is \code{do t=1,c}. Quite often the loop body contains 
-array derefences such as \code{a(i)} but \code{i} is no longer available in the 
+array dereferences such as \code{a(i)} but \code{i} is no longer available in the 
 reversed \Loop. We call this kind of \Loop\ reversal {\em anonymous}. 
 To access the proper memory location \code{i} will have to be stored along with the 
 \Loop\ counters and \branch\ identifiers in the tape stack.
@@ -1450,11 +1454,11 @@ as a compromise define the {\em simple}
 While these conditions can be relaxed in theory, in practice the effort to implement 
 the transformation will rise sharply. Therefore they represent a workable compromise 
 for the current implementation. 
-Because often multidemensional arrays  are accessed with nested loops the 
+Because often multidimensional arrays  are accessed with nested loops the 
 \Loop\ directive when specified for the outermost loop will assume the validity 
 of the above conditions for everything within the \Loop\ body including nested 
 \Loop\ and \branch\ constructs. More details on this aspect can be found in 
-\cite{scam_jss_se}. 
+\cite{UtLy05ERIF}. 
 % -----------------------------------------------------------------------------------------
 \paragraph{Writing and Consuming the Tape}\label{sssec:bbTA}
 
@@ -1491,7 +1495,7 @@ The tape writing and consumption implemented in these transformations are
 by themselves not useful as unparsed code other than for checking the correctness without 
 interference from other transformations. 
 They are, however, major building blocks for the  
-adjoint code generater described in \refsec{sssec:BBRev}.
+adjoint code generator described in \refsec{sssec:BBRev}.
 % -----------------------------------------------------------------------------------------
 \paragraph{Basic Block Preaccumulation Reverse}\label{sssec:BBRev}
 
@@ -1511,7 +1515,7 @@ The driver offers command line options
 \begin{itemize}
 \item to change subroutine argument intents 
   such that checkpointing can take place; while checkpointing will 
-  generally be needed this option is usefull 
+  generally be needed this option is useful 
   for certain application scenarios where the intent change can be avoided.
 \item  to validate the \xaif\ input against the schema; the validation takes 
   considerable time for large \xaif\ files
@@ -1554,70 +1558,6 @@ are used in transformation pipeline in the following sequence.
   performs template expansion as well as inlining substitutions, see \refsec{sssec:PostProcessor}
 
 \end{enumerate}
-
-% -----------------------------------------------------------------------------------------
-\subsubsection{Compiler Front-End Components (from \OpenSixtyFour)} \label{sssec:mfef}
-
-The choice of \OpenSixtyFour\ for some of the programming-language-dependent 
-components ensures some initial robustness of the tool that is afforded by an 
-industrial-strength compiler. 
-The Center for High Performance Software Research (HiPerSoft) at Rice University 
-developes \OpenSixtyFour\ \cite{open64Web} as a 
-multi-platform version of the SGI Pro64/Open64 compiler
-suite, originally based on SGI's commercial MIPSPro compiler.
-
-\OpenADF\ uses the parser, an internal representation and the unparser 
-of the \OpenSixtyFour\ project.
-The classical compiler parser \mfefninety\ produces a representation of the Fortran 
-input in a format known as very high level or source level \whirl\ . 
-The \whirl\ representation can unparsed into Fortran using the 
-tool \whirlTof.
-The source level \whirl\
-representation resembles a typical abstract syntax tree with the 
-addition of machine type deductions. 
-The original design of \whirl\ in particular the descent to 
-lower levels closer to machine code  enables good optimization 
-for high performance
-computing in Fortran, C, and C++. HiPerSoft's main
-contribution to the \OpenSixtyFour\ community has been the source 
-level extension to \whirl\
-which is geared towards supporting source-to-source transformations and 
-it 
-has invested significant effort in the \whirlTof\ unparser.
-
-For the purpose of AD, user-supplied hints and required 
-input is typically not directly
-representable in programming languages such as Fortran.  
-For example,
-an AD tool must know which variables in the code for $\bmf$ are
-independent and which are dependent. 
-While it is possible to supply this information externally, 
-for instance with a configuration file, we introduced a special
-pragma facility, encoded within Fortran comments. 
-While pragmas are intrusive they have the added advantage to be 
-parsed by the front-end and be associated with a given context in the code.
-Thereby code and AD information is easier kept in sync.  
-For \OpenADF\ we extended the
-\OpenSixtyFour\ components to generate and unparse these pragma nodes represented in \whirl.
-The behavior is 
-similar to many other special-purpose Fortran pragma systems such as
-OpenMP \cite{OpenMP-website}. 
-To specify a variable
-$y$ as a dependent, the user writes \code{!\$openad dependent(y)},
-where \code{\$openad} is the special prefix that identifies \OpenAD\
-pragmas.   
-To provide flexibility we introduced a generic
-\code{!\$openad xxx <some text>} pragma\footnote{
-  The mnemonic behind the name is that
-  as $x$ is the typical variable name, so \code{!\$openad xxx} is the
-  {\em variable} pragma.} 
-that can communicate arbitrary pieces of
-text through the pipeline. 
-These generic pragmas can be associated with whole procedures, 
-single statements, or groups
-of statements. They provides an easy way 
-to implement additional user hints while eliminating the significant
-development costs associated with modifying \OpenSixtyFour.
 
 % -----------------------------------------------------------------------------------------
 \subsubsection{Canonicalization}\label{sssec:Canonicalization}
@@ -1693,7 +1633,7 @@ in Python. All sources can be found under \code{OpenADFortTk/tools/canonicalize/
   Non-variable actual parameters are hoisted to temporaries.
   Any value passed to a routine could conceivably need augmentation. Furthermore, only variables
   can be augmented. 
-  Consequently, {\OpenAD} hoists all non-variable actual paramters into temporaries.
+  Consequently, {\OpenAD} hoists all non-variable actual parameters into temporaries.
   \begin{table}
     \begin{center}
       \begin{tabular}{cc}
@@ -1745,6 +1685,70 @@ maintainable code we prefer simplicity over more sophisticated transformations
 e.g. a module generator which abstracts dimension information shared between common blocks. 
 
 % -----------------------------------------------------------------------------------------
+\subsubsection{Compiler Front-End Components (from \OpenSixtyFour)} \label{sssec:mfef}
+
+The choice of \OpenSixtyFour\ for some of the programming-language-dependent 
+components ensures some initial robustness of the tool that is afforded by an 
+industrial-strength compiler. 
+The Center for High Performance Software Research (HiPerSoft) at Rice University 
+develops \OpenSixtyFour\ \cite{open64Web} as a 
+multi-platform version of the SGI Pro64/Open64 compiler
+suite, originally based on SGI's commercial MIPSPro compiler.
+
+\OpenADF\ uses the parser, an internal representation and the unparser 
+of the \OpenSixtyFour\ project.
+The classical compiler parser \mfefninety\ produces a representation of the Fortran 
+input in a format known as very high level or source level \whirl\ . 
+The \whirl\ representation can unparsed into Fortran using the 
+tool \whirlTof.
+The source level \whirl\
+representation resembles a typical abstract syntax tree with the 
+addition of machine type deductions. 
+The original design of \whirl\ in particular the descent to 
+lower levels closer to machine code  enables good optimization 
+for high performance
+computing in Fortran, C, and C++. HiPerSoft's main
+contribution to the \OpenSixtyFour\ community has been the source 
+level extension to \whirl\
+which is geared towards supporting source-to-source transformations and 
+it 
+has invested significant effort in the \whirlTof\ unparser.
+
+For the purpose of AD, user-supplied hints and required 
+input is typically not directly
+representable in programming languages such as Fortran.  
+For example,
+an AD tool must know which variables in the code for $\bmf$ are
+independent and which are dependent. 
+While it is possible to supply this information externally, 
+for instance with a configuration file, we introduced a special
+pragma facility, encoded within Fortran comments. 
+While pragmas are intrusive they have the added advantage to be 
+parsed by the front-end and be associated with a given context in the code.
+Thereby code and AD information is easier kept in sync.  
+For \OpenADF\ we extended the
+\OpenSixtyFour\ components to generate and unparse these pragma nodes represented in \whirl.
+The behavior is 
+similar to many other special-purpose Fortran pragma systems such as
+OpenMP \cite{openmpWeb}. 
+To specify a variable
+$y$ as a dependent, the user writes \code{!\$openad dependent(y)},
+where \code{\$openad} is the special prefix that identifies \OpenAD\
+pragmas.   
+To provide flexibility we introduced a generic
+\code{!\$openad xxx <some text>} pragma\footnote{
+  The mnemonic behind the name is that
+  as $x$ is the typical variable name, so \code{!\$openad xxx} is the
+  {\em variable} pragma.} 
+that can communicate arbitrary pieces of
+text through the pipeline. 
+These generic pragmas can be associated with whole procedures, 
+single statements, or groups
+of statements. They provides an easy way 
+to implement additional user hints while eliminating the significant
+development costs associated with modifying \OpenSixtyFour.
+
+% -----------------------------------------------------------------------------------------
 \subsubsection{Translating between \whirl\ and \xaif}\label{sssec:wtxxtw}
 
 \begin{figure}
@@ -1779,7 +1783,7 @@ instance, \xaif\ does not represent dereferences for user-defined types
 because numerical operations simply will not involve the user defined 
 type as such but instead always the numerical field that eventually is a member 
 of the user defined type (hierarchy). 
-Derived type references are therfore {\em scalarized}. This consists of converting
+Derived type references are therefore {\em scalarized}. This consists of converting
 the derived type reference into a canonically named scalar variable.
 To ensure correctness, this scalarization must be undone upon backtranslating 
 to \whirl. The effect can be observed in the generated \xaif\ for \code{v\%f} where 
@@ -1791,7 +1795,7 @@ a type that matches that of \code{f}.
 However, variable references of user defined type can still show up in the \xaif\ for 
 instance as subroutine parameters. Such references are listed with an 
 {\em opaque} type. Statements in the original code that do not have an 
-explicit represenation in the  \xaif, 
+explicit representation in the  \xaif, 
 such as I/O statements, take the form of annotated markers that retain 
 their position in the representation during the transformation of the \xaif.  
 Given the original
@@ -1817,7 +1821,7 @@ three tasks to be accomplished by the postprocessor.
 \begin{itemize} 
 \item The declaration and use of the active variables;
 \item The placement of inlinable subroutine calls;
-\item The demarkation of the various alternative subroutine bodies used in the subroutine template replacements.
+\item The demarcation of the various alternative subroutine bodies used in the subroutine template replacements.
 \end{itemize}  
 
 % -----------------------------------------------------------------------------------------
@@ -1830,7 +1834,7 @@ and uses. The main rationale for postponing the concretization of the active typ
 with respect to the actual active type implementation. The current postprocessor is 
 written in Perl\footnote{ 
 The source code can be found under {\tt OpenADFortTk/tools/multiprocess/}.
-A rewrite in Python resuing the same Fortran parsing functionality of the canonicalizer is underway.
+A rewrite in Python reusing the same Fortran parsing functionality of the canonicalizer is underway.
 }
 and therefore is much easier to adapt to a changing active type implementation than to 
 find find the proper \whirl\ representation and modify \xaifTowhirl\ to create it.
@@ -1840,11 +1844,13 @@ increased complexity of the transformation.
 For an active variable, for example  \code{v},  the representation created 
 by \xaifTowhirl\ in \whirl\ and then unparsed to Fortran,
 shows up as \code{TYPE (OpenADTy\_active) v}. 
-The type remains abstract because the accesses to the conceptual value and derivative components 
+In \whirl\ the type remains abstract because the accesses to the conceptual value and derivative components 
 are represented as function calls \code{\_\_value\_\_(v)} and \code{\_\_deriv\_\_(v)} respectively.
-The concretized versions created by the postprocessor for the current active type implementation are 
+The concretized versions created by the postprocessor for the current active type implementation, 
+see \code{runTimeSupport/simple/OpenAD\_active.f90} are 
 \code{type(active) v} for the declaration and simply \code{v\%v} for the value \code{v\%d} for 
-the derivative component respectively. 
+the derivative component respectively and each subroutine will also receive an additional 
+\code{USE} statement which makes the type definition in \code{OpenAD\_active} known. 
 
 \paragraph{Inlinable Subroutine Calls}\label{sssec:inline}
 The second task, the expansion of inlinable subroutine calls, is more complex because 
@@ -1854,7 +1860,7 @@ Fortran are regular subroutine call statements. They are however preceded by an 
 that directs the postprocessor to expand the following call according to a definition 
 found in an input file\footnote{
 specified with command line option {\tt -i} which defaults to {\tt ad\_inline.f}
-}
+}, see also \code{runTimeSupport/simple/ad\_inline.f}.
 For example, pushing a preaccumulated sub-Jacobian value as in  \reffig{fig:toyPreaccRev}(a) might appear 
 in the code as\\
 \hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
@@ -1948,15 +1954,15 @@ no change to the state structure within the call tree.
 Therefore, there is no need for state changes within the template. 
 Since no checkpointing is needed either, we have only two tasks: 
 producing the tape and the adjoint run.
-\reffig{fig:codeTemplate}(b) shows a simple split-mode template.
-The state is contained in \code{rev\_mode}, a static Fortran90 variable in module \code{OpenAD\_rev}
+\reffig{fig:codeTemplate}(b) shows a simple split-mode template, see also \code{runTimeSupport/simple/ad\_template.split.f}.
+The state is contained in \code{rev\_mode}, a static Fortran90 variable, see \code{runTimeSupport/simple/OpenAD\_rev.f90}
 of type \code{modeType} also defined in this module.  
 In order to perform a split-mode reversal for the entire computation, a driver routine 
 calls the top-level subroutine first in taping mode and then in adjoint mode.
 
 \reffig{fig:joint} illustrates the task pattern for a joint reversal scheme that requires state changes 
 in the template and requires more code alternatives. \reffig{fig:jointACTemplate} shows a 
-simplified joint mode template. 
+simplified joint mode template, see also \code{runTimeSupport/simple/ad\_template.joint.f}. 
 The state transitions in the template directly relate to the pattern 
 shown in \reffig{fig:joint}. Each prestate change applies to the callees of the current 
 subroutine. Since the argument store $(S_4)$ and restore $(S_6)$ do not contain any subroutine calls they 
@@ -2006,7 +2012,7 @@ the HiPerSoft CVS server at Rice University. Instructions to set up for anonymou
 CVS access are found at \url{http://hipersoft.cs.rice.edu/cvs/index.html#anonymous}.
 The download is a 2 stage process where initially a skeleton repository is 
 retrieved via \code{cvs co OpenAD}. This contains a few scripts and setup to 
-retrieve and build all components. Then procede as follows.
+retrieve and build all components. Then proceed as follows.
 \begin{enumerate}
 \item go into the \OpenADF\ download/build environment which was retrieved as described above:\\
 \code {cd OpenAD}
@@ -2063,108 +2069,442 @@ by adding the steps outlined in \refsec{ssec:manualPipeline} to a \code{Makefile
 The following illustrates the pipeline that could be implemented 
 in a \code{Makefile} where we use successive file name postfixes to 
 retain the transformation results at each stage.\\
-\begin{tabular}{|l|l|l|}\hline
-\# & \multicolumn{2}{c|}{}\\\hline
-1 & in (Fortran) & \code{head.f}\\\cline{2-3}
-  & out (Fortran) & \code{head.canon.f} \\\cline{2-3}
-  & command & \code{perl canon.pl head.f head.canon.f}\\\cline{2-3}
-  & \multicolumn{2}{l|}{
-\begin{minipage}{.8\textwidth}
+\begin{longtable}{|@{\hspace{.5ex}}l@{\hspace{.5ex}}|l|l|}\hline
+\scriptsize 1 & \multicolumn{2}{l|}{\scriptsize Canonicalization, see \refsec{sssec:Canonicalization}}\\\cline{2-3}
+              & \scriptsize in (Fortran) & \scriptsize {\tt head.f}\\\cline{2-3}
+              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.f} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt python canon.v1.py head.f > head.canon.f}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
 \scriptsize
-The script is located at \\{\tt OpenAD/OpenADFortTk/tools/multi-process/canon.pl}.
+The script is located at \\{\tt OpenADFortTk/tools/canonicalize/canon.v1.py}.
 \end{minipage}
 }\\\hline
-2 & in (Fortran) & \code{head.canon.f} \\\cline{2-3}
-  & out (\whirl) & \code{head.canon.B} \\\cline{2-3}
-  & command & \code{mfef90 -F -ffixed head.canon.f}\\\cline{2-3}
-  & \multicolumn{2}{l|}{
-\begin{minipage}{.8\textwidth}
+\scriptsize 2 & \multicolumn{2}{l|}{\scriptsize Parsing, see \refsec{sssec:mfef}}\\\cline{2-3}
+              & \scriptsize in (Fortran) & \scriptsize {\tt head.canon.f} \\\cline{2-3}
+              & \scriptsize out (\whirl) & \scriptsize {\tt head.canon.B} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt mfef90 -F -ffixed head.canon.f}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
 \scriptsize
-The binary is located at \\{\tt OpenAD/Open64/osprey1.0/targ\_ia32\_ia64\_linux/crayf90/sgi/mfef90}.\\
+The binary is located at \\{\tt Open64/osprey1.0/targ\_ia32\_ia64\_linux/crayf90/sgi/mfef90}.\\
 The {\tt -F} flag enables C preprocessing if needed, the {\tt -ffixed} indicates fixed format input.
 \end{minipage}
 }\\\hline
-\end{tabular}
+\scriptsize 3 & \multicolumn{2}{l|}{\scriptsize Translating to \xaif, see \refsec{sssec:wtxxtw}}\\\cline{2-3}
+              & \scriptsize in (\whirl) & \scriptsize {\tt head.canon.B} \\\cline{2-3}
+              & \scriptsize out (\xaif) & \scriptsize {\tt head.canon.xaif} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt whirl2xaif -o head.canon.xaif head.canon.B}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary is located at \\{\tt OpenADFortTk/OpenADFortTk-i686-Linux/bin/whirl2xaif}.\\
+The {\tt -o} flag allows to specify an output file, the default is {\tt stdout}.
+\end{minipage}
+}\\\hline
+\scriptsize 4 & \multicolumn{2}{l|}{\scriptsize Transformation, see \refsec{sssec:xaifBooster}}\\\cline{2-3}
+              & \scriptsize in (\xaif) & \scriptsize {\tt head.canon.xaif} \\\cline{2-3}
+              & \scriptsize out (\xaif) & \scriptsize {\tt head.canon.xb.xaif} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt <trans> -i head.canon.xaif -c <iCat> -o head.canon.xb.xaif}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary {\tt <trans>} is one of\\
+{\tt xaifBooster/algorithms/BasicBlockPreaccumulation/test/t}, see \refsec{sssec:BBPreacc}\\
+{\tt xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test/t}, see \refsec{sssec:MMTradeOff}\\
+{\tt xaifBooster/algorithms/BasicBlockPreaccumulationReverse/test/t}, see \refsec{sssec:BBRev}\\
+Each of the binaries prints a self explanatory usage message when invoked without any arguments. 
+The intrinsics catalogue {\tt <iCat>} can be found in \\
+{\tt xaif/schema/examples/inlinable\_intrinsics.xaif} 
+\end{minipage}
+}\\\hline
+\scriptsize 5 & \multicolumn{2}{l|}{\scriptsize Translating to \whirl, see \refsec{sssec:wtxxtw}}\\\cline{2-3}
+              & \scriptsize in (\whirl\ and \xaif) & \scriptsize {\tt head.canon.B  head.canon.xb.xaif} \\\cline{2-3}
+              & \scriptsize out (\whirl) & \scriptsize {\tt head.canon.xb.x2w.B} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt xaif2whirl head.canon.B head.canon.xb.xaif}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary is located at \\{\tt OpenADFortTk/OpenADFortTk-i686-Linux/bin/xaif2whirl}.\\
+The optional {\tt --structured} flag indicates structured control flow, as required for 
+the control flow reversal employed by the adjoint code transformation, see \refsec{ssec:cfReversal}.
+\end{minipage}
+}\\\hline
+\scriptsize 6 & \multicolumn{2}{l|}{\scriptsize Unparse to Fortran, see \refsec{sssec:mfef}}\\\cline{2-3}
+              & \scriptsize in (\whirl) & \scriptsize {\tt head.canon.xb.x2w.B  head.canon.xb.xaif} \\\cline{2-3}
+              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.f} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt whirl2f head.canon.xb.B}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary is located at \\{\tt Open64/osprey1.0/targ\_ia32\_ia64\_linux/whirl2f/whirl2f}.\\
+It internally loads {\tt whirl2f\_be} located in the same directory.
+\end{minipage}
+}\\\hline
+\scriptsize 7 & \multicolumn{2}{l|}{\scriptsize Postprocessing, see \refsec{sssec:PostProcessor}}\\\cline{2-3}
+              & \scriptsize in (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.f}\\\cline{2-3}
+              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.pp.f} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt perl multi-pp.pl head.f head.canon.xb.x2w.w2f.f}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The script is located at \\{\tt OpenADFortTk/tools/multi-process/multi-pp.pl}.\\
+For tangent linear models the postprocessor requires the command line flag {\tt -f} while 
+for inlining the default file name {\tt ad\_inline.f} can be changed with the {\tt -i} flag and for template expansion
+the default template file name {\tt ad\_template.f} can be changed with the {\tt -t} flag. 
+\end{minipage}
+}\\\hline
+\end{longtable}
+The binaries used in steps 3, 5, and 6 all rely on the \code{libbe.so} \OpenSixtyFour\ backend library. 
+It is located in \code{Open64/osprey1.0/targ\_ia32\_ia64\_linux/whirl2f/}.
+ 
+% -----------------------------------------------------------------------------------------
+\subsection{Compiling and Linking}\label{ssec:compLink}
+All Fortran produced by \code{whirl2f} needs definitions for \code{kind} 
+variables that occur within the \code{whirl2f}-generated code. 
+These definitions can be found in \code{runTimeSupport/all/w2f\_\_types.f90}.
+The code produced by  transformation pipeline 
+requires  implementations 
+(\OpenADF\ supplies samples) for the following aspects.
+\begin{itemize}
+\item active type (see \code{runTimeSupport/simple/OpenAD\_active.f90})
+\item checkpointing (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_checkpoints.f90})  
+\item taping (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_tape.f90})  
+\item state for call graph reversal (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_rev.f90})
+\end{itemize}
+The compilation order for these various modules follows exactly the order given here.
+The provided sample implementations work with the subroutine inlining and templates found in the same 
+directory.
 
-
-
-invoked as {\tt perl multi-pp.pl [-i <inline definitions>] [-t <template definitions>] <fortran file>}.
-
+Finally, we need a {\em driver} that invokes the transformed routines and seeds and retrieves the derivatives.
+Examples for such drivers can be found in \refsec{sec:application}.
 
 % #########################################################################################
 \section{Application}\label{sec:application}
+This applications section intends to augment the explanations given so far. 
+First we use a toy example to show how to embed the transformed code into 
+a driver. The following sections illustrate practical concerns for real 
+life applications. 
+% -----------------------------------------------------------------------------------------
+\subsection{Toy Example}\label{ssec:toyExample}
 
-The reference application for the first prototype of an \OpenADF\ implementation
-is a simplified oceanographic box model for investigating
-thermohaline circulation. It relates to the
-ocean circulation's role in the variability of the climate system,
-on time scales of decades to millennia \cite{tzi-ioa:02}.
-Previously, the AD tool TAF \cite{GiKa02} 
-had been used to generate the derivative
-code in both forward and reverse modes.
-See \cite{maro-eta:99} for an applications of
-TAF's predecessor TAMC to the MITgcm.
-
-\OpenADF\ has been used to generate tangent-linear and 
-adjoint versions of the box model. We established numerical identity between
-the Jacobians provided by TAF and \OpenADF.
-The successful 
-application of \OpenADF\ to the box model code is considered as a feasibility 
-proof for the overall approach taken by the ACTS project.  
+Consider a toy example code  \reffig{fig:toyApp}(a) where we already inserted the 
+dependent and independent declarartions, see \refsec{sssec:mfef}.
+\begin{figure}
+\begin{tabular}{cc}
+\begin{minipage}{.4\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/appToy.f}
+\end{minipage}
+& 
+\begin{minipage}{.4\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/appToyTlm.f}
+\end{minipage}
+\\
+(a) & (b)
+\end{tabular}
+\caption{A toy example(a) and the modified signature for the tangent-linear model(b)}\label{fig:toyApp}
+\end{figure}
+Transformed into a tangent linear model \code{head} turns into a 
+subroutine that has active parameters and the calling code, i.e. the driver, 
+is written to seed (\code{x\%d}) and extract (\code{y\%d}) 
+the derivatives according to \refeqn{eqn:JacVecProds}.
+A very simple driver for the tangent-linear model is
+\begin{figure}
+\begin{tabular}{cc}
+\begin{minipage}{.4\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/appToyDriver.f}
+\end{minipage}
+& 
+\begin{minipage}{.4\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/appToyDriverOutput.txt}
+\end{minipage}
+\\
+(a) & (b)
+\end{tabular}
+\caption{A toy example tangent-linear driver(a) and output(b)}\label{fig:toyAppDriver}
+\end{figure}
+Due to the simplicity of the example, the adjoint model version does not 
+provide much insight other than the reversal of 
+seeding (\code{y\%d}) and extraction (\code{x\%d})of the 
+derivatives, see \reffig{fig:toyAppDriverAdj}.
+\begin{figure}
+\begin{tabular}{cc}
+\begin{minipage}{.4\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/appToyDriverAdj.f}
+\end{minipage}
+& 
+\begin{minipage}{.4\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/appToyDriverAdjOutput.txt}
+\end{minipage}
+\\
+(a) & (b)
+\end{tabular}
+\caption{A toy example adjoint driver(a) and output(b)}\label{fig:toyAppDriverAdj}
+\end{figure}
 
 % -----------------------------------------------------------------------------------------
 \subsection{Shallow Water Model}
+In this section we will use a practical application to highlight 
+advanced aspects arising for more complicated applications. 
+The model is a time stepping scheme which eventually computes 
+a scalar valued cost function. We generate an adjoint model 
+to compute the gradient.  
 
 % -----------------------------------------------------------------------------------------
-\subsection{Derya's application}
+\subsubsection{Collect and Prepare Source Files} 
+The entire model consists of many subroutines distributed over various 
+source files and the existing build sequence involves C preprocessing.
+To perform the static code analysis as explained in \refsec{sssec:openanalysis}
+all code that takes part in computation of the model has to be visible 
+to the tool which means it has to be concatenated into a single file. 
+It is possible to do this for all source files of the model but in many 
+cases this will include code for ancillary tasks such as diagnostics 
+and data processing not directly related to the model computation.
+Often it is better to filter out such ancillary code. 
+\begin{itemize}
+\item The static code analysis and subsequently the code transformation
+has to make conservative assumptions to ensure 
+correctness, e.g. for alias analysis this means an overestimate of 
+the memory locations that can alias each other. One of the effects of these potential aliases
+are additional assignments in the generated code  which lead to 
+a less efficient adjoint. Including ancillary sources may cause more conservative 
+assumptions to be made and therefore lead to an unnecessary loss in efficiency.
+\item While the numerical portions frequently have been tuned and made platform 
+neutral the ancillary portions often are platform dependent and may contain
+Fortran constructs that the language dependent components handle improperly or 
+not at all. While all tools in principle strive for complete language coverage 
+the limited development resources can often not be spared to cover 
+infrequently used language aspects and rather need to be focused on features 
+that actually benefit capabilities and efficiency for a wide range of applications.
+\end{itemize}
+As for all AD tools in existence today the above concerns also apply to 
+\OpenADF\ and  users are kindly asked to keep them in mind when
+preparing the source code.
+
+\refsec{ssec:toyExample} indicates the need for a modification 
+to the code that drives the model computation to at least 
+preform the seeding and extraction of the derivatives. 
+The easiest approach to organize the driver is to identify (or create) 
+a top level subroutine that computes the model with a single call. 
+This routine and all code it requires to compute the model 
+become the contents of the single file to be processed by the tool pipeline.
+The independent and dependent variables should be identified in the top level routine.  
+
+% -----------------------------------------------------------------------------------------
+\subsubsection{Orchestrate a Reversal and Checkpointing Scheme}
+Joint and split reversal, see \refsec{ssec:cgReversal} are two special cases 
+of a large variety of reversal schemes. The model here involved a time stepping 
+scheme controlled by a main loop. \OpenADF\ supports automatic detection of the 
+data set to be checkpointed at a subroutine level. To use this feature the loop 
+body is encapsulated into a inner loop subroutine \code{I}. To realize a nested checkpointing scheme
+we select a number \code{i} for the inner checkpoints, 
+divide the original loop bound \code{t} by \code{i} and encapsulate the inner loop 
+into an outer loop subroutine \code{O} schematically shown in \reffig{fig:checkpointLoops} 
+which is invoked \code{o} times\footnote{
+for simplicity disregarding remainders {\tt o=t/i}.
+}
+\begin{figure}
+\begin{tabular}{cc}
+\begin{minipage}{5cm}
+\includegraphics[height=4.3cm]{checkpointLoops}
+\end{minipage}
+&
+\begin{minipage}{6cm}
+\includegraphics[width=4cm,angle=-90,origin=c]{checkpointLoopsNew2}
+\vspace*{-2cm}
+\end{minipage}\\
+(a)& (b)
+\end{tabular}
+\caption{Modification of the original code (a) to allow 2 checkpointing levels (b)}\label{fig:checkpointLoops}
+\end{figure}
+Now we can describe the reversal scheme with the call tree shown in \reffig{fig:checkpointct}.
+\begin{figure}
+\begin{center}
+\includegraphics[width=4.3cm,angle=-90, origin=c]{swMode}
+\vspace*{-3cm}
+\end{center}
+\caption{Checkpointing scheme, the {\tt .*} indicating {\tt .+(o-1)i}} \label{fig:checkpointct}
+\end{figure}
+The state changes can be encapsulated in four templates, one joint mode template for \code{top}
+and all its callees except \code{O}, one for all callees of \code{I} and one  each for 
+\code{O} and \code{I}.  
+The collection of downloadable test problems contains the 
+model and the four subroutine templates.
+\reffig{fig:checkpointLoops}(b) shows the \code{cost} subroutine called from 
+\code{I} as well as from \code{top}. 
+However, according to \reffig{fig:checkpointLoops} we would need two versions of 
+\code{cost}, one that as callee of \code{top} is reversed in joint mode and 
+one as callee of \code{I} is reversed in split mode. In order to maintain 
+the static reversal approach\footnote{
+A dynamic reversal scheme is forthcoming.
+}
+one needs to duplicate \code{cost}.
+
+% -----------------------------------------------------------------------------------------
+\subsubsection{File I/O and Simple Loops}
+The model code uses both the NetCDF library as well as 
+the built in Fortran I/O during the initialization and 
+output of results. Because  in the model computation 
+no intermediate values are written and read during 
+the model computation there is no loss of dependency information. 
+However, the I/O can lead to problems, for instance 
+when an activated array is initialized. The prevalent 
+lack of type checking in Fortran may lead to setting 
+the first half of the \code{\%v} and \code{\%d} values 
+instead of setting all of the \code{\%v} values. 
+This is a well known consequence of the active type 
+implementation. While one could argue that the code should 
+be generated to avoid reading or writing the derivative information
+this is not always the actually desired behavior, in particular 
+not if one reads or writes active intermediate variables. 
+A simple and effective measure to circumvent this problem 
+is let the initialization remain an external routine 
+in which case \OpenADF\ will insert conversion routines 
+for external subroutine parameters that are active at the 
+call site. 
+It should be noted that this approach does not work 
+when instead of passing a parameter the external routine refers 
+to active global variables.
+  
+Early tests showed a considerable amount of runtime and memory 
+spent on taping array indices used in loops. 
+The {\em simple} loop concept introduced in \refsec{sssec:cfgRevAlg}
+is designed to eliminate much of this overhead. 
+Not all loops within the given model code satisfy the conditions 
+so as an additional step throughout the model code 
+we identified the conformant loop constructs to 
+the tool using the simple loop pragma. The resulting efficiency gain
+was about a factor 4 in run time and more than a factor 10 in memory 
+use.
+
+% -----------------------------------------------------------------------------------------
+\subsubsection{Results}
+\reffig{fig:sensMap} shows as an example output a map of sensitivities of 
+zonal volume transport through the Drake Passage 
+to changes in bottom topography everywhere in a barotropic ocean model 
+computed from the shallow water code by P. Heimbach.
+\begin{figure}
+\begin{center}
+\includegraphics[height=6cm]{sensMap}
+\end{center}
+\caption{Sensitivity (gradient) map for $2\times 2$ degree resolution}\label{fig:sensMap}
+\end{figure} 
+The adjoint model generated with the current version of \OpenADF\ applied to the 
+shallow water code achieves 
+a run time that is only about 8 times that of  plain model computation.
+We expect the ongoing development of \OpenADF, see also \refsec{sec:concl} to yield 
+further efficiency gains.
+
+% -----------------------------------------------------------------------------------------
+\subsection{A Second Order Example}
+
+{\color{red} candidate for removal, unless I get the fix in for the structure stuff}
 
 % #########################################################################################
-\section{Conclusion and Future Work}\label{sec:concl}
+\section{Summary and Future Work}\label{sec:concl}
 
-{\color{red} dynamic memory}
-
-\OpenADF\ is an AD tool development infrastructure. Its well-separated components
-allow developers to focus on various aspects of source-to-source 
+\OpenADF\ is an AD tool built on a language independent infrastructure with 
+well-separated components. 
+It 
+allows developers to focus on various aspects of source-to-source 
 transformation AD, including parsing and unparsing of different programming
 languages, data and control flow analysis, and (semantic) transformation 
-algorithms. The intention of \OpenADF\ is to provide the AD community with 
+algorithms.
+The components have well defined interfaces and intermediate stages 
+are retained as either Fortran or XML sources. 
+ 
+\OpenADF\ allows users a great amount of flexibility in the use of the code transformation
+and permits interventions at various stages of the transformation process.
+We would like to emphasize the fact that for large scale applications 
+the efficiency of checkpointing and taping can be improved merely by 
+modifying the implementation of the run time support, the template and inlining 
+code. 
+They are not conceived  to be just static 
+deliverables of \OpenADF\ but rather are part of the 
+interface accessible to the user.
+It is not the intention to stop with a few prepackaged solutions as one 
+would expect from a 
+monolithic, black-box tool.  
+True to the nature of an open source design, the interface is instead conceived as a 
+wide playground for 
+experimentation and improvement. 
+Expanding on the schematic depiction 
+of the tool workings in \reffig{fig:overview} we want to highlight 
+the options to modify the transformation and the tool itself in \reffig{fig:pipelineIntervention} 
+at different levels of complexity reaching from the casual user to 
+actual coding work in the tool's components.    
+\begin{figure}
+\begin{center}
+\includegraphics[angle=-90,width=\textwidth,origin=c]{overview2}
+\end{center}
+\vspace*{-4cm}
+\caption{Levels of complexity for modifications}\label{fig:pipelineIntervention}
+\end{figure} 
+As part of using \OpenADF\ for different applications we see a growing number of 
+variations to the  transformation and run time support implementations available 
+to the user.
+
+Aside from the plain AD tool aspect the intention of the 
+underlying \OpenAD\  framework is to 
+provide the AD community with 
 an open, extensible, and easy-to-use platform for research and development
-in the field. Its intention is not to render obsolete existing source transformation
-tools such as ADIFOR \cite{adiforWeb}, 
+that can be applied across programming languages.
+Tools that have a closer coupling with a language-specific, internal representation
+have the potential to make the exploitation of certain language features easier. 
+Consequently we do not expect \OpenADF\ to obsolete existing source transformation
+tools such as  
 the differentiation-enabled NAG Fortran 95 
-compiler,\footnote{\code{http://www.nag.co.uk/nagware/research/ad\_overview.asp}} TAF,\footnote{\code{http://www.FastOpt.de}} and TAPENADE.\footnote{\code{http://tapenade.inria.fr:8080/tapenade/index.jsp}} 
-Their closer coupling with the language-specific internal representation of 
-the program has the potential to make the
-exploitation of certain language features easier. \OpenADF\ is supposed to 
+compiler,
+\footnote{\code{http://www.nag.co.uk/nagware/research/ad\_overview.asp}} 
+TAF,\footnote{\code{http://www.FastOpt.de}} 
+or TAPENADE.\footnote{\code{http://tapenade.inria.fr:8080/tapenade/index.jsp}} 
+Rather it is to
 complement these tools by providing well-defined APIs to an open internal 
 representation that can be used by a large number of AD developers.
-Users of AD technology will benefit from the expected wide
+Users of AD technology will benefit from the expected
 variety of combinations of front-ends and algorithms that is made possible
 by \OpenADF.
 
-During the remainder of the ACTS project we will focus on the implementation
-of robust and efficient data flow algorithms in \OpenAnalysis, including alias, 
-define-use and use-define, in-out \cite{Muc97}, 
-activity, and to-be-recorded \cite{HNP02} as well as on 
-the development of various reverse mode algorithms for parallel MPI codes
-combining elements such as preaccumulation and (automatic) checkpointing
-\cite{Gri92}. 
-A second set of target 
-applications in chemical engineering \cite{FTB97} requires combinations of first and 
-second derivatives in addition to methods for exploiting structure and sparsity
-of the underlying computation. We intend to investigate ways to compute these
-combinations efficiently by integrating \OpenADF\ into the relevant 
-numerical algorithms.
+As with any software project there is ample room for improvement.
+The robustness of the tool, in particular the coverage of 
+some specific language features, often is of concern to first 
+time users. While robustness is not to be disregarded, it is clearly 
+not a research subject and as such cannot be made the major 
+objective of a development project in an academic setting. 
+Robustness issues affect mostly the language dependent components 
+and the contributing parties undertake a considerable effort to 
+address concerns common to many applications. Many issues specific 
+to a particular input code can be addressed by minor adjustments 
+which often happen to reflect good coding practices anyway. 
+Take for example a change away from 
+\code{goto - label} to a well structured control flow. 
+While we plan to  implement code that handles 
+unstructured control flow at some point, the corresponding adjoint  will always
+be less efficient than the respective structured equivalent and an 
+automatic transformation to structured control flow is somewhat beyond the scope
+of an AD tool.
 
-Ultimately, our aim is to generate correct, efficient, scalable, and easily 
-maintainable adjoint code for the MITgcm. The major challenge arises from the
-requirement to tackle problems in which derivatives are calculated with respect 
-to billions of controls. A combination of the methods outlined above is 
-essential to guarantee the successful completion of this highly ambitious
-project.
+We are concerned with changes that affect many applications and yield 
+improved efficiency of the adjoint code.
+Currently the most important items on the development list are the
+support for vector intrinsics and the handling of allocation/deallocation cycles 
+during the model computation for the generation of an adjoint model.
+Because the tool provides a variety of options to the user we are also 
+working on collecting data for efficiency estimates that permit 
+an informed choice between the code transformation options. 
+Ongoing research in AD algorithms, in particular dynamic call 
+graph reversal, more efficient control flow reversal and 
+improved elimination techniques in the computational graphs will 
+be incorporated into \OpenAD. 
 
 % #########################################################################################
-\section*{Appendix}
+\section{Appendix}
 \begin{table}
   \tiny
   \begin{center}

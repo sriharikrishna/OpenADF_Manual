@@ -1,19 +1,20 @@
-% \documentclass[acmtocl,acmnow,hyperref]{acmtrans2m}
-\documentclass[11pt]{article}
+\documentclass{book}
+
 \usepackage{verbatimfiles}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{url}
 \usepackage{longtable}
+
 \usepackage[pdftex,usenames]{color}
 \usepackage[pdftex]{graphicx}  
 \DeclareGraphicsExtensions{.pdf}  
 \usepackage[pdftex,bookmarks=true,bookmarksnumbered=true,hypertexnames=false,breaklinks=true]{hyperref}
 \hypersetup{
-  pdfauthor = {Jean Utke},
-  pdftitle = {OpenAD: A tool for automatic differentiation of Fortran codes},
-  pdfsubject = {TOMS article},
-  pdfkeywords = {OpenAD,automatic differentiation, algorithms},
+  pdfauthor = {Jean Utke, Uwe Naumann},
+  pdftitle = {OpenAD/F: User Manual},
+  pdfsubject = {user manual},
+  pdfkeywords = {OpenAD, Fortran, automatic differentiation, algorithms},
   pdfcreator = {LaTeX with hyperref package},
   pdfproducer = {dvips + ps2pdf}sh	
 }
@@ -22,6 +23,23 @@
 % make paragraphs show up in the bookmarks
 \setcounter{secnumdepth}{6}
 \setcounter{tocdepth}{6}
+
+
+% page layout
+% letter size
+\paperheight     11in
+\paperwidth      8.5in
+% print area
+\leftmargin      0in
+\rightmargin     0in
+\textheight      9.5in
+\textwidth       7.0in
+\topmargin      -0.5in
+%\headheight      0in
+%\headsep         0in
+\oddsidemargin   0in
+\evensidemargin -0.5in
+
 
 \fboxsep.5mm
 
@@ -77,30 +95,25 @@
 \newcommand{\refdef}[1]{{Def.~(\ref{#1})}} 
 \newtheorem{Can}{Canonicalization}
 
-% \markboth{Lots Of Authors et al.}{OpenAD}
+\makeindex
 
+\title{OpenAD/F: User Manual}
+\author{J.~Utke  \\
+U.~Naumann \\
+{\small\em  Draft date \today }}
+
+\date{ }
 \begin{document}
-
-% \title{OpenAD/F: A tool for automatic differentiation of Fortran codes}
-
-
-% \author{PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
-%   MIKE FAGAN, NATHAN TALLENT \\Rice University\\
-%   MICHELLE STROUT, JEAN UTKE \\Argonne National Laboratory 
-%   \and
-%   UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
-
-\begin{center}
-  {\Large OpenAD/F: A modular open source tool for automatic differentiation \\ of Fortran codes}\\[1ex]
-  {\tiny
-    PATRICK HEIMBACH, CHRIS HILL, DERYA OZYURT, CARL WUNSCH\\Massachusetts Institute of Technology\\
-    MIKE FAGAN, NATHAN TALLENT \\Rice University\\
-    MICHELLE STROUT, JEAN UTKE \\Argonne National Laboratory \\
-    UWE NAUMANN\\Rheinisch Westf\"alische Techinische Hochschule Aachen}
-\end{center}
-
-\begin{abstract}
-
+\maketitle
+ \addcontentsline{toc}{chapter}{Contents}
+\pagenumbering{roman}
+\tableofcontents
+\listoffigures
+\listoftables
+% #########################################################################################
+\chapter*{Preface}\normalsize
+  \addcontentsline{toc}{chapter}{Preface}
+\pagestyle{plain}	
   The \OpenADF\ tool allows the evaluation of first and second order
   derivatives of functions defined by a program written in Fortran90/77.
 
@@ -131,38 +144,13 @@
   reversal schemes with hierarchical checkpointing at the subroutine
   level.  The Fortran specific front and back end to this transformation
   engine is based on the \OpenSixtyFour\ compiler.
-\end{abstract}
 
-
-% \category{G.1.4}{Quadrature and Numerical Differentiation}{Automatic differentiation}
-% \category{D.3.4}{Processors}{Code generation, Compilers}
-% \category{F.3.2}{Semantics of Programming Languages}{Program analysis}
-% \category{G.1.6}{Optimization}{Gradient methods}
-
-% \terms{Algorithms, Performance}
-
-% \keywords{Automatic differentiation,  source transformation, adjoint compiler}
-
-
-
-% \begin{bottomstuff} 
-%   P.~Heimbach, C.~Hill, D.~Ozyurt, and C.~Wunsch, Massachusetts Institute of Technology, 
-%   Boston, MA 02139;\newline
-%   M.~Fagan, N.~Tallent, Rice University, 
-%   Houston, TX 77251;\newline
-%   M.~Strout, J.~Utke, Argonne National Laboratory, 
-%   Argonne, IL 60439;\newline
-%   U.~Naumann, Rheinisch Westf\"alische Techinische Hochschule Aachen, 
-%   D-52056 Aachen, Germany;\newline
-%   Funding for the ACTS project is provided by NSF under ITR contract OCE-0205590
-%   for a three year period that started in September 2002.
-% \end{bottomstuff}
-% \maketitle
-
+\pagestyle{headings}
+\pagenumbering{arabic}
 % #########################################################################################
-\section{Introduction} \label{sec:Introduction}
+\chapter{Introduction} \label{chap:Introduction}
 
-The basic principles of automatic differentiation (AD), see also \refsec{sec:ADIntro}, 
+The basic principles of automatic differentiation (AD), see also \refsec{chap:ADIntro}, 
 have been known for several decades \cite{wengert}
 but only during the last 15 years have the tools implementing AD found a significant use in 
 optimization, data assimilation, and other applications in need of efficient and accurate 
@@ -188,7 +176,7 @@ With the emphasis on efficiency some sacrifices on the support of
 language features are acceptable for this user group.  
 
 % -----------------------------------------------------------------------------------------
-\subsection{Motivation}
+\section{Motivation}
 
 One of the most demanding applications of AD is the computation of gradients for 
 data assimilation on large scale models used in oceanography and climate research. 
@@ -220,7 +208,7 @@ needs.
 A modular tool design with clearly defined interfaces supports such 
 user interventions. 
 As this design instigates a staged 
-transformation, see \refsec{ssec:manualPipeline}, 
+transformation, see \refsec{sec:manualPipeline}, 
 each transformation stage presents a opportunity to check and modify the 
 results. 
 
@@ -250,7 +238,7 @@ The main result of this effort is an infrastructure for the language independent
 development and use of AD algorithms. 
 
 % -----------------------------------------------------------------------------------------
-\subsection{Overview}
+\section{Overview}
 \OpenADF \cite{openadWeb}
 is the Fortran incarnation of the AD framework \OpenAD.
 The C/C++ oriented tool ADIC v2.0 \cite{adicWeb}
@@ -292,14 +280,14 @@ front-end
 based on the EDG parser \cite{edgWeb} and uses ROSE in combination with SAGE~3 \cite{roseWeb} 
 as internal representation in combination with language independent components of \OpenAD.
 
-In \refsec{sec:ADIntro} we discuss the basic concepts of AD as relevant for 
-the description of \OpenAD, \refsec{sec:openadfcomponents} discusses the components 
-that make up \OpenADF, and \refsec{sec:Usage} details the usage of the tool. 
-Two applications further illustrate the tool usage in \refsec{sec:application} and 
+In \refsec{chap:ADIntro} we discuss the basic concepts of AD as relevant for 
+the description of \OpenAD, \refsec{chap:openadfcomponents} discusses the components 
+that make up \OpenADF, and \refsec{chap:Usage} details the usage of the tool. 
+Two applications further illustrate the tool usage in \refsec{chap:application} and 
 we conclude with a section on future developments.
 
 % #########################################################################################
-\section{AD Concepts}\label{sec:ADIntro}
+\chapter{AD Concepts}\label{chap:ADIntro}
 
 In this section we present the terminology and basic concepts that 
 we will refer to throughout this paper. 
@@ -322,7 +310,7 @@ compute products of Jacobians with see matrices $\bmS$.
 \bmJ \bmS \quad \mbox{and} \quad \bmJ^T \bmS
 \end{equation}
 % -----------------------------------------------------------------------------------------
-\subsection{Computational Graphs} \label{ssec:computationalGraphs}
+\section{Computational Graphs} \label{sec:computationalGraphs}
 
 Without loss of generality we can simply assume that an evaluation of $\bmf(\bmx)$ for  
 a specific value of $\bmx$ can be represented by a sequence of 
@@ -368,7 +356,7 @@ $\overline{v}_i=\overline{v}_i+\overline{v}_j * \frac{\partial \phi_j}{\partial 
 
 Equations \refeqn{eqn:fm} and \refeqn{eqn:rm} can be used to accumulate 
 the (local) Jacobian $\bmJ(G)$
-of $G$, see also \refsec{ssec:elimMeth}. 
+of $G$, see also \refsec{sec:elimMeth}. 
 % Obviously \refeqn{eqn:rm}  indicates that the dependencies of $\overline{v}_j$ and 
 % $\overline{v}_i$ are reversed to those of $v_j$ and $v_i$. At the same time \refeqn{eqn:rm}
 % requires all the values of the $\frac{\partial \phi_j}{\partial v_i}$ in reverse order. To make them 
@@ -381,7 +369,7 @@ impractical here. Instead we simply consider the statements contained in a
 construct our computational (sub) graph for a \basicblock.   
 
 % -----------------------------------------------------------------------------------------
-\subsection{Elimination Methods} \label{ssec:elimMeth}
+\section{Elimination Methods} \label{sec:elimMeth}
 Let $\bmf$ represent a single \basicblock\ that is subject to preaccumulation.
 For notational simplicity and without loss of generality we assume that the 
 dependent variables are mutually independent. 
@@ -639,11 +627,11 @@ In the tool the operations shown in \reffig{fig:toyAccumulation} are generated b
 transformation algorithm discussed in \refsec{sssec:BBPreacc}. 
 
 % -----------------------------------------------------------------------------------------
-\subsection{Control Flow Reversal} \label{ssec:cfReversal}
+\section{Control Flow Reversal} \label{sec:cfReversal}
 Because the code for a $\bmf$ generally contains control flow constructs there is no 
 single  computational graph 
 $G$ that represents the computation of $\bmf$ for all possible values of $\bmx$.
-We explained in \refsec{ssec:computationalGraphs} that \OpenADF\ considers subgraphs constructed 
+We explained in \refsec{sec:computationalGraphs} that \OpenADF\ considers subgraphs constructed 
 from the contents of a \basicblock.
 In the example shown in \reffig{fig:toy} we put the \basicblock\ code shown in 
 \reffig{fig:toyBB} into a control flow context, see lines 06--09.
@@ -678,7 +666,7 @@ As B(6) is executed
 \code{k} times it may be worth putting
 additional effort into the optimization of the derivative code 
 generated for B(6) by optimizing the elimination sequence as illustrated in 
-\refsec{ssec:elimMeth}.
+\refsec{sec:elimMeth}.
 \begin{figure}[ht]
   \centering
   \begin{tabular}{ccc}
@@ -738,7 +726,7 @@ In {\em reverse mode} products of the transposed
 Jacobians $\bmJ^T_j$ with adjoint vectors $\overline{\bmy}_j$
 are propagated reverse to the direction of the flow of control.
 The $\bmJ^T_j$ can be computed by augmenting the original code with 
-linearization and Jacobian accumulation statements, see \refsec{ssec:elimMeth}.
+linearization and Jacobian accumulation statements, see \refsec{sec:elimMeth}.
 The preaccumulated  $\bmJ^T_j$ are stored during the forward execution
 which is commonly called the {\em tape}, see \reffig{fig:toyPreaccRev}(a) for an 
 example. They are retrieved from the 
@@ -800,7 +788,7 @@ The process of the control flow reversal is described in detail in
 \cite{NULF04CFR}. 
 
 % -----------------------------------------------------------------------------------------
-\subsection{Call Graph Reversal} \label{ssec:cgReversal}
+\section{Call Graph Reversal} \label{sec:cgReversal}
 
 Generally, the computer program 
 induces a {\em call graph} (CG) \cite{ASU86}
@@ -911,7 +899,7 @@ we follow with the reverse steps that read the tape, see \reffig{fig:split}.
 \end{figure}
 
 Using joint reversal for all subroutines in a program 
-means that the tape, see \refsec{ssec:cfReversal} for a each 
+means that the tape, see \refsec{sec:cfReversal} for a each 
 subroutine invocation is written immediately before the reverse execution for 
 that invocation. In our example this implies that we have to generate 
 a tape for {\tt C}$^2$ while the caller {\tt B}$^2$ is being reversed, 
@@ -926,22 +914,22 @@ is efficient. Often a mix of split and joint reversals statically
 applied to subtrees of the call tree is suitable.  
 
 % #########################################################################################
-\section{Components of \OpenADF}\label{sec:openadfcomponents}
+\chapter{Components of \OpenADF}\label{chap:openadfcomponents}
 
 \OpenADF\ is built on components that belong to a framework designed
 for code transformation of numerical programs.  The components are
 tied together either via programmatic interfaces or by communication
 using the \xaif\ language. The transformation of the source code follows the
 pipeline shown in \reffig{fig:overview}.  
-In \refsec{ssec:openadcomponents} we describe the language-independent 
-components of \OpenAD\ framework and \refsec{ssec:fortfe} provides details 
+In \refsec{sec:openadcomponents} we describe the language-independent 
+components of \OpenAD\ framework and \refsec{sec:fortfe} provides details 
 in the Fortran front-end.
-The regular setup procedure for \OpenADF, see also \refsec{ssec:dab}, 
+The regular setup procedure for \OpenADF, see also \refsec{sec:dab}, 
 will retrieve all components into an \code{OpenAD/} directory to which 
 we refer from here on.  
 
 % -----------------------------------------------------------------------------------------
-\subsection{Language Independent Components (\OpenAD)}\label{ssec:openadcomponents}
+\section{Language Independent Components (\OpenAD)}\label{sec:openadcomponents}
 
 The component design of the tool aims for reuse of the different components 
 for different types of source transformation of numerical codes, for 
@@ -951,7 +939,7 @@ A second, equally important concern is the flexibility of the tool.
 This section covers the language independent components that make up the core \OpenAD\ framework. 
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Static Code Analyses (\OpenAnalysis)} \label{sssec:openanalysis}
+\subsection{Static Code Analyses (\OpenAnalysis)} \label{ssec:openanalysis}
 
 The \OpenAnalysis\ toolkit, see \cite{oaWeb}, separates program
 analysis from language-specific or front-end specific intermediate
@@ -1008,7 +996,7 @@ implemented in a context-insensitive, flow-sensitive interprocedural fashion.
 All sources for \OpenAnalysis\ can be found under \code{OpenAD/OpenAnalysis/}.
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Representing the Numerical Core (\xaif)} \label{sssec:xaif}
+\subsection{Representing the Numerical Core (\xaif)} \label{ssec:xaif}
 
 To obtain a language independent representation of programs across multiple 
 programming languages one might choose the union of all language features. 
@@ -1026,12 +1014,12 @@ Among the generic language features not considered part of the numerical core ar
 \item user type definitions and member access, see also \refsec{sssec:Canonicalization}
 \item pointer arithmetic
 \item I/O operations  
-\item memory management, see also \refsec{sec:concl}
+\item memory management, see also \refsec{chap:concl}
 \item preprocessor directives
 \end{itemize}
 For a more general discussion regarding this compromise see also \cite{UtNa04SLD}.
 It is apparent that certain aspects of the adjoint code such as 
-checkpointing, see \refsec{ssec:cgReversal}, and taping, see \refsec{ssec:cfReversal},
+checkpointing, see \refsec{sec:cgReversal}, and taping, see \refsec{sec:cfReversal},
 can involve memory allocation and various I/O schemes and therefore 
 are not amenable to representation in the \xaif. 
 At the same time it is also clear that the way  one has to handle the memory and I/O for 
@@ -1065,7 +1053,7 @@ Further documentation for individual elements can be found directly in the
 schema annotations. 
 
 The \xaif\ also contains the results of the code analyses provided 
-by \OpenAnalysis, see \refsec{sssec:openanalysis}. Some are expressed 
+by \OpenAnalysis, see \refsec{ssec:openanalysis}. Some are expressed 
 either as additional attributes on certain \xaif\ elements, e.g. for activity information. 
 Side-effect analysis provides lists of variable references per subroutine, i.e. a call graph vertex element.
 DuUd chains are expressed as list of ids found in the assignment \xaif\ element.
@@ -1085,7 +1073,7 @@ locations in the subroutine template.
 The \xaif\ schema and examples can be found under \code{OpenAD/xaif/}.
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Transforming the Numerical Core (\xaifBooster)} \label{sssec:xaifBooster}
+\subsection{Transforming the Numerical Core (\xaifBooster)} \label{sssec:xaifBooster}
 The transformation engine that differentiates the \xaif\ representation of 
 $\bmf$ is called \xaifBooster. It is implemented in C++ based on a 
 data structure that represents all information supplied in the \xaif\ input 
@@ -1153,10 +1141,10 @@ that encapsulates the algorithm
 in a stand-alone binary which provides the functionality described 
 in the following 
 sections. For details on the invocation and command line options refer to 
-\refsec{ssec:manualPipeline}.
+\refsec{sec:manualPipeline}.
 
 % -----------------------------------------------------------------------------------------
-\paragraph{Reading and Writing \xaif}\label{ssssec:readWriteXaif}
+\subsubsection{Reading and Writing \xaif}\label{ssssec:readWriteXaif}
 Reading and Writing the \xaif\ is part of basic infrastructure
 found in the sources in \code{system/}.
 Parsing is done through the Xerces C++ XML parser \cite{xercesWeb}
@@ -1173,7 +1161,7 @@ The unparsing of the transformed data structure into \xaif\ is performed
 through a series of that traverses the data structure and the 
 respective algorithm specific data. 
 For information of the files containing the \xaif\ representation refer to 
-\refsec{ssec:manualPipeline}.
+\refsec{sec:manualPipeline}.
 
 Aside from the parsing of the actual input \xaif\ there is also the so called 
 {\em 
@@ -1187,9 +1175,9 @@ that the tool pipeline preserves the semantics of the original program when
 no transformation is involved. 
 
 % -----------------------------------------------------------------------------------------
-\paragraph{Linearization}\label{sssec:linearization}
+\subsubsection{Linearization}\label{sssec:linearization}
 
-\refsec{sec:ADIntro} explained the computation of 
+\refsec{chap:ADIntro} explained the computation of 
 the local partial derivatives $c_{ji}$ that can be thought of as edge labels 
 in the computational graph $G$. 
 Per canonicalization (see \refsec{sssec:Canonicalization}) 
@@ -1212,7 +1200,7 @@ that can be referenced in the partial computation, for an example see
 the code shown in \reffig{fig:toyAndPartials}.  
 In cases of the left-hand-side variable occurring on the right-hand-side 
 (or being may-aliased to a right-hand-side variable, 
-see \refsec{sssec:openanalysis}) we also require an extra assignment to 
+see \refsec{ssec:openanalysis}) we also require an extra assignment to 
 delay the (potential) overwrite until after the partials depending on 
 the original variable value have been computed.
 The result of the Linearization is a representation for 
@@ -1226,7 +1214,7 @@ transformation driver is
 used to verify the results of the linearization transformation.
 
 % -----------------------------------------------------------------------------------------
-\paragraph{Basic Block Preaccumulation}\label{sssec:BBPreacc}
+\subsubsection{Basic Block Preaccumulation}\label{sssec:BBPreacc}
 
 This transformation generates a code representation that can be used 
 to compute derivatives in forward mode. It builds upon the Linearization
@@ -1237,14 +1225,14 @@ for contiguous
 assignment sequences in a given \basicblock. To ensure semantic 
 correctness of the graph being constructed in the presence of 
 aliasing it relies on alias analysis and define-use/use-define chains 
-supplied by \OpenAnalysis, see \refsec{sssec:openanalysis}.
+supplied by \OpenAnalysis, see \refsec{ssec:openanalysis}.
 The algorithm itself is described in detail in \cite{Utk04FBB}.
 Because the analysis results supplied by \OpenAnalysis\ are always 
 conservatively correct it may not be possible to flatten all 
 assignments into a single computational graph. In such cases 
 a sequence of graphs is created. Likewise, the occurrence 
 of a subroutine call leads to a split in the graph construction. 
-In the context of \refsec{sec:ADIntro} one may think of the sets of 
+In the context of \refsec{chap:ADIntro} one may think of the sets of 
 assignments forming each of these graphs as a separate \basicblock. 
 The driver for the algorithm allows to disable 
 the graph construction across assignments and restrict it to 
@@ -1290,7 +1278,7 @@ according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in
 cross-country fashion. 
 
 % -----------------------------------------------------------------------------------------
-\paragraph{Memory/Operations Tradeoff}\label{sssec:MMTradeOff}
+\subsubsection{Memory/Operations Tradeoff}\label{sssec:MMTradeOff}
 
 This algorithm can be seen as an alternative to the \angel\ library. 
 Like \angel\ it uses the \code{CrossCountryInterface}. In its implementation 
@@ -1397,13 +1385,13 @@ according to \refeqn{eqn:bbfm} with \basicblock\-local preaccumulation in
 cross-country fashion. 
 
 % -----------------------------------------------------------------------------------------
-\paragraph{Using the ANGEL Library}\label{sssec:angel}
+\subsubsection{Using the ANGEL Library}\label{sssec:angel}
 {\color{red} [ JU: This was a placeholder to talk about the \angel\ lib 
   but I think I will remove this unless somebody strongly objects]}
 % -----------------------------------------------------------------------------------------
-\paragraph{CFG Reversal}\label{sssec:cfgRevAlg}
+\subsubsection{CFG Reversal}\label{sssec:cfgRevAlg}
 
-\refsec{ssec:cfReversal} explains the principal approach to the reversal 
+\refsec{sec:cfReversal} explains the principal approach to the reversal 
 of the CFG. The CFG reversal as implemented in this transformation is 
 by itself not useful as unparsed code other than for checking the correctness without 
 interference from other transformations. It is a major building block for 
@@ -1411,7 +1399,7 @@ the
 adjoint code generator described in \refsec{sssec:BBRev}. 
 The \Loop\ counters and \branch\ identifiers are stored the same 
 stack data structure that is used for the {\em tape} (introduced in 
-\refsec{ssec:cfReversal} and also used in \refsec{sssec:bbTA}.  
+\refsec{sec:cfReversal} and also used in \refsec{sssec:bbTA}.  
 The reversal of loops and branches as detailed in \cite{NULF04CFR} assumes 
 CFGs to be well-structured, that is, essentially to be free of arbitrary jump instructions 
 such as \code{GOTO} or \code{CONTINUE}. 
@@ -1460,9 +1448,9 @@ of the above conditions for everything within the \Loop\ body including nested
 \Loop\ and \branch\ constructs. More details on this aspect can be found in 
 \cite{UtLy05ERIF}. 
 % -----------------------------------------------------------------------------------------
-\paragraph{Writing and Consuming the Tape}\label{sssec:bbTA}
+\subsubsection{Writing and Consuming the Tape}\label{sssec:bbTA}
 
-\refsec{sec:ADIntro} explains the need to store the $\frac{\partial \phi_j}{\partial v_i}$ 
+\refsec{chap:ADIntro} explains the need to store the $\frac{\partial \phi_j}{\partial v_i}$ 
 on the tape. 
 The writing transformation\footnote{
   see {\tt algorithms/BasicBlockPreaccumulationTape/}
@@ -1497,7 +1485,7 @@ interference from other transformations.
 They are, however, major building blocks for the  
 adjoint code generator described in \refsec{sssec:BBRev}.
 % -----------------------------------------------------------------------------------------
-\paragraph{Basic Block Preaccumulation Reverse}\label{sssec:BBRev}
+\subsubsection{Basic Block Preaccumulation Reverse}\label{sssec:BBRev}
 
 This transformation\footnote{
   see {\tt algorithms/BasicBlockPreaccumulationReverse}
@@ -1507,9 +1495,9 @@ into a coherent representation that, unparsed into code and post-processed, comp
 as an adjoint model. 
 For the postprocessing steps refer to \refsec{sssec:PostProcessor}.
 Additional functionality is the generation of code that is able write and 
-read checkpoints at a subroutine level, see also \refsec{ssec:cgReversal}. 
+read checkpoints at a subroutine level, see also \refsec{sec:cgReversal}. 
 This part of the transformation relies heavily on the results of side-effect analysis, see 
-\refsec{sssec:openanalysis} and the inlinable subroutine call mechanism of 
+\refsec{ssec:openanalysis} and the inlinable subroutine call mechanism of 
 the postprocessor, see \refsec{sssec:inline}, to accomplish the checkpointing. 
 The driver offers command line options
 \begin{itemize}
@@ -1526,7 +1514,7 @@ The driver offers command line options
 \end{itemize}
 
 % -----------------------------------------------------------------------------------------
-\subsection{Language Dependent Components (\OpenADFortTk)}\label{ssec:fortfe}
+\section{Language Dependent Components (\OpenADFortTk)}\label{sec:fortfe}
 
 For simplicity we consider all language dependent components part 
 of the \OpenAD\ Fortran Tool Kit (\OpenADFortTk). The following 
@@ -1542,7 +1530,7 @@ are used in transformation pipeline in the following sequence.
 
 \item \whirlToxaif\ is a bridge component that
   \begin{itemize}
-  \item drives the various program analyses (see \refsec{sssec:openanalysis}),
+  \item drives the various program analyses (see \refsec{ssec:openanalysis}),
   \item translates the numerical core of the program and  
     the results of the program analyses from \whirl\ to \xaif.
   \end{itemize} see also \refsec{sssec:wtxxtw}
@@ -1552,7 +1540,7 @@ are used in transformation pipeline in the following sequence.
   into the \whirl\ format. see \refsec{sssec:wtxxtw}.
 
 \item \whirlTof\ is the ``unparser'' that converts \whirl\ to
-  Fortran, see \refsec{ssec:fortfe}
+  Fortran, see \refsec{sec:fortfe}
 
 \item The {\em postprocessor} is the  final part of the transformation that
   performs template expansion as well as inlining substitutions, see \refsec{sssec:PostProcessor}
@@ -1560,8 +1548,8 @@ are used in transformation pipeline in the following sequence.
 \end{enumerate}
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Canonicalization}\label{sssec:Canonicalization}
-In \refsec{sssec:xaif} we explain how the restriction to the numerical core 
+\subsection{Canonicalization}\label{sssec:Canonicalization}
+In \refsec{ssec:xaif} we explain how the restriction to the numerical core 
 contributes to the  language independence of the transformation
 engine.
 Still, even for a single programming language, the numerical 
@@ -1685,7 +1673,7 @@ maintainable code we prefer simplicity over more sophisticated transformations
 e.g. a module generator which abstracts dimension information shared between common blocks. 
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Compiler Front-End Components (from \OpenSixtyFour)} \label{sssec:mfef}
+\subsection{Compiler Front-End Components (from \OpenSixtyFour)} \label{sssec:mfef}
 
 The choice of \OpenSixtyFour\ for some of the programming-language-dependent 
 components ensures some initial robustness of the tool that is afforded by an 
@@ -1749,7 +1737,7 @@ to implement additional user hints while eliminating the significant
 development costs associated with modifying \OpenSixtyFour.
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Translating between \whirl\ and \xaif}\label{sssec:wtxxtw}
+\subsection{Translating between \whirl\ and \xaif}\label{sssec:wtxxtw}
 
 \begin{figure}
   \scriptsize
@@ -1806,7 +1794,7 @@ differentiated code while restoring the statements and types not shown in the \x
 Second, \xaif\ provides a way to represent the results of  common
 compiler analyses.  To provide these to the transformation engine 
 \whirlToxaif\ acts as a driver for the analyses provided by the 
-\OpenAnalysis\ package, see \refsec{sssec:openanalysis}.
+\OpenAnalysis\ package, see \refsec{ssec:openanalysis}.
 In particular it implements the abstract \OpenAnalysis\ interface
 to the \whirl\ IR. The results returned by \OpenAnalysis\ are then 
 translated into a form consistent with \xaif.
@@ -1825,10 +1813,10 @@ three tasks to be accomplished by the postprocessor.
 \end{itemize}  
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Postprocessing}\label{sssec:PostProcessor}
+\subsection{Postprocessing}\label{sssec:PostProcessor}
 The postprocessor performs the three tasks outlined at the end of \refsec{sssec:wtxxtw}.
 
-\paragraph{Use of the Active Type}\label{sssec:activeType}
+\subsubsection{Use of the Active Type}\label{sssec:activeType}
 The simplest postprocessing task is the concretization of the active variable declarations 
 and uses. The main rationale for postponing the concretization of the active type is flexibility 
 with respect to the actual active type implementation. The current postprocessor is 
@@ -1852,7 +1840,7 @@ see \code{runTimeSupport/simple/OpenAD\_active.f90} are
 the derivative component respectively and each subroutine will also receive an additional 
 \code{USE} statement which makes the type definition in \code{OpenAD\_active} known. 
 
-\paragraph{Inlinable Subroutine Calls}\label{sssec:inline}
+\subsubsection{Inlinable Subroutine Calls}\label{sssec:inline}
 The second task, the expansion of inlinable subroutine calls, is more complex because 
 any call expansion has now the scope of a subroutine body. The calls unparsed from \whirl\ to 
 Fortran are regular subroutine call statements. They are however preceded by an inline  pragma
@@ -1889,14 +1877,14 @@ any calls with inline directives for which the postprocessor cannot find an inli
 unchanged. For example we may instead compile the above definition for \code{Push} and link 
 it instead.
 
-\paragraph{Subroutine Templates}\label{sssec:templates}
+\subsubsection{Subroutine Templates}\label{sssec:templates}
 The third task, the subroutine template expansion is somewhat related the inlining. 
 In our example above, the tape storage referred to in the \code{Push} need to be 
 defined and in the design the subroutine template is the intended place for these definitions, 
 in our example achieved through including the \code{use} statement in the template code, 
 see \reffig{fig:jointACTemplate}.
 The main purpose of the subroutine template expansion however is to orchestrate the 
-call graph reversal. The reversal schemes introduced in \refsec{ssec:cgReversal}
+call graph reversal. The reversal schemes introduced in \refsec{sec:cgReversal}
 can be realized by carrying state through the call tree. 
 
 The basic building blocks from the transformations in \refsec{sssec:xaifBooster}
@@ -1999,14 +1987,14 @@ The respective top-level routine is called by the driver with the state structur
 \end{figure}
  
 % #########################################################################################
-\section{Tool Usage} \label{sec:Usage}
+\chapter{Tool Usage} \label{chap:Usage}
 The following contains brief instructions how to obtain and use \OpenADF. 
 While the principal approach will remain the same, future development may 
 introduce slight changes. The reader is encouraged to refer to the 
 up to date instructions on the \OpenADF\ website \cite{openadWeb}.
 
 % -----------------------------------------------------------------------------------------
-\subsection{Download and Build}\label{ssec:dab}
+\section{Download and Build}\label{sec:dab}
 All components are open source and readily available for download from 
 the HiPerSoft CVS server at Rice University. Instructions to set up for anonymous 
 CVS access are found at \url{http://hipersoft.cs.rice.edu/cvs/index.html#anonymous}.
@@ -2036,7 +2024,12 @@ To update the sources to the latest version simply repeat the above steps 1 thro
 executes CVS updates and performs a mostly incremental build.
 
 % -----------------------------------------------------------------------------------------
-\subsection{Automatic Pipeline}
+\section{Code Prepaparation}
+
+Pragma's etc. 
+
+% -----------------------------------------------------------------------------------------
+\section{Automatic Pipeline}
 The components of \OpenADF\ transform the code in a predetermined sequence of steps, 
 the {\em pipeline}. 
 Depending on the particular problem there are certain variations to the pipeline 
@@ -2044,7 +2037,7 @@ that achieve a better performance of the generated code.
 The most common pipeline setups are encapsulated in a Perl script. 
 The script is part of the skeleton environment that is used to download and build \OpenADF\  
 and relies on the same environment setup.
-Therefore user starts with steps 1 and 2 from \refsec{ssec:dab}. 
+Therefore user starts with steps 1 and 2 from \refsec{sec:dab}. 
 The script is contained in the file
 \code{OpenAD/tools/openad/openad}.
 Invoking it with the \code{-h} option displays the 
@@ -2062,10 +2055,10 @@ which produces the adjoint version of \code{head.f} emitting the following messa
 \verbatimfile{code/openadScriptOutput.txt}
 \end{minipage}\\
 For larger projects it is obviously appropriate to customize the sequence 
-by adding the steps outlined in \refsec{ssec:manualPipeline} to a \code{Makefile}. 
+by adding the steps outlined in \refsec{sec:manualPipeline} to a \code{Makefile}. 
  
 % -----------------------------------------------------------------------------------------
-\subsection{Manual Pipeline}\label{ssec:manualPipeline}
+\section{Manual Pipeline}\label{sec:manualPipeline}
 The following illustrates the pipeline that could be implemented 
 in a \code{Makefile} where we use successive file name postfixes to 
 retain the transformation results at each stage.\\
@@ -2127,7 +2120,7 @@ The intrinsics catalogue {\tt <iCat>} can be found in \\
 \scriptsize
 The binary is located at \\{\tt OpenADFortTk/OpenADFortTk-i686-Linux/bin/xaif2whirl}.\\
 The optional {\tt --structured} flag indicates structured control flow, as required for 
-the control flow reversal employed by the adjoint code transformation, see \refsec{ssec:cfReversal}.
+the control flow reversal employed by the adjoint code transformation, see \refsec{sec:cfReversal}.
 \end{minipage}
 }\\\hline
 \scriptsize 6 & \multicolumn{2}{l|}{\scriptsize Unparse to Fortran, see \refsec{sssec:mfef}}\\\cline{2-3}
@@ -2159,7 +2152,7 @@ The binaries used in steps 3, 5, and 6 all rely on the \code{libbe.so} \OpenSixt
 It is located in \code{Open64/osprey1.0/targ\_ia32\_ia64\_linux/whirl2f/}.
  
 % -----------------------------------------------------------------------------------------
-\subsection{Compiling and Linking}\label{ssec:compLink}
+\section{Compiling and Linking}\label{sec:compLink}
 All Fortran produced by \code{whirl2f} needs definitions for \code{kind} 
 variables that occur within the \code{whirl2f}-generated code. 
 These definitions can be found in \code{runTimeSupport/all/w2f\_\_types.f90}.
@@ -2177,16 +2170,16 @@ The provided sample implementations work with the subroutine inlining and templa
 directory.
 
 Finally, we need a {\em driver} that invokes the transformed routines and seeds and retrieves the derivatives.
-Examples for such drivers can be found in \refsec{sec:application}.
+Examples for such drivers can be found in \refsec{chap:application}.
 
 % #########################################################################################
-\section{Application}\label{sec:application}
+\chapter{Application}\label{chap:application}
 This applications section intends to augment the explanations given so far. 
 First we use a toy example to show how to embed the transformed code into 
 a driver. The following sections illustrate practical concerns for real 
 life applications. 
 % -----------------------------------------------------------------------------------------
-\subsection{Toy Example}\label{ssec:toyExample}
+\section{Toy Example}\label{sec:toyExample}
 
 Consider a toy example code  \reffig{fig:toyApp}(a) where we already inserted the 
 dependent and independent declarartions, see \refsec{sssec:mfef}.
@@ -2249,7 +2242,7 @@ derivatives, see \reffig{fig:toyAppDriverAdj}.
 \end{figure}
 
 % -----------------------------------------------------------------------------------------
-\subsection{Shallow Water Model}
+\section{Shallow Water Model}
 In this section we will use a practical application to highlight 
 advanced aspects arising for more complicated applications. 
 The model is a time stepping scheme which eventually computes 
@@ -2257,10 +2250,10 @@ a scalar valued cost function. We generate an adjoint model
 to compute the gradient.  
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Collect and Prepare Source Files} 
+\subsection{Collect and Prepare Source Files} 
 The entire model consists of many subroutines distributed over various 
 source files and the existing build sequence involves C preprocessing.
-To perform the static code analysis as explained in \refsec{sssec:openanalysis}
+To perform the static code analysis as explained in \refsec{ssec:openanalysis}
 all code that takes part in computation of the model has to be visible 
 to the tool which means it has to be concatenated into a single file. 
 It is possible to do this for all source files of the model but in many 
@@ -2287,7 +2280,7 @@ As for all AD tools in existence today the above concerns also apply to
 \OpenADF\ and  users are kindly asked to keep them in mind when
 preparing the source code.
 
-\refsec{ssec:toyExample} indicates the need for a modification 
+\refsec{sec:toyExample} indicates the need for a modification 
 to the code that drives the model computation to at least 
 preform the seeding and extraction of the derivatives. 
 The easiest approach to organize the driver is to identify (or create) 
@@ -2297,8 +2290,8 @@ become the contents of the single file to be processed by the tool pipeline.
 The independent and dependent variables should be identified in the top level routine.  
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Orchestrate a Reversal and Checkpointing Scheme}
-Joint and split reversal, see \refsec{ssec:cgReversal} are two special cases 
+\subsection{Orchestrate a Reversal and Checkpointing Scheme}
+Joint and split reversal, see \refsec{sec:cgReversal} are two special cases 
 of a large variety of reversal schemes. The model here involved a time stepping 
 scheme controlled by a main loop. \OpenADF\ supports automatic detection of the 
 data set to be checkpointed at a subroutine level. To use this feature the loop 
@@ -2347,7 +2340,7 @@ A dynamic reversal scheme is forthcoming.
 one needs to duplicate \code{cost}.
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{File I/O and Simple Loops}
+\subsection{File I/O and Simple Loops}
 The model code uses both the NetCDF library as well as 
 the built in Fortran I/O during the initialization and 
 output of results. Because  in the model computation 
@@ -2384,7 +2377,7 @@ was about a factor 4 in run time and more than a factor 10 in memory
 use.
 
 % -----------------------------------------------------------------------------------------
-\subsubsection{Results}
+\subsection{Results}
 \reffig{fig:sensMap} shows as an example output a map of sensitivities of 
 zonal volume transport through the Drake Passage 
 to changes in bottom topography everywhere in a barotropic ocean model 
@@ -2398,16 +2391,16 @@ computed from the shallow water code by P. Heimbach.
 The adjoint model generated with the current version of \OpenADF\ applied to the 
 shallow water code achieves 
 a run time that is only about 8 times that of  plain model computation.
-We expect the ongoing development of \OpenADF, see also \refsec{sec:concl} to yield 
+We expect the ongoing development of \OpenADF, see also \refsec{chap:concl} to yield 
 further efficiency gains.
 
 % -----------------------------------------------------------------------------------------
-\subsection{A Second Order Example}
+\section{A Second Order Example}
 
 {\color{red} candidate for removal, unless I get the fix in for the structure stuff}
 
 % #########################################################################################
-\section{Summary and Future Work}\label{sec:concl}
+\chapter{Summary and Future Work}\label{chap:concl}
 
 \OpenADF\ is an AD tool built on a language independent infrastructure with 
 well-separated components. 
@@ -2504,7 +2497,7 @@ improved elimination techniques in the computational graphs will
 be incorporated into \OpenAD. 
 
 % #########################################################################################
-\section{Appendix}
+\chapter*{Appendix}
 \begin{table}
   \tiny
   \begin{center}
@@ -2531,15 +2524,8 @@ be incorporated into \OpenAD.
   \end{center}
   \caption{Directory structure in \xaifBooster}\label{tab:dirStruct}
 \end{table}
-
-
-% \bibliographystyle{acmtrans}
 \bibliographystyle{plain}
 \bibliography{openad}
-
-
-% \begin{received}
-%   Received May 2005;
-% \end{received}
-
+\include{index}
+  \addcontentsline{toc}{chapter}{Index}
 \end{document}

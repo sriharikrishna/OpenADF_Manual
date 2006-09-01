@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{url}
 \usepackage{longtable}
+\usepackage{fancyhdr}
 
 \usepackage[pdftex,usenames]{color}
 \usepackage[pdftex]{graphicx}  
@@ -99,10 +100,12 @@
 
 \title{OpenAD/F: User Manual}
 \author{J.~Utke  \\
-U.~Naumann \\
-{\small\em  Draft date \today }}
-
+	U.~Naumann \\
+	{\small	\em Draft date \today }}
 \date{ }
+
+\fancyfoot[LE,RO]{\input{versionInfo.txt}}
+
 \begin{document}
 \maketitle
  \addcontentsline{toc}{chapter}{Contents}
@@ -145,7 +148,7 @@ U.~Naumann \\
   level.  The Fortran specific front and back end to this transformation
   engine is based on the \OpenSixtyFour\ compiler.
 
-\pagestyle{headings}
+\pagestyle{fancy}
 \pagenumbering{arabic}
 % #########################################################################################
 \chapter{Introduction} \label{chap:Introduction}

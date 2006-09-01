@@ -9,8 +9,11 @@ PDF_FROM_DIA=$(basename $(wildcard *.dia))
 # directly exported from xfig to pdf:
 PDF_FROM_FIG=$(basename $(wildcard *.fig))
 
-$(TARGET).pdf: $(addsuffix .pdf,$(PDF_FROM_DOT) $(PDF_FROM_DIA) $(PDF_FROM_FIG)) $(TARGET).tex $(TARGET).bbl $(TARGET).aux
+$(TARGET).pdf: $(addsuffix .pdf,$(PDF_FROM_DOT) $(PDF_FROM_DIA) $(PDF_FROM_FIG)) versionInfo.txt $(TARGET).tex $(TARGET).bbl $(TARGET).aux
 	pdflatex $(TARGET) 
+
+versionInfo.txt : FORCE 
+	./createVersionInfo.sh
 
 $(TARGET).bbl $(TARGET).aux: $(TARGET).bib 
 	# ensure we make a .aux file
@@ -21,7 +24,7 @@ $(TARGET).bbl $(TARGET).aux: $(TARGET).bib
 	pdflatex $(TARGET)
 
 clean: 
-	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,bbl,blg,dvi}
+	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,bbl,blg,dvi} versionInfo.*
 
 %.ps : %.dot
 	dot -Tps2 $< -o $@
@@ -33,3 +36,5 @@ clean:
 	epstopdf $<
 
 .PHONY: clean
+
+FORCE: 

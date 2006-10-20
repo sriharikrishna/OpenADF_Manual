@@ -101,7 +101,7 @@
 \title{OpenAD/F: User Manual}
 \author{J.~Utke  \\
 	U.~Naumann \\
-	{\small	\em Draft date \today }}
+	{\small	\em Draft compile date \today }}
 \date{ }
 
 \fancyhead[RE]{\leftmark}
@@ -118,132 +118,91 @@
 \tableofcontents
 \listoffigures
 \listoftables
-% #########################################################################################
-\chapter*{Preface}\normalsize
-  \addcontentsline{toc}{chapter}{Preface}
-\pagestyle{plain}	
-  The \OpenADF\ tool allows the evaluation of first and second order
-  derivatives of functions defined by a program written in Fortran90/77.
-
-  {\color{red} JU: Ehmm - qualify the above } 
-
-  The derivative evaluation is performed by Fortran 90 code resulting
-  from the analysis and transformation of the original program that
-  defines the function of interest. 
-  \OpenADF\ has been designed with a particular emphasis on  modularity, 
-  flexibility and the use of open source components. 
-  While the code transformation follows the
-  basic principles of automatic differentiation the tool implements 
-  new algorithmic approaches at various levels, e.g. for the basic block 
-  preaccumulation  and the call graph reversal.
-  In difference to most
-  other automatic differentiation tools \OpenADF\ uses components 
-  provided by the \OpenAD\ framework which supports a relatively 
-  easy extension of the code transformations
-  in a language independent fashion. 
-  It uses code analysis results
-  implemented in the \OpenAnalysis\ component.  The interface to the
-  language independent transformation engine is an XML abstract
-  interface format, called \xaif\ that is specified through an XML
-  schema.  The implemented transformation algorithms allow efficient
-  derivative computations utilizing locally optimized cross country
-  sequences of vertex, edge and face elimination steps.  Specifically,
-  for the generation of adjoint codes, \OpenADF\ supports various code
-  reversal schemes with hierarchical checkpointing at the subroutine
-  level.  The Fortran specific front and back end to this transformation
-  engine is based on the \OpenSixtyFour\ compiler.
 
 \pagestyle{fancy}
 \pagenumbering{arabic}
 % #########################################################################################
 \chapter{Introduction} \label{chap:Introduction}
 
-The basic principles of automatic differentiation (AD), see also \refsec{chap:ADIntro}, 
-have been known for several decades \cite{wengert}
-but only during the last 15 years have the tools implementing AD found a significant use in 
+The basic principles of automatic differentiation (AD) (see also \refsec{sec:ADIntro})
+have been known for several decades \cite{wengert},
+but only during the past 15 years have the tools implementing AD found  significant use in 
 optimization, data assimilation, and other applications in need of efficient and accurate 
 derivative information. 
 As a consequence of the wider use of AD, 
-a variety of tools have been developed that address specific 
+various tools have been developed that address specific 
 application requirements or programming languages. 
-The  AD community's website \cite{autodiffWeb} 
+The  AD community's website \url{www.autodiff.org} 
 provides a comprehensive overview of the tools that 
 are currently available. 
 One can categorize two user groups of AD tools. 
-On one side are the casual users 
+On one side are casual users 
 with small-scale problems applying AD mostly in a black-box fashion 
 and demanding minimal user intervention. 
-This category also includes the use of AD tools in  computational 
+This category also includes users of AD tools in  computational 
 frameworks such as NEOS \cite{neosWeb}.
 On the other side are experienced AD users aiming for highly efficient 
 derivative computations.
 Their need for efficiency is dictated by the 
 computational complexity of models that easily reaches the limits of  current 
 supercomputers. 
-With the emphasis on efficiency some sacrifices on the support of 
-language features are acceptable for this user group.  
+In turn this group is willing to accept some limitation in the support of 
+language features.
 
 % -----------------------------------------------------------------------------------------
 \section{Motivation}
 
 One of the most demanding applications of AD is the computation of gradients for 
-data assimilation on large scale models used in oceanography and climate research. 
-These applications clearly fall in the category of advanced uses.
+data assimilation on large-scale models used in oceanography and climate research. 
+This application clearly falls in the category of experienced users.
 An evaluation of the available tools revealed some shortcomings from the perspectives 
-of the tool users as well as the tool developers and are the rationale for 
+of the tool users as well as the tool developers and was the rationale for 
 designing a new tool with particular emphasis on   
 \begin{itemize}
+%\itemsep0ex
 \item flexibility,
-\item modularity, and
-\item the use of open source components.
+\item the use of open source components, and 
+\item modularity.
 \end{itemize} 
-
-From  the AD tool  {\em users point of view} there is a need for a substantial 
-flexibility of the AD tools. 
-We pointed out that the most demanding  numerical models 
-operate on the limit of the computing capacity of state of the art facilities. 
+From  the AD tool  {\em users} point of view there is a substantial need for   
+flexibility of AD tools. 
+The most demanding  numerical models 
+operate at the limit of the computing capacity of state-of-the-art facilities. 
 Usually the model code itself is specifically adapted to fit certain 
 hardware characteristics. 
-Consequently the AD tools code generation should be adapted in the same fashion. 
-Some of these specific solutions may be folded into the generic code transformation engine 
-but in many situation this is not appropriate.
-Consequently the AD tool should offer flexibility at various levels of the 
-transformation from simple textual preprocessing of the code down to the 
-changes the to the generic code transformation engine.
-This is the user rationale for developing an open source tool where {\em all} 
-components may be modified by to suit specific 
+Therefore AD tool code generation ideally should be adaptable in a similar fashion. 
+Since some of these adaptations may be  too specific for a general-purpose tool,
+the AD tool should offer {\em flexibility} at various levels of the 
+transformation -- from simple textual preprocessing of the code down to the 
+changes to the generic code transformation engine.
+This is the rationale for developing an {\em open source} tool where  all
+components are accessible  and may be freely modified to suit specific 
 needs.  
-A modular tool design with clearly defined interfaces supports such 
+A {\em modular} tool design with clearly defined interfaces supports such 
 user interventions. 
-As this design instigates a staged 
-transformation, see \refsec{sec:manualPipeline}, 
+Since this design instigates a staged 
+transformation,
 each transformation stage presents a opportunity to check and modify the 
 results. 
 
-From the AD tool {\em developers point of view} it is very apparent that 
-many AD tools share the same basic algorithms while on the other hand 
-there is a relatively steep hurdle to establish a working environment 
-for the source to source transformation. 
-This is true for a parsing front-end that turns the textual program into a 
-compiler-like internal representation, an environment that allows the 
-transformations  of this internal representation and finally the unparser that 
-returns the transformed internal representation back into a textual format of the 
-original programming language. An modular, open-source tool that facilitates 
-the integration of new transformation into an existing environment 
-allows for a much quicker implementation of new or modified  transformations.
-Finally, a modular design permits the reuse of the same transformation algorithms 
-for multiple target languages as long as there are parsing front-ends adhering to the 
-same internal representation.
+From the AD tool {\em developers} point of view
+many AD tools share the same basic algorithms, but
+there is a  steep hurdle to establish a transformation environment consisting of
+a front-end that turns the textual program into a 
+compilerlike internal representation, an engine that allows the 
+transformations  of this internal representation, and an unparser that 
+turns the transformed internal representation back into source code. 
+A {\em modular, open-source} tool facilitating 
+the integration of new transformations into an existing environment 
+allows for a quick implementation and testing of algorithmic ideas.
+Furthermore, a modular design permits the reuse of transformation algorithms 
+across multiple target languages, provided the parsing front-ends can translate to and from the 
+common internal representation.
 
-These issues became the motivation for the 
-Adjoint Compiler Technology \& Standards (ACTS) project \cite{actsWeb}.
-This project is a collaborative
-research and development effort of MIT, Argonne National Laboratory, 
-University of Chicago, and Rice University. 
-It focuses on  next-generation tool development and 
-application of AD to problems in oceanography and chemical engineering.
-The main result of this effort is an infrastructure for the language independent 
-development and use of AD algorithms. 
+These considerations motivated the 
+Adjoint Compiler Technology \& Standards \cite{actsWeb} project, a research and 
+development collaboration of MIT, Argonne National Laboratory, 
+The University of Chicago, and Rice University. \OpenADF\ is one of its major results.
 
 % -----------------------------------------------------------------------------------------
 \section{Overview}

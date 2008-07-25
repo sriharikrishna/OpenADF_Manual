@@ -254,6 +254,207 @@ Two applications further illustrate the tool usage in \refsec{chap:application} 
 we conclude with a section on future developments.
 
 % #########################################################################################
+\chapter{Tool Usage} \label{chap:Usage}
+The following contains brief instructions how to obtain and use \OpenADF. 
+While the principal approach will remain the same, future development may 
+introduce slight changes. The reader is encouraged to refer to the 
+up to date instructions on the \OpenADF\ website \cite{openadWeb}.
+
+% -----------------------------------------------------------------------------------------
+\section{Download and Build}\label{sec:dab}
+All components are open source and readily available for download from 
+the HiPerSoft CVS server at Rice University. Instructions to set up for anonymous 
+CVS access are found at \url{http://hipersoft.cs.rice.edu/cvs/index.html#anonymous}.
+The download is a 2 stage process where initially a skeleton repository is 
+retrieved via \code{cvs co OpenAD}. This contains a few scripts and setup to 
+retrieve and build all components. Then proceed as follows.
+\begin{enumerate}
+\item go into the \OpenADF\ download/build environment which was retrieved as described above:\\
+\code {cd OpenAD}
+\item retrieve all components from their various repositories by invoking\\
+\code{./bin/goad}
+\item set the environment for building and using \OpenADF\ for
+\begin{itemize}
+\item shell/ksh/bash etc users with\\
+\code{source ./setenv.sh}
+\item csh/tcsh etc. users with\\
+\code{source ./setenv.csh}
+\end{itemize}
+\item We assume the GNU c/c++/f77 compilers versions 3.3.x or newer. 
+and GNU make (gmake) to be in your \code{PATH}.
+The complete set of all components can be build by invoking\\
+\code{make}
+\end{enumerate}
+To update the sources to the latest version simply repeat the above steps 1 through 4 which 
+executes CVS updates and performs a mostly incremental build.
+
+% -----------------------------------------------------------------------------------------
+\section{OpenAD Environment}\label{sec:dab}
+As needed during automated download of the components and the build process we 
+need some environment variables to be set up to ease scripting and setting up make files.
+From now on we assume the following steps have been taken to setup the environment.  
+\begin{enumerate}
+\item go into the \OpenADF\ source tree which was retrieved as described above:\\
+\code {cd OpenAD}
+\item set the environment for building and using \OpenADF\ for
+\begin{itemize}
+\item shell/ksh/bash etc users with\\
+\code{source ./setenv.sh}
+\item csh/tcsh etc. users with\\
+\code{source ./setenv.csh}
+\end{itemize}
+\end{enumerate}
+
+% -----------------------------------------------------------------------------------------
+\section{Code Prepaparation}
+
+Pragma's etc. 
+
+% -----------------------------------------------------------------------------------------
+\section{Automatic Pipeline}
+The components of \OpenADF\ transform the code in a predetermined sequence of steps, 
+the {\em pipeline}. 
+Depending on the particular problem there are certain variations to the pipeline 
+that achieve a better performance of the generated code. 
+The most common pipeline setups are encapsulated in a Perl script. 
+The script is part of the skeleton environment that is used to download and build \OpenADF\  
+and relies on the same environment setup.
+Therefore user starts with steps 1 and 2 from \refsec{sec:dab}. 
+The script is contained in the file
+\code{OpenAD/tools/openad/openad}.
+Invoking it with the \code{-h} option displays the 
+script usage of which the mode choices are the most important.
+\begin{description}
+\item[\code{--bb-rev}] the default mode that produces adjoint code as explained in \refsec{sssec:BBRev},
+\item[\code{--bb}] the tangent-linear mode as explained in \refsec{sssec:BBPreacc}, and
+\item[\code{--memopstradeoff}] the tangent-linear mode with heuristics addressing data locality and operations count for the elimination sequence as explained in \refsec{sssec:MMTradeOff}.
+\end{description}
+As an example we use a code assumed to be in a file called head.f and transform this code 
+by invoking \code{openad head.f}
+which produces the adjoint version of \code{head.f} emitting the following messages.\\
+\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
+\fontsize{8pt}{9pt}
+\verbatimfile{code/openadScriptOutput.txt}
+\end{minipage}\\
+For larger projects it is obviously appropriate to customize the sequence 
+by adding the steps outlined in \refsec{sec:manualPipeline} to a \code{Makefile}. 
+ 
+% -----------------------------------------------------------------------------------------
+\section{Manual Pipeline}\label{sec:manualPipeline}
+The following illustrates the pipeline that could be implemented 
+in a \code{Makefile} where we use successive file name postfixes to 
+retain the transformation results at each stage.\\
+\begin{longtable}{|@{\hspace{.5ex}}l@{\hspace{.5ex}}|l|l|}\hline
+\scriptsize 1 & \multicolumn{2}{l|}{\scriptsize Canonicalization, see \refsec{sssec:Canonicalization}}\\\cline{2-3}
+              & \scriptsize in (Fortran) & \scriptsize {\tt head.f}\\\cline{2-3}
+              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.f} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt python canon.v1.py head.f > head.canon.f}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The script is located at \\{\tt OpenADFortTk/tools/canonicalize/canon.v1.py}.
+\end{minipage}
+}\\\hline
+\scriptsize 2 & \multicolumn{2}{l|}{\scriptsize Parsing, see \refsec{sssec:mfef}}\\\cline{2-3}
+              & \scriptsize in (Fortran) & \scriptsize {\tt head.canon.f} \\\cline{2-3}
+              & \scriptsize out (\whirl) & \scriptsize {\tt head.canon.B} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt mfef90 -F -ffixed head.canon.f}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary is located at \\{\tt Open64/osprey1.0/targ\_ia32\_ia64\_linux/crayf90/sgi/mfef90}.\\
+The {\tt -F} flag enables C preprocessing if needed, the {\tt -ffixed} indicates fixed format input.
+\end{minipage}
+}\\\hline
+\scriptsize 3 & \multicolumn{2}{l|}{\scriptsize Translating to \xaif, see \refsec{sssec:wtxxtw}}\\\cline{2-3}
+              & \scriptsize in (\whirl) & \scriptsize {\tt head.canon.B} \\\cline{2-3}
+              & \scriptsize out (\xaif) & \scriptsize {\tt head.canon.xaif} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt whirl2xaif -o head.canon.xaif head.canon.B}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary is located at \\{\tt OpenADFortTk/OpenADFortTk-i686-Linux/bin/whirl2xaif}.\\
+The {\tt -o} flag allows to specify an output file, the default is {\tt stdout}.
+\end{minipage}
+}\\\hline
+\scriptsize 4 & \multicolumn{2}{l|}{\scriptsize Transformation, see \refsec{sssec:xaifBooster}}\\\cline{2-3}
+              & \scriptsize in (\xaif) & \scriptsize {\tt head.canon.xaif} \\\cline{2-3}
+              & \scriptsize out (\xaif) & \scriptsize {\tt head.canon.xb.xaif} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt <trans> -i head.canon.xaif -c <iCat> -o head.canon.xb.xaif}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary {\tt <trans>} is one of\\
+{\tt xaifBooster/algorithms/BasicBlockPreaccumulation/test/t}, see \refsec{sssec:BBPreacc}\\
+{\tt xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test/t}, see \refsec{sssec:MMTradeOff}\\
+{\tt xaifBooster/algorithms/BasicBlockPreaccumulationReverse/test/t}, see \refsec{sssec:BBRev}\\
+Each of the binaries prints a self explanatory usage message when invoked without any arguments. 
+The intrinsics catalogue {\tt <iCat>} can be found in \\
+{\tt xaif/schema/examples/inlinable\_intrinsics.xaif} 
+\end{minipage}
+}\\\hline
+\scriptsize 5 & \multicolumn{2}{l|}{\scriptsize Translating to \whirl, see \refsec{sssec:wtxxtw}}\\\cline{2-3}
+              & \scriptsize in (\whirl\ and \xaif) & \scriptsize {\tt head.canon.B  head.canon.xb.xaif} \\\cline{2-3}
+              & \scriptsize out (\whirl) & \scriptsize {\tt head.canon.xb.x2w.B} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt xaif2whirl head.canon.B head.canon.xb.xaif}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary is located at \\{\tt OpenADFortTk/OpenADFortTk-i686-Linux/bin/xaif2whirl}.\\
+The optional {\tt --structured} flag indicates structured control flow, as required for 
+the control flow reversal employed by the adjoint code transformation, see \refsec{sec:cfReversal}.
+\end{minipage}
+}\\\hline
+\scriptsize 6 & \multicolumn{2}{l|}{\scriptsize Unparse to Fortran, see \refsec{sssec:mfef}}\\\cline{2-3}
+              & \scriptsize in (\whirl) & \scriptsize {\tt head.canon.xb.x2w.B  head.canon.xb.xaif} \\\cline{2-3}
+              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.f} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt whirl2f head.canon.xb.B}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The binary is located at \\{\tt Open64/osprey1.0/targ\_ia32\_ia64\_linux/whirl2f/whirl2f}.\\
+It internally loads {\tt whirl2f\_be} located in the same directory.
+\end{minipage}
+}\\\hline
+\scriptsize 7 & \multicolumn{2}{l|}{\scriptsize Postprocessing, see \refsec{sssec:PostProcessor}}\\\cline{2-3}
+              & \scriptsize in (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.f}\\\cline{2-3}
+              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.pp.f} \\\cline{2-3}
+              & \scriptsize command & \scriptsize {\tt perl multi-pp.pl head.f head.canon.xb.x2w.w2f.f}\\\cline{2-3}
+              & \multicolumn{2}{l|}{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+The script is located at \\{\tt OpenADFortTk/tools/multi-process/multi-pp.pl}.\\
+For tangent linear models the postprocessor requires the command line flag {\tt -f} while 
+for inlining the default file name {\tt ad\_inline.f} can be changed with the {\tt -i} flag and for template expansion
+the default template file name {\tt ad\_template.f} can be changed with the {\tt -t} flag. 
+\end{minipage}
+}\\\hline
+\end{longtable}
+The binaries used in steps 3, 5, and 6 all rely on the \code{libbe.so} \OpenSixtyFour\ backend library. 
+It is located in \code{Open64/osprey1.0/targ\_ia32\_ia64\_linux/whirl2f/}.
+ 
+% -----------------------------------------------------------------------------------------
+\section{Compiling and Linking}\label{sec:compLink}
+All Fortran produced by \code{whirl2f} needs definitions for \code{kind} 
+variables that occur within the \code{whirl2f}-generated code. 
+These definitions can be found in \code{runTimeSupport/all/w2f\_\_types.f90}.
+The code produced by  transformation pipeline 
+requires  implementations 
+(\OpenADF\ supplies samples) for the following aspects.
+\begin{itemize}
+\item active type (see \code{runTimeSupport/simple/OpenAD\_active.f90})
+\item checkpointing (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_checkpoints.f90})  
+\item taping (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_tape.f90})  
+\item state for call graph reversal (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_rev.f90})
+\end{itemize}
+The compilation order for these various modules follows exactly the order given here.
+The provided sample implementations work with the subroutine inlining and templates found in the same 
+directory.
+
+Finally, we need a {\em driver} that invokes the transformed routines and seeds and retrieves the derivatives.
+Examples for such drivers can be found in \refsec{chap:application}.
+
+% #########################################################################################
 \chapter{AD Concepts}\label{chap:ADIntro}
 
 In this section we present the terminology and basic concepts that 
@@ -1953,191 +2154,6 @@ The respective top-level routine is called by the driver with the state structur
 \caption{Joint mode Fortran90 template with argument checkpointing} \label{fig:jointACTemplate}
 \end{figure}
  
-% #########################################################################################
-\chapter{Tool Usage} \label{chap:Usage}
-The following contains brief instructions how to obtain and use \OpenADF. 
-While the principal approach will remain the same, future development may 
-introduce slight changes. The reader is encouraged to refer to the 
-up to date instructions on the \OpenADF\ website \cite{openadWeb}.
-
-% -----------------------------------------------------------------------------------------
-\section{Download and Build}\label{sec:dab}
-All components are open source and readily available for download from 
-the HiPerSoft CVS server at Rice University. Instructions to set up for anonymous 
-CVS access are found at \url{http://hipersoft.cs.rice.edu/cvs/index.html#anonymous}.
-The download is a 2 stage process where initially a skeleton repository is 
-retrieved via \code{cvs co OpenAD}. This contains a few scripts and setup to 
-retrieve and build all components. Then proceed as follows.
-\begin{enumerate}
-\item go into the \OpenADF\ download/build environment which was retrieved as described above:\\
-\code {cd OpenAD}
-\item retrieve all components from their various repositories by invoking\\
-\code{./bin/goad}
-\item set the environment for building and using \OpenADF\ for
-\begin{itemize}
-\item shell/ksh/bash etc users with\\
-\code{source ./setenv.sh}
-\item csh/tcsh etc. users with\\
-\code{source ./setenv.csh}
-\end{itemize}
-\item We assume the GNU c/c++/f77 compilers versions 3.3.x to 3.4.4\footnote{
-\OpenSixtyFour\ currently does not compile with gcc 4.x.
-} 
-and GNU make (gmake) to be in your \code{PATH}.
-The complete set of all components can be build by invoking\\
-\code{make}
-\end{enumerate}
-To update the sources to the latest version simply repeat the above steps 1 through 4 which 
-executes CVS updates and performs a mostly incremental build.
-
-% -----------------------------------------------------------------------------------------
-\section{Code Prepaparation}
-
-Pragma's etc. 
-
-% -----------------------------------------------------------------------------------------
-\section{Automatic Pipeline}
-The components of \OpenADF\ transform the code in a predetermined sequence of steps, 
-the {\em pipeline}. 
-Depending on the particular problem there are certain variations to the pipeline 
-that achieve a better performance of the generated code. 
-The most common pipeline setups are encapsulated in a Perl script. 
-The script is part of the skeleton environment that is used to download and build \OpenADF\  
-and relies on the same environment setup.
-Therefore user starts with steps 1 and 2 from \refsec{sec:dab}. 
-The script is contained in the file
-\code{OpenAD/tools/openad/openad}.
-Invoking it with the \code{-h} option displays the 
-script usage of which the mode choices are the most important.
-\begin{description}
-\item[\code{--bb-rev}] the default mode that produces adjoint code as explained in \refsec{sssec:BBRev},
-\item[\code{--bb}] the tangent-linear mode as explained in \refsec{sssec:BBPreacc}, and
-\item[\code{--memopstradeoff}] the tangent-linear mode with heuristics addressing data locality and operations count for the elimination sequence as explained in \refsec{sssec:MMTradeOff}.
-\end{description}
-As an example we use a code assumed to be in a file called head.f and transform this code 
-by invoking \code{openad head.f}
-which produces the adjoint version of \code{head.f} emitting the following messages.\\
-\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
-\fontsize{8pt}{9pt}
-\verbatimfile{code/openadScriptOutput.txt}
-\end{minipage}\\
-For larger projects it is obviously appropriate to customize the sequence 
-by adding the steps outlined in \refsec{sec:manualPipeline} to a \code{Makefile}. 
- 
-% -----------------------------------------------------------------------------------------
-\section{Manual Pipeline}\label{sec:manualPipeline}
-The following illustrates the pipeline that could be implemented 
-in a \code{Makefile} where we use successive file name postfixes to 
-retain the transformation results at each stage.\\
-\begin{longtable}{|@{\hspace{.5ex}}l@{\hspace{.5ex}}|l|l|}\hline
-\scriptsize 1 & \multicolumn{2}{l|}{\scriptsize Canonicalization, see \refsec{sssec:Canonicalization}}\\\cline{2-3}
-              & \scriptsize in (Fortran) & \scriptsize {\tt head.f}\\\cline{2-3}
-              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.f} \\\cline{2-3}
-              & \scriptsize command & \scriptsize {\tt python canon.v1.py head.f > head.canon.f}\\\cline{2-3}
-              & \multicolumn{2}{l|}{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-The script is located at \\{\tt OpenADFortTk/tools/canonicalize/canon.v1.py}.
-\end{minipage}
-}\\\hline
-\scriptsize 2 & \multicolumn{2}{l|}{\scriptsize Parsing, see \refsec{sssec:mfef}}\\\cline{2-3}
-              & \scriptsize in (Fortran) & \scriptsize {\tt head.canon.f} \\\cline{2-3}
-              & \scriptsize out (\whirl) & \scriptsize {\tt head.canon.B} \\\cline{2-3}
-              & \scriptsize command & \scriptsize {\tt mfef90 -F -ffixed head.canon.f}\\\cline{2-3}
-              & \multicolumn{2}{l|}{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-The binary is located at \\{\tt Open64/osprey1.0/targ\_ia32\_ia64\_linux/crayf90/sgi/mfef90}.\\
-The {\tt -F} flag enables C preprocessing if needed, the {\tt -ffixed} indicates fixed format input.
-\end{minipage}
-}\\\hline
-\scriptsize 3 & \multicolumn{2}{l|}{\scriptsize Translating to \xaif, see \refsec{sssec:wtxxtw}}\\\cline{2-3}
-              & \scriptsize in (\whirl) & \scriptsize {\tt head.canon.B} \\\cline{2-3}
-              & \scriptsize out (\xaif) & \scriptsize {\tt head.canon.xaif} \\\cline{2-3}
-              & \scriptsize command & \scriptsize {\tt whirl2xaif -o head.canon.xaif head.canon.B}\\\cline{2-3}
-              & \multicolumn{2}{l|}{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-The binary is located at \\{\tt OpenADFortTk/OpenADFortTk-i686-Linux/bin/whirl2xaif}.\\
-The {\tt -o} flag allows to specify an output file, the default is {\tt stdout}.
-\end{minipage}
-}\\\hline
-\scriptsize 4 & \multicolumn{2}{l|}{\scriptsize Transformation, see \refsec{sssec:xaifBooster}}\\\cline{2-3}
-              & \scriptsize in (\xaif) & \scriptsize {\tt head.canon.xaif} \\\cline{2-3}
-              & \scriptsize out (\xaif) & \scriptsize {\tt head.canon.xb.xaif} \\\cline{2-3}
-              & \scriptsize command & \scriptsize {\tt <trans> -i head.canon.xaif -c <iCat> -o head.canon.xb.xaif}\\\cline{2-3}
-              & \multicolumn{2}{l|}{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-The binary {\tt <trans>} is one of\\
-{\tt xaifBooster/algorithms/BasicBlockPreaccumulation/test/t}, see \refsec{sssec:BBPreacc}\\
-{\tt xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test/t}, see \refsec{sssec:MMTradeOff}\\
-{\tt xaifBooster/algorithms/BasicBlockPreaccumulationReverse/test/t}, see \refsec{sssec:BBRev}\\
-Each of the binaries prints a self explanatory usage message when invoked without any arguments. 
-The intrinsics catalogue {\tt <iCat>} can be found in \\
-{\tt xaif/schema/examples/inlinable\_intrinsics.xaif} 
-\end{minipage}
-}\\\hline
-\scriptsize 5 & \multicolumn{2}{l|}{\scriptsize Translating to \whirl, see \refsec{sssec:wtxxtw}}\\\cline{2-3}
-              & \scriptsize in (\whirl\ and \xaif) & \scriptsize {\tt head.canon.B  head.canon.xb.xaif} \\\cline{2-3}
-              & \scriptsize out (\whirl) & \scriptsize {\tt head.canon.xb.x2w.B} \\\cline{2-3}
-              & \scriptsize command & \scriptsize {\tt xaif2whirl head.canon.B head.canon.xb.xaif}\\\cline{2-3}
-              & \multicolumn{2}{l|}{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-The binary is located at \\{\tt OpenADFortTk/OpenADFortTk-i686-Linux/bin/xaif2whirl}.\\
-The optional {\tt --structured} flag indicates structured control flow, as required for 
-the control flow reversal employed by the adjoint code transformation, see \refsec{sec:cfReversal}.
-\end{minipage}
-}\\\hline
-\scriptsize 6 & \multicolumn{2}{l|}{\scriptsize Unparse to Fortran, see \refsec{sssec:mfef}}\\\cline{2-3}
-              & \scriptsize in (\whirl) & \scriptsize {\tt head.canon.xb.x2w.B  head.canon.xb.xaif} \\\cline{2-3}
-              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.f} \\\cline{2-3}
-              & \scriptsize command & \scriptsize {\tt whirl2f head.canon.xb.B}\\\cline{2-3}
-              & \multicolumn{2}{l|}{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-The binary is located at \\{\tt Open64/osprey1.0/targ\_ia32\_ia64\_linux/whirl2f/whirl2f}.\\
-It internally loads {\tt whirl2f\_be} located in the same directory.
-\end{minipage}
-}\\\hline
-\scriptsize 7 & \multicolumn{2}{l|}{\scriptsize Postprocessing, see \refsec{sssec:PostProcessor}}\\\cline{2-3}
-              & \scriptsize in (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.f}\\\cline{2-3}
-              & \scriptsize out (Fortran) & \scriptsize {\tt head.canon.xb.x2w.w2f.pp.f} \\\cline{2-3}
-              & \scriptsize command & \scriptsize {\tt perl multi-pp.pl head.f head.canon.xb.x2w.w2f.f}\\\cline{2-3}
-              & \multicolumn{2}{l|}{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-The script is located at \\{\tt OpenADFortTk/tools/multi-process/multi-pp.pl}.\\
-For tangent linear models the postprocessor requires the command line flag {\tt -f} while 
-for inlining the default file name {\tt ad\_inline.f} can be changed with the {\tt -i} flag and for template expansion
-the default template file name {\tt ad\_template.f} can be changed with the {\tt -t} flag. 
-\end{minipage}
-}\\\hline
-\end{longtable}
-The binaries used in steps 3, 5, and 6 all rely on the \code{libbe.so} \OpenSixtyFour\ backend library. 
-It is located in \code{Open64/osprey1.0/targ\_ia32\_ia64\_linux/whirl2f/}.
- 
-% -----------------------------------------------------------------------------------------
-\section{Compiling and Linking}\label{sec:compLink}
-All Fortran produced by \code{whirl2f} needs definitions for \code{kind} 
-variables that occur within the \code{whirl2f}-generated code. 
-These definitions can be found in \code{runTimeSupport/all/w2f\_\_types.f90}.
-The code produced by  transformation pipeline 
-requires  implementations 
-(\OpenADF\ supplies samples) for the following aspects.
-\begin{itemize}
-\item active type (see \code{runTimeSupport/simple/OpenAD\_active.f90})
-\item checkpointing (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_checkpoints.f90})  
-\item taping (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_tape.f90})  
-\item state for call graph reversal (only  for adjoint models, see \code{runTimeSupport/simple/OpenAD\_rev.f90})
-\end{itemize}
-The compilation order for these various modules follows exactly the order given here.
-The provided sample implementations work with the subroutine inlining and templates found in the same 
-directory.
-
-Finally, we need a {\em driver} that invokes the transformed routines and seeds and retrieves the derivatives.
-Examples for such drivers can be found in \refsec{chap:application}.
 
 % #########################################################################################
 \chapter{Application}\label{chap:application}

@@ -4,10 +4,10 @@ endif
 ifndef (CC)
 CC=gcc
 endif
-RTSUPP=w2f__types OAD_active OAD_cp OAD_tape OAD_rev iaddr
-driver: $(addsuffix .o, $(RTSUPP)) driver.o head.prepped.xb.x2w.w2f.pp.o
+RTSUPP=w2f__types OAD_active OAD_cp OAD_tape OAD_rev 
+driver: $(addsuffix .o, $(RTSUPP) iaddr) driver.o head.prepped.xb.x2w.w2f.pp.o
 	${F90C} -o $@ $^
-head.prepped.xb.x2w.w2f.pp.f $(addsuffix .f90, $(RTSUPP)) : toolChain 
+head.prepped.xb.x2w.w2f.pp.f $(addsuffix .f90, $(RTSUPP)) iaddr : toolChain 
 toolChain : head.prepped.f90
 	openad -c -m rj $<
 %.o : %.f90

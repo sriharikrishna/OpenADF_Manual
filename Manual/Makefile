@@ -1,33 +1,84 @@
 TARGET=openad
 
-# dot converts to PS and ps2pdf converts to pdf (see below)
-PDF_FROM_DOT=$(basename $(wildcard *.dot))
+DOTFILES=$(wildcard *.dot)
+DOT2PDF=$(DOTFILES:.dot=.pdf)
 
-# dia exports to eps and epstopdf converts to pdf:
-PDF_FROM_DIA=$(basename $(wildcard *.dia))
+DIAFILES=$(wildcard *.dia)
+DIA2PDF=$(DIAFILES:.dia=.pdf)
 
-# directly exported from xfig to pdf:
-PDF_FROM_FIG=$(basename $(wildcard *.fig))
+FIGFILES=$(wildcard *.fig)
+FIG2PDF=$(FIGFILES:.fig=.pdf)
 
-$(TARGET).pdf: $(addsuffix .pdf,$(PDF_FROM_DOT) $(PDF_FROM_DIA) $(PDF_FROM_FIG)) versionInfo.txt $(TARGET).tex $(TARGET).bbl $(TARGET).aux
-	pdflatex $(TARGET) 
+EXTRAREQS= \
+versionInfo.txt \
+oneMinuteStatusOutput.txt \
+oneMinuteOutput.txt \
+oneMinuteReverseStatusOutput.txt \
+oneMinuteReverseOutput.txt \
+oneMinuteReverseTaping.f \
+oneMinuteReverseAdjoint.f \
+$(DOT2PDF) \
+$(DIA2PDF) \
+$(FIG2PDF) 
+
+THISDIR=$(shell pwd)
+
+ifndef OPENADROOT
+$(error "OpenAD environment not set")
+endif
+
+$(TARGET).pdf : $(TARGET).aux $(TARGET).blg $(TARGET).bbl
+# run it twice
+	pdflatex $(TARGET)
+	pdflatex $(TARGET)
+
+$(TARGET).aux :  extraReqs $(TARGET).tex $(TARGET).bib 
+# ensure we make a .aux file
+	pdflatex $(TARGET)
+
+$(TARGET).blg $(TARGET).bbl: $(TARGET).aux
+	bibtex $(TARGET)
+
+extraReqs: $(EXTRAREQS)
+	echo $(EXTRAREQS)
 
 versionInfo.txt : FORCE 
 	./createVersionInfo.sh
 
-$(TARGET).bbl $(TARGET).aux: $(TARGET).bib 
-	# ensure we make a .aux file
-	pdflatex $(TARGET)
-	# use the .aux file
-	bibtex $(TARGET)
-	# rerun to fix up the .aux file
-	pdflatex $(TARGET)
+oneMinuteStatusOutput.txt : FORCE
+	cd Code/OneMinute && $(MAKE) clean
+	cd Code/OneMinute ; make toolChain | grep -v "make" > ${THISDIR}/$@
+
+oneMinuteOutput.txt : FORCE
+	cd Code/OneMinute && $(MAKE)
+	cd Code/OneMinute ; ./driver > ${THISDIR}/$@
+
+oneMinuteReverseStatusOutput.txt : FORCE
+	cd Code/OneMinuteReverse && $(MAKE) clean
+	cd Code/OneMinuteReverse ; make toolChain | grep -v "make" > ${THISDIR}/$@
+
+oneMinuteReverseOutput.txt : FORCE
+	cd Code/OneMinuteReverse && $(MAKE)
+	cd Code/OneMinuteReverse ; ./driver > ${THISDIR}/$@
+
+oneMinuteReverseTaping.f : oneMinuteReverseStatusOutput.txt
+	cat Code/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C taping/,/C taping end/p' > $@
+
+oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.tx
+	cat Code/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C adjoint/,/C adjoint end/p' > $@
 
 clean: 
-	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,bbl,blg,dvi} versionInfo.*
+	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,lot,idx,bbl,blg,dvi} index.aux versionInfo*.txt
+	rm -rf $(EXTRAREQS)
 
 %.ps : %.dot
 	dot -Tps2 $< -o $@
+
+%.eps : %.dia
+	dia -t eps $< -e $@
+
+%.pdf : %.fig
+	fig2dev -L pdf $< $@
 
 %.pdf : %.ps
 	ps2pdf $<
@@ -35,6 +86,7 @@ clean:
 %.pdf : %.eps
 	epstopdf $<
 
-.PHONY: clean
+
+.PHONY: clean extraReqs
 
 FORCE: 

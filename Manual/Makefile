@@ -70,6 +70,8 @@ oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.tx
 clean: 
 	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,lot,idx,bbl,blg,dvi} index.aux versionInfo*.txt
 	rm -rf $(EXTRAREQS)
+	cd Code/OneMinute && $(MAKE) $@
+	cd Code/OneMinuteReverse && $(MAKE) $@
 
 %.ps : %.dot
 	dot -Tps2 $< -o $@

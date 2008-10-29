@@ -2,6 +2,7 @@
 
 \usepackage[verbose]{wrapfig}
 \usepackage{amssymb}
+\usepackage{marvosym}
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{url}
@@ -101,7 +102,7 @@
 \newtheorem{Can}{Canonicalization}
 
 \let\verbatiminput=\verbatimtabinput
-\def\verbatimtabsize{4\relax}
+\def\verbatimtabsize{8\relax}
 
 \makeindex
 
@@ -158,6 +159,7 @@ application requirements or programming languages.
 The  AD community's website \url{www.autodiff.org} 
 provides a comprehensive overview of the tools that 
 are currently available. 
+
 One can categorize two user groups of AD tools. 
 On one side are casual users 
 with small-scale problems applying AD mostly in a black-box fashion 
@@ -170,10 +172,13 @@ Their need for efficiency is dictated by the
 computational complexity of models that easily reaches the limits of  current 
 supercomputers. 
 In turn this group is willing to accept some limitation in the support of 
-language features.
+language features. 
+
+\noindent
+{\bf {\Large \ForwardToIndex } For a quick test with small-scale problems one may proceed directly to \refsec{sec:oneMinute}.} 
 
 % -----------------------------------------------------------------------------------------
-\section{Motivation}
+\section{Motivation for the \OpenADF\ Design}
 
 One of the most demanding applications of AD is the computation of gradients for 
 data assimilation on large-scale models used in oceanography and climate research. 
@@ -228,7 +233,7 @@ development collaboration of MIT, Argonne National Laboratory,
 The University of Chicago, and Rice University. \OpenADF\ is one of its major results.
 
 % -----------------------------------------------------------------------------------------
-\section{Overview}
+\section{Overview} \label{sec:overview}
 \OpenADF \cite{openadWeb}
 is the Fortran incarnation of the AD framework \OpenAD.
 The C/C++ oriented tool ADIC v2.0 \cite{adicWeb}
@@ -273,20 +278,31 @@ as internal representation in combination with language independent components o
 In \refsec{chap:ADIntro} we discuss the basic concepts of AD as relevant for 
 the description of \OpenAD, \refsec{chap:openadfcomponents} discusses the components 
 that make up \OpenADF, and \refsec{chap:Usage} details the usage of the tool. 
-Two applications further illustrate the tool usage in \refsec{chap:application} and 
+Two applications further illustrate the tool usage in \refsec{sec:application} and 
 we conclude with a section on future developments.
 
 % -----------------------------------------------------------------------------------------
-\section{A Simple Example}
+\section{A One-Minute Example} \label{sec:oneMinute}
+
+This section provides a quick illustration of the tool without going into any detail of 
+the inner workings. It may be useful to run the examples as a sanity test. \\
+{\bf {\Large \ForwardToIndex }  Users familiar with source transformation AD tools may want to skip this section and proceed  to \refsec{sec:deciding}.}
+
+To obtain the source code for the examples in this section please refer to \refsec{sec:compilingManual}. 
+To run the examples one needs to install \OpenADF\ following the instructions in \refsec{sec:dab}.
 We assume a simple routine, see \reffig{fig:OneMinute} (left), computing $y=f(x)=\tan(x)$ implemented by \lstinline{head}.
 \begin{figure}
 \begin{minipage}[t]{.48\linewidth}
-\lstinputlisting[frame=single]{Code/OneMinute/head.f90}
+\scriptsize\lstinputlisting[frame=single]{Examples/OneMinute/head.f90}
 \end{minipage}
 \begin{minipage}[t]{.48\linewidth}
-\lstinputlisting[frame=single]{Code/OneMinute/head.prepped.f90}
+\scriptsize\lstinputlisting[frame=single]{Examples/OneMinute/head.prepped.f90}
 \end{minipage}
-\caption{Simple example code (left), prepared for differentiation (right)}\label{fig:OneMinute}
+\caption{Simple example code (left, see file 
+\lstinline{$OPENADROOT/Examples/OneMinute/head.f90}), %$
+prepared for differentiation (right, see file 
+\lstinline{$OPENADROOT/Examples/OneMinute/head.prepped.f90})}%$
+\label{fig:OneMinute}
 \end{figure}
 We need to prepare the code for the activity analysis by specifying the independent variables
 (here \lstinline{x}) and the dependent variables 
@@ -295,143 +311,190 @@ In the following we assume the \OpenADF\ environment has been set up as
 described in \refsec{sec:env}.
 
 % .........................................................................................
-\subsection{Forward Mode}
+\subsection{Forward Mode}\label{sec:forwardMode}
 For this simple example we can use the following wrapper script.\\[1ex]
 \hspace*{.3cm}\lstinline{$OPENADROOT/bin/openad}\\[1ex] %$
 The environment setup adds this directory to the \lstinline{PATH}.
 All script options are shown when it is invoked with the \lstinline{-h} flag. 
 It provides a simple recipe for the AD transformations that we can use in 
 a straightforward case like this by calling \\[1ex]
-%\begin{wrapfigure}{r}{.5\textwidth}
-\begin{figure}
-\begin{minipage}{.98\linewidth}
-\lstinputlisting[frame=single]{Code/OneMinute/driver.f90}
-\end{minipage}
-\caption{Driver routine for the transformed code  shown in \reffig{fig:OneMinuteTransformed} }\label{fig:OneMinuteDriver}
-%\end{wrapfigure}
-\end{figure}
+\hspace*{.3cm}\lstinline{cd $OPENDADROOT/Examples/OneMinute}\\ %$
 \hspace*{.3cm}\lstinline{openad -c -m f head.prepped.f90}\\[1ex]
-to generate a code version for forward mode (controlled by the flag \lstinline{-m f}).
-The script produces progress output like the one shown in \reffig{fig:oneMinuteStatusOutput}.
-The resulting Fortran output is written to a file called\\[1ex]
-\hspace*{.3cm}\lstinline{head.prepped.xb.x2w.w2f.pp.f}\\[1ex] 
-and its contents is shown in \reffig{fig:OneMinuteTransformed}. 
-The formal parameters \lstinline{x} and \lstinline{y} are active and 
-consequently their type is changed. 
-Lines 25,26 contain the derivative of $\tan(x)$ which is $\tan(x)^2+1$.
-Because of potential aliasing between the formal parameters of \lstinline{head} 
-a temporary variable \lstinline{OADsym_0} is introduced to hold the result before 
-it is assigned to the output's value component \lstinline{y\%v}. 
-The call to \lstinline{sax} performs the actual propagation operation
-$$
-\dot{y}=\frac{\partial \tan(x)}{\partial x}\cdot \dot{x} \quad .
-$$ 
-%\begin{wrapfigure}{r}{.5\textwidth}
+to generate a code version for forward mode. The transformation is 
+selected  by the flag \lstinline{-m f}.
+The script produces progress progress messages 
+like the ones shown in \reffig{fig:oneMinuteStatusOutput}.
 \begin{figure}
 \fbox{
 \begin{minipage}{.95\linewidth}
 \scriptsize\verbatiminput{oneMinuteStatusOutput.txt}
 \end{minipage}
 }
-\caption{Progress messages from \lstinline{openad}.}\label{fig:oneMinuteStatusOutput}
-%\end{wrapfigure}
+\caption{Progress messages from \lstinline{openad} for forward mode.}\label{fig:oneMinuteStatusOutput}
 \end{figure}
+The resulting Fortran output is written to a file called\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENDADROOT/Examples/OneMinute/head.prepped.xb.x2w.w2f.pp.f}\\[1ex] %$
+and its contents is shown in \reffig{fig:OneMinuteTransformed}. 
+\begin{figure}
+\scriptsize\lstinputlisting[frame=single,firstline=2]{Examples/OneMinute/head.prepped.xb.x2w.w2f.pp.f} %$
+\caption{Forward mode transformed code for \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteTransformed}
+\end{figure}
+The formal parameters \lstinline{x} and \lstinline{y} are active and 
+consequently their type is changed. 
+Lines 25 and 26 contain the derivative of $\tan(x)$ which is $\tan(x)^2+1$.
+Because of potential aliasing between the formal parameters of \lstinline{head} 
+a temporary variable \lstinline{OADsym_0} is introduced to hold the result before 
+it is assigned to the output's value component \lstinline{y%v}. 
+The call to \lstinline{sax} performs the forward propagation operation
+$$
+\dot{y}=\frac{\partial \tan(x)}{\partial x}\cdot \dot{x} \quad ,
+$$ 
+see also \refeqn{eqn:bbfm} on pg. \pageref{eqn:bbfm}.
 A simple driver that calls the transformed \lstinline{head(x,y)}
 is shown in \reffig{fig:OneMinuteDriver}.
-The output generated by the driver is shown in  \reffig{fig:oneMinuteOutput}.
-%\begin{wrapfigure}{r}{.5\textwidth}
+\begin{figure}
+\begin{minipage}{.98\linewidth}
+\scriptsize\lstinputlisting[frame=single]{Examples/OneMinute/driver.f90}
+\end{minipage}
+\caption{Forward mode \lstinline{driver} (see file 
+\lstinline{Examples/OneMinute/driver.f90}) %$
+for the transformed code  shown in \reffig{fig:OneMinuteTransformed} }\label{fig:OneMinuteDriver}
+\end{figure}
+It initializes 
+\lstinline{x%d}$\equiv\dot{x}\equiv 1$ 
+and therefore 
+\lstinline{y%d}$\equiv\dot{y}$ 
+will contain just that partial derivative.
+Aside from running the transformation tool pipeline the \lstinline{openad} script also 
+copies the appropriate run time support files into the working directory. These support 
+files need to be compiled and linked with the driver and the transformed code. 
+The example includes a \lstinline{Makefile}, see \reffig{fig:OneMinuteMake}, 
+\begin{figure}
+\fbox{
+\begin{minipage}{.95\textwidth}
+\scriptsize\verbatiminput{Examples/OneMinute/Makefile}
+\end{minipage}
+}
+\caption{Contents of \lstinline{$OPENADROOT/Examples/OneMinute/Makefile} %$
+to compile and link the forward mode example}\label{fig:OneMinuteMake}.
+\end{figure}
+and the entire example can be 
+built by executing the following commands. \\[1ex]
+\hspace*{.3cm}\lstinline{cd $OPENDADROOT/Examples/OneMinute}\\ %$
+\hspace*{.3cm}\lstinline{make}\\[1ex]
+This creates an executable called \lstinline{driver}.
+The output generated by running \lstinline{driver} is shown in  \reffig{fig:oneMinuteOutput}.
 \begin{figure}
 \fbox{
 \begin{minipage}{.95\linewidth}
 \scriptsize\verbatiminput{oneMinuteOutput.txt}
 \end{minipage}
 }
-\caption{Output from \lstinline{driver} in \reffig{fig:OneMinuteDriver}.}\label{fig:oneMinuteOutput}
-%\end{wrapfigure}
-\end{figure}
-\begin{figure}[h]
-\fbox{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-\verbatiminput{Code/OneMinute/Makefile}
-\end{minipage}
-}
-\caption{Contents of a \lstinline{Makefile} to compile and link the example}\label{fig:OneMinuteMake}.
-\end{figure}
-\begin{figure}
-\lstinputlisting[frame=single,firstline=2]{Code/OneMinute/head.prepped.xb.x2w.w2f.pp.f}
-\caption{Transformed code (fixed format) from input shown in \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteTransformed}
+\caption{Output from forward mode \lstinline{driver} shown in \reffig{fig:OneMinuteDriver}.}\label{fig:oneMinuteOutput}
 \end{figure}
 
 
 % .........................................................................................
-\subsection{Reverse Mode}
+\subsection{Reverse Mode}\label{sec:reverseMode}
+There is a slighty different \lstinline{Makefile} and \lstinline{driver} for 
+the reverse mode.
 As in \refsec{sec:forwardMode} we can use the \lstinline{openad} script by calling \\[1ex]
-%\begin{wrapfigure}{r}{.5\textwidth}
-\begin{figure}
-\begin{minipage}{.98\linewidth}
-\lstinputlisting[frame=single]{Code/OneMinuteReverse/driver.f90}
-\end{minipage}
-\caption{Driver routine for the transformed code  shown in \reffig{fig:OneMinuteReverseTransformed} }\label{fig:OneMinuteDriver}
-%\end{wrapfigure}
-\end{figure}
+\hspace*{.3cm}\lstinline{cd $OPENDADROOT/Examples/OneMinuteReverse}\\ %$
 \hspace*{.3cm}\lstinline{openad -c -m rj head.prepped.f90}\\[1ex]
-The reverse mode  code generation is triggered by setting the flag \lstinline{-m rj}.
+The reverse mode  code generation is triggered by setting the flag \lstinline{-m rj}
+where \lstinline{rj} stands for {\em reverse joint} mode, see also \refsec{sec:cgReversal}.
 The script produces progress output like the one shown in \reffig{fig:oneMinuteReverseStatusOutput}.
-The resulting Fortran output is written to a file called\\[1ex]
-\hspace*{.3cm}\lstinline{head.prepped.xb.x2w.w2f.pp.f}\\[1ex] 
-and its contents is shown in \reffig{fig:OneMinuteTransformed}. 
-The formal parameters \lstinline{x} and \lstinline{y} are active and 
-consequently their type is changed. 
-Lines 25,26 contain the derivative of $\tan(x)$ which is $\tan(x)^2+1$.
-Because of potential aliasing between the formal parameters of \lstinline{head} 
-a temporary variable \lstinline{OADsym_0} is introduced to hold the result before 
-it is assigned to the output's value component \lstinline{y\%v}. 
-The call to \lstinline{sax} performs the actual propagation operation
-$$
-\dot{y}=\frac{\partial \tan(x)}{\partial x}\cdot \dot{x} \quad .
-$$ 
-%\begin{wrapfigure}{r}{.5\textwidth}
 \begin{figure}
 \fbox{
 \begin{minipage}{.95\linewidth}
 \scriptsize\verbatiminput{oneMinuteReverseStatusOutput.txt}
 \end{minipage}
 }
-\caption{Progress messages from \lstinline{openad}.}\label{fig:oneMinuteReverseStatusOutput}
-%\end{wrapfigure}
+\caption{Progress messages from \lstinline{openad} for reverse mode.}\label{fig:oneMinuteReverseStatusOutput}
 \end{figure}
+The resulting Fortran output is written to a file called\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADROOT/Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f}\\[1ex] %$
+and its sections of it are shown in \reffig{fig:OneMinuteReverseTransformed}. 
+\begin{figure}
+\scriptsize\lstinputlisting[frame=single]{oneMinuteReverseTaping.f}
+\scriptsize\lstinputlisting[frame=single]{oneMinuteReverseAdjoint.f}
+\caption{Reverse mode transformed code for taping (top) and adjoint (bottom) for \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteReverseTransformed}
+\end{figure}
+In particular in \reffig{fig:OneMinuteReverseTransformed}(top) one can observe 
+the writing of the local partial derivative to the tape on line 6 
+which subsequently is retrieved in the adjoint sweep shown in \reffig{fig:OneMinuteReverseTransformed}(bottom)
+on line 3 and used on line 4. 
+The latter represents  the actual propagation operation
+$$
+\bar{x}+=\frac{\partial \tan(x)}{\partial x}\cdot \bar{y} \quad,
+$$ 
+see also \refeqn{eqn:bbrm} on pg. \pageref{eqn:bbrm}.
 A simple driver that calls the transformed \lstinline{head(x,y)}
 is shown in \reffig{fig:OneMinuteReverseDriver}.
+\begin{figure}
+\begin{minipage}{.98\linewidth}
+\scriptsize\lstinputlisting[frame=single]{Examples/OneMinuteReverse/driver.f90}
+\end{minipage}
+\caption{Reverse mode \lstinline{driver} routine for the transformed code  shown in \reffig{fig:OneMinuteReverseTransformed} }\label{fig:OneMinuteDriver}
+\end{figure}
+Note, that here we initialize \lstinline{y%d}
+$\equiv\bar(y)=1.0$ which implies
+that \lstinline{x%d}
+$\equiv \bar{x}$ holds the value of the partial derivative.
+As in \refsec{sec:forwardMode}, the \lstinline{openad} script 
+copies the appropriate run time support files into the working directory. These support 
+files need to be compiled and linked with the driver and the transformed code. 
+The example includes a \lstinline{Makefile}, see \reffig{fig:OneMinuteReverseMake}, 
+\begin{figure}
+\fbox{
+\begin{minipage}{.95\textwidth}
+\scriptsize
+\verbatiminput{Examples/OneMinuteReverse/Makefile}
+\end{minipage}
+}
+\caption{Contents of \lstinline{$OPENADROOT/Examples/OneMinuteReverse/Makefile} %$
+to compile and link the reverse mode example}\label{fig:OneMinuteRverseMake}.
+\end{figure}
 The output generated by the driver is shown in  \reffig{fig:oneMinuteReverseOutput}.
-%\begin{wrapfigure}{r}{.5\textwidth}
 \begin{figure}
 \fbox{
 \begin{minipage}{.95\linewidth}
 \scriptsize\verbatiminput{oneMinuteReverseOutput.txt}
 \end{minipage}
 }
-\caption{Output from \lstinline{driver} in \reffig{fig:OneMinuteReverseDriver}.}\label{fig:oneMinuteOutput}
-%\end{wrapfigure}
-\end{figure}
-\begin{figure}[h]
-\fbox{
-\begin{minipage}{.95\textwidth}
-\scriptsize
-\verbatiminput{Code/OneMinuteReverse/Makefile}
-\end{minipage}
-}
-\caption{Contents of a \lstinline{Makefile} to compile and link the example}\label{fig:OneMinuteRverseMake}.
-\end{figure}
-\begin{figure}
-\lstinputlisting[frame=single]{oneMinuteTaping.f}
-\lstinputlisting[frame=single]{oneMinuteAdjoint.f}
-\caption{Transformed code for taping (left) and the adjoint execution (right) for the input shown in \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteReverseTransformed}
+\caption{Output from reverse mode \lstinline{driver} shown in \reffig{fig:OneMinuteReverseDriver}.}\label{fig:oneMinuteReverseOutput}
 \end{figure}
 
-% #########################################################################################
-\chapter{Tool Usage} \label{chap:Usage}
-The following contains brief instructions how to obtain and use \OpenADF. 
+% -----------------------------------------------------------------------------------------
+\section{Deciding on \OpenADF\ Usage Patterns}\label{sec:deciding}
+
+The small example in \refsec{sec:oneMinute} already shows two variants of applying the \OpenADF\ tool. 
+In this section we step through a number of decisions that will determine how one might use 
+\OpenADF\ for a given application.\\ 
+{\bf {\Large \ForwardToIndex }  The following sections may not be very relevant for small-scale applications 
+and one may skip 
+to \refsec{sec:application} to see if any of the examples discussed there is a good template for 
+the application in question.}
+
+% -----------------------------------------------------------------------------------------
+\subsection{When is AD via source transformation appropriate?}\label{sec:sourceTransformApprop}
+AD via operator overloading is available through various tools such as 
+AD02 \cite{ad02}, Rapsodia \cite{rapsodiaWeb}, and Adol-C \cite{adolcWeb}. 
+Because operator overloading is not available within the Fortran standard prior to Fortran90 
+there is no alternative for older Fortran programs that are not migrated to the newer standards.
+
+\subsection{When should the source code be split?}\label{sec:SplittingSource}
+
+\subsection{When should {\tt make} rules be used instead of the {\tt openad} script?}\label{sec:useMake}
+
+\subsection{When Should One Use Reverse Mode Instead of Forward Mode?}\label{sec:reverseInsteadOfForward}
+
+\subsection{When Should One Use Checkpointing?}\label{sec:Checkpointing}
+
+
+A% #########################################################################################
+\chapter{Usage Details} \label{chap:Usage}
+This section will explain the tool usage in detail.  following contains brief instructions how to obtain and use \OpenADF. 
 While the principal approach will remain the same, future development may 
 introduce slight changes. The reader is encouraged to refer to the 
 up to date instructions on the \OpenADF\ website \cite{openadWeb}.
@@ -444,7 +507,7 @@ The website\\[1ex]
 \centerline{\url{www.mcs.anl.gov/openad}}\\[1ex]
 provides details on downloading and building the tool chain. 
 The build process essentially consists setting up the environment as described in 
-\refsec{sec:dab} followed invoking\\[1ex]   
+\refsec{sec:env} followed invoking\\[1ex]   
 \hspace*{.3cm}\lstinline{make} \\[1ex] 
 
 % -----------------------------------------------------------------------------------------
@@ -613,7 +676,7 @@ The provided sample implementations work with the subroutine inlining and templa
 directory.
 
 Finally, we need a {\em driver} that invokes the transformed routines and seeds and retrieves the derivatives.
-Examples for such drivers can be found in \refsec{chap:application}.
+Examples for such drivers can be found in \refsec{sec:application}.
 
 % #########################################################################################
 \chapter{AD Concepts}\label{chap:ADIntro}
@@ -2314,10 +2377,55 @@ The respective top-level routine is called by the driver with the state structur
 \end{center}
 \caption{Joint mode Fortran90 template with argument checkpointing} \label{fig:jointACTemplate}
 \end{figure}
- 
+
+% -----------------------------------------------------------------------------------------
+\section{Ancillary Tools}\label{sec:ancillaryTools}
+We provide a number of helper scripts to manage the \OpenADF\ installation.
+% -----------------------------------------------------------------------------------------
+\subsection{The {\tt goad} and {\tt scmStatus} Scripts} \label{sec:goad}
+This section is useful only for \OpenADF\ installation made from source 
+code repositories. The binary distribution does not include the scripts 
+and source tar ball does not include the repository data.
+To {\bf\em g}et {\bf\em O}pen{\bf\em AD} components and update the 
+revision from the source code repositories  it is easiest to use the \lstinline{goad} script 
+which is written in Python \cite{pythonweb} and can be found  at \\[1ex]
+\hspace*{.3cm}\lstinline{cd $OPENDADROOT/bin/goad}\\[1ex] %$
+It provides the following command line flags.\\[1ex]
+\fbox{
+\begin{minipage}{.95\linewidth}
+\scriptsize\verbatiminput{goadFlags.txt}
+\end{minipage}
+}\\[1ex]
+Typically it will be invoked without any flags. To obtain the examples for this manual 
+one will, however,  need the Mercurial tool \cite{mercurialWeb} and use the \lstinline{-t} flag; 
+see also \refsec{sec:compilingManual}.
+The \lstinline{goad} script uses the 
+default locations for the component repositories given in 
+\lstinline{$OPENADROOT/openad_config.py}. %$
+A log named \lstinline{goad.}{\em timestamp}\lstinline{.log~} will contain  output and 
+potential error messages.
+
+The \lstinline{scmStatus} script is primarily for development purposes to obtain an overview 
+of the status of the various repositories. It can also be used to see if an update from 
+the source repositories is ready. That would be indicated by an \lstinline{I} in the 
+\lstinline{Remote} column of \lstinline{scmStatus} output such as the following. \\[1ex]
+\fbox{
+\begin{minipage}{.95\linewidth}
+\scriptsize\verbatiminput{scmStatusOutput.txt}
+\end{minipage}
+}\\[1ex]
+The script  provides the following command line flags.\\[1ex]
+\fbox{
+\begin{minipage}{.95\linewidth}
+\scriptsize\verbatiminput{scmStatusFlags.txt}
+\end{minipage}
+}\\[1ex]
+Unlike \lstinline{goad}, the \lstinline{scmStatus} script determines the repository type and URL 
+not based on the defaults in  \lstinline{$OPENADROOT/openad_config.py} %$
+but instead uses the actual data found in the respective directories.
 
 % #########################################################################################
-\chapter{Application}\label{chap:application}
+\chapter{Application}\label{sec:application}
 This applications section intends to augment the explanations given so far. 
 First we use a toy example to show how to embed the transformed code into 
 a driver. The following sections illustrate practical concerns for real 
@@ -2640,6 +2748,24 @@ graph reversal, more efficient control flow reversal and
 improved elimination techniques in the computational graphs will 
 be incorporated into \OpenAD. 
 
+% #########################################################################################
+\chapter{Compiling and Contributing to this Manual}\label{sec:compilingManual}
+The \LaTeX  sources of this manual are kept under 
+mercurial revision control. Details how to download 
+the manual can be found on the \OpenADF\ website under ``Documentation''.  
+In addition to \LaTeX  (in particular \lstinline{pdflatex}) 
+one also needs \lstinline{dot}, \lstinline{fig2dev}, and 
+\lstinline{dia} for the conversion of figures. 
+The manual's \lstinline{Makefile} requires a source installation of \OpenADF\
+from the source code repository with all extra tests and examples using \\[1ex]
+\hspace*{.3cm}\lstinline{goad -t}\\[1ex]
+The environment must be setup as described in \refsec{sec:env}.
+The manual refers to a {\bf set of code examples} which are 
+linked from the \OpenADF\ installation by the \lstinline{Makefile}.
+It can be build in one step as follows.\\[1ex]
+\hspace*{.3cm}\lstinline{cd OpenADF_Manual/Manual}\\
+\hspace*{.3cm}\lstinline{make}\\[1ex]
+   
 % #########################################################################################
 \chapter*{Appendix}
 \begin{table}

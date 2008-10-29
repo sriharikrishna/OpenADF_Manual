@@ -17,6 +17,9 @@ oneMinuteReverseStatusOutput.txt \
 oneMinuteReverseOutput.txt \
 oneMinuteReverseTaping.f \
 oneMinuteReverseAdjoint.f \
+goadFlags.txt \
+scmStatusOutput.txt \
+scmStatusFlags.txt \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -45,33 +48,43 @@ extraReqs: $(EXTRAREQS)
 versionInfo.txt : FORCE 
 	./createVersionInfo.sh
 
-oneMinuteStatusOutput.txt : FORCE
-	cd Code/OneMinute && $(MAKE) clean
-	cd Code/OneMinute ; make toolChain | grep -v "make" > ${THISDIR}/$@
+oneMinuteStatusOutput.txt : Examples FORCE
+	cd Examples/OneMinute && $(MAKE) clean
+	cd Examples/OneMinute ; make toolChain | grep -v "make" > ${THISDIR}/$@
 
-oneMinuteOutput.txt : FORCE
-	cd Code/OneMinute && $(MAKE)
-	cd Code/OneMinute ; ./driver > ${THISDIR}/$@
+oneMinuteOutput.txt : Examples FORCE
+	cd Examples/OneMinute && $(MAKE)
+	cd Examples/OneMinute ; ./driver > ${THISDIR}/$@
 
-oneMinuteReverseStatusOutput.txt : FORCE
-	cd Code/OneMinuteReverse && $(MAKE) clean
-	cd Code/OneMinuteReverse ; make toolChain | grep -v "make" > ${THISDIR}/$@
+oneMinuteReverseStatusOutput.txt : Examples FORCE
+	cd Examples/OneMinuteReverse && $(MAKE) clean
+	cd Examples/OneMinuteReverse ; make toolChain | grep -v "make" > ${THISDIR}/$@
 
-oneMinuteReverseOutput.txt : FORCE
-	cd Code/OneMinuteReverse && $(MAKE)
-	cd Code/OneMinuteReverse ; ./driver > ${THISDIR}/$@
+oneMinuteReverseOutput.txt : Examples FORCE
+	cd Examples/OneMinuteReverse && $(MAKE)
+	cd Examples/OneMinuteReverse ; ./driver > ${THISDIR}/$@
 
 oneMinuteReverseTaping.f : oneMinuteReverseStatusOutput.txt
-	cat Code/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C taping/,/C taping end/p' > $@
+	cat Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C taping/,/C taping end/p' > ${THISDIR}/$@
 
-oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.tx
-	cat Code/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C adjoint/,/C adjoint end/p' > $@
+oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.txt
+	cat Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C adjoint/,/C adjoint end/p' > ${THISDIR}/$@
+
+goadFlags.txt : FORCE
+	cd ${OPENADROOT}; goad -h > ${THISDIR}/$@
+
+scmStatusOutput.txt : versionInfo.txt
+	cd ${OPENADROOT}; scmStatus > ${THISDIR}/$@
+scmStatusFlags.txt : FORCE
+	cd ${OPENADROOT}; scmStatus -h > ${THISDIR}/$@
+
+Examples :
+	ln -sf ${OPENADROOT}/Examples .
 
 clean: 
 	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,lot,idx,bbl,blg,dvi} index.aux versionInfo*.txt
 	rm -rf $(EXTRAREQS)
-	cd Code/OneMinute && $(MAKE) $@
-	cd Code/OneMinuteReverse && $(MAKE) $@
+	cd Examples && $(MAKE) $@
 
 %.ps : %.dot
 	dot -Tps2 $< -o $@

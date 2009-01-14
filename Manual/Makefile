@@ -30,6 +30,12 @@ ifndef OPENADROOT
 $(error "OpenAD environment not set")
 endif
 
+ifdef NOFORCE
+FORCE=
+else
+FORCE=FORCE
+endif
+
 $(TARGET).pdf : $(TARGET).aux $(TARGET).blg $(TARGET).bbl
 # run it twice
 	pdflatex $(TARGET)
@@ -45,22 +51,22 @@ $(TARGET).blg $(TARGET).bbl: $(TARGET).aux
 extraReqs: $(EXTRAREQS)
 	echo $(EXTRAREQS)
 
-versionInfo.txt : FORCE 
+versionInfo.txt : $(FORCE) 
 	./createVersionInfo.sh
 
-oneMinuteStatusOutput.txt : Examples FORCE
+oneMinuteStatusOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinute && $(MAKE) clean
 	cd Examples/OneMinute ; make toolChain | grep -v "make" > ${THISDIR}/$@
 
-oneMinuteOutput.txt : Examples FORCE
+oneMinuteOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinute && $(MAKE)
 	cd Examples/OneMinute ; ./driver > ${THISDIR}/$@
 
-oneMinuteReverseStatusOutput.txt : Examples FORCE
+oneMinuteReverseStatusOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinuteReverse && $(MAKE) clean
 	cd Examples/OneMinuteReverse ; make toolChain | grep -v "make" > ${THISDIR}/$@
 
-oneMinuteReverseOutput.txt : Examples FORCE
+oneMinuteReverseOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinuteReverse && $(MAKE)
 	cd Examples/OneMinuteReverse ; ./driver > ${THISDIR}/$@
 
@@ -70,12 +76,12 @@ oneMinuteReverseTaping.f : oneMinuteReverseStatusOutput.txt
 oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.txt
 	cat Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C adjoint/,/C adjoint end/p' > ${THISDIR}/$@
 
-goadFlags.txt : FORCE
+goadFlags.txt : $(FORCE)
 	cd ${OPENADROOT}; goad -h > ${THISDIR}/$@
 
 scmStatusOutput.txt : versionInfo.txt
 	cd ${OPENADROOT}; scmStatus > ${THISDIR}/$@
-scmStatusFlags.txt : FORCE
+scmStatusFlags.txt : $(FORCE)
 	cd ${OPENADROOT}; scmStatus -h > ${THISDIR}/$@
 
 Examples :

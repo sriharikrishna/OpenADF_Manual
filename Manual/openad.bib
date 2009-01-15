@@ -10,36 +10,6 @@
   address       = {Reading, MA},
 }
 
-@Book{            Gri00,
-  author        = {A.~Griewank},
-  title         = {Evaluating Derivatives. Principles and Techniques of Algorithmic Differentiation},
-  publisher     = {SIAM},
-  year          = {2000},
-  address       = {Philadelphia},
-  series        = {Frontiers in Applied Mathematics},
-  number        = {19}
-}
-
-@Proceedings{     CG91,
-  title         = {Automatic Differentiation: Theory, Implementation, and Application},
-  year          = {1991},
-  editor        = {G.~Corliss and A.~Griewank},
-  series        = {Proceedings Series},
-  volume        = {},
-  publisher     = {SIAM},
-  address       = {Philadelphia}
-}
-
-@Proceedings{     BBCG96,
-  title         = {Computational Differentiation: Techniques, Applications, and Tools},
-  year          = {1996},
-  editor        = {M.~Berz and C.~Bischof and G.~Corliss and A.~Griewank},
-  series        = {Proceedings Series},
-  volume        = {},
-  publisher     = {SIAM},
-  address       = {Philadelphia}
-}
-
 @article{         ElimTechMP, 
   author        = {U. Naumann}, 
   title         = {Optimal Accumulation of {J}acobian Matrices by Elimination Methods on the dual computational graph},
@@ -48,24 +18,6 @@
   note          = {Published online at \url{http://www.springerlink.com}}
 }
 
-
-@Proceedings{     CFG+01,
-  title         = {Automatic Differentiation of Algorithms -- From Simulation to Optimization},
-  year          = {2002},
-  editor        = {G.~Corliss and C.~Faure and A.~Griewank and L.~Hascoet and U.~Naumann},
-  publisher     = {Springer},
-  address       = {New York}
-}
-
-@Proceedings{     BCH+06,
-  title         = {Automatic Differentiation: Applications, Theory and Implementations},
-  year          = {2006},
-  editor        = {M. B\"ucker and G.~Corliss and P.~Hovland and U.~Naumann and B.~Norris},
-  series        = {LNCS},
-  volume        = {50},
-  publisher     = {Springer},
-  address       = {New York}
-}
 
 @InProceedings{   GrRe91,
   author        = {A.~Griewank and S.~Reese},
@@ -459,3 +411,149 @@
   year          = {},
   note          = {to appear in a special edition}
 }
+
+
+// from autodiff.org ICI: 
+
+@BOOK{
+         Griewank1991ADo,
+       editor = "Andreas Griewank and George F. Corliss",
+       title = "Automatic Differentiation of Algorithms: Theory, Implementation, and Application",
+       publisher = "SIAM",
+       address = "Philadelphia, PA",
+       key = "Griewank1991ADo",
+       comment = "Proceedings of the SIAM Workshop on the Automatic Differentiation of Algorithms in
+         Breckenridge, Colorado, January 6 -- 8, 1991.",
+       referred = "[Fuchi1996a], [Geitner1996ACo], [Goldman1996AAM], [Hutschenreiter1996ANM],
+         [Klein2002DMf], [Kubota1996PFP], [Rall1996AIt].",
+       isbn = "0--89871--284--X",
+       year = "1991",
+       ad_theotech = "General"
+} 
+
+
+@PROCEEDINGS{
+         Berz1996CDT,
+       editor = "Martin Berz and Christian Bischof and George Corliss and Andreas Griewank",
+       title = "Computational Differentiation: Techniques, Applications and Tools",
+       publisher = "SIAM",
+       address = "Philadelphia, PA",
+       comment = "Proceedings of the SIAM Workshop on the Automatic Differentiation of Algorithms in
+         Santa Fe, New Mexico, February 12 -- 14, 1996.",
+       isbn = "0--89871--385--4",
+       year = "1996",
+       ad_theotech = "General"
+}
+
+
+@PROCEEDINGS{
+         Corliss2002ADo,
+       title = "Automatic Differentiation of Algorithms: From Simulation to Optimization",
+       year = "2002",
+       editor = "George Corliss and Christ{\`e}le Faure and Andreas Griewank and Laurent
+         Hasco{\"e}t and Uwe Naumann",
+       publisher = "Springer",
+       address = "New York, NY",
+       ad_theotech = "General",
+       series = "Computer and Information Science",
+       comment = "Conference proceedings, Nice, 2000"
+} 
+
+@BOOK{
+         Bucker2005ADA,
+       editor = "H. Martin B{\"u}cker and George F. Corliss and Paul D. Hovland and Uwe
+         Naumann and Boyana Norris",
+       title = "Automatic Differentiation: {A}pplications, Theory, and Implementations",
+       series = "Lecture Notes in Computational Science and Engineering",
+       publisher = "Springer",
+       address = "New York, NY",
+       ad_theotech = "General",
+       year = "2005",
+       volume = "50",
+
+}
+
+
+
+@BOOK{
+         Bischof2008AiA,
+       editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
+         Naumann and Jean Utke",
+       title = "Advances in Automatic Differentiation",
+       series = "Lecture Notes in Computational Science and Engineering",
+       publisher = "Springer",
+       address = "Berlin",
+       ad_theotech = "General",
+       year = "2008",
+       volume = "64",
+       doi = "10.1007/978-3-540-68942-3",
+       isbn = "978-3-540-68935-5",
+       issn = "1439-7358"
+} 
+
+@BOOK{
+         Griewank2008EDP,
+       author = "Andreas Griewank and Andrea Walther",
+       title = "Evaluating Derivatives: {P}rinciples and Techniques of Algorithmic Differentiation",
+       publisher = "SIAM",
+       series = "Other Titles in Applied Mathematics",
+       edition = "2nd",
+       address = "Philadelphia, PA",
+       isbn = "978--0--898716--59--7",
+       ad_theotech = "General, Introduction",
+       year = "2008",
+       abstract = "Algorithmic, or automatic, differentiation (AD) is a growing area of theoretical
+         research and software development concerned with the accurate and efficient evaluation of
+         derivatives for function evaluations given as computer programs. The resulting derivative values are
+         useful for all scientific computations that are based on linear, quadratic, or higher order
+         approximations to nonlinear scalar or vector functions.\par AD has been applied in particular
+         to optimization, parameter identification, nonlinear equation solving, the numerical integration of
+         differential equations, and combinations of these. Apart from quantifying sensitivities numerically,
+         AD also yields structural dependence information, such as the sparsity pattern and generic rank of
+         Jacobian matrices. The field opens up an exciting opportunity to develop new algorithms that reflect
+         the true cost of accurate derivatives and to use them for improvements in speed and
+         reliability.\par This second edition has been updated and expanded to cover recent developments
+         in applications and theory, including an elegant NP completeness argument by Uwe Naumann and a brief
+         introduction to scarcity, a generalization of sparsity. There is also added material on
+         checkpointing and iterative differentiation. To improve readability the more detailed analysis of
+         memory and complexity bounds has been relegated to separate, optional chapters.The book consists of
+         three parts: a stand-alone introduction to the fundamentals of AD and its software; a thorough
+         treatment of methods for sparse problems; and final chapters on program-reversal schedules, higher
+         derivatives, nonsmooth problems and iterative processes. Each of the 15 chapters concludes with
+         examples and exercises.",
+       number = "105"
+} 
+
+@ARTICLE{
+         Utke2008OAM,
+       author = "Jean Utke and Uwe Naumann and Mike Fagan and Nathan Tallent and Michelle Strout and
+         Patrick Heimbach and Chris Hill and Carl Wunsch",
+       title = "Open{AD/F}: A Modular, Open-Source Tool for Automatic Differentiation of {Fortran}
+         Codes",
+       journal = "{ACM} Transactions on Mathematical Software",
+       volume = "34",
+       number = "4",
+       year = "2008",
+       accepted = "2 July 2007",
+       upcoming = "true",
+       abstract = "The OpenAD/F tool allows the evaluation of derivatives of functions defined by a
+         Fortran program. The derivative evaluation is performed by a Fortran code resulting from the
+         analysis and transformation of the original program that defines the function of interest. OpenADF
+         has been designed with a particular emphasis on modularity, flexibility, and the use of open source
+         components. While the code transformation follows the basic principles of automatic differentiation,
+         the tool implements new algorithmic approaches at various levels, for example, for basic block
+         preaccumulation and call graph reversal. Unlike most other automatic differentiation tools, OpenAD/F
+         uses components provided by the OpenAD framework, which supports a comparatively easy extension of
+         the code transformations in a language-independent fashion. It uses code analysis results
+         implemented in the OpenAnalysis component. The interface to the language-independent transformation
+         engine is an XML-based format, specified through an XML schema. The implemented transformation
+         algorithms allow efficient derivative computations using locally optimized cross-country sequences
+         of vertex, edge, and face elimination steps. Specifically, for the generation of adjoint codes,
+         OpenAD/F supports various code reversal schemes with hierarchical checkpointing at the subroutine
+         level. As an example from geophysical fluid dynamics a nonlinear time-dependent scalable, yet
+         simple, barotropic ocean model is considered. OpenAD/F's reverse mode is applied to compute
+         sensitivities of some of the model's transport properties with respect to gridded fields such
+         as bottom topography as independent (control) variables.",
+       ad_tools = "OpenAD"
+}
+

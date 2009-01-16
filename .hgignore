@@ -1,2 +1,6 @@
 syntax: glob
 Manual/Examples
+Manual/head.*
+*.orig
+*.swp
+

@@ -1,5 +1,0 @@
-syntax: glob
-Manual/head.*
-*.orig
-*.swp
-

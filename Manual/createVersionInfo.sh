@@ -12,6 +12,8 @@ then
   if [ $? -eq 0 ]
   then 
     rm  versionInfo.txt.new
+  else
+    mv versionInfo.txt.new versionInfo.txt
   fi
 else
   mv versionInfo.txt.new versionInfo.txt
@@ -36,6 +38,8 @@ then
   if [ $? -eq 0 ]
   then 
     rm  versionInfoOpenAD.txt.new
+  else
+    mv versionInfoOpenAD.txt.new versionInfoOpenAD.txt
   fi
 else
   mv versionInfoOpenAD.txt.new versionInfoOpenAD.txt

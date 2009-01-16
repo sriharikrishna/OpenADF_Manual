@@ -23,7 +23,7 @@
   pdfsubject = {user manual},
   pdfkeywords = {OpenAD, Fortran, automatic differentiation, algorithms},
   pdfcreator = {LaTeX with hyperref package},
-  pdfproducer = {dvips + ps2pdf}sh	
+  pdfproducer = {pdflatex}
 }
 \pdfadjustspacing=1
 
@@ -654,29 +654,30 @@ code to identify program variables that are considered indepent.
 \end{description}
 
 % -----------------------------------------------------------------------------------------
-\section{Running the tool chain with the \lstinline{openad} script}
+\section{Running the tool chain with the {\tt openad} script}
 The components of \OpenADF\ transform the code in a predetermined sequence of steps.
 Depending on the particular problem there are certain variations to the tool chain execution 
 that achieve a better performance of the generated code. 
-The most common  setups are encapsulated in a Perl script. 
+The most common setups are encapsulated in a Python script, the location of which is \lstinline{$OPENADROOT/bin/openad}. %$. 
 The script is part of the skeleton environment that is used to download and build \OpenADF\  
 and relies on the same environment setup.
 Therefore user starts with steps 1 and 2 from \refsec{sec:dab}. 
-The script is contained in the file
-\lstinline{OpenAD/tools/openad/openad}.
-Invoking it with the \lstinline{-h} option displays the 
-script usage of which the mode choices are the most important.
-\begin{description}
-\item[\lstinline{--bb-rev}] the default mode that produces adjoint code as explained in \refsec{sec:BBRev},
-\item[\lstinline{--bb}] the tangent-linear mode as explained in \refsec{sec:BBPreacc}, and
-\item[\lstinline{--memopstradeoff}] the tangent-linear mode with heuristics addressing data locality and operations count for the elimination sequence as explained in \refsec{sec:MMTradeOff}.
-\end{description}
-As an example we use a code assumed to be in a file called head.f and transform this code 
-by invoking \lstinline{openad head.f}
-which produces the adjoint version of \lstinline{head.f} emitting the following messages.\\
+Invoking the script with the \lstinline{-h} option displays the command-line options as follows. \\
 \hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
 \fontsize{8pt}{9pt}
-\verbatiminput{code/openadScriptOutput.txt}
+\verbatiminput{openadScriptOptions.txt}
+\end{minipage}\\
+The most important of these options is the mode specification.
+The default is the forward (or tangent-linear) mode, which is described in \refsec{sec:BBPreacc}.
+The reverse (or adjoint) mode is described in \refsec{sec:BBRev};
+the ``split'' and ``joint'' variants refer to two different schemes for call graph reversal (see \refsec{sec:cgReversal}).
+
+As an example, assume we wish to create a tangent-linear version of a code in a file named \lstinline{head.f}.
+Invoking the command \lstinline{openad head.f} will create the transformed file \lstinline{head.xb.x2w.w2f.pp.f},
+where the following messages appear as output during the transformation process. \\
+\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
+\fontsize{8pt}{9pt}
+\verbatiminput{openadScriptOutput.txt}
 \end{minipage}\\
 For larger projects it is obviously appropriate to customize the sequence 
 by adding the steps outlined in \refsec{sec:manualToolChain} to a \lstinline{Makefile}. 

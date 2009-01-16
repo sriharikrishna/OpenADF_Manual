@@ -1,9 +1,0 @@
-Preprocess Fortran: 'head.f' -> 'head.pre.f'
-Fortran to WHIRL: 'head.pre.f' -> 'head.pre.B'
-WHIRL to XAIF: 'head.pre.B' -> 'head.xaif'
-xaifBooster: 'head.xaif' -> 'head.xb.xaif'
-XAIF to WHIRL: ('head.pre.B' 'head.xb.xaif') -> 'head.xb.x2w.B'
-WHIRL to Fortran: 'head.xb.x2w.B' -> 'head.xb.x2w.w2f.f'
-Postprocess Fortran: 'head.xb.x2w.w2f.f' -> 'head.xb.x2w.w2f.pp.f'
-
-OpenAD: 'head.f' --> 'head.xb.x2w.w2f.pp.f'

@@ -20,6 +20,7 @@ oneMinuteReverseAdjoint.f \
 goadFlags.txt \
 scmStatusOutput.txt \
 scmStatusFlags.txt \
+openadScriptOptions.txt \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -50,6 +51,9 @@ $(TARGET).blg $(TARGET).bbl: $(TARGET).aux
 
 extraReqs: $(EXTRAREQS)
 	echo $(EXTRAREQS)
+
+openadScriptOptions.txt openadScriptOutput.txt : $(FORCE)
+	./createOpenadOptionsAndOutput.sh
 
 versionInfo.txt versionInfoOpenAD.txt : $(FORCE) 
 	./createVersionInfo.sh
@@ -88,7 +92,8 @@ Examples :
 	ln -sf ${OPENADROOT}/Examples .
 
 clean: 
-	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,lot,idx,bbl,blg,dvi} index.aux versionInfo*.txt
+	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,lot,idx,bbl,blg,dvi} index.aux
+	rm -f head.{f,B,xaif,xb.x2w.B,xb.x2w.w2f.f,xb.x2w.w2f.pp.f,xb.xaif}
 	rm -rf $(EXTRAREQS)
 	cd Examples && $(MAKE) $@
 

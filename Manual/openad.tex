@@ -1323,8 +1323,7 @@ see also \cite{NaUt05STAG}.
       end subroutine C
     \end{minipage}
     &
-    \vspace*{-3.2cm}
-    \centering{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_ns}}
+    \centering{\includegraphics[height=3.2cm]{edct_ns}}
   \end{tabular}
   \caption{Dynamic call tree of a simple calling hierarchy}
   \label{fig:simple_dct}
@@ -1340,65 +1339,62 @@ we follow with the reverse steps that read the tape, see \reffig{fig:split}.
 \begin{table}[t]
   \begin{center}
     \begin{tabular}{clcl}
-      \includegraphics[origin=c,angle=-90,width=0.7cm]{box}  
+      \includegraphics[width=0.7cm]{box}  
       & 
       \begin{minipage}[b]{.3\linewidth}
         $n$-th invocation
         of subroutine {\tt S}
       \end{minipage} 
       & 
-      \includegraphics[origin=c,angle=-90,width=0.7cm]{call} & 
+      \includegraphics[width=0.7cm]{call} & 
       \begin{minipage}[b]{.3\linewidth}
         subroutine call\\[-2mm]
       \end{minipage} 
       \\ 
-      \includegraphics[origin=c,angle=-90,width=0.7cm]{rf}  & 
+      \includegraphics[width=0.7cm]{rf}  & 
       \begin{minipage}[b]{.3\linewidth}
         run forward \\[-2mm]
       \end{minipage}
       & 
-      \includegraphics[origin=c,angle=-90,width=0.7cm]{order}  & 
+      \includegraphics[width=0.7cm]{order}  & 
       \begin{minipage}[b]{.3\linewidth}
         order of execution \\[-2mm]
       \end{minipage}
       \\
-      \includegraphics[origin=c,angle=-90,width=0.7cm]{sac}  & 
+      \includegraphics[width=0.7cm]{sac}  & 
       \begin{minipage}[b]{.3\linewidth}
         store checkpoint \\[-2mm]
       \end{minipage}
       & 
-      \includegraphics[origin=c,angle=-90,width=0.7cm]{rac}  & 
+      \includegraphics[width=0.7cm]{rac}  & 
       \begin{minipage}[b]{.3\linewidth}
         restore checkpoint \\[-2mm]
       \end{minipage}
       \\
-      \includegraphics[origin=c,angle=-90,width=0.7cm]{ta}  & 
+      \includegraphics[width=0.7cm]{ta}  & 
       \begin{minipage}[b]{.3\linewidth}
         run forward and tape \\[-2mm]
       \end{minipage}
       & 
-      \includegraphics[origin=c,angle=-90,width=0.7cm]{ad}  & 
+      \includegraphics[width=0.7cm]{ad}  & 
       \begin{minipage}[b]{.3\linewidth}
         run adjoint \\[-2mm]
       \end{minipage}
       \\
     \end{tabular}
   \end{center}
-  \vspace*{-.5cm}
   \caption{Symbols for call tree reversal}
   \label{tab:leg}
 \end{table}
 
 \begin{figure}[t]
-  \centerline{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_split_ns}}
-  \vspace*{-.5cm}
+  \centerline{\includegraphics[height=3.2cm]{edct_split_ns}}
   \caption{Dynamic call tree for split reversal}
   \label{fig:split}
 \end{figure}
 
 \begin{figure}[t]
-  \centerline{\includegraphics[width=3.2cm,origin=c,angle=-90]{edct_joint_ns}}
-  \vspace*{-3cm}
+  \centerline{\includegraphics[height=3.2cm]{edct_joint_ns}}
   \caption{DCT of adjoint obtained by joint reversal mode}
   \label{fig:joint}
 \end{figure}
@@ -2416,7 +2412,7 @@ do not depend on any particular reversal scheme.
 (a)&
 \begin{minipage}[t]{3cm}
 \vspace*{-.3cm}
-\includegraphics[height=3cm,angle=-90,origin=c]{code_template}
+\includegraphics[width=3cm]{code_template}
 \end{minipage}&
 (b)& 
 \begin{minipage}[t]{4cm}
@@ -2677,8 +2673,7 @@ for simplicity disregarding remainders \lstinline{o=t/i}.
 \end{minipage}
 &
 \begin{minipage}{6cm}
-\includegraphics[width=4cm,angle=-90,origin=c]{checkpointLoopsNew2}
-\vspace*{-2cm}
+\includegraphics[height=4cm]{checkpointLoopsNew2}
 \end{minipage}\\
 (a)& (b)
 \end{tabular}
@@ -2687,8 +2682,7 @@ for simplicity disregarding remainders \lstinline{o=t/i}.
 Now we can describe the reversal scheme with the call tree shown in \reffig{fig:checkpointct}.
 \begin{figure}
 \begin{center}
-\includegraphics[width=4.3cm,angle=-90, origin=c]{swMode}
-\vspace*{-3cm}
+\includegraphics[height=4.3cm]{swMode}
 \end{center}
 \caption{Checkpointing scheme, the \lstinline{.*} indicating \lstinline{.+(o-1)i}} \label{fig:checkpointct}
 \end{figure}
@@ -2802,9 +2796,8 @@ at different levels of complexity reaching from the casual user to
 actual coding work in the tool's components.    
 \begin{figure}
 \begin{center}
-\includegraphics[angle=-90,width=\textwidth,origin=c]{overview2}
+\includegraphics[width=\textwidth]{overview2}
 \end{center}
-\vspace*{-4cm}
 \caption{Levels of complexity for modifications}\label{fig:toolChainIntervention}
 \end{figure} 
 As part of using \OpenADF\ for different applications we see a growing number of 

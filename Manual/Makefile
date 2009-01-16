@@ -51,7 +51,7 @@ $(TARGET).blg $(TARGET).bbl: $(TARGET).aux
 extraReqs: $(EXTRAREQS)
 	echo $(EXTRAREQS)
 
-versionInfo.txt : $(FORCE) 
+versionInfo.txt versionInfoOpenAD.txt : $(FORCE) 
 	./createVersionInfo.sh
 
 oneMinuteStatusOutput.txt : Examples $(FORCE)

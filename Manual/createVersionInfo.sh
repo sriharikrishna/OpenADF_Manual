@@ -6,12 +6,15 @@ then
 else
   echo -n "vers. hg:$(hg id -i):$(hg id  -n)" > versionInfo.txt.new
 fi
-diff versionInfo.txt.new versionInfo.txt > /dev/null
-if [ $? -ne 0 ]
-then 
+if [ -f versionInfo.txt ] 
+then
+  diff versionInfo.txt.new versionInfo.txt > /dev/null
+  if [ $? -eq 0 ]
+  then 
+    rm  versionInfo.txt.new
+  fi
+else
   mv versionInfo.txt.new versionInfo.txt
-else 
-  rm  versionInfo.txt.new
 fi
 
 THISDIR=$PWD
@@ -27,10 +30,13 @@ else
   echo "vers. unknown" > $THISDIR/versionInfoOpenAD.txt.new
 fi 
 cd $THISDIR
-diff versionInfoOpenAD.txt.new versionInfoOpenAD.txt > /dev/null
-if [ $? -ne 0 ]
+if [ -f versionInfoOpenAD.txt ] 
 then 
+  diff versionInfoOpenAD.txt.new versionInfoOpenAD.txt > /dev/null
+  if [ $? -eq 0 ]
+  then 
+    rm  versionInfoOpenAD.txt.new
+  fi
+else
   mv versionInfoOpenAD.txt.new versionInfoOpenAD.txt
-else 
-  rm  versionInfoOpenAD.txt.new
 fi

@@ -802,9 +802,9 @@ Examples for such drivers can be found in \refsec{sec:application}.
 
 In this section we present the terminology and basic concepts that 
 we will refer to throughout this paper. 
-A detailed introduction to AD can be found in \cite{Gri00}.
+A detailed introduction to AD can be found in \cite{Griewank2008EDP}.
 The interested reader should also consider the proceedings of AD 
-conferences \cite{CG91,BBCG96,CFG+01,BCH+06}.
+conferences \cite{Griewank1991ADo,Berz1996CDT,Corliss2002ADo,Bucker2005ADA,Bischof2008AiA}.
 
 We present the concepts and resulting transformations 
 with respect to the input source code 
@@ -926,7 +926,7 @@ Jacobian preaccumulation can be interpreted as eliminations in $G$.
 The graph-based elimination steps are categorized in vertex, edge, and face 
 eliminations. 
 In $G$ a vertex $j \in V$ is eliminated by connecting its predecessors with
-its successors \cite{GrRe91}.
+its successors \cite{Griewank1991OtC}.
 An edge $(i,k)$ with
 $i \prec j$ and $j \prec k$ is labeled with
 $c_{ki}+c_{kj} \cdot c_{ji}$ if it existed before the elimination of $j.$
@@ -939,7 +939,7 @@ $G$ together with all incident edges.
 from the graph in \reffig{fig:elims}~(a).
 
 An edge $(i,j)$ is {\em front eliminated} by connecting $i$ with all successors
-of $j$, followed by removing $(i,j)$ \cite{Nau00a}.
+of $j$, followed by removing $(i,j)$ \cite{Naumann2002ETf}.
 The corresponding structural modifications of the c-graph in
 \reffig{fig:elims}~(a) are shown in
 \reffig{fig:elims}~(c) for front elimination of $(1,3).$
@@ -952,7 +952,7 @@ with all incident edges.
 
 Back elimination of an edge
 $(i,j) \in E$ results in connecting all predecessors of $i$
-with $j$ \cite{Nau00a}.
+with $j$ \cite{Naumann2002ETf}.
 The edge $(i,j)$ itself is removed from $G.$
 The back elimination of $(3,4)$ from the graph in \reffig{fig:elims}~(a) 
 is illustrated in \reffig{fig:elims}~(d). 
@@ -979,7 +979,7 @@ Vertex and edge elimination steps have an
 interpretation in terms of vertices and edges
 of $G$, whereas face elimination is performed on 
 the corresponding directed line graph $\cal G.$
-Following \cite{ElimTechMP}, we define the directed line graph $\cal G=(V,E)$ 
+Following \cite{Naumann2004OAo}, we define the directed line graph $\cal G=(V,E)$ 
 corresponding to $G=(V,E)$ as follows:
 \[
 {\cal V}=
@@ -1017,7 +1017,7 @@ A vertex
 $j \in \cal V$ is called {\em isolated} if either 
 $P_j=\emptyset$ or
 $S_j=\emptyset.$ 
-Face elimination is defined in \cite{ElimTechMP}
+Face elimination is defined in \cite{Naumann2004OAo}
 between two incident intermediate vertices $i$ and $j$ in $\cal G$ as follows:
 \begin{enumerate}
 \item If there exists a vertex $k \in \cal V$ such that $P_k = P_i$ and
@@ -1278,7 +1278,7 @@ This augmented CFG  keeps track of which branch was taken and counts how
 often a loop was 
 executed.  
 This information is pushed on  a stack and popped from that stack during the 
-reverse sweep see also \cite{NULF04CFR}. Because the control flow trace 
+reverse sweep see also \cite{Utke2006ERo}. Because the control flow trace 
 adheres to the stack model it often is also considered part of the tape. 
 In the example in \reffig{fig:cfg}(b) the extra {\basicblock}s pBT and pBF push 
 a boolean (T or F) onto the stack depending on the branch. 
@@ -1296,7 +1296,7 @@ the information recorded in  \reffig{fig:cfg}(b). The extra nodes pB and pLc
 pop the branch information and the loop counter respectively.  
 We enter the branch and execute the loop as indicated by the recorded information. 
 The process of the control flow reversal is described in detail in 
-\cite{NULF04CFR}. 
+\cite{Utke2006ERo}. 
 
 % -----------------------------------------------------------------------------------------
 \section{Call Graph Reversal} \label{sec:cgReversal}
@@ -1310,9 +1310,9 @@ values of $\bmx$ in the domain of $\bmf$.
 For a large number of problems it is possible to statically 
 predetermine either 
 {\em split} or {\em joint} 
-reversal \cite{Gri00} for any subroutine in the call graph .
+reversal \cite{Griewank2008EDP} for any subroutine in the call graph .
 These concepts are easier understood with the help of the dynamic call tree,
-see also \cite{NaUt05STAG}.
+see also \cite{Naumann2005STf}.
 \begin{figure}
   \centering
   \begin{tabular}{p{.5\linewidth}p{.3\linewidth}}
@@ -1495,7 +1495,7 @@ front-end into \xaif.  The analysis indicates which variables are
 active at any time, which memory references are active, and which
 statements are active.
 
-The activity analysis itself is based on the formulation in~\cite{HNP02}.
+The activity analysis itself is based on the formulation in~\cite{Hascoet2005bra}.
 The main difference is that the data-flow framework in \OpenAnalysis\ does not
 yet take advantage of the structured data-flow equations.  Activity analysis is
 implemented in a context-insensitive, flow-sensitive interprocedural fashion.
@@ -1524,7 +1524,7 @@ Among the generic language features not considered part of the numerical core ar
 \item memory management, see also \refsec{sec:mods}
 \item preprocessor directives
 \end{itemize}
-For a more general discussion regarding this compromise see also \cite{UtNa04SLD}.
+For a more general discussion regarding this compromise see also \cite{Utke2004SLD}.
 It is apparent that certain aspects of the adjoint code such as 
 checkpointing, see \refsec{sec:cgReversal}, and taping, see \refsec{sec:cfReversal},
 can involve memory allocation and various I/O schemes and therefore 
@@ -1540,7 +1540,7 @@ affords additional flexibility.
 
 The format of choice in \OpenAD\ is an XML-based \cite{xmlWeb} hierarchy of 
 directed graphs, referred to as \xaif 
-\cite{HNN02}. Using XML is motivated by the existence of XML parsers and 
+\cite{Hovland2002AXB}. Using XML is motivated by the existence of XML parsers and 
 the ability to specify the \xaif\ specific XML contents with a schema which 
 the parser can use to validate a given \xaif\ representation. 
 The current \xaif\ schema is documented at \cite{xaifweb}.
@@ -1635,7 +1635,7 @@ through \lstinline{get<name>AlgBase()} and \lstinline{getContaining<name>()} res
 The instantiation of the algorithm specific classes follows 
 the factory design pattern. The factory instances in turn are controlled 
 by a transformation algorithm specific \lstinline{AlgFactoryManager} classes. 
-Further details can be found in \cite{UtNa03STI}, however, the code 
+Further details can be found in \cite{Utke2003STI}, however, the code 
 code for this mechanism is fairly self-explanatory.  
 
 In the following sections we want to concentrate on the transformation 
@@ -1736,7 +1736,7 @@ assignment sequences in a given \basicblock. To ensure semantic
 correctness of the graph being constructed in the presence of 
 aliasing it relies on alias analysis and define-use/use-define chains 
 supplied by \OpenAnalysis, see \refsec{sec:openanalysis}.
-The algorithm itself is described in detail in \cite{Utk04FBB}.
+The algorithm itself is described in detail in \cite{Utke2005FBB}.
 Because the analysis results supplied by \OpenAnalysis\ are always 
 conservatively correct it may not be possible to flatten all 
 assignments into a single computational graph. In such cases 
@@ -1752,7 +1752,7 @@ line flag.
 Based on the constructed $G$ an elimination sequence has to be determined.
 To allow a choice for the computation of the elimination sequence 
 the code uses the interface coded in \lstinline{algorithms/CrossCountryInterface/}
-and by default calls the \angel\ library \cite{angelWeb,AGN03,SAGA}.
+and by default calls the \angel\ library \cite{angelWeb,Albrecht2003Mth,Naumann2003SAf}.
 \angel\ determines an elimination sequence and returns it as 
 fused multiply add expressions in terms of the edge references.
 There are several heuristics implemented within \angel\ that control 
@@ -1910,7 +1910,7 @@ adjoint code generator described in \refsec{sec:BBRev}.
 The \Loop\ counters and \branch\ identifiers are stored the same 
 stack data structure that is used for the {\em tape} (introduced in 
 \refsec{sec:cfReversal} and also used in \refsec{sec:bbTA}.  
-The reversal of loops and branches as detailed in \cite{NULF04CFR} assumes 
+The reversal of loops and branches as detailed in \cite{Utke2006ERo} assumes 
 CFGs to be well-structured, that is, essentially to be free of arbitrary jump instructions 
 such as \lstinline{GOTO} or \lstinline{CONTINUE}. 
 It is of course possible to reverse such graphs, for instance by enumerating
@@ -1936,7 +1936,7 @@ With this directive the original \Loop\ variable will be preserved,
 the reversed \Loop\ in our example constructed as \lstinline{do i=10,1,-1} and 
 no index values for the array references in the \Loop\ body are stored. 
 In general the decision when an array index needs to be stored is better answered 
-with a code analysis similar to TBR analysis \cite{HNP02}. 
+with a code analysis similar to TBR analysis \cite{Hascoet2005bra}. 
 Currently we do not have such  analysis available and instead 
 as a compromise define the {\em simple}
 \Loop\ which can reversed explicitly as follows. 
@@ -1956,7 +1956,7 @@ Because often multidimensional arrays  are accessed with nested loops the
 \Loop\ directive when specified for the outermost loop will assume the validity 
 of the above conditions for everything within the \Loop\ body including nested 
 \Loop\ and \branch\ constructs. More details on this aspect can be found in 
-\cite{UtLy05ERIF}. 
+\cite{Utke2006ERo}. 
 % -----------------------------------------------------------------------------------------
 \subsubsection{Writing and Consuming the Tape}\label{sec:bbTA}
 
@@ -2867,7 +2867,7 @@ be incorporated into \OpenAD.
 \chapter{Miscellaneous}\label{sec:misc}
 % -----------------------------------------------------------------------------------------
 \section{Changes relative to the ACM TOMS paper}\label{sec:changesSinceTOMS}
-Because of continued development since \cite{openadTOMS} was finalized 
+Because of continued development since \cite{Utke2008OAM} was finalized 
 we maintain the following list of significant changes.
 \begin{description} 
 \item[Renamed files and directories] In a number of cases the names and locations of files and 

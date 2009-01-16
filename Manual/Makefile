@@ -37,17 +37,25 @@ else
 FORCE=FORCE
 endif
 
-$(TARGET).pdf : $(TARGET).aux $(TARGET).blg $(TARGET).bbl
-# run it twice
+$(TARGET).pdf: $(TARGET).blg $(TARGET).bbl
+	# run it twice
 	pdflatex $(TARGET)
-	pdflatex $(TARGET)
-
-$(TARGET).aux :  extraReqs $(TARGET).tex $(TARGET).bib 
-# ensure we make a .aux file
 	pdflatex $(TARGET)
 
 $(TARGET).blg $(TARGET).bbl: $(TARGET).aux
 	bibtex $(TARGET)
+
+$(TARGET).aux: extraReqs $(TARGET).tex $(TARGET).bib 
+	# ensure we make a .aux file
+	pdflatex $(TARGET)
+
+$(TARGET).bib: autodiff.bib local.bib
+	cat local.bib autodiff.bib > $@
+
+autodiff.bib: $(FORCE)
+	wget -O $@.gz http://www.autodiff.org/?module=Publications\&submenu=download%20all%20entries
+	gunzip -f $@.gz
+	dos2unix $@
 
 extraReqs: $(EXTRAREQS)
 	echo $(EXTRAREQS)
@@ -92,8 +100,9 @@ Examples :
 	ln -sf ${OPENADROOT}/Examples .
 
 clean: 
-	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,lot,idx,bbl,blg,dvi} index.aux
+	rm -f *~ *bak $(TARGET).{toc,aux,ps,pdf,out,log,lof,lot,idx,bbl,blg,dvi,bib} index.aux
 	rm -f head.{f,B,xaif,xb.x2w.B,xb.x2w.w2f.f,xb.x2w.w2f.pp.f,xb.xaif}
+	rm -f iaddr.c OAD_active.f90 w2f__types.f90
 	rm -rf $(EXTRAREQS)
 	cd Examples && $(MAKE) $@
 

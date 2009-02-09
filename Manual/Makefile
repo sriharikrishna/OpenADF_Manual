@@ -53,9 +53,7 @@ $(TARGET).bib: autodiff.bib local.bib
 	cat local.bib autodiff.bib > $@
 
 autodiff.bib: $(FORCE)
-	wget -O $@.gz http://www.autodiff.org/?module=Publications\&submenu=download%20all%20entries
-	gunzip -f $@.gz
-	dos2unix $@
+	./getBib.sh  $@
 
 extraReqs: $(EXTRAREQS)
 	echo $(EXTRAREQS)

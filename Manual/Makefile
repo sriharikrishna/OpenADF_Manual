@@ -21,6 +21,7 @@ goadFlags.txt \
 scmStatusOutput.txt \
 scmStatusFlags.txt \
 openadScriptOptions.txt \
+openadScriptNoAction.txt \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -58,7 +59,7 @@ autodiff.bib: $(FORCE)
 extraReqs: $(EXTRAREQS)
 	echo $(EXTRAREQS)
 
-openadScriptOptions.txt openadScriptOutput.txt : $(FORCE)
+openadScriptOptions.txt openadScriptOutput.txt openadScriptNoAction.txt : $(FORCE)
 	./createOpenadOptionsAndOutput.sh
 
 versionInfo.txt versionInfoOpenAD.txt : $(FORCE) 

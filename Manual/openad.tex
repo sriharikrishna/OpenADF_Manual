@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{url}
+\usepackage{pdflscape}
 \usepackage{multirow}
 \usepackage{fancyhdr}
 \usepackage{relsize}
@@ -16,7 +17,20 @@
 \usepackage[pdftex,usenames]{color}
 \usepackage[pdftex]{graphicx}  
 \DeclareGraphicsExtensions{.pdf}  
-\usepackage[pdftex,bookmarks=true,bookmarksnumbered=true,hypertexnames=false,breaklinks=true]{hyperref}
+\usepackage[%
+  pdftex,%	
+  bookmarks=true,%
+  bookmarksnumbered=true,%
+  hypertexnames=false,%
+  pdfstartview=FitH,%		
+  bookmarks=true,%	
+  bookmarksopen=true,%
+  breaklinks=true,%
+  colorlinks=true,%
+  linkcolor=blue,anchorcolor=blue,%
+  citecolor=blue,filecolor=blue,%
+  menucolor=blue,pagecolor=blue,%
+  urlcolor=blue]{hyperref}
 \hypersetup{
   pdfauthor = {Jean Utke, Uwe Naumann, Andrew Lyons},
   pdftitle = {OpenAD/F: User Manual},
@@ -434,11 +448,11 @@ The script produces progress output like the one shown in \reffig{fig:oneMinuteR
 \end{figure}
 The resulting Fortran output is written to a file called\\[1ex]
 \hspace*{.3cm}\lstinline{$OPENADROOT/Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f}\\[1ex] %$
-and its sections of it are shown in \reffig{fig:OneMinuteReverseTransformed}. 
+and sections of it are shown in \reffig{fig:OneMinuteReverseTransformed}. 
 \begin{figure}
 \scriptsize\lstinputlisting[frame=single]{oneMinuteReverseTaping.f}
 \scriptsize\lstinputlisting[frame=single]{oneMinuteReverseAdjoint.f}
-\caption{Reverse mode transformed code for taping (top) and adjoint (bottom) for \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteReverseTransformed}
+\caption{Reverse mode transformed code sections for taping (top) and adjoint (bottom) for the code from \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteReverseTransformed}
 \end{figure}
 In particular in \reffig{fig:OneMinuteReverseTransformed}(top) one can observe 
 the writing of the local partial derivative to the tape on line 6 
@@ -597,7 +611,7 @@ some checkpoint and tracing only small sections with manageable memory requireme
 Various checkpointing schemes have been devised and examples can be found in \refsec{sec:shallow} 
 and \refsec{sec:useMake}. 
 
-\subsection{When should \lstinline{make} rules be used instead of the \lstinline{openad} script?}\label{sec:useMake}
+\subsection{When should {\tt make} rules be used instead of the {\tt openad} script?}\label{sec:useMake}
 The \lstinline{openad} script is intended only as wrapper for the transformation tool chain of simple models. 
 Complicated models will have a predefined build process using \lstinline{makefile}s and consequently 
 it is more appropriate to integrate the stages of the transformation tool chaine explicitly into that
@@ -650,24 +664,44 @@ The tool chain recognizes pragmas of the format\\[1ex]
 \hspace*{.3cm}\lstinline{$openad }{\tt\em <pragma argument>}\\[1ex] %$
 where the specific arguments are listed below.  
 \begin{description} 
-\item[\tt independent({\em <variable name>})] At least one of the pragmas is required in the transformed source 
-code to identify program variables that are considered indepent.  
+\item[\tt independent({\em <variable name>})] At least one of these pragmas is required in the source 
+code to be transformed to identify program variables that are considered independent. 
+The pragma is used to initialize the activity analysis (see also \refsec{sec:activity}).
+The {\em <variable name>} must be a program variable visible in the context in which the pragma is placed.
+The front-end and the subsequent tool chain components will parse {\em <variable name>} as a properly 
+scoped variable. Index expressions for {\em <variable name>} such as \lstinline{X[2]} are currently not meaningful
+for the activity analysis.
+\item[\tt dependent({\em <variable name>})] At least one of these pragmas is required in the source 
+code to be transformed to identify program variables that are considered dependent.
+The pragma functions similarly to the above mentioned \lstinline{independent} pragma. 
+\item[\tt xxx template {\em <template file>}] The postprocessor will recognize 
+the procedure in which the pragma occurs (or which immediately follows) as the target to which 
+the template should be applied. 
+The {\em <template file>} needs to be a file either with an absolute path or a 
+path relative to the working directory from which the postprocesor is invoked. 
+The tool chain has to  parse and pass through the pragma to the postprocessor while retaining the pragma location.
+Note that currently the Open64 front-end will within a module \lstinline{contains} block move all such pragmas into the 
+beginning of the \lstinline{contains} block and therefore placing the pragma {\em inside} the procedure 
+to which it should be applied.
+\item[\tt xxx simple loop] The transformation recognizes the loop immediately following this declaration and all 
+loops nested within as {\em simple loops}, see also \refsec{sec:cfgReversal}.
 \end{description}
 
 % -----------------------------------------------------------------------------------------
 \section{Running the tool chain with the {\tt openad} script}
+\nav{This section applies only to very simple models. For reasonably complicated computations proceed to \refsec{sec:manualToolChain}.}\\[1ex]
 The components of \OpenADF\ transform the code in a predetermined sequence of steps.
 Depending on the particular problem there are certain variations to the tool chain execution 
 that achieve a better performance of the generated code. 
-The most common setups are encapsulated in a Python script, the location of which is \lstinline{$OPENADROOT/bin/openad}. %$. 
+The most common setups are encapsulated in the Python script \lstinline{$OPENADROOT/bin/openad}. %$. 
 The script is part of the skeleton environment that is used to download and build \OpenADF\  
-and relies on the same environment setup.
+and relies on the same environment setup that also puts the script into the \lstinline{PATH}.
 Therefore user starts with steps 1 and 2 from \refsec{sec:dab}. 
-Invoking the script with the \lstinline{-h} option displays the command-line options as follows. \\
-\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
+Invoking the script with the \lstinline{-h} option displays the following command-line options. \\[1ex]
+\hspace*{.3cm}\begin{minipage}{\textwidth}
 \fontsize{8pt}{9pt}
 \verbatiminput{openadScriptOptions.txt}
-\end{minipage}\\
+\end{minipage}\\[1ex]
 The most important of these options is the mode specification.
 The default is the forward (or tangent-linear) mode, which is described in \refsec{sec:BBPreacc}.
 The reverse (or adjoint) mode is described in \refsec{sec:BBRev};
@@ -675,16 +709,35 @@ the ``split'' and ``joint'' variants refer to two different schemes for call gra
 
 As an example, assume we wish to create a tangent-linear version of a code in a file named \lstinline{head.f}.
 Invoking the command \lstinline{openad head.f} will create the transformed file \lstinline{head.xb.x2w.w2f.pp.f},
-where the following messages appear as output during the transformation process. \\
-\hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
+where the following messages appear as output during the transformation process. \\[1ex]
+\hspace*{.3cm}\begin{minipage}{\textwidth}
 \fontsize{8pt}{9pt}
 \verbatiminput{openadScriptOutput.txt}
-\end{minipage}\\
+\end{minipage}\\[1ex]
+The script also links (or copies with \lstinline{-c}) a simple version of the necessary support files. 
+As with the tool chain itself, a computationally complex application will likely want to adapt the support 
+files. 
 For larger projects it is obviously appropriate to customize the sequence 
 by adding the steps outlined in \refsec{sec:manualToolChain} to a \lstinline{Makefile}. 
+The steps performed by the \lstinline{openad} script can serve as an initial guideline for 
+the manual invocations. The script dumps the commands without executing them when the \lstinline{-n} 
+flag is passed. For the above example the output is shown in \reffig{fig:openadScriptNoAction}.
+\begin{landscape}
+\begin{figure}
+\fbox{
+\begin{minipage}{.95\linewidth}
+\scriptsize\verbatiminput{openadScriptNoAction.txt}
+\end{minipage}
+}
+\caption{Actions to be performed for the default invocation of the \lstinline{openad} script; we folded long lines.}\label{fig:openadScriptNoAction}
+\end{figure}
+\end{landscape}
  
 % -----------------------------------------------------------------------------------------
 \section{Explicitly invoking the tool chain elements}\label{sec:manualToolChain}
+The steps performed by the \lstinline{openad} script can serve as an initial guideline for 
+the manual invocations. The script dumps the commands without executing them when the \lstinline{-n} 
+flag is passed. 
 The following illustrates the explicit execution of the tool chain elements that could be implemented 
 in a \lstinline{Makefile} where we use successive file name postfixes to 
 retain the transformation results at each stage.\\

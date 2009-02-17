@@ -13,10 +13,12 @@ EXTRAREQS= \
 versionInfo.txt \
 oneMinuteStatusOutput.txt \
 oneMinuteOutput.txt \
+oneMinuteExplOutput.txt \
 oneMinuteReverseStatusOutput.txt \
 oneMinuteReverseOutput.txt \
 oneMinuteReverseTaping.f \
 oneMinuteReverseAdjoint.f \
+oneMinuteReverseExplOutput.txt \
 goadFlags.txt \
 scmStatusOutput.txt \
 scmStatusFlags.txt \
@@ -73,6 +75,9 @@ oneMinuteOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinute && $(MAKE)
 	cd Examples/OneMinute ; ./driver > ${THISDIR}/$@
 
+oneMinuteExplOutput.txt : Examples $(FORCE)
+	cd Examples/OneMinute && $(MAKE) -B driverE | ${THISDIR}/fold.py -c -w 140 > ${THISDIR}/$@
+
 oneMinuteReverseStatusOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinuteReverse && $(MAKE) clean
 	cd Examples/OneMinuteReverse ; make toolChain | grep -v "make" > ${THISDIR}/$@
@@ -86,6 +91,9 @@ oneMinuteReverseTaping.f : oneMinuteReverseStatusOutput.txt
 
 oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.txt
 	cat Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C adjoint/,/C adjoint end/p' > ${THISDIR}/$@
+
+oneMinuteReverseExplOutput.txt : Examples $(FORCE)
+	cd Examples/OneMinuteReverse && $(MAKE) -B driverE | ${THISDIR}/fold.py -c -w 140 > ${THISDIR}/$@
 
 goadFlags.txt : $(FORCE)
 	cd ${OPENADROOT}; goad -h > ${THISDIR}/$@

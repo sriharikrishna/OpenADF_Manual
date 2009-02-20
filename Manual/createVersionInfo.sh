@@ -21,9 +21,9 @@ fi
 
 THISDIR=$PWD
 cd $OPENADROOT
-if [ -f bin/scmStatus ]
+if [ -f bin/openadStatus ]
 then 
-  scmStatus -l >  $THISDIR/versionInfoOpenAD.txt.new
+  openadStatus -l >  $THISDIR/versionInfoOpenAD.txt.new
   if [ $? -ne 0 ] 
   then 
     echo "vers. unknown" > $THISDIR/versionInfoOpenAD.txt.new

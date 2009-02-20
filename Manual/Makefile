@@ -19,9 +19,9 @@ oneMinuteReverseOutput.txt \
 oneMinuteReverseTaping.f \
 oneMinuteReverseAdjoint.f \
 oneMinuteReverseExplOutput.txt \
-goadFlags.txt \
-scmStatusOutput.txt \
-scmStatusFlags.txt \
+openadUpdateFlags.txt \
+openadStatusOutput.txt \
+openadStatusFlags.txt \
 openadScriptOptions.txt \
 openadScriptNoAction.txt \
 $(DOT2PDF) \
@@ -95,13 +95,13 @@ oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.txt
 oneMinuteReverseExplOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinuteReverse && $(MAKE) -B driverE | ${THISDIR}/fold.py -c -w 140 > ${THISDIR}/$@
 
-goadFlags.txt : $(FORCE)
-	cd ${OPENADROOT}; goad -h > ${THISDIR}/$@
+openadUpdateFlags.txt : $(FORCE)
+	cd ${OPENADROOT}; openadUpdate -h > ${THISDIR}/$@
 
-scmStatusOutput.txt : versionInfo.txt
-	cd ${OPENADROOT}; scmStatus > ${THISDIR}/$@
-scmStatusFlags.txt : $(FORCE)
-	cd ${OPENADROOT}; scmStatus -h > ${THISDIR}/$@
+openadStatusOutput.txt : versionInfo.txt
+	cd ${OPENADROOT}; openadStatus > ${THISDIR}/$@
+openadStatusFlags.txt : $(FORCE)
+	cd ${OPENADROOT}; openadStatus -h > ${THISDIR}/$@
 
 Examples :
 	ln -sf ${OPENADROOT}/Examples .

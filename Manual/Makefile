@@ -24,6 +24,8 @@ openadStatusOutput.txt \
 openadStatusFlags.txt \
 openadScriptOptions.txt \
 openadScriptNoAction.txt \
+preProcessOptions.txt \
+Examples/SRCanonical/func.pre.f90 \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -39,6 +41,8 @@ FORCE=
 else
 FORCE=FORCE
 endif
+
+PORTRAIT_ORIENT_BOX_WIDTH=140
 
 $(TARGET).pdf: $(TARGET).blg $(TARGET).bbl
 	# run it twice
@@ -76,7 +80,7 @@ oneMinuteOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinute ; ./driver > ${THISDIR}/$@
 
 oneMinuteExplOutput.txt : Examples $(FORCE)
-	cd Examples/OneMinute && $(MAKE) -B driverE | ${THISDIR}/fold.py -c -w 140 > ${THISDIR}/$@
+	cd Examples/OneMinute && $(MAKE) -B driverE | ${THISDIR}/fold.py -c -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
 
 oneMinuteReverseStatusOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinuteReverse && $(MAKE) clean
@@ -93,7 +97,7 @@ oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.txt
 	cat Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C adjoint/,/C adjoint end/p' > ${THISDIR}/$@
 
 oneMinuteReverseExplOutput.txt : Examples $(FORCE)
-	cd Examples/OneMinuteReverse && $(MAKE) -B driverE | ${THISDIR}/fold.py -c -w 140 > ${THISDIR}/$@
+	cd Examples/OneMinuteReverse && $(MAKE) -B driverE | ${THISDIR}/fold.py -c -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
 
 openadUpdateFlags.txt : $(FORCE)
 	cd ${OPENADROOT}; openadUpdate -h > ${THISDIR}/$@
@@ -102,6 +106,12 @@ openadStatusOutput.txt : versionInfo.txt
 	cd ${OPENADROOT}; openadStatus > ${THISDIR}/$@
 openadStatusFlags.txt : $(FORCE)
 	cd ${OPENADROOT}; openadStatus -h > ${THISDIR}/$@
+
+preProcessOptions.txt : $(FORCE)
+	 ${OPENADFORTTK_BASE}/tools/SourceProcessing/preProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+
+Examples/SRCanonical/func.pre.f90 : Examples $(FORCE)
+	cd Examples/SRCanonical && $(MAKE)
 
 Examples :
 	ln -sf ${OPENADROOT}/Examples .

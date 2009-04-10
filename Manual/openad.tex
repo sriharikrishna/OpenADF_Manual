@@ -55,11 +55,11 @@
 \leftmargin      0in
 \rightmargin     0in
 \textheight      9.5in
-\textwidth       7.0in
+\textwidth       7.5in
 \topmargin      -0.5in
 %\headheight      0in
 %\headsep         0in
-\oddsidemargin   0in
+\oddsidemargin  -0.5in
 \evensidemargin -0.5in
 
 
@@ -693,8 +693,7 @@ and relies on the same environment setup that also puts the script into the \lst
 Therefore user starts with steps 1 and 2 from \refsec{sec:dab}. 
 Invoking the script with the \lstinline{-h} option displays the following command-line options. \\[1ex]
 \begin{boxedminipage}{\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{openadScriptOptions.txt}
+\scriptsize\verbatiminput{openadScriptOptions.txt}
 \end{boxedminipage}\\[1ex]
 The most important of these options is the mode specification.
 The default is the forward (or tangent-linear) mode, which is described in \refsec{sec:BBPreacc}.
@@ -705,8 +704,7 @@ As an example, assume we wish to create a tangent-linear version of a code in a 
 Invoking the command \lstinline{openad head.f} will create the transformed file \lstinline{head.xb.x2w.w2f.pp.f},
 where the following messages appear as output during the transformation process. \\[1ex]
 \begin{boxedminipage}{\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{openadScriptOutput.txt}
+\scriptsize\verbatiminput{openadScriptOutput.txt}
 \end{boxedminipage}\\[1ex]
 The script also links (or copies with \lstinline{-c}) a simple version of the necessary support files. 
 As with the tool chain itself, a computationally complex application will likely want to adapt the support 
@@ -2169,30 +2167,34 @@ core often exhibits a large variability in expressing semantically
 identical constructs. 
 To streamline the transformation engine we reduce this variability by 
 {\em canonicalizing} the numerical core. 
+This is done using the following Python script.\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADFORTTK_BASE/tools/SourceProcessing/preProcess.py}\\[1ex] %$
+Invoking the script with the \lstinline{-h} option displays the following command-line options. \\[1ex]
+\begin{boxedminipage}{\textwidth}
+\scriptsize\verbatiminput{preProcessOptions.txt}
+\end{boxedminipage}\\[1ex]
 Because it is done automatically, the canonicalization does \emph{not} 
 restrict the expressiveness of the input programs supplied by the user.
 Rather it is a means to reduce the development effort of the transformation engine. 
-In the following we describe the canonical form. The canonicalizer mechanism is written 
-in Python. All sources can be found under \lstinline{OpenADFortTk/tools/canonicalize/}.
+In the following we describe the canonical form. 
+
 \begin{Can} \label{can:funcToSub}
   All function calls  
-  are canonicalized into subroutine calls, see \reftab{tab:funcToSubCall}.
-  \begin{table}
-    \begin{tabular}{cc}
-      \begin{minipage}{.4\linewidth}
-        \fontsize{8pt}{9pt}
-        \verbatiminput{code/funcCall.f}
-      \end{minipage}
-      & 
-      \begin{minipage}{.4\linewidth}
-        \fontsize{8pt}{9pt}
-        \verbatiminput{code/funcToSub.f}
-      \end{minipage}
-      \\
-      (a) & (b)
-    \end{tabular}
-    \caption{Canonicalizing a function(a) to a subroutine(b) call } \label{tab:funcToSubCall}
-  \end{table}
+  are canonicalized into subroutine calls, see \reffig{fig:funcToSubCall}.
+\begin{figure}
+\begin{minipage}[t]{.48\linewidth}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran]{Examples/SRCanonical/func.f90}
+\end{minipage}
+\hspace{.02\linewidth}
+\begin{minipage}[t]{.48\linewidth}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran]{Examples/SRCanonical/func.pre.f90}
+\end{minipage}
+\caption{Canonicalizing a function (left, see  see file 
+\lstinline{$OPENADROOT/Examples/SRCanonical/func.f90}), %$
+to a subroutine (right,  see file 
+\lstinline{$OPENADROOT/Examples/SRCanonical/func.pre.f90} after running \lstinline{make})} %$
+ \label{fig:funcToSubCall}
+  \end{figure}
   For the transformations, in particular the \basicblock\ level preaccumulation we 
   want to ensure that an assignment effects a single variable on the left-hand side. 
   Therefore  
@@ -2203,10 +2205,13 @@ in Python. All sources can be found under \lstinline{OpenADFortTk/tools/canonica
   Consequently the right-hand-side expression of an assignment consists only of 
   elemental operations $\phi$ typically 
   defined in a programming language as built-in operators and intrinsics.
+{\color{red} TODO: FIX THIS
+
   The canonicalizer also performs the accompanying transformation of the function definition 
   \reftab{tab:funcToSub}(a) 	
   into a subroutine definition \reftab{tab:funcToSub}(b).  
   \begin{table}
+\color{red} TODO: FIX THIS
     \begin{tabular}{cc}
       \begin{minipage}{.45\textwidth}
         \fontsize{8pt}{9pt}
@@ -2222,8 +2227,7 @@ in Python. All sources can be found under \lstinline{OpenADFortTk/tools/canonica
     \end{tabular}
     \caption{Canonicalizing a function(a) to a subroutine(b) definition} \label{tab:funcToSub}
   \end{table}
-  The \lstinline{oad_s_} prefix can be adjusted by modifying \lstinline{__call_prefix} in 
-  \lstinline{Lib/canon.py}. 
+}
   A particular canonicalization of calls without canonicalization of definitions  
   is applied to the \lstinline{max} and \lstinline{min} intrinsics because in Fortran 
   they do not have closed form expressions for the partials. \OpenADF\ provides a run time 
@@ -2974,9 +2978,15 @@ have been introduced to rectify the situation.
 \item The binaries in \lstinline{test/t} under \lstinline{$OPENADROOT/xaifBooster/system} %$ 
 and the algorithm directories have been renamed to \lstinline{driver/oadDriver} and the 
 underlying source files from \lstinline{t.cpp} to \lstinline{oadDriver.cpp}.
+\item the script to get the components has been renamed from \lstinline{goad} to \lstinline{openadUpdate}
+and command line flags have been added.
 \end{itemize}
 }
 \item[Changed command line flags]
+\begin{itemize}
+\item the replacement for the \lstinline{goad} script which is called \lstinline{openadUpdate} has command 
+line flags that were not present for \lstinline{goad}. Details can be found in \refsec{sec:ancillaryTools}.
+\end{itemize}
 \item[Refactorized Algorithms]
 \end{description}
 % -----------------------------------------------------------------------------------------

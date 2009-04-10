@@ -121,6 +121,7 @@ clean:
 	rm -f head.{f,B,xaif,xb.x2w.B,xb.x2w.w2f.f,xb.x2w.w2f.pp.f,xb.xaif}
 	rm -f iaddr.c OAD_active.f90 w2f__types.f90 openadScriptOutput.txt versionInfoOpenAD.txt
 	rm -rf $(EXTRAREQS)
+	rm -f autodiff.bib.gz
 	cd Examples && $(MAKE) $@
 
 %.ps : %.dot

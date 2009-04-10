@@ -13,33 +13,39 @@ def main():
   opt.add_option('-c','--continuation',dest='continuation',
                  help="use \'\\\' as continuation character",
                  action='store_true',default=False)
+  opt.add_option('-p','--padding',dest='padding',
+                 help="padding string after the line break (default is \'\\t\')",
+                 default='\t')
   (options, args) = opt.parse_args()
+  paddingLenth=len(options.padding.expandtabs())
   for line in sys.stdin.readlines():
     if len(line)>options.width:
-       words = string.split(line)
-       cWord=0
-       sWord=0
-       while True :
-           if cWord==len(words)-1:
-               sys.stdout.write(words[cWord]+"\n")
-               break
-           tl=0
-           while tl<=options.width and cWord<len(words)-1:
-               tl+=len(words[cWord])
-               cWord+=1
-           if (tl>options.width and cWord>sWord+1):
-              cWord-=1
-           for i in range(sWord,cWord):
-               sys.stdout.write(words[i])
-               sys.stdout.write(' ')
-           if cWord<len(words):
-             if (options.continuation):
-               sys.stdout.write("\\")
-             sys.stdout.write("\n\t")
-           sWord=cWord
+      currentPosInFolded=0
+      currentPosInLine=0
+      lastSpacePosInFolded=0
+      lastSpacePosInLine=0
+      allowedLength=options.width
+      while (currentPosInLine<len(line)):
+        if (currentPosInFolded<allowedLength):
+          if (line[currentPosInLine].isspace()):
+            lastSpacePosInLine=currentPosInLine
+            lastSpacePosInFolded=currentPosInFolded
+          currentPosInFolded+=1
+          currentPosInLine+=1
+        else:
+          sys.stdout.write(line[currentPosInLine-currentPosInFolded:currentPosInLine-currentPosInFolded+lastSpacePosInFolded]+'\n')
+          if (allowedLength!=options.width-paddingLenth):
+            allowedLength-=paddingLenth
+          sys.stdout.write(options.padding)
+          currentPosInLine=lastSpacePosInLine
+          while (currentPosInLine<len(line) and line[currentPosInLine].isspace()):
+            currentPosInLine+=1
+          lastSpacePosInFolded=0
+          currentPosInFolded=0
+      if (currentPosInFolded>0):    
+        sys.stdout.write(line[currentPosInLine-currentPosInFolded:currentPosInLine])
     else:
-        sys.stdout.write(line)
-       
+      sys.stdout.write(line)
 
 if __name__ == "__main__":
   sys.exit(main())

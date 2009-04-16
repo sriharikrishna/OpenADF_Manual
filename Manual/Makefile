@@ -26,6 +26,11 @@ openadScriptOptions.txt \
 openadScriptNoAction.txt \
 preProcessOptions.txt \
 Examples/SRCanonical/func.pre.f90 \
+postProcessOptions.txt \
+mfef90Options.txt \
+whirl2fOptions.txt \
+whirl2xaifOptions.txt \
+xaif2whirlOptions.txt \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -112,6 +117,21 @@ preProcessOptions.txt : $(FORCE)
 
 Examples/SRCanonical/func.pre.f90 : Examples $(FORCE)
 	cd Examples/SRCanonical && $(MAKE)
+
+postProcessOptions.txt : $(FORCE)
+	 ${OPENADFORTTK_BASE}/tools/SourceProcessing/postProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+
+mfef90Options.txt : $(FORCE)
+	 ${OPEN64ROOT}/crayf90/sgi/mfef90 -h | egrep '(-z|-N|-F|-f|in the Open64)' > ${THISDIR}/$@
+
+whirl2fOptions.txt : $(FORCE)
+	 ${OPEN64ROOT}/whirl2f/whirl2f  2>&1 | awk 'NR<=35 || (NR>=54 && NR<=59)' | ${THISDIR}/fold.py -p '	' $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+
+whirl2xaifOptions.txt : $(FORCE)
+	 ${OPENADFORTTKROOT}/bin/whirl2xaif -h 2> ${THISDIR}/$@
+
+xaif2whirlOptions.txt : $(FORCE)
+	 ${OPENADFORTTKROOT}/bin/xaif2whirl -h 2> ${THISDIR}/$@
 
 Examples :
 	ln -sf ${OPENADROOT}/Examples .

@@ -2431,30 +2431,38 @@ three tasks to be accomplished by the postprocessor.
 % -----------------------------------------------------------------------------------------
 \subsection{Postprocessing}\label{sec:PostProcessor}
 The postprocessor performs the three tasks outlined at the end of \refsec{sec:wtxxtw}.
+This is done using the following Python script.\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADFORTTK_BASE/tools/SourceProcessing/postProcess.py}\\[1ex] %$
+Invoking the script with the \lstinline{-h} option displays the following command-line options. \\[1ex]
+\begin{boxedminipage}{\textwidth}
+\scriptsize\verbatiminput{postProcessOptions.txt}
+\end{boxedminipage}\\[1ex]
+
 
 \subsubsection{Use of the Active Type}\label{sec:activeType}
 The simplest postprocessing task is the concretization of the active variable declarations 
 and uses. The main rationale for postponing the concretization of the active type is flexibility 
-with respect to the actual active type implementation. The current postprocessor is 
-written in Perl\footnote{ 
-The source code can be found under \lstinline{OpenADFortTk/tools/multiprocess/}.
-A rewrite in Python reusing the same Fortran parsing functionality of the canonicalizer is underway.
-}
-and therefore is much easier to adapt to a changing active type implementation than to 
+with respect to the actual active type implementation.
+This is done via the \lstinline{-t} flag. 
+Using the text replacement in the  postprocessor 
+it is much easier to adapt to a changing active type implementation than to 
 find find the proper \whirl\ representation and modify \xaifTowhirl\ to create it.
-However, it should be noted right away, that the ease of adaptation is clearly correlated to the 
+However, it should be noted, that the ease of adaptation is clearly correlated to the 
 simplicity and in particular the locality of the transformation. The advantage disappears with 
 increased complexity of the transformation.   
 For an active variable, for example  \lstinline{v},  the representation created 
 by \xaifTowhirl\ in \whirl\ and then unparsed to Fortran,
-shows up as \lstinline{TYPE (OpenADTy_active) v}. 
+shows up by default as \lstinline{TYPE (oadactive) v}.\footnote{See also the \lstinline{-t} flag 
+in \refsec{sec:wtxxtw} to change the name of the abstract active type.} 
 In \whirl\ the type remains abstract because the accesses to the conceptual value and derivative components 
 are represented as function calls \lstinline{__value__(v)} and \lstinline{__deriv__(v)} respectively.
 The concretized versions created by the postprocessor for the current active type implementation, 
-see \lstinline{runTimeSupport/simple/OpenAD_active.f90} are 
+see \lstinline{runTimeSupport/scalar/OAD_active.f90} are by default 
 \lstinline{type(active) v} for the declaration and simply \lstinline{v\%v} for the value \lstinline{v\%d} for 
 the derivative component respectively and each subroutine will also receive an additional 
-\lstinline{USE} statement which makes the type definition in \lstinline{OpenAD_active} known. 
+\lstinline{USE} statement which makes the type definition in \lstinline{OAD_active} known.
+The abstract active type  name can be changed with the \lstinline{--abstractType} option and 
+the concrete active type name  can be changed with the \lstinline{--concreteType} option, respectively.
 
 \subsubsection{Inlinable Subroutine Calls}\label{sec:inline}
 The second task, the expansion of inlinable subroutine calls, is more complex because 

@@ -26,6 +26,7 @@ openadScriptOptions.txt \
 openadScriptNoAction.txt \
 preProcessOptions.txt \
 Examples/SRCanonical/func.pre.f90 \
+postProcessOptions.txt \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -112,6 +113,10 @@ preProcessOptions.txt : $(FORCE)
 
 Examples/SRCanonical/func.pre.f90 : Examples $(FORCE)
 	cd Examples/SRCanonical && $(MAKE)
+
+postProcessOptions.txt : $(FORCE)
+	 ${OPENADFORTTK_BASE}/tools/SourceProcessing/postProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+
 
 Examples :
 	ln -sf ${OPENADROOT}/Examples .

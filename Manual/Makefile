@@ -31,6 +31,7 @@ mfef90Options.txt \
 whirl2fOptions.txt \
 whirl2xaifOptions.txt \
 xaif2whirlOptions.txt \
+rtPropagationRoutines.txt \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -113,25 +114,28 @@ openadStatusFlags.txt : $(FORCE)
 	cd ${OPENADROOT}; openadStatus -h > ${THISDIR}/$@
 
 preProcessOptions.txt : $(FORCE)
-	 ${OPENADFORTTK_BASE}/tools/SourceProcessing/preProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+	${OPENADFORTTK_BASE}/tools/SourceProcessing/preProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
 
 Examples/SRCanonical/func.pre.f90 : Examples $(FORCE)
 	cd Examples/SRCanonical && $(MAKE)
 
 postProcessOptions.txt : $(FORCE)
-	 ${OPENADFORTTK_BASE}/tools/SourceProcessing/postProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+	${OPENADFORTTK_BASE}/tools/SourceProcessing/postProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
 
 mfef90Options.txt : $(FORCE)
-	 ${OPEN64ROOT}/crayf90/sgi/mfef90 -h | egrep '(-z|-N|-F|-f|in the Open64)' > ${THISDIR}/$@
+	${OPEN64ROOT}/crayf90/sgi/mfef90 -h | egrep '(-z|-N|-F|-f|in the Open64)' > ${THISDIR}/$@
 
 whirl2fOptions.txt : $(FORCE)
-	 ${OPEN64ROOT}/whirl2f/whirl2f  2>&1 | awk 'NR<=35 || (NR>=54 && NR<=59)' | ${THISDIR}/fold.py -p '	' $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+	${OPEN64ROOT}/whirl2f/whirl2f  2>&1 | awk 'NR<=35 || (NR>=54 && NR<=59)' | ${THISDIR}/fold.py -p '	' $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
 
 whirl2xaifOptions.txt : $(FORCE)
-	 ${OPENADFORTTKROOT}/bin/whirl2xaif -h 2> ${THISDIR}/$@
+	${OPENADFORTTKROOT}/bin/whirl2xaif -h 2> ${THISDIR}/$@
 
 xaif2whirlOptions.txt : $(FORCE)
-	 ${OPENADFORTTKROOT}/bin/xaif2whirl -h 2> ${THISDIR}/$@
+	${OPENADFORTTKROOT}/bin/xaif2whirl -h 2> ${THISDIR}/$@
+
+rtPropagationRoutines.txt : $(FORCE)
+	cat ${OPENADROOT}/runTimeSupport/scalar/OAD_active.f90 | grep subroutine | grep -v convert | grep -v 'end subroutine' | grep -v 'allocateMatching' |  sed 's/ *subroutine //' > ${THISDIR}/$@
 
 Examples :
 	ln -sf ${OPENADROOT}/Examples .

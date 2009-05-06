@@ -865,7 +865,7 @@ All Fortran produced by \lstinline{whirl2f}, see \refsec{sec:open64FeBe}, needs
 definitions for values supplied as \lstinline{kind} parameters. 
 These values have standard names within the \lstinline{whirl2f}-generated code. 
 The definitions can be found in \\[1ex]
-\hspace*{.3cm}\lstinline{all/w2f__types.f90}\\[1ex] %$
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/all/w2f__types.f90}\\[1ex] %$
 Modifications to this file should be done judiciously to avoid cases where identical 
 \lstinline{kind} values lead to duplicate definitions of module routines for 
 the OpenAD active type that differ 
@@ -916,29 +916,29 @@ $$
 
 \paragraph{Scalar}
 An active type for propagation of scalar derivative components is defined in \\[1ex]
-\hspace*{.3cm}\lstinline{scalar/OAD_active.f90}
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/scalar/OAD_active.f90} %$
 
 \paragraph{Vector}
 An active type for propagation of a vector of length 
 \lstinline{max_deriv_vec_len} of derivative components is defined in \\[1ex]
-\hspace*{.3cm}\lstinline{vector/OAD_active.f90}
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/vector/OAD_active.f90} %$
 
 \subsubsection{Taping}
 A simple implementation for  tape storage can be found in \\[1ex]
-\hspace*{.3cm}\lstinline{simple/OAD_tape.f90}\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/simple/OAD_tape.f90}\\[1ex] %$
 which goes together with the subroutines defined in \\[1ex]
-\hspace*{.3cm}\lstinline{simple/ad_inline.f}\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/simple/ad_inline.f}\\[1ex] %$
 which are inlined by the post processor, see \refsec{sec:PostProcessor}.
 For dynamically allocated taping space see the respective files in the \lstinline{cpToFile}
 subdirectory.
 
 \subsubsection{Reversal State}
 A module containing global reversal scheme state definitions defined in  \\[1ex]
-\hspace*{.3cm}\lstinline{simple/OAD_rev.f90}\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/simple/OAD_rev.f90}\\[1ex] %$
 The split and joint reversal schemes using the state are enabled via the templates \\[1ex]
-\hspace*{.3cm}\lstinline{simple/ad_template.joint.f}\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/simple/ad_template.joint.f}\\[1ex] %$
 and\\[1ex]
-\hspace*{.3cm}\lstinline{simple/ad_template.split.f}\\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/simple/ad_template.split.f}\\[1ex] %$
 respectively.
 
 \subsubsection{Checkpointing}
@@ -3087,6 +3087,54 @@ line flags that were not present for \lstinline{goad}. Details can be found in \
 \end{itemize}
 \item[Refactorized Algorithms]
 \end{description}
+% -----------------------------------------------------------------------------------------
+\section{Regression Tests}\label{sec:regression}
+All regression tests can be added to the \OpenAD\ source tree using the \lstinline{-t} 
+flag with the \lstinline{openadUpdate} script, see \refsec{sec:openadUpdate}.
+The  test setups are in the following locations. 
+\begin{itemize}
+\item\lstinline{$OPENAD/Regression/}%$
+which exercises the entire tool chain (requires \lstinline{gnuplot} \footnote{
+see \url{http://www.gnuplot.info/}})
+\item\lstinline{$OPENAD/OpenADFortTk/Regression/}%$
+which exercises the translation between \whirl\ and \xaif, see \refsec{sec:wtxxtw} 
+\item\lstinline{$OPENAD/OpenADFortTk/tools/SourceProcessing/Regression/}%$
+which exercises the Fortran parser that is used in the pre and post processing, see \refsecs{sec:Canonicalization}{sec:PostProcessor} 
+\item\lstinline{$OPENAD/Open64/osprey1.0/tests/}%$
+which is included in the \OpenSixtyFour\ repository and exercises the Fortran frontend, see \refsec{sec:open64FeBe}
+\end{itemize}
+In each directory is a main driver script called \lstinline{testAll.py}. 
+The \lstinline{-h} option shows all available options which are self 
+explanatory.  Note that the test sets include test cases that have been included 
+to illustrate certain problems with the tool and not all of these problems have 
+been fixed. The expected outcome is kept in the respective reference outputs 
+and the latest update is listed in tables on the \OpenAD\ website. 
+With the \lstinline{-i} option the \lstinline{testAll.py} script will skip test cases  
+expected to fail and otherwise prompt for execution. 
+All test sets except for the first one have a simple boolean outcome. 
+Exercising the entire tool chain permits a consistency check against finite differences. 
+We use a default tolerance to accomodate variations in hardware, compilers and 
+compiler optimization but for 
+some problems because of cancellations etc the tolerance is exceeded either for the 
+absolute or relative discrepancy. 
+To facilitate maximal use of the test cases we  compare the  intermediate stages of the 
+transformation in the tool chain are kept as references for forward and reverse mode (joint and 
+split) setup. To illustrate the numerical comparison we use a test called \lstinline{boxmodel}
+that can in the \lstinline{$OPENAD/OpenADFortTk/Regression/}%$ 
+invoke like this\\[1ex]
+\hspace*{.3cm}\lstinline{./testAll.py  boxmodel}\\[1ex]
+Hitting \lstinline{enter} on all subsequent prompts will execute the test case
+with the default settings (forward mode using the \lstinline{ifort} compiler without 
+optimization but extra checking enabled). 
+The numerical discrepancies are shown using gnuplot with output similar to the 
+the one shown in \reffig{fig:numericalDiscrepancy}.
+\begin{figure}
+  \centering\includegraphics[width=.5\textwidth]{numericalDiscrepancy}
+  \caption{Example for numerical discrepancy shown for test case \lstinline{boxmodel} 
+for forward mode.} \label{fig:numericalDiscrepancy}
+\end{figure} 
+
+ 
 % -----------------------------------------------------------------------------------------
 \section{Compiling and Contributing to this Manual}\label{sec:compilingManual}
 The \LaTeX\ sources of this manual are kept under 

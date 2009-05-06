@@ -32,6 +32,7 @@ whirl2fOptions.txt \
 whirl2xaifOptions.txt \
 xaif2whirlOptions.txt \
 rtPropagationRoutines.txt \
+numericalDiscrepancy.pdf \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -136,6 +137,12 @@ xaif2whirlOptions.txt : $(FORCE)
 
 rtPropagationRoutines.txt : $(FORCE)
 	cat ${OPENADROOT}/runTimeSupport/scalar/OAD_active.f90 | grep subroutine | grep -v convert | grep -v 'end subroutine' | grep -v 'allocateMatching' |  sed 's/ *subroutine //' > ${THISDIR}/$@
+
+numericalDiscrepancy.ps : $(FORCE)
+	echo "scalar tlm non" > ${OPENADROOT}/Regression/testRoundTrip/.lastRun
+	cd ${OPENADROOT}/Regression/testRoundTrip && ./testAll.py -b boxmodel 
+	- cd ${OPENADROOT}/Regression/testRoundTrip && ./numericalComparison.py -gi -t postscript -n boxmodel tmpOutput/dd.out examples/boxmodel/refOutput/dd.out tmpOutput/ad.out examples/boxmodel/refOutput/ad.out
+	cp ${OPENADROOT}/Regression/testRoundTrip/plotOutput/numericalComparison-boxmodel.ps $@
 
 Examples :
 	ln -sf ${OPENADROOT}/Examples .

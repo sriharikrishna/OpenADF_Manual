@@ -139,6 +139,7 @@ rtPropagationRoutines.txt : $(FORCE)
 	cat ${OPENADROOT}/runTimeSupport/scalar/OAD_active.f90 | grep subroutine | grep -v convert | grep -v 'end subroutine' | grep -v 'allocateMatching' |  sed 's/ *subroutine //' > ${THISDIR}/$@
 
 numericalDiscrepancy.ps : $(FORCE)
+	cd ${OPENADROOT}/Regression/testRoundTrip && $(MAKE) clean
 	echo "scalar tlm non" > ${OPENADROOT}/Regression/testRoundTrip/.lastRun
 	cd ${OPENADROOT}/Regression/testRoundTrip && ./testAll.py -b boxmodel 
 	- cd ${OPENADROOT}/Regression/testRoundTrip && ./numericalComparison.py -gi -t postscript -n boxmodel tmpOutput/dd.out examples/boxmodel/refOutput/dd.out tmpOutput/ad.out examples/boxmodel/refOutput/ad.out

@@ -3139,13 +3139,14 @@ for forward mode.} \label{fig:numericalDiscrepancy}
 \section{Compiling and Contributing to this Manual}\label{sec:compilingManual}
 The \LaTeX\ sources of this manual are kept under 
 mercurial revision control. Details how to download 
-the manual can be found on the \OpenADF\ website under ``Documentation''.  
+the manual can be found on the \OpenADF\ website under ``How to Contribute''.  
 In addition to \LaTeX  (in particular \lstinline{pdflatex}) 
 one also needs \lstinline{dot}, \lstinline{fig2dev}, and 
 \lstinline{dia} for the conversion of figures. 
 The manual's \lstinline{Makefile} requires a source installation of \OpenADF\
 from the source code repository with all extra tests and examples using \\[1ex]
-\hspace*{.3cm}\lstinline{openadUpdate -t}\\[1ex]
+\hspace*{.3cm}\lstinline{openadUpdate -et}\\[1ex]
+including the prerequisites to run regression tests, see \refsec{sec:regression}.
 The environment must be setup as described in \refsec{sec:env}.
 The manual refers to a {\bf set of code examples} which are 
 linked from the \OpenADF\ installation by the \lstinline{Makefile}.

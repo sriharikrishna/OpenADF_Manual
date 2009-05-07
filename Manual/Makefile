@@ -140,7 +140,7 @@ rtPropagationRoutines.txt : $(FORCE)
 
 numericalDiscrepancy.ps : $(FORCE)
 	cd ${OPENADROOT}/Regression/testRoundTrip && $(MAKE) clean
-	echo "scalar tlm non" > ${OPENADROOT}/Regression/testRoundTrip/.lastRun
+	echo "scalar tlm none" > ${OPENADROOT}/Regression/testRoundTrip/.lastRun
 	cd ${OPENADROOT}/Regression/testRoundTrip && ./testAll.py -b boxmodel 
 	- cd ${OPENADROOT}/Regression/testRoundTrip && ./numericalComparison.py -gi -t postscript -n boxmodel tmpOutput/dd.out examples/boxmodel/refOutput/dd.out tmpOutput/ad.out examples/boxmodel/refOutput/ad.out
 	cp ${OPENADROOT}/Regression/testRoundTrip/plotOutput/numericalComparison-boxmodel.ps $@

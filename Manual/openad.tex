@@ -2743,74 +2743,74 @@ but instead uses the actual data found in the respective directories.
 % #########################################################################################
 \chapter{Application}\label{sec:application}
 This applications section intends to augment the explanations given so far. 
-First we use a toy example to show how to embed the transformed code into 
-a driver. The following sections illustrate practical concerns for real 
-life applications. 
+We use two small examples to further illustrate the  explanations given in \refsec{sec:oneMinute} and 
+discuss a more complicated example in \refsec{sec:shallowWater}. 
 % -----------------------------------------------------------------------------------------
-\section{Toy Example}\label{sec:toyExample}
+\section{Two Small Examples}\label{sec:toyExample}
+Both examples follow the same prinicipal steps as the example in \refsec{sec:oneMinute} :
+\begin{itemize}
+\item setup of a \lstinline{Makefile} that uses the \lstinline{openad} script
+\item identification of independent and dependent variables
+\item driver code to setup the derivative computation and obtain the derivative values
+\end{itemize}
+We do not explain these fundamental steps again but instead concentrate on various aspects 
+specific to the examples. 
+To obtain the source code for the examples in this section please refer to \refsec{sec:compilingManual}. 
+To run the examples one needs to install \OpenADF\ following the instructions in \refsec{sec:dab}.
 
-Consider a toy example code  \reffig{fig:toyApp}(a) where we already inserted the 
-dependent and independent declarartions, see \refsec{sec:open64FeBe}.
-\begin{figure}
-\begin{tabular}{cc}
-\begin{minipage}{.4\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/appToy.f}
-\end{minipage}
-& 
-\begin{minipage}{.4\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/appToyTlm.f}
-\end{minipage}
-\\
-(a) & (b)
-\end{tabular}
-\caption{A toy example(a) and the modified signature for the tangent-linear model(b)}\label{fig:toyApp}
-\end{figure}
-Transformed into a tangent linear model \lstinline{head} turns into a 
-subroutine that has active parameters and the calling code, i.e. the driver, 
-is written to seed (\lstinline{x\%d}) and extract (\lstinline{y\%d}) 
-the derivatives according to \refeqn{eqn:JacVecProds}.
-A very simple driver for the tangent-linear model is
-\begin{figure}
-\begin{tabular}{cc}
-\begin{minipage}{.4\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/appToyDriver.f}
-\end{minipage}
-& 
-\begin{minipage}{.4\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/appToyDriverOutput.txt}
-\end{minipage}
-\\
-(a) & (b)
-\end{tabular}
-\caption{A toy example tangent-linear driver(a) and output(b)}\label{fig:toyAppDriver}
-\end{figure}
-Due to the simplicity of the example, the adjoint model version does not 
-provide much insight other than the reversal of 
-seeding (\lstinline{y\%d}) and extraction (\lstinline{x\%d})of the 
-derivatives, see \reffig{fig:toyAppDriverAdj}.
-\begin{figure}
-\begin{tabular}{cc}
-\begin{minipage}{.4\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/appToyDriverAdj.f}
-\end{minipage}
-& 
-\begin{minipage}{.4\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/appToyDriverAdjOutput.txt}
-\end{minipage}
-\\
-(a) & (b)
-\end{tabular}
-\caption{A toy example adjoint driver(a) and output(b)}\label{fig:toyAppDriverAdj}
-\end{figure}
+\subsection{FDC example}\label{sec:fdcExample}
+This example code was taken from the Minpack test problem ``flow in a driven cavity''. 
+The source code for the problem can be found under \lstinline{$OPENADROOT/Examples/OneMinute/}%$
+in file \lstinline{head.f} and a simple driver in \lstinline{driver.f90} and an executable named \lstinline{driver} can be 
+produced by running\\[1ex] 
+\hspace*{.3cm}\lstinline{cd $OPENADROOT/Examples/FDC}\\ %$
+\hspace*{.3cm}\lstinline{make}\\[1ex]
+We provide other driver source files and \lstinline{Makefile}s in the following subdirectories
+\begin{description}
+\item[\tt FD] - for a finite difference approximation to the Jacobian
+\item[\tt TLM] - for the  \OpenADF\ tangent linear model, i.e. forward mode
+\item[\tt ADMsplit] - for the \OpenADF\ adjoint model in split mode (see also, \refsec{sec:cgReversal})
+\item[\tt ADMjoint] - for the \OpenADF\ adjoint model in joint mode (see also, \refsec{sec:cgReversal})
+\end{description}
+The respective executables can be obtained by running \lstinline{make} in the respective 
+subdirectories which produces an executable named 
+\lstinline{driver}{\em subDirName} and one can compare the produced output and observe matching values for the Jacobian entries. 
+We suggest to compare the driver source files and the \lstinline{Makefile}s
+to see the differences between the variants. 
+
+\noindent
+{\bf What to transform:} Note that part of the computation is an initialization done in \lstinline{init.f}. All driver files call 
+the \lstinline{init} routine but it is \underline{\em not part of the transformation} because we only want to differentiation 
+with the respect to the initial value in variable \lstinline{x} and  not with respect to the parameters that are 
+used in \lstinline{init}. Because the \lstinline{init} routine is not transformed its floating point argument will retain 
+the original type while the argument type of \lstinline{x} in \lstinline{head} has changed to the active type. 
+Consequently we use a variable \lstinline{x0} to compute the initial value then copy it from there into the active variable \lstinline{x}.    
+
+\noindent
+{\bf How to obtain the whole Jacobian:} In these examples we use a single scalar derivative associated with each scalar program variable. 
+Consequently in one sweep we can obtain in forward mode one product $\bmJ\dot{\bmx}$ or in reverse mode one product $\bar{\bmy}^T\bmJ$. 
+This means we need either $n$ forward sweeps or $m$ reverse sweeps for the whole Jacobian\footnote{Because one can see that the Jacobian 
+is in fact sparse one could employ various compression techniques to reduce the effort but we do not do this here to keep the example simple.}.   
+This is reflected in the respective loops in the driver routines that wrap the calls to the differentiated \lstinline{head} routine where in each loop
+itertation we 
+initialize $\dot{\bmx}$ or $\bar{\bmy}$ to a column of the $n\times n$ or $m\times m$ identity matrix and compute the respective 
+column or row of $\bmJ$.
+
+\noindent
+{\bf Controling split and joint mode in the adjoint model:} The principal behavior (split or joint mode) of the call graph reversal is encoded 
+in the template file that the \lstinline{openad} script uses which is controled by the \lstinline{--mode} flag which for reverse mode is set 
+either to \lstinline{rs} or \lstinline{rj}. Aside from that difference which is evident in the respective \lstinline{Makefile}s, one can 
+see in the driver logic that the split reaches up to the top level routine \lstinline{head} which in the driver is first invoked 
+for the taping sweep (the code variant is selected by calling \lstinline{OAD_rev_tape}) 
+and then again for the adjoint sweep  (the code variant is selected by calling  \lstinline{OAD_rev_adjoint}). 
+In joint mode on the other hand the implicit behavior encoded in the template is that the adjoint sweep follows immediately after 
+the taping sweep and consequently we see only one call to \lstinline{head} initially for the taping variant  
+and the template internally then selects and invokes the adjoint sweep variant of the code.    
+
+
 
 % -----------------------------------------------------------------------------------------
-\section{Shallow Water Model}
+\section{Shallow Water Model}\label{sec:shallowWater}
 In this section we will use a practical application to highlight 
 advanced aspects arising for more complicated applications. 
 The model is a time stepping scheme which eventually computes 

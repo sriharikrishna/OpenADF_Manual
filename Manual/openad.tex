@@ -654,7 +654,7 @@ From now on we assume the environment variables have been set and we will refer
 to them as needed.  
 
 % -----------------------------------------------------------------------------------------
-\section{Code Preparation with Pragmas} \label{sec:pragmas}
+\section{Code Preparation with Pragmas (incompl.)} \label{sec:pragmas}
 
 The tool chain recognizes pragmas of the format\\[1ex]
 \hspace*{.3cm}\lstinline{$openad }{\tt\em <pragma argument>}\\[1ex] %$
@@ -941,34 +941,15 @@ and\\[1ex]
 \hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/simple/ad_template.split.f}\\[1ex] %$
 respectively.
 
-\subsubsection{Checkpointing}
+\subsubsection{Checkpointing (incompl.)}
 
-\subsubsection{PostProcessor - Inlining}
+checkpointing (only  for adjoint models, see \lstinline{runTimeSupport/simple/OpenAD_checkpoints.f90})
 
-\subsubsection{PostProcessor - Templates}
+\subsubsection{PostProcessor - Inlining (incompl.)}
 
-\subsubsection{Trace}
+\subsubsection{PostProcessor - Templates (incompl.)}
 
-Because of the need to parse and unparse the model source code and link 
-with runtime support files the following general 
-All Fortran produced by \lstinline{whirl2f} needs definitions for \lstinline{kind} 
-variables that occur within the \lstinline{whirl2f}-generated code. 
-These definitions can be found in \lstinline{runTimeSupport/all/w2f__types.f90}.
-The code produced by  transformation tool chain 
-requires  implementations 
-(\OpenADF\ supplies samples) for the following aspects.
-\begin{itemize}
-\item active type (see \lstinline{runTimeSupport/simple/OpenAD_active.f90})
-\item checkpointing (only  for adjoint models, see \lstinline{runTimeSupport/simple/OpenAD_checkpoints.f90})  
-\item taping (only  for adjoint models, see \lstinline{runTimeSupport/simple/OpenAD_tape.f90})  
-\item state for call graph reversal (only  for adjoint models, see \lstinline{runTimeSupport/simple/OpenAD_rev.f90})
-\end{itemize}
-The compilation order for these various modules follows exactly the order given here.
-The provided sample implementations work with the subroutine inlining and templates found in the same 
-directory.
-
-Finally, we need a {\em driver} that invokes the transformed routines and seeds and retrieves the derivatives.
-Examples for such drivers can be found in \refsec{sec:application}.
+\subsubsection{Trace (incompl.)}
 
 % #########################################################################################
 \chapter{AD Concepts}\label{sec:ADIntro}
@@ -2243,7 +2224,7 @@ are used in transformation tool chain in the following sequence.
 \end{enumerate}
 
 % -----------------------------------------------------------------------------------------
-\subsection{Canonicalization}\label{sec:Canonicalization}
+\subsection{Canonicalization (incompl.)}\label{sec:Canonicalization}
 In \refsec{sec:xaif} we explain how the restriction to the numerical core 
 contributes to the  language independence of the transformation
 engine.
@@ -2515,7 +2496,7 @@ three tasks to be accomplished by the postprocessor.
 \end{itemize}  
 
 % -----------------------------------------------------------------------------------------
-\subsection{Postprocessing}\label{sec:PostProcessor}
+\subsection{Postprocessing (incompl.)}\label{sec:PostProcessor}
 The postprocessor performs the three tasks outlined at the end of \refsec{sec:wtxxtw}.
 This is done using the following Python script.\\[1ex]
 \hspace*{.3cm}\lstinline{$OPENADFORTTK_BASE/tools/SourceProcessing/postProcess.py}\\[1ex] %$
@@ -2810,7 +2791,7 @@ and the template internally then selects and invokes the adjoint sweep variant o
 
 
 % -----------------------------------------------------------------------------------------
-\section{Shallow Water Model}\label{sec:shallowWater}
+\section{Shallow Water Model (to be reworked)}\label{sec:shallowWater}
 In this section we will use a practical application to highlight 
 advanced aspects arising for more complicated applications. 
 The model is a time stepping scheme which eventually computes 
@@ -2959,11 +2940,6 @@ shallow water code achieves
 a run time that is only about 8 times that of  plain model computation.
 We expect the ongoing development of \OpenADF, see also \refsec{sec:mods} to yield 
 further efficiency gains.
-
-% -----------------------------------------------------------------------------------------
-\section{A Second Order Example}
-
-{\color{red} candidate for removal, unless I get the fix in for the structure stuff}
 
 % #########################################################################################
 \chapter{Modifying \OpenADF}\label{sec:mods}

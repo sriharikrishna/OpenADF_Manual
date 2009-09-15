@@ -370,12 +370,12 @@ The resulting Fortran output is written to a file called\\[1ex]
 and its contents is shown in \reffig{fig:OneMinuteTransformed}. 
 \begin{figure}
 \lstset{basicstyle=,language={[77]Fortran}}
-\small\lstinputlisting[frame=single,firstline=2]{Examples/OneMinute/head.prepped.xb.x2w.w2f.pp.f} %$
+\small\lstinputlisting[frame=single]{Examples/OneMinute/head.prepped.xb.x2w.w2f.pp.f} %$
 \caption{Forward mode transformed code for \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteTransformed}
 \end{figure}
 The formal parameters \lstinline{x} and \lstinline{y} are active and 
 consequently their type is changed. 
-Lines 25 and 26 contain the derivative of $\tan(x)$ which is $\tan(x)^2+1$.
+Lines 24 and 25 contain the derivative of $\tan(x)$ which is $\tan(x)^2+1$.
 Because of potential aliasing between the formal parameters of \lstinline{head} 
 a temporary variable \lstinline{OADsym_0} is introduced to hold the result before 
 it is assigned to the output's value component \lstinline{y%v}. 
@@ -1726,8 +1726,8 @@ example code  from \reffig{fig:OneMinute}(right) can be found in
 \begin{figure}[h]
 \small
 \lstset{language=XML,emph={xaif:BasicBlock,xaif:Entry,xaif:Assignment,xaif:AssignmentLHS,xaif:AssignmentRHS,xaif:Intrinsic,xaif:VariableReference,xaif:SymbolReference,xaif:ExpressionEdge,xaif:Exit,xaif:ControlFlowEdge},emphstyle=\bf}
-\lstinputlisting[frame=single,firstline=102,lastline=123]{Examples/OneMinute/head.prepped.xaif}
-  \caption{Snippet of \xaif\ representation for lines 4--6 of \reffig{fig:OneMinute}(right)}\label{fig:wtxxtwXaif}
+\lstinputlisting[frame=single,firstline=106,lastline=117]{Examples/OneMinute/head.prepped.xaif}
+  \caption{Snippet of \xaif\ representation for line 5 of \reffig{fig:OneMinute}(right)}\label{fig:wtxxtwXaif}
 \end{figure}
 When \lstinline{make} is invoked in \lstinline{$OPENDADROOT/Examples/OneMinute/}%$
 the full \xaif\ is written to a file called \lstinline{$OPENDADROOT/Examples/OneMinute/head.preppef.xaif}.%$

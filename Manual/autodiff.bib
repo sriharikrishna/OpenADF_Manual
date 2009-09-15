@@ -170,7 +170,13 @@
 	referred = "[Hossain2001RtN], [Bischof1996UEw], [Coleman1996SaE], [Griewank2001VJS].",
 	year = "1994",
 	volume = "15",
-	number = "2"
+	number = "2",
+	keywords = "optimization; derivatives; Jacobian; automatic differentiation; function
+	   differences; sparsity; large-scale; sensitivity analysis; nonlinear systems; ADIFOR",
+	url = "http://link.aip.org/link/?SCE/15/285/1",
+	doi = "10.1137/0915020",
+	ad_tools = "ADIFOR",
+	ad_theotech = "Sparsity"
 }
 
 @ARTICLE{
@@ -1503,7 +1509,12 @@
 	year = "1998",
 	volume = "19",
 	number = "4",
-	ad_theotech = "Sparsity"
+	ad_theotech = "Sparsity",
+	url = "http://link.aip.org/link/?SCE/19/1210/1",
+	doi = "10.1137/S1064827595295349",
+	keywords = "sparse Jacobian matrices; NP-complete problems; ADOL-C; nonlinear systems of
+	   equations; nonlinear least squares; graph coloring; bicoloring; automatic differentiation;
+	   computational differentiation; sparse finite differencing; partition problem"
 }
 
 @TECHREPORT{
@@ -1527,7 +1538,8 @@
 	year = "2000",
 	volume = "26",
 	number = "1",
-	ad_tools = "ADMAT / ADMIT"
+	ad_tools = "ADMAT / ADMIT",
+	doi = "http://doi.acm.org/10.1145/347837.347879"
 }
 
 @ARTICLE{
@@ -4263,7 +4275,8 @@
 	institution = "Rutherford Appleton Laboratory",
 	key = "Pryce1998AaF",
 	referred = "[Tadjouddine2001ATa].",
-	year = "1998"
+	year = "1998",
+	ad_tools = "HSL_AD02"
 }
 
 @INCOLLECTION{
@@ -5822,20 +5835,23 @@
 
 @ARTICLE{
 	   Corliss1987ASV,
-	AUTHOR = "George F. Corliss and Louis B. Rall",
-	TITLE = "Adaptive, Self-Validating Numerical Quadrature",
+	author = "George F. Corliss and Louis B. Rall",
+	title = "Adaptive, Self-Validating Numerical Quadrature",
 	journal = "{SIAM} Journal on Statistical and Scientific Computing",
-	VOLUME = "8",
-	NUMBER = "5",
-	YEAR = "1987",
-	PAGES = "831--847",
-	REFERRED = "[Rall1996AIt].",
-	COMMENT = "Also {\sl MRC Technical Summary Report No. 2815,\/} University of
+	volume = "8",
+	number = "5",
+	year = "1987",
+	pages = "831--847",
+	referred = "[Rall1996AIt].",
+	comment = "Also {\sl MRC Technical Summary Report No. 2815,\/} University of
 	   Wisconsin-MadGUM1995Gttn, 1985.",
-	KEYWORDS = "quadrature; automatic differentiation.",
-	ABSTRACT = "Validated bounds for $ If = \int_a^b f(x)\,dx $ are computed using
+	keywords = "quadrature; automatic differentiation.",
+	abstract = "Validated bounds for $ If = \int_a^b f(x)\,dx $ are computed using
 	   Gaussian, Newton-Cotes, or Taylor polynomial quadrature. The algorithm uses both subinterval and
-	   order adaptation. Results often differ by a few units in the last place."
+	   order adaptation. Results often differ by a few units in the last place.",
+	url = "http://link.aip.org/link/?SCE/8/831/1",
+	doi = "10.1137/0908069",
+	ad_theotech = "Interval Arithmetic"
 }
 
 @INCOLLECTION{
@@ -6212,17 +6228,6 @@
 	KEYWORDS = "point algorithm; numerical results; optimisation method.",
 	ABSTRACT = "The truncated Newton method is presented for use with large sparse unconstrained
 	   optimisation problems. It is tested on four problems under various conditions."
-}
-
-@BOOK{
-	   Duff1986DMf,
-	AUTHOR = "I. S. Duff and A. M. Erisman and J. K. Reid",
-	TITLE = "Direct Methods for Sparse Matrices",
-	PUBLISHER = "Clarendon Press",
-	SERIES = "Oxford Science Publications",
-	ADDRESS = "Oxford",
-	YEAR = "1986",
-	REFERRED = "[Griewank1991OtC]."
 }
 
 @TECHREPORT{
@@ -6899,22 +6904,24 @@
 	author = "Gershon Kedem",
 	title = "Automatic Differentiation of Computer Programs",
 	journal = "{ACM} Transactions on Mathematical Software",
-	MONTH = "June",
+	month = "June",
 	year = "1980",
-	VOLUME = "6",
-	NUMBER = "2",
-	PAGES = "150--165",
-	REFERRED = "[Rall1996AIt].",
-	COMMENT = "Also appeared as {\sl Mathematics Research Center Technical Summary No. 1697,}
+	volume = "6",
+	number = "2",
+	pages = "150--165",
+	doi = "http://doi.acm.org/10.1145/355887.355890",
+	referred = "[Rall1996AIt].",
+	comment = "Also appeared as {\sl Mathematics Research Center Technical Summary No. 1697,}
 	   University of Wisconsin - MadGUM1995Gttn, 1976; and {\sl Proc. 1977 Army Numerical Analysis and
 	   Computer Conf.}, MadGUM1995Gttn, Wisc. 1977.",
-	KEYWORDS = "automatic differentiation; Fortran subprograms.",
-	ABSTRACT = "The author discusses how functions written in high level languages can be
+	keywords = "automatic differentiation; Fortran subprograms.",
+	abstract = "The author discusses how functions written in high level languages can be
 	   automatically differentiated. The set of functions allowed is restricted to a class called {\sl
 	   piecewise factorable functions}. With this class of functions it is shown how to construct both
 	   Taylor series expansions and gradient calculations of the functions. With the use of the precompiler
 	   AUGMENT it is shown how to implement both of these. This is the first publication in English on the
-	   subject of autometic differentiation of programs. Earlier work includes [Joss76a]."
+	   subject of autometic differentiation of programs. Earlier work includes [Joss76a].",
+	ad_theotech = "History"
 }
 
 @ARTICLE{
@@ -7292,7 +7299,8 @@
 	ABSTRACT = "The lecture notes discuss implementing differentiation arithmetic in APL. APL
 	   programs which implement the basic ideas of differentiation arithmetic are given. Pascal's
 	   triangle is a standard feature of APL which allows the binomial coefficients required to be found
-	   using a table lookup."
+	   using a table lookup.",
+	ad_theotech = "General"
 }
 
 @ARTICLE{
@@ -7307,16 +7315,32 @@
 
 @ARTICLE{
 	   Neidinger1992AEM,
-	AUTHOR = "Neidinger, Richard D.",
-	TITLE = "An Efficient Method for the Numerical Evaluation of Partial Derivatives of Arbitrary
+	author = "Neidinger, Richard D.",
+	title = "An Efficient Method for the Numerical Evaluation of Partial Derivatives of Arbitrary
 	   Order",
-	JOURNAL = "ACM Trans. Math. Software",
-	VOLUME = "18",
-	NUMBER = "2",
-	YEAR = "1992",
-	MONTH = "June",
-	PAGES = "159--173",
-	NOTES = "Also appeared as Preprint, Davidson College, Davidson, N.C., 1990."
+	journal = "ACM Trans. Math. Software",
+	volume = "18",
+	number = "2",
+	year = "1992",
+	month = "June",
+	pages = "159--173",
+	url = "http://doi.acm.org/10.1145/146847.146924",
+	abstract = "For any typical multivariable expression $f$, point $a$ in the domain of $f$, and
+	   positive integer maxorder, this method produces the numerical values of all partial derivatives at
+	   $a$ up through order maxorder. By the technique known as automatic differentiation, theoretically
+	   exact results are obtained using numerical (as opposed to symbolic) manipulation. The key ideas are
+	   a hyperpyramid data structure and a generalized Leibniz's rule. Any expression in $n$ variables
+	   corresponds to a hyperpyramid array, in $n$-dimensional space, containing the numerical values of
+	   all unique partial derivatives (not wasting space on different permutations of derivatives). The
+	   arrays for simple expressions are combined by hyperpyramid operators to form the arrays for more
+	   complicated expressions. These operators are facilitated by a generalized Leibniz's rule which,
+	   given a product of multivariable functions, produces any partial derivative by forming the minimum
+	   number of products (between two lower partials) together with a product of binomial coefficients.
+	   The algorithms are described in abstract pseudo-code. A section on implementation shows how these
+	   ideas can be converted into practical and efficient programs in a typical computing environment. For
+	   any specific problem, only the expression itself would require recoding.",
+	notes = "Also appeared as Preprint, Davidson College, Davidson, N.C., 1990.",
+	ad_theotech = "General"
 }
 
 @ARTICLE{
@@ -7531,20 +7555,22 @@
 	author = "Louis B. Rall",
 	title = "Differentiation in {Pascal-SC}: Type {GRADIENT}",
 	journal = "{ACM} Transactions on Mathematical Software",
-	VOLUME = "10",
-	NUMBER = "2",
-	MONTH = "June",
+	volume = "10",
+	number = "2",
+	month = "June",
 	year = "1984",
-	PAGES = "161--184",
-	REFERRED = "[Rall1996AIt].",
-	COMMENT = "Also appeared as {\sl MRC Technical Summary Report No. 2400,\/}
+	pages = "161--184",
+	doi = "http://doi.acm.org/10.1145/399.418",
+	referred = "[Rall1996AIt].",
+	comment = "Also appeared as {\sl MRC Technical Summary Report No. 2400,\/}
 	   Mathematics Research Center, University of Wisconsin-MadGUM1995Gttn (1982).",
-	KEYWORDS = "point algorithm; differentiation arithmetic.",
-	ABSTRACT = "The author shows how first order parital derivatives can be generated
+	keywords = "point algorithm; differentiation arithmetic.",
+	abstract = "The author shows how first order parital derivatives can be generated
 	   automatically using the language PASCAL--SC. The form data structures used in the language are
 	   given, as well as the source code. The resulting code is tested on the solution of nonlinear systems
 	   of equations using Newton's method. The numerical example given is a simple 4 variable
-	   problem."
+	   problem.",
+	ad_theotech = "History"
 }
 
 @ARTICLE{
@@ -8361,17 +8387,20 @@
 	REFERRED = "[Christianson1996SSU]."
 }
 
-@TECHREPORT{
-	   Duff1993MAF,
-	AUTHOR = "I. S. Duff and J. K. Reid",
-	TITLE = "{MA48}, A {F}ortran Code for Direct Solution of Sparse Unsymmetric Linear Systems of
-	   Equations",
-	INSTITUTION = "Rutherford Appleton Laboratory",
-	ADDRESS = "Oxfordshire, UK",
-	YEAR = "1993",
-	TYPE = "Report",
-	NUMBER = "RAL--93--072",
-	REFERRED = "[Feehery1996ADB]."
+@ARTICLE{
+	   Gockenbach2002Eaa,
+	author = "Gockenbach, Mark S. and Reynolds, Daniel R. and Shen, Peng and Symes, William W.",
+	title = "Efficient and automatic implementation of the adjoint state method",
+	journal = "ACM Trans. Math. Softw.",
+	volume = "28",
+	number = "1",
+	year = "2002",
+	issn = "0098-3500",
+	pages = "22--44",
+	doi = "http://doi.acm.org/10.1145/513001.513003",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	ad_theotech = "Adjoint"
 }
 
 @ARTICLE{
@@ -8904,13 +8933,18 @@
 
 @ARTICLE{
 	   Mattsson1993IRi,
-	AUTHOR = "S. E. Mattsson and G. S{\"o}derlind",
-	TITLE = "Index Reduction in Differential-Algebraic Equations Using Dummy Derivatives",
-	JOURNAL = "SIAM J. Sci. Stat. Comput.",
-	VOLUME = "14",
-	YEAR = "1993",
-	PAGES = "677-692",
-	REFERRED = "[Feehery1996ADB]."
+	author = "S. E. Mattsson and G. S{\"o}derlind",
+	title = "Index Reduction in Differential-Algebraic Equations Using Dummy Derivatives",
+	journal = "SIAM J. Sci. Stat. Comput.",
+	volume = "14",
+	year = "1993",
+	pages = "677-692",
+	referred = "[Feehery1996ADB].",
+	keywords = "differential-algebraic; index reduction; dummy derivative; constraint
+	   stabilization; solution invariant; automatic differentiation",
+	url = "http://link.aip.org/link/?SCE/14/677/1",
+	doi = "10.1137/0914043",
+	ad_area = "Differential-Algebraic Equation"
 }
 
 @INPROCEEDINGS{
@@ -9264,16 +9298,6 @@
 	ad_theotech = "Adjoint",
 	year = "2000",
 	volume = "65"
-}
-
-@ARTICLE{
-	   GockenbachEaA,
-	author = "Mark S. Gockenbach and Daniel R. Reynolds and William W. Symes",
-	year = "submitted",
-	title = "Efficient and Automatic Implementation of the Adjoint State Method",
-	journal = "ACM Trans. Math. Software",
-	key = "GockenbachEaA",
-	referred = "[Gockenbach2001ADa]."
 }
 
 @PROCEEDINGS{
@@ -10370,14 +10394,22 @@
 	annote = "nonlinear observer design using automatic differentiation"
 }
 
-@BOOK{
-	   Garey1979CaI,
-	author = "M. R. Garey and D. S. Johnson",
-	title = "Computers and Intractability: A Guide to the Theory of NP--Completeness",
-	publisher = "Freeman",
-	address = "San Francisco",
-	ad_area = "Meteorology",
-	year = "1979"
+@ARTICLE{
+	   Coleman1999TEC,
+	author = "Thomas F. Coleman and Gudbjorn F. Jonsson",
+	title = "The Efficient Computation of Structured Gradients using Automatic Differentiation",
+	publisher = "SIAM",
+	year = "1999",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "20",
+	number = "4",
+	pages = "1430-1437",
+	keywords = "automatic differentiation; computational differentiation; gradients; optimization;
+	   inverse problems",
+	url = "http://link.aip.org/link/?SCE/20/1430/1",
+	doi = "10.1137/S1064827597320794",
+	ad_tools = "ADMAT / ADMIT, ADOL-C",
+	ad_theotech = "Reverse Mode, Sparsity"
 }
 
 @ARTICLE{
@@ -13140,7 +13172,8 @@
 	   specification of a {\em single step} of the scheme, and assembles from it a complete simulator,
 	   along with the linearized and adjoint simulations. The result is a (nonlinear) operator in the sense
 	   of the Hilbert Class Library, a C++ package for optimization. Performance is equivalent to that of
-	   optimized Fortran implementations."
+	   optimized Fortran implementations.",
+	ad_theotech = "Adjoint"
 }
 
 @INCOLLECTION{
@@ -13668,7 +13701,7 @@
 	ad_theotech = "General",
 	year = "2005",
 	volume = "50",
-
+	doi = "10.1007/3-540-28438-9"
 }
 
 @ARTICLE{
@@ -13878,7 +13911,11 @@
 	volume = "26",
 	number = "5",
 	pdf = "http://yoric.mit.edu/download/Papers/doz_siam05.pdf",
-	ad_theotech = "Hessian"
+	ad_theotech = "Hessian",
+	keywords = "second order adjoint method; Hessian-vector products; staggered corrector method;
+	   BDF method",
+	url = "http://link.aip.org/link/?SCE/26/1725/1",
+	doi = "10.1137/030601582"
 }
 
 @INCOLLECTION{
@@ -14156,7 +14193,9 @@
 	volume = "31",
 	number = "4",
 	year = "2005",
+	pages = "458--474",
 	ad_tools = "NAGWare Fortran 95",
+	url = "http://doi.acm.org/10.1145/1114268.1114270",
 	abstract = "The availability of first derivatives of vector functions is crucial for the
 	   robustness and effciency of a large number of numerical algorithms. An upcoming new version of the
 	   differentiation-enabled NAGWare Fortran 95 compiler is described that uses programming language
@@ -14922,9 +14961,7 @@
 
 @ARTICLE{
 	   Guckenheimer2000CPO,
-	ad_area = "Biology",
 	ad_tools = "ADOL-C",
-	ad_theotech = "Reverse Mode, Taylor Arithmetic",
 	author = "John Guckenheimer and Brian Meloon",
 	title = "Computing Periodic Orbits and their Bifurcations with Automatic Differentiation",
 	journal = "SIAM Journal on Scientific Computing",
@@ -17473,9 +17510,10 @@
 	journal = "{ACM} Transactions on Mathematical Software",
 	volume = "34",
 	number = "4",
+	pages = "18:1--18:36",
 	year = "2008",
-	accepted = "2 July 2007",
-	upcoming = "true",
+	url = "http://doi.acm.org/10.1145/1377596.1377598",
+	ad_tools = "OpenAD",
 	abstract = "The OpenAD/F tool allows the evaluation of derivatives of functions defined by a
 	   Fortran program. The derivative evaluation is performed by a Fortran code resulting from the
 	   analysis and transformation of the original program that defines the function of interest. OpenADF
@@ -17493,8 +17531,7 @@
 	   level. As an example from geophysical fluid dynamics a nonlinear time-dependent scalable, yet
 	   simple, barotropic ocean model is considered. OpenAD/F's reverse mode is applied to compute
 	   sensitivities of some of the model's transport properties with respect to gridded fields such
-	   as bottom topography as independent (control) variables.",
-	ad_tools = "OpenAD"
+	   as bottom topography as independent (control) variables."
 }
 
 @PHDTHESIS{
@@ -18748,13 +18785,14 @@
 
 @ARTICLE{
 	   Walther2008CSH,
-	title = "Computing Sparse Hessians with Automatic Differentiation",
+	title = "Computing Sparse {H}essians with Automatic Differentiation",
 	author = "Andrea Walther",
 	publisher = "ACM",
 	year = "2008",
-	journal = "Transaction on Mathematical Software",
+	journal = "{ACM} Transaction on Mathematical Software",
 	volume = "34",
-	pages = "Article 3",
+	number = "1",
+	pages = "3:1--3:15",
 	abstract = "A new approach for computing a sparsity pattern for a Hessian is presented:
 	   nonlinearity information is propagated through the function evaluation yielding the nonzero
 	   structure. A complexity analysis of the proposed algorithm is given. Once the sparsity pattern is
@@ -18764,7 +18802,8 @@
 	   given for some problems of the CUTE collection.",
 	ad_area = "Optimization",
 	ad_tools = "ADOL-C",
-	ad_theotech = "Sparsity"
+	ad_theotech = "Sparsity",
+	url = "http://doi.acm.org/10.1145/1322436.1322439"
 }
 
 @INPROCEEDINGS{
@@ -19279,7 +19318,12 @@
 	number = "1",
 	journal = "{ACM} Transactions on Mathematical Software",
 	year = "2008",
-	ad_theotech = "Combinatorics"
+	ad_theotech = "Combinatorics",
+	pages = "1--20",
+	doi = "http://doi.acm.org/10.1145/1377603.1377605",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	issn = "0098-3500"
 }
 
 @INPROCEEDINGS{
@@ -19583,5 +19627,251 @@
 	ad_area = "Computational Fluid Dynamics",
 	ad_tools = "ADIFOR",
 	ad_theotech = "Jacobian-vector product"
+}
+
+@ARTICLE{
+	   Bartlett2008Hds,
+	author = "Bartlett, Roscoe A. and Waanders, Bart G. Van Bloemen and Berggren, Martin",
+	title = "Hybrid differentiation strategies for simulation and analysis of applications in
+	   C++",
+	journal = "ACM Trans. Math. Softw.",
+	volume = "35",
+	number = "1",
+	year = "2008",
+	issn = "0098-3500",
+	pages = "1--29",
+	doi = "http://doi.acm.org/10.1145/1377603.Bartlett2008Hds",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	ad_theotech = "Hybrid"
+}
+
+@ARTICLE{
+	   Shampine2005UAt,
+	author = "L. F. Shampine and Robert Ketzscher and Shaun A. Forth",
+	title = "Using {AD} to Solve BVPs in {Matlab}",
+	journal = "{ACM} Transactions on Mathematical Software",
+	volume = "31",
+	number = "1",
+	year = "2005",
+	pages = "79--94",
+	url = "http://doi.acm.org/10.1145/1055531.1055535",
+	abstract = "The Matlab program {\tt bvp4c} solves two--point boundary value problems
+	   (BVPs) of considerable generality. The numerical method requires partial derivatives of several
+	   kinds. To make solving BVPs as easy as possible, the default in {\tt bvp4c} is to approximate
+	   these derivatives with finite differences. The solver is more robust and efficient if analytical
+	   derivatives are supplied. In this paper we investigate how to use automatic differentiation (AD) to
+	   obtain the advantages of analytical derivatives without giving up the convenience of finite
+	   differences. In {\tt bvp4cAD} we have approached this ideal by a careful use of the MAD AD tool
+	   and some modification of {\tt bvp4c}.",
+	month = "mar",
+	ad_tools = "TOMLAB /MAD, MAD"
+}
+
+@ARTICLE{
+	   Martins2003Tcs,
+	author = "Joaquim R. R. A. Martins and Peter Sturdza and Juan J. Alonso",
+	title = "The complex-step derivative approximation",
+	journal = "{ACM} Transactions on Mathematical Software",
+	volume = "29",
+	number = "3",
+	pages = "245--262",
+	year = "2003",
+	coden = "ACMSCU",
+	doi = "http://doi.acm.org/10.1145/838250.838251",
+	issn = "0098-3500",
+	bibdate = "Thu Aug 7 14:01:48 MDT 2003",
+	bibsource = "http://www.acm.org/pubs/contents/journals/toms/",
+	abstract = "The complex-step derivative approximation and its application to numerical
+	   algorithms are presented. Improvements to the basic method are suggested that further increase its
+	   accuracy and robustness and unveil the connection to algorithmic differentiation theory. A general
+	   procedure for the implementation of the complex-step method is described in detail and a script is
+	   developed that automates its implementation. Automatic implementations of the complex-step method
+	   for Fortran and C/C++ are presented and compared to existing algorithmic differentiation tools. The
+	   complex-step method is tested in two large multidisciplinary solvers and the resulting sensitivities
+	   are compared to results given by finite differences. The resulting sensitivities are shown to be as
+	   accurate as the analyses. Accuracy, robustness, ease of implementation and maintainability make
+	   these complex-step derivative approximation tools very attractive options for sensitivity
+	   analysis.",
+	month = "sep",
+	ad_theotech = "Complex Step Differentiation"
+}
+
+@ARTICLE{
+	   Borggaard2000OES,
+	author = "Jeff Borggaard and Arun Verma",
+	title = "On Efficient Solutions to the Continuous Sensitivity Equation Using Automatic
+	   Differentiation",
+	publisher = "SIAM",
+	year = "2000",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "22",
+	number = "1",
+	pages = "39-62",
+	keywords = "small shape optimization; automatic differentiation; continuous sensitivity
+	   equation; shape sensitivity; mesh sensitivity; boundary conditions; ADMAT; ADMIT",
+	url = "http://link.aip.org/link/?SCE/22/39/1",
+	doi = "10.1137/S1064827599352136",
+	ad_area = "Shape optimization"
+}
+
+@ARTICLE{
+	   Tolsma1999ECo,
+	author = "John E. Tolsma and Paul I. Barton",
+	title = "Efficient Calculation of Sparse Jacobians",
+	publisher = "SIAM",
+	year = "1999",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "20",
+	number = "6",
+	pages = "2282-2296",
+	keywords = "Jacobian evaluation; automatic differentiation; common subexpressions; subgraph
+	   reduction",
+	url = "http://link.aip.org/link/?SCE/20/2282/1",
+	doi = "10.1137/S1064827597316552",
+	ad_theotech = "Sparsity"
+}
+
+@ARTICLE{
+	   Wang2009MRD,
+	author = "Qiqi Wang and Parviz Moin and Gianluca Iaccarino",
+	title = "Minimal Repetition Dynamic Checkpointing Algorithm for Unsteady Adjoint Calculation",
+	publisher = "SIAM",
+	year = "2009",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "31",
+	number = "4",
+	pages = "2549-2567",
+	keywords = "adjoint equation; dynamic checkpointing; automatic differentiation; checkpointing
+	   scheme; optimal checkpointing; online checkpointing; revolve",
+	url = "http://link.aip.org/link/?SCE/31/2549/1",
+	doi = "10.1137/080727890",
+	ad_theotech = "Checkpointing"
+}
+
+@ARTICLE{
+	   Pryce2008FAD,
+	author = "John D. Pryce and Emmanuel M. Tadjouddine",
+	title = "Fast Automatic Differentiation Jacobians by Compact LU Factorization",
+	publisher = "SIAM",
+	year = "2008",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "30",
+	number = "4",
+	pages = "1659-1677",
+	keywords = "automatic differentiation; vertex elimination; source transformation; abstract
+	   computational graph; sparse matrix; LU factorization",
+	url = "http://link.aip.org/link/?SCE/30/1659/1",
+	doi = "10.1137/050644847",
+	ad_theotech = "General"
+}
+
+@ARTICLE{
+	   Barrio2006SAo,
+	author = "Roberto Barrio",
+	title = "Sensitivity Analysis of ODES/DAES Using the Taylor Series Method",
+	publisher = "SIAM",
+	year = "2006",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "27",
+	number = "6",
+	pages = "1929-1947",
+	keywords = "Taylor method; sensitivity analysis; automatic differentiation; partial
+	   derivatives",
+	url = "http://link.aip.org/link/?SCE/27/1929/1",
+	doi = "10.1137/030601892",
+	ad_theotech = "Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Kuznetsov2005NNF,
+	author = "Yu. A. Kuznetsov and H. G. E. Meijer",
+	title = "Numerical Normal Forms for Codim 2 Bifurcations of Fixed Points with at Most Two
+	   Critical Eigenvalues",
+	publisher = "SIAM",
+	year = "2005",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "26",
+	number = "6",
+	pages = "1932-1954",
+	keywords = "bifurcations of fixed points; normal forms; automatic differentiation",
+	url = "http://link.aip.org/link/?SCE/26/1932/1",
+	doi = "10.1137/030601508",
+	ad_tools = "ADOL-C"
+}
+
+@ARTICLE{
+	   Kearfott2005VLR,
+	author = "R. Baker Kearfott and Siriporn Hongthong",
+	title = "Validated Linear Relaxations and Preprocessing: Some Experiments",
+	publisher = "SIAM",
+	year = "2005",
+	journal = "SIAM Journal on Optimization",
+	volume = "16",
+	number = "2",
+	pages = "418-433",
+	keywords = "nonconvex optimization; global optimization; computational complexity; automatic
+	   differentiation; GlobSol; symbolic computation; linear relaxation",
+	url = "http://link.aip.org/link/?SJE/16/418/1",
+	doi = "10.1137/030602186",
+	ad_theotech = "Interval Arithmetic"
+}
+
+@ARTICLE{
+	   Coleman2008FNC,
+	author = "Thomas F. Coleman and Wei Xu",
+	title = "Fast (Structured) Newton Computations",
+	publisher = "SIAM",
+	year = "2008",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "31",
+	number = "2",
+	pages = "1175-1191",
+	keywords = "Newton method; automatic differentiation; Jacobian matrix",
+	url = "http://link.aip.org/link/?SCE/31/1175/1",
+	doi = "10.1137/070701005",
+	ad_theotech = "Sparsity"
+}
+
+@ARTICLE{
+	   Tolsma2002HDa,
+	author = "John E. Tolsma and Paul I. Barton",
+	title = "Hidden Discontinuities and Parametric Sensitivity Calculations",
+	publisher = "SIAM",
+	year = "2002",
+	journal = "SIAM Journal on Scientific Computing",
+	volume = "23",
+	number = "6",
+	pages = "1861-1874",
+	keywords = "hybrid discrete/continuous simulation; parametric sensitivity analysis;
+	   differential-algebraic equations; automatic differentiation; state events; DAEPACK",
+	url = "http://link.aip.org/link/?SCE/23/1861/1",
+	doi = "10.1137/S106482750037281X",
+	ad_area = "Differential-Algebraic Equation"
+}
+
+@ARTICLE{
+	   Rall2007EAD,
+	author = "Louis B. Rall",
+	title = "Early Automatic Differentiation: {T}he Ch&#8217;in-{H}orner Algorithm",
+	journal = "Reliable Computing",
+	volume = "13",
+	number = "3",
+	year = "2007",
+	pages = "3003-308",
+	ad_theotech = "History"
+}
+
+@ARTICLE{
+	   Prud.homme2006Ads,
+	author = "Christophe Prud'homme",
+	title = "A domain specific embedded language in {C++} for automatic differentiation,
+	   projection, integration and variational formulations",
+	journal = "Scientific Programming",
+	volume = "14",
+	number = "2",
+	year = "2006",
+	pages = "81--110",
+	ad_theotech = "Implementation Strategies"
 }
 

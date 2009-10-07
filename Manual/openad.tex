@@ -366,11 +366,11 @@ like the ones shown in \reffig{fig:oneMinuteStatusOutput}.
 \caption{Progress messages from \lstinline{openad} for forward mode.}\label{fig:oneMinuteStatusOutput}
 \end{figure}
 The resulting Fortran output is written to a file called\\[1ex]
-\hspace*{.3cm}\lstinline{$OPENDADROOT/Examples/OneMinute/head.prepped.xb.x2w.w2f.pp.f}\\[1ex] %$
+\hspace*{.3cm}\lstinline{$OPENDADROOT/Examples/OneMinute/head.prepped.pre.xb.x2w.w2f.post.f90}\\[1ex] %$
 and its contents is shown in \reffig{fig:OneMinuteTransformed}. 
 \begin{figure}
 \lstset{basicstyle=,language={[77]Fortran}}
-\small\lstinputlisting[frame=single]{Examples/OneMinute/head.prepped.xb.x2w.w2f.pp.f} %$
+\small\lstinputlisting[frame=single]{Examples/OneMinute/head.prepped.pre.xb.x2w.w2f.post.f90} %$
 \caption{Forward mode transformed code for \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteTransformed}
 \end{figure}
 The formal parameters \lstinline{x} and \lstinline{y} are active and 
@@ -443,12 +443,12 @@ The script produces progress output like the one shown in \reffig{fig:oneMinuteR
 \caption{Progress messages from \lstinline{openad} for reverse mode.}\label{fig:oneMinuteReverseStatusOutput}
 \end{figure}
 The resulting Fortran output is written to a file called\\[1ex]
-\hspace*{.3cm}\lstinline{$OPENADROOT/Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f}\\[1ex] %$
+\hspace*{.3cm}\lstinline{$OPENADROOT/Examples/OneMinuteReverse/head.prepped.pre.xb.x2w.w2f.post.f90}\\[1ex] %$
 and sections of it are shown in \reffig{fig:OneMinuteReverseTransformed}. 
 \begin{figure}
-\lstset{language=[77]Fortran,basicstyle=}
-\small\lstinputlisting[frame=single]{oneMinuteReverseTaping.f}
-\small\lstinputlisting[frame=single]{oneMinuteReverseAdjoint.f}
+\lstset{language=[90]Fortran,basicstyle=}
+\small\lstinputlisting[frame=single]{oneMinuteReverseTaping.f90}
+\small\lstinputlisting[frame=single]{oneMinuteReverseAdjoint.f90}
 \caption{Reverse mode transformed code sections for taping (top) and adjoint (bottom) for the code from \reffig{fig:OneMinute} (left)}\label{fig:OneMinuteReverseTransformed}
 \end{figure}
 In particular in \reffig{fig:OneMinuteReverseTransformed}(top) one can observe 
@@ -715,7 +715,7 @@ The reverse (or adjoint) mode is described in \refsec{sec:BBRev};
 the ``split'' and ``joint'' variants refer to two different schemes for call graph reversal (see \refsec{sec:cgReversal}).
 
 As an example, assume we wish to create a tangent-linear version of a code in a file named \lstinline{head.f}.
-Invoking the command \lstinline{openad head.f} will create the transformed file \lstinline{head.xb.x2w.w2f.pp.f},
+Invoking the command \lstinline{openad head.f} will create the transformed file \lstinline{head.pre.xb.x2w.w2f.post.f},
 where the following messages appear as output during the transformation process. \\[1ex]
 \begin{boxedminipage}{\textwidth}
 \scriptsize\verbatiminput{openadScriptOutput.txt}
@@ -1726,11 +1726,11 @@ example code  from \reffig{fig:OneMinute}(right) can be found in
 \begin{figure}[h]
 \small
 \lstset{language=XML,emph={xaif:BasicBlock,xaif:Entry,xaif:Assignment,xaif:AssignmentLHS,xaif:AssignmentRHS,xaif:Intrinsic,xaif:VariableReference,xaif:SymbolReference,xaif:ExpressionEdge,xaif:Exit,xaif:ControlFlowEdge},emphstyle=\bf}
-\lstinputlisting[frame=single,firstline=106,lastline=117]{Examples/OneMinute/head.prepped.xaif}
+\lstinputlisting[frame=single,firstline=106,lastline=117]{Examples/OneMinute/head.prepped.pre.xaif}
   \caption{Snippet of \xaif\ representation for line 5 of \reffig{fig:OneMinute}(right)}\label{fig:wtxxtwXaif}
 \end{figure}
 When \lstinline{make} is invoked in \lstinline{$OPENDADROOT/Examples/OneMinute/}%$
-the full \xaif\ is written to a file called \lstinline{$OPENDADROOT/Examples/OneMinute/head.preppef.xaif}.%$
+the full \xaif\ is written to a file called \lstinline{$OPENDADROOT/Examples/OneMinute/head.prepped.pre.xaif}.%$
 
 Further documentation for individual elements can be found directly in the 
 schema annotations. 
@@ -1818,7 +1818,7 @@ In the following sections we want to concentrate on the transformation
 the algorithms execute while deferring to the generated code 
 documentation for most technical details.
 
-Each algorithm has a driver \lstinline{t.pp} (compiled into a binary \lstinline{t}) 
+Each algorithm has a driver \lstinline{oadDriver.cpp} (compiled into a binary \lstinline{oadDriver}) 
 found in \lstinline{algorithms/<the_algorithm_name>/test/} 
 that encapsulates the algorithm 
 in a stand-alone binary which provides the functionality described 
@@ -2841,15 +2841,15 @@ The module variables are accessed by the top level routine that computes the mod
 Because of the common access to the global data we put all the code in \lstinline{all_globals_mod.f} and 
 \lstinline{head.f} together into one file called \lstinline{numCore.f} (see the respective \lstinline{Makefile}s 
 in the \OpenADF\ variants of the example)  and transform the entire code. 
-After running \lstinline{make} one can inspect the transformed code in \lstinline{numCore.xb.x2w.w2f.pp.f}
+After running \lstinline{make} one can inspect the transformed code in \lstinline{numCore.pre.xb.x2w.w2f.post.f}
 and find that the module variables \lstinline{T} and \lstinline{S} have had their type changed to 
 \lstinline{type(active)} and the 
 transformed \lstinline{box_ini_fields} correctly references them with the value component of the active type. 
 
 \noindent
-{\bf Compile order:} Note, that the transformed source code in \lstinline{numCore.xb.x2w.w2f.pp.f} 
+{\bf Compile order:} Note, that the transformed source code in \lstinline{numCore.pre.xb.x2w.w2f.post.f} 
 contains the modified module which is referenced by the driver routine so that we can access the derivative
-components. Therefore the compilation of \lstinline{numCore.xb.x2w.w2f.pp.f} has to happen before 
+components. Therefore the compilation of \lstinline{numCore.pre.xb.x2w.w2f.post.f} has to happen before 
 the compilation of the driver which is reflected in the \lstinline{Makefile}.
 
 \noindent

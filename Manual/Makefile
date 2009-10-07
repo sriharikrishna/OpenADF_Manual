@@ -16,8 +16,8 @@ oneMinuteOutput.txt \
 oneMinuteExplOutput.txt \
 oneMinuteReverseStatusOutput.txt \
 oneMinuteReverseOutput.txt \
-oneMinuteReverseTaping.f \
-oneMinuteReverseAdjoint.f \
+oneMinuteReverseTaping.f90 \
+oneMinuteReverseAdjoint.f90 \
 oneMinuteReverseExplOutput.txt \
 openadUpdateFlags.txt \
 openadStatusOutput.txt \
@@ -97,11 +97,11 @@ oneMinuteReverseOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinuteReverse && $(MAKE)
 	cd Examples/OneMinuteReverse ; ./driver > ${THISDIR}/$@
 
-oneMinuteReverseTaping.f : oneMinuteReverseStatusOutput.txt
-	cat Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C taping/,/C taping end/p' > ${THISDIR}/$@
+oneMinuteReverseTaping.f90 : oneMinuteReverseStatusOutput.txt
+	cat Examples/OneMinuteReverse/head.prepped.pre.xb.x2w.w2f.post.f90 | sed -n '/! taping/,/! taping end/p' > ${THISDIR}/$@
 
-oneMinuteReverseAdjoint.f : oneMinuteReverseStatusOutput.txt
-	cat Examples/OneMinuteReverse/head.prepped.xb.x2w.w2f.pp.f | sed -n '/C adjoint/,/C adjoint end/p' > ${THISDIR}/$@
+oneMinuteReverseAdjoint.f90 : oneMinuteReverseStatusOutput.txt
+	cat Examples/OneMinuteReverse/head.prepped.pre.xb.x2w.w2f.post.f90 | sed -n '/! adjoint/,/! adjoint end/p' > ${THISDIR}/$@
 
 oneMinuteReverseExplOutput.txt : Examples $(FORCE)
 	cd Examples/OneMinuteReverse && $(MAKE) -B driverE | ${THISDIR}/fold.py -c -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@

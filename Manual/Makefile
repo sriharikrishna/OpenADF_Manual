@@ -26,6 +26,8 @@ openadScriptOptions.txt \
 openadScriptNoAction.txt \
 preProcessOptions.txt \
 Examples/SRCanonical/func.pre.f90 \
+Examples/MaxCanonical/func.pre.f90 \
+Examples/ArgExprCanonical/func.pre.f90 \
 postProcessOptions.txt \
 mfef90Options.txt \
 whirl2fOptions.txt \
@@ -120,6 +122,12 @@ preProcessOptions.txt : $(FORCE)
 Examples/SRCanonical/func.pre.f90 : Examples $(FORCE)
 	cd Examples/SRCanonical && $(MAKE)
 
+Examples/MaxCanonical/func.pre.f90 : Examples $(FORCE)
+	cd Examples/MaxCanonical && $(MAKE)
+
+Examples/ArgExprCanonical/func.pre.f90 : Examples $(FORCE)
+	cd Examples/ArgExprCanonical && $(MAKE)
+
 postProcessOptions.txt : $(FORCE)
 	${OPENADFORTTK_BASE}/tools/SourceProcessing/postProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
 
@@ -136,7 +144,7 @@ xaif2whirlOptions.txt : $(FORCE)
 	${OPENADFORTTKROOT}/bin/xaif2whirl -h 2> ${THISDIR}/$@
 
 rtPropagationRoutines.txt : $(FORCE)
-	cat ${OPENADROOT}/runTimeSupport/scalar/OAD_active.f90 | grep subroutine | grep -v convert | grep -v 'end subroutine' | grep -v 'allocateMatching' |  sed 's/ *subroutine //' > ${THISDIR}/$@
+	cat ${OPENADROOT}/runTimeSupport/scalar/OAD_active.f90 | grep subroutine | grep -v convert | grep -v 'end subroutine' | grep -v 'allocateMatching' | grep -v 'shapeTest' | grep -v 'runTimeError' |  sed 's/ *subroutine //' > ${THISDIR}/$@
 
 numericalDiscrepancy.ps : $(FORCE)
 	cd ${OPENADROOT}/Regression/testRoundTrip && $(MAKE) clean

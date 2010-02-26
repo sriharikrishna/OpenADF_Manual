@@ -1,6 +1,0 @@
-subroutine oad_s_foo(a,b,oad_ctmp0)
-! type matches foo return
-  real oad_ctmp0
-! old declarations, body etc...
-  oad_ctmp0 =...
-end 

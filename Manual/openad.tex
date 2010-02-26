@@ -884,54 +884,51 @@ The definitions cover the data type, conversion routines from active to passive,
 and propagation operations.
 \begin{itemize}
 \item conversion routines between active and passive data overloaded as module procedures for various  precisions and shapes with the following variations.
-$$
-\mbox{\tt convert\_}
-\left[\begin{array}{c}
-\mbox{\tt a2sp} \\
-\mbox{\tt a2p} \\
-\mbox{\tt p2a} \\
-\mbox{\tt sp2a}
-\end{array}\right]
-\mbox{\tt \_}
-\left[\begin{array}{c}
-\mbox{\tt scalar} \\
-\mbox{\tt vector} \\
-\mbox{\tt matrix} \\
-\mbox{\tt three\_tensor}\\
-\mbox{\tt four\_tensor}\\
-\mbox{\tt five\_tensor}\\
-\mbox{\tt six\_tensor}\\
-\mbox{\tt seven\_tensor}\\
-\end{array}\right]
-\mbox{\tt \_impl(convertTo, convertFrom)}
-$$
+\begin{center}
+\tt 
+convert\_[d|r|a][0-7]\_[d|r|a][0-7](convertTo, convertFrom)
+\end{center}
 \item propagation routines overloaded as module procedures for various precisions and shapes listed in \reffig{fig:runtimeActive}
-\end{itemize} 
+\end{itemize}
+In the above we abbreviate \\[1ex]
+\hspace*{.3cm}
+\begin{tabular}{c|l}
+\tt i & integer (4 byte) \\ 
+\tt l & inetger (8 byte) \\ 
+\tt r & float (4 btye) \\ 
+\tt d & float (8 byte) \\ 
+\tt a & active type \\
+\end{tabular}\\
+and the following digit $\in [0-7]$ indicates the respective shape.
 \begin{figure}
 \begin{minipage}[t]{.48\linewidth}
-\scriptsize\lstinputlisting[frame=single,lastline=8]{rtPropagationRoutines.txt}
+\scriptsize\lstinputlisting[frame=single,lastline=12]{rtPropagationRoutines.txt}
 \end{minipage}
 \hspace{.02\linewidth}
 \begin{minipage}[t]{.48\linewidth}
-\scriptsize\lstinputlisting[frame=single,firstline=9]{rtPropagationRoutines.txt}
+\scriptsize\lstinputlisting[frame=single,firstline=13]{rtPropagationRoutines.txt}
 \end{minipage}
 \caption{Propagation routines extracted from \lstinline{$OPENADROOT/runTimeSupport/scalar/OAD_active.f90} %$
-}\label{fig:runtimeActive}
+}\label{fig:runtimeActive}	
 \end{figure}
 
 \paragraph{Scalar}
-An active type for propagation of scalar derivative components is defined in \\[1ex]
-\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/scalar/OAD_active.f90} %$
-
+An active type for propagation of scalar derivative components is defined in\footnote{
+This file is created from \lstinline{$OPENADROOT/runTimeSupport/genBase/OAD_active.F90} %$  
+by preprocessing.
+} \\[1ex]
+\hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/scalar/OAD_active.f90}%$
 \paragraph{Vector}
 An active type for propagation of a vector of length 
-\lstinline{max_deriv_vec_len} of derivative components is defined in \\[1ex]
+\lstinline{max_deriv_vec_len} of derivative components is defined in\footnotemark[\value{footnote}] \\[1ex]
 \hspace*{.3cm}\lstinline{$OPENADROOT/runTimeSupport/vector/OAD_active.f90}\\[1ex] %$
 For the sake of simplicity with the demonstration examples 
 we have here hard coded the value of \lstinline{max_deriv_vec_len}.  
 This value should be adjusted for a given application context either to the number of independent 
 variables or a suitable slice size when repeated computation over slices (aka ``strip mining'') 
-is to be done.
+is to be done.\\
+This file is created from \lstinline{$OPENADROOT/runTimeSupport/genBase/OAD_active.F90} %$  
+by preprocessing.
 
 \subsubsection{Taping}
 A simple implementation for  tape storage can be found in \\[1ex]
@@ -1726,7 +1723,7 @@ example code  from \reffig{fig:OneMinute}(right) can be found in
 \begin{figure}[h]
 \small
 \lstset{language=XML,emph={xaif:BasicBlock,xaif:Entry,xaif:Assignment,xaif:AssignmentLHS,xaif:AssignmentRHS,xaif:Intrinsic,xaif:VariableReference,xaif:SymbolReference,xaif:ExpressionEdge,xaif:Exit,xaif:ControlFlowEdge},emphstyle=\bf}
-\lstinputlisting[frame=single,firstline=106,lastline=117]{Examples/OneMinute/head.prepped.pre.xaif}
+\lstinputlisting[frame=single,firstline=119,lastline=130]{Examples/OneMinute/head.prepped.pre.xaif}
   \caption{Snippet of \xaif\ representation for line 5 of \reffig{fig:OneMinute}(right)}\label{fig:wtxxtwXaif}
 \end{figure}
 When \lstinline{make} is invoked in \lstinline{$OPENDADROOT/Examples/OneMinute/}%$
@@ -2256,20 +2253,35 @@ In the following we describe the canonical form.
 
 \begin{Can} \label{can:funcToSub}
   All function calls  
-  are canonicalized into subroutine calls, see \reffig{fig:funcToSubCall}.
+  are canonicalized into subroutine calls, see \reffig{fig:funcToSubCall} line 9 on the left 
+vs. lines 22,23 on the right.
 \begin{figure}
 \begin{minipage}[t]{.48\linewidth}
-\lstinputlisting[basicstyle=,frame=single,language=Fortran]{Examples/SRCanonical/func.f90}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=6]{Examples/SRCanonical/func.f90}
 \end{minipage}
 \hspace{.02\linewidth}
 \begin{minipage}[t]{.48\linewidth}
-\lstinputlisting[basicstyle=,frame=single,language=Fortran]{Examples/SRCanonical/func.pre.f90}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=15]{Examples/SRCanonical/func.pre.f90}
 \end{minipage}
-\caption{Canonicalizing a function (left, see  see file 
+\caption{Canonicalizing a function call (left, see file 
 \lstinline{$OPENADROOT/Examples/SRCanonical/func.f90}), %$
-to a subroutine (right,  see file 
+to a subroutine call (right,  see file 
 \lstinline{$OPENADROOT/Examples/SRCanonical/func.pre.f90} after running \lstinline{make})} %$
  \label{fig:funcToSubCall}
+  \end{figure}
+\begin{figure}
+\begin{minipage}[t]{.48\linewidth}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,lastline=4]{Examples/SRCanonical/func.f90}
+\end{minipage}
+\hspace{.02\linewidth}
+\begin{minipage}[t]{.48\linewidth}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=8,lastline=13]{Examples/SRCanonical/func.pre.f90}
+\end{minipage}
+\caption{Canonicalizing a function definition (left, see file 
+\lstinline{$OPENADROOT/Examples/SRCanonical/func.f90}), %$
+to a subroutine definition (right,  see file 
+\lstinline{$OPENADROOT/Examples/SRCanonical/func.pre.f90} after running \lstinline{make}) %$
+for the accompanying call change shown in \reffig{fig:funcToSubCall}} \label{fig:funcToSubDef}
   \end{figure}
   For the transformations, in particular the \basicblock\ level preaccumulation we 
   want to ensure that an assignment effects a single variable on the left-hand side. 
@@ -2281,84 +2293,51 @@ to a subroutine (right,  see file
   Consequently the right-hand-side expression of an assignment consists only of 
   elemental operations $\phi$ typically 
   defined in a programming language as built-in operators and intrinsics.
-{\color{red} TODO: FIX THIS
-
-  The canonicalizer also performs the accompanying transformation of the function definition 
-  \reftab{tab:funcToSub}(a) 	
-  into a subroutine definition \reftab{tab:funcToSub}(b).  
-  \begin{table}
-\color{red} TODO: FIX THIS
-    \begin{tabular}{cc}
-      \begin{minipage}{.45\textwidth}
-        \fontsize{8pt}{9pt}
-        \verbatiminput{code/funcDef.f}	
-      \end{minipage}
-      & 
-      \begin{minipage}{.4\textwidth}
-        \fontsize{8pt}{9pt}
-        \verbatiminput{code/subDef.f}	
-      \end{minipage}
-      \\
-      (a) & (b)
-    \end{tabular}
-    \caption{Canonicalizing a function(a) to a subroutine(b) definition} \label{tab:funcToSub}
-  \end{table}
-}
+  The canonicalization of the respective definitions for the function in \reffig{fig:funcToSubCall}
+  is  shown in \reffig{fig:funcToSubDef}.
+\end{Can}
+\begin{Can}\label{can:intrin}
   A particular canonicalization of calls without canonicalization of definitions  
-  is applied to the \lstinline{max} and \lstinline{min} intrinsics because in Fortran 
+  is applied to certain intrinsics, e.g. the \lstinline{max} and \lstinline{min} intrinsics because in Fortran 
   they do not have closed form expressions for the partials. \OpenADF\ provides a run time 
-  library containing definitions for the respective subroutines called instead.  
+  library containing definitions for the respective subroutines called instead.
+  An example is shown in \reffig{fig:maxToSub}.  
+\begin{figure}
+\begin{minipage}[t]{.48\linewidth}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran]{Examples/MaxCanonical/func.f90}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=17]{Examples/MaxCanonical/func.pre.f90}
+\end{minipage}
+\hspace{.02\linewidth}
+\begin{minipage}[t]{.48\linewidth}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,lastline=16]{Examples/MaxCanonical/func.pre.f90}
+\end{minipage}
+\caption{Canonicalizing a call to {\tt max} (top left,  see file 
+\lstinline{$OPENADROOT/Examples/MaxCanonical/func.f90}), %$
+to two subroutine calls (bottom left) and the accompanying definition (right,  see file 
+\lstinline{$OPENADROOT/Examples/MaxCanonical/func.pre.f90} after running \lstinline{make})} %$
+ \label{fig:maxToSub}
+  \end{figure}
 \end{Can}
 \begin{Can}\label{can:param}
   Non-variable actual parameters are hoisted to temporaries.
   Any value passed to a routine could conceivably need augmentation. Furthermore, only variables
   can be augmented. 
   Consequently, {\OpenAD} hoists all non-variable actual parameters into temporaries.
-  \begin{table}
-    \begin{center}
-      \begin{tabular}{cc}
-        \begin{minipage}{.3\linewidth}
-          {\tt call foo(x*y)}
-        \end{minipage}
-        & 
-        \begin{minipage}{.3\textwidth}
-          \fontsize{8pt}{9pt}
-          \verbatiminput{code/hoist.f}	
-        \end{minipage}
-        \\
-        (a) & (b)
-      \end{tabular}
-    \end{center}
-    \caption{Before(a) and after(b) hoisting a non-variable parameter}\label{tab:hoistingParameters}
-  \end{table} 
-\end{Can}
-In the Fortran context there is also the need to canonicalize certain constructs 
-to support the implementation with a specific active type. 
-\begin{Can}\label{can:comBlock}
-  Common blocks are converted to modules.
-  The purpose of this canonicalization is to ensure proper initialization of 
-  active global variables.
-  The method of conversion is to simply declare the elements of the common block as module variables. 
-  Care must be taken to privatize and declare any symbolic size parameters
-  for elements of the common block. See \reftab{tab:cbToM} for an example.
-  \begin{table}
-    \begin{center}
-      \begin{tabular}{cc}
-        \begin{minipage}{.3\linewidth}
-          \fontsize{8pt}{9pt}
-          \verbatiminput{code/commonBlock.f}	
-        \end{minipage}
-        & 
-        \begin{minipage}{.3\textwidth}
-          \fontsize{8pt}{9pt}
-          \verbatiminput{code/cbModule.f}	
-        \end{minipage}
-        \\
-        (a) & (b)
-      \end{tabular}
-    \end{center}
-    \caption{Converting a common block (a) to a  module (b)}\label{tab:cbToM}
-  \end{table}
+  An example is shown in \reffig{fig:ArgExprToTemp}.
+\begin{figure}
+\begin{minipage}[t]{.48\linewidth}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=6]{Examples/ArgExprCanonical/func.f90}
+\end{minipage}
+\hspace{.02\linewidth}
+\begin{minipage}[t]{.48\linewidth}
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=9]{Examples/ArgExprCanonical/func.pre.f90}
+\end{minipage}
+\caption{Canonicalizing a subroutine argument (left, see file 
+\lstinline{$OPENADROOT/Examples/ArgExprCanonical/func.f90}), %$
+into a temporary variable (right,  see file 
+\lstinline{$OPENADROOT/Examples/ArgExprCanonical/func.pre.f90} after running \lstinline{make}) %$
+} \label{fig:ArgExprToTemp}
+  \end{figure}
 \end{Can}
 Because none of the above canonicalizations are intended to produce manually 
 maintainable code we prefer simplicity over more sophisticated transformations 
@@ -2554,29 +2533,26 @@ that directs the postprocessor to expand the following call according to a defin
 found in an input file\footnote{
 specified with command line option \lstinline{-i} which defaults to \lstinline{ad_inline.f}
 }, see also \lstinline{runTimeSupport/simple/ad_inline.f}.
-For example, pushing a preaccumulated sub-Jacobian value as in  \reffig{fig:toyPreaccRev}(a) might appear 
-in the code as\\
+Pushing a preaccumulated sub-Jacobian value as in  \reffig{fig:toyPreaccRev}(a) might appear 
+in the code for example from \refsec{sec:reverseMode} as\footnote{
+see file \lstinline{$OPENADROOT/Examples/OneMinuteReverse/head.prepped.pre.xb.x2w.w2f.f} after running \lstinline{make}) %$
+} \\[1ex]
 \hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/inlinePush.f}
+\small
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=44,lastline=45]{Examples/OneMinuteReverse/head.prepped.pre.xb.x2w.w2f.f}
 \end{minipage}\\
-for which we have a definition in \lstinline{ad_inline.f} as \\
+for which we have a definition in \lstinline{ad_inline.f} as \\[1ex]
 \hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/inlinePushDef.f}
+\small
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=48,lastline=56]{Examples/OneMinuteReverse/ad_inline.f}
 \end{minipage}\\
-The postprocessor ignores the \lstinline{DECLS} section and  expands this to\\
+The postprocessor ignores the \lstinline{DECLS} section and  expands this to\footnote{
+see file \lstinline{$OPENADROOT/Examples/OneMinuteReverse/head.prepped.pre.xb.x2w.w2f.post.f90} after running \lstinline{make}) %$
+}\\[1ex]
 \hspace*{.05\textwidth}\begin{minipage}{.6\textwidth}
-\fontsize{8pt}{9pt}
-\verbatiminput{code/inlinePushExpanded.f}
+\small
+\lstinputlisting[basicstyle=,frame=single,language=Fortran,firstline=102,lastline=103]{Examples/OneMinuteReverse/head.prepped.pre.xb.x2w.w2f.post.f90}
 \end{minipage}\\
-%For example, using a preaccumulated sub-Jacobian value in a \saxpy\  as in  \reffig{what} might appear 
-%in the code as
-%\verbatiminput{code/inlineSaxpy.f}
-%for which we have a definition in \lstinline{ad_inline.f} as 
-%\verbatiminput{code/inlineSaxpyDef.f}
-%and the postprocessor expands this to
-%\verbatiminput{code/inlineSaxpyExpanded.f}
 Note, that for flexibility 
 any calls with inline directives for which the postprocessor cannot find an inline definition remain 
 unchanged. For example we may instead compile the above definition for \lstinline{Push} and link 

@@ -21,10 +21,13 @@ def processLine(line,options):
   # sanity test for first token
   tokens=line.split()
   if (len(tokens) and len(tokens[0])>allowedLength):
-    msg="ERROR: first token length "+str(len(tokens[0]))+" exceeds "+str(allowedLength)+" (permitted width "+str(options.width)+" and consider padding and continuation) for "+tokens[0]
+    msg="ERROR: token length "+str(len(tokens[0]))+" exceeds "+str(allowedLength)+" (permitted width "+str(options.width)+" but needs to consider padding and continuation) for "+tokens[0]
     raise FoldException, msg
   if len(line)>allowedLength:
     needCont=True; allowedLength-=len(continStr) # now we know that we need to continue
+    if (len(tokens) and len(tokens[0])>allowedLength):
+      msg="ERROR: token length "+str(len(tokens[0]))+" exceeds "+str(allowedLength)+" (permitted width "+str(options.width)+" but needs to consider padding and continuation) for "+tokens[0]
+      raise FoldException, msg
     currentPosInFolded=0
     currentPosInLine=0
     lastSpacePosInFolded=0
@@ -53,7 +56,7 @@ def processLine(line,options):
         # sanity test for next token
         tokens=line[currentPosInLine-currentPosInFolded+lastSpacePosInFolded:].split()
         if (len(tokens) and len(tokens[0])>allowedLength):
-          msg="ERROR: token length "+str(len(tokens[0]))+" exceeds "+str(allowedLength)+" (permitted width "+str(options.width)+" and consider padding and continuation) for "+tokens[0]
+          msg="ERROR: token length "+str(len(tokens[0]))+" exceeds "+str(allowedLength)+" (permitted width "+str(options.width)+" but needs to consider padding and continuation) for "+tokens[0]
           raise FoldException, msg
         # do we still need to break the rest?
         if ((len(line)-currentPosInLine)<=allowedLength): 
@@ -86,7 +89,7 @@ def main():
   opt.add_option('-p','--padding',dest='padding',
                  help="padding string after the line break (default is \'\\t\')",
                  default='\t')
-  opt.add_option('--inputFile',dest='inputFile',
+  opt.add_option('-i','--inputFile',dest='inputFile',
                  help="in put file (default is stdin)",
                  metavar='<file_name>',
                  default=None)

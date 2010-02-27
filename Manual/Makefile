@@ -51,7 +51,7 @@ else
 FORCE=FORCE
 endif
 
-PORTRAIT_ORIENT_BOX_WIDTH=140
+PORTRAIT_ORIENT_BOX_WIDTH=143
 
 $(TARGET).pdf: $(TARGET).blg $(TARGET).bbl
 	# run it twice

@@ -232,7 +232,8 @@
 	referred = "[Christianson2002GoP].",
 	ad_theotech = "Introduction",
 	year = "2000",
-	volume = "124"
+	volume = "124",
+	doi = "10.1016/S0377-0427(00)00422-2"
 }
 
 @INCOLLECTION{
@@ -1315,7 +1316,9 @@
 	   [Rall1996AIt].",
 	year = "1994",
 	volume = "3",
-	ad_theotech = "Iteration"
+	doi = "10.1080/10556789408805572",
+	ad_theotech = "Iteration",
+	number = "4"
 }
 
 @INCOLLECTION{
@@ -1418,7 +1421,8 @@
 	referred = "[Coleman1996SaE], [Hossain2001RtN], [More2001ADT].",
 	year = "1984",
 	volume = "10",
-	number = "3"
+	number = "3",
+	ad_theotech = "Sparsity"
 }
 
 @ARTICLE{
@@ -1430,7 +1434,8 @@
 	key = "Coleman1984EoS",
 	referred = "[Coleman1996SaE], [More2001ADT].",
 	year = "1984",
-	volume = "28"
+	volume = "28",
+	ad_theotech = "graph coloring, Hessian, Sparsity"
 }
 
 @ARTICLE{
@@ -1443,7 +1448,8 @@
 	referred = "[Coleman1996SaE], [More2001ADT].",
 	year = "1985",
 	volume = "11",
-	number = "4"
+	number = "4",
+	ad_theotech = "Hessian, Sparsity"
 }
 
 @ARTICLE{
@@ -1456,7 +1462,8 @@
 	referred = "[Hossain2001RtN], [More2001ADT].",
 	year = "1986",
 	volume = "7",
-	number = "2"
+	number = "2",
+	ad_theotech = "graph coloring, Hessian, Sparsity"
 }
 
 @ARTICLE{
@@ -1760,16 +1767,28 @@
 	year = "2000"
 }
 
-@TECHREPORT{
-	   Duff1992UGf,
-	author = "Iain S. Duff and Roger G. Grimes and John G. Lewis",
-	title = "Users' Guide for the {Harwell-Boeing} Sparse Matrix Collection ({Release I})",
-	number = "tr/pa/92/86",
-	institution = "CERFACS",
-	key = "Duff1992UGf",
-	type = "Technical Report",
-	referred = "[Hossain2001RtN].",
-	year = "1992"
+@INPROCEEDINGS{
+	   Zhang2009OHM,
+	author = "Haibin Zhang and Lizhen Zhang and Sen Zhang",
+	title = "Original {H}alley Method and its Improvement with Automatic Differentiation",
+	booktitle = "Sixth International Conference on Fuzzy Systems and Knowledge Discovery (FSKD
+	   2009)",
+	editor = "",
+	pages = "351--355",
+	publisher = "IEEE",
+	abstract = "Original Halley method, also referred to as the tangent hyperbolas method, is the
+	   classical third order method which can be used to solve the optimization problems. However,
+	   computing the derivative terms in solving the Halley equation becomes a key problem to reduce its
+	   computational cost. By using efficiently the techniques of automatic differentiation and
+	   preconditioned conjugate graduate method, original Halley method is established and improved in this
+	   paper. Theoretical and numerical results show that the improved version is more efficient than the
+	   original method.",
+	year = "2009",
+	doi = "10.1109/FSKD.2009.125",
+	volume = "4",
+	keywords = "Halley method;automatic differentiation;optimization;preconditioned conjugate
+	   graduate method;tangent hyperbolas method;conjugate gradient methods;differentiation;optimisation;",
+	ad_theotech = "Higher Order"
 }
 
 @ARTICLE{
@@ -3199,7 +3218,8 @@
 	school = "Department of Informatics, University of Bergen",
 	key = "Hossain1998OtC",
 	referred = "[Hossain2001RtN].",
-	year = "1998"
+	year = "1998",
+	ad_theotech = "Sparsity"
 }
 
 @TECHREPORT{
@@ -4073,14 +4093,15 @@
 	   Newsam1983EoS,
 	author = "Garry N. Newsam and John D. Ramsdell",
 	title = "Estimation of Sparse {J}acobian Matrices",
-	journal = "{SIAM} Journal on Discrete Mathematics",
+	journal = "{SIAM} Journal on Algebraic and Discrete Methods",
 	pages = "404--417",
 	key = "Newsam1983EoS",
 	referred = "[Geitner1996ACo], [Griewank2002VJS], [Hossain2002RtN].",
 	year = "1983",
 	volume = "4",
 	number = "3",
-	ad_theotech = "Sparsity"
+	ad_theotech = "Sparsity",
+	doi = "10.1137/0604041"
 }
 
 @BOOK{
@@ -4248,7 +4269,8 @@
 	key = "Powell1979OtE",
 	referred = "[Hossain2001RtN], [More2001ADT].",
 	year = "1979",
-	volume = "16"
+	volume = "16",
+	ad_theotech = "Hessian, Sparsity"
 }
 
 @INCOLLECTION{
@@ -4272,7 +4294,7 @@
 	author = "John D. Pryce and John K. Reid",
 	title = "{ADO1}, a {F}ortran 90 code for Automatic Differentiation",
 	number = "RAL-TR-1998-057",
-	url = "ftp://matisa.cc.rl.ac.uk/pub/reports/prRAL98057.ps.gz",
+	url = "ftp://ftp.numerical.rl.ac.uk/pub/reports/prRAL98057.pdf",
 	address = "Chilton, Didcot, Oxfordshire, OX11 OQX, England",
 	institution = "Rutherford Appleton Laboratory",
 	key = "Pryce1998AaF",
@@ -5257,8 +5279,8 @@
 	pages = "317--330",
 	doi = "10.1016/0304-3975(83)90110-X",
 	issn = "0304-3975",
-	referred = "[Faure1996SoA], [Giering1997a], [Gold91a], [Grimm1996OTa], [Irim91a];
-	   [Kubo91a]."
+	referred = "[Faure1996SoA], [Giering1997a], [Gold91a], [Grimm1996OTa], [Irim91a]; [Kubo91a].",
+	ad_theotech = "Computational Graph, General"
 }
 
 @TECHREPORT{
@@ -5388,7 +5410,9 @@
 	TYPE = "Technical Memorandum",
 	NUMBER = "ANL/MCS--TM--158",
 	ADDRESS = "Argonne, Ill.",
-	REFERRED = "[Bischof1996UEw], [Christianson1996SSU]."
+	REFERRED = "[Bischof1996UEw], [Christianson1996SSU].",
+	ad_tools = "ADIFOR",
+	ad_theotech = "Hessian, Sparsity"
 }
 
 @TECHREPORT{
@@ -5645,17 +5669,18 @@
 
 @ARTICLE{
 	   Christianson1992AHb,
-	AUTHOR = "Bruce Christianson",
-	TITLE = "Automatic {H}essians by Reverse Accumulation",
-	JOURNAL = "IMA J. Numerical Anal.",
-	VOLUME = "12",
-	YEAR = "1992",
-	PAGES = "135--150",
-	REFERRED = "[Bisc91a], [Dixo91a], [Gay1996MAo], [Jued91a], [Campbell1996ADa],
+	author = "Bruce Christianson",
+	title = "Automatic {H}essians by Reverse Accumulation",
+	journal = "IMA J. Numerical Anal.",
+	volume = "12",
+	year = "1992",
+	pages = "135--150",
+	referred = "[Bisc91a], [Dixo91a], [Gay1996MAo], [Jued91a], [Campbell1996ADa],
 	   [Christianson1996SSU].",
-	COMMENT = "Also appeared as Tech. Report No. NOC TR228, The Numerical Optimisation Centre,
+	comment = "Also appeared as Tech. Report No. NOC TR228, The Numerical Optimisation Centre,
 	   University of Hertfordshire, U.K., April 1990.",
-	ad_theotech = "Hessian, Reverse Mode"
+	ad_theotech = "Hessian, Reverse Mode",
+	doi = "10.1093/imanum/12.2.135"
 }
 
 @TECHREPORT{
@@ -6079,7 +6104,8 @@
 	   processing are applied to problems in optimisation. A discussion is presented of how the advent of
 	   the Ada programming language on parallel processing machines may transform the solution of practical
 	   optimisation problems, see [Dixon1987TUo]. The author also discusses the difficulties associated
-	   with calculating the derivative values if automatic differentiation is not used."
+	   with calculating the derivative values if automatic differentiation is not used.",
+	ad_theotech = "General, Parallelism"
 }
 
 @TECHREPORT{
@@ -7377,14 +7403,15 @@
 @INPROCEEDINGS{
 	   Elsheikh2008Sao,
 	author = "Atya Elsheikh and Stephan Noack and Wolfgang Wiechert",
-	title = "{Sensitivity analysis of Modelica applications via automatic differentiation}",
+	title = "Sensitivity analysis of {M}odelica applications via automatic differentiation",
 	month = "March",
 	day = "3-4",
 	address = "Bielefeld, Germany",
 	booktitle = "6th International Modelica Conference",
 	year = "2008",
-	pages = "669-675",
-	volume = "2"
+	pages = "669--675",
+	volume = "2",
+	ad_theotech = "Implementation Strategies"
 }
 
 @MASTERSTHESIS{
@@ -7497,7 +7524,8 @@
 	address = "Philadelphia, PA",
 	key = "Plassmann1990SJE",
 	referred = "[Bischof1991IiP], [Hossain2001RtN].",
-	year = "1990"
+	year = "1990",
+	ad_theotech = "Parallelism, Sparsity"
 }
 
 @PHDTHESIS{
@@ -7590,7 +7618,8 @@
 	VOLUME = "59",
 	year = "1986",
 	PAGES = "275",
-	REFERRED = "[Berz1996CaN]."
+	REFERRED = "[Berz1996CaN].",
+	ad_theotech = "General"
 }
 
 @INCOLLECTION{
@@ -8062,7 +8091,8 @@
 	ad_tools = "ADIFOR",
 	ad_theotech = "Parallelism",
 	year = "2001",
-	doi = "http://doi.acm.org/10.1145/377792.377842",
+	url = "http://doi.acm.org/10.1145/377792.377842",
+	doi = "10.1145/377792.377842",
 	author = "H. Martin B{\"u}cker and Bruno Lang and an Mey, Dieter and Christian
 	   H.~Bischof"
 }
@@ -8078,7 +8108,8 @@
 	pages = "121--126",
 	address = "Los Alamitos, CA",
 	publisher = "IEEE Computer Society Press",
-	doi = "http://doi.ieeecomputersociety.org/10.1109/HPCSA.2002.1019144",
+	doi = "10.1109/HPCSA.2002.1019144",
+	url = "http://doi.ieeecomputersociety.org/10.1109/HPCSA.2002.1019144",
 	abstract = "Derivatives of almost arbitrary functions can be evaluated efficiently by
 	   automatic differentiation whenever the functions are given in the form of computer programs in a
 	   high-level programming language such as Fortran, C, or C++. In contrast to numerical
@@ -8421,18 +8452,6 @@
 	YEAR = "1992",
 	PAGES = "1644--1660",
 	REFERRED = "[Park1996ADa]."
-}
-
-@BOOK{
-	   Fletcher1987PMo,
-	AUTHOR = "R. Fletcher",
-	TITLE = "Practical Methods of Optimization",
-	PUBLISHER = "John Wiley",
-	EDITION = "2nd",
-	ADDRESS = "New York",
-	YEAR = "1987",
-	REFERRED = "[Hassold1996ADA].",
-	ISBN = "0--471--91547--5"
 }
 
 @ARTICLE{
@@ -11506,7 +11525,8 @@
 	   March~14--17, 2004",
 	publisher = "ACM Press",
 	pages = "220--224",
-	doi = "http://doi.acm.org/10.1145/967900.967948",
+	doi = "10.1145/967900.967948",
+	url = "http://doi.acm.org/10.1145/967900.967948",
 	address = "New York",
 	abstract = "Today, OpenMP is the de facto standard for portable shared-memory programming
 	   supporting multiple levels of parallelism. Unfortunately, most of the current OpenMP implementations
@@ -12682,7 +12702,7 @@
 
 @ARTICLE{
 	   Christianson1999CNS,
-	ad_theotech = "Adjoint, Checkpointing, Data Flow Analysis, Recomputation, Reverse Mode",
+	ad_theotech = "Parallelism",
 	Author = "Bruce Christianson",
 	Title = "Cheap {N}ewton Steps for Optimal Control Problems: {A}utomatic Differentiation and
 	   {P}antoja Algorithm",
@@ -12691,6 +12711,20 @@
 	volume = "10",
 	number = "5",
 	pages = "729--743"
+}
+
+@ARTICLE{
+	   Mader2008AAa,
+	author = "C. A. Mader and J.R.R.A Martins and J.J Alonso and E. van~der~Weide",
+	title = "{ADjoint}: {A}n approach for the rapid development of discrete adjoint solvers",
+	journal = "{AIAA} Journal",
+	year = "2008",
+	pages = "863--873",
+	volume = "46",
+	number = "4",
+	ad_tools = "ADIFOR, TAF, TAPENADE",
+	ad_area = "Computational Fluid Dynamics",
+	doi = "10.2514/1.29123"
 }
 
 @PHDTHESIS{
@@ -14037,17 +14071,6 @@
 	year = "2001",
 	url = "\url{http://cosy.pa.msu.edu}",
 	ad_tools = "COSY INFINITY"
-}
-
-@ARTICLE{
-	   Duff1989SMT,
-	author = "Iain~S. Duff and Roger~G. Grimes and John~G. Lewis",
-	title = "Sparse Matrix Test Problems",
-	journal = "ACM Transactions on Mathematical Software",
-	pages = "1--14",
-	year = "1989",
-	volume = "15",
-	number = "1"
 }
 
 @ARTICLE{
@@ -16554,7 +16577,8 @@
 	NUMBER = "No. 26",
 	INSTITUTION = "Schwerpunktprogramm der Deutschen Forschungsgemeinschaft Anwendunsbezogene
 	   Optimierung und Steurung",
-	YEAR = "1987"
+	YEAR = "1987",
+	ad_theotech = "Hessian"
 }
 
 @INPROCEEDINGS{
@@ -16952,7 +16976,8 @@
 	booktitle = "Lecture Notes in Computer Science",
 	series = "Static Analysis",
 	pages = "311--326",
-	volume = "1503"
+	volume = "1503",
+	ad_theotech = "Sparsity, Static Analysis"
 }
 
 @INPROCEEDINGS{
@@ -18953,6 +18978,7 @@
 	isbn = "978--0--898716--59--7",
 	ad_theotech = "General, Introduction",
 	year = "2008",
+	url = "http://www.ec-securehost.com/SIAM/OT105.html",
 	abstract = "Algorithmic, or automatic, differentiation (AD) is a growing area of theoretical
 	   research and software development concerned with the accurate and efficient evaluation of
 	   derivatives for function evaluations given as computer programs. The resulting derivative values are
@@ -19085,7 +19111,7 @@
 	year = "2009",
 	issn = "1055-6788",
 	pages = "1--14",
-	doi = "http://dx.doi.org/10.1080/10556780802413769",
+	doi = "10.1080/10556780802413769",
 	publisher = "Taylor \& Francis, Inc.",
 	address = "Bristol, PA, USA",
 	ad_tools = "Rapsodia",
@@ -19485,7 +19511,8 @@
 	volume = "21",
 	number = "2",
 	pages = "209--223",
-	ad_theotech = "Sparsity"
+	ad_theotech = "graph coloring, Sparsity",
+	ad_tools = "ADOL-C"
 }
 
 @ARTICLE{
@@ -19753,7 +19780,7 @@
 	journal = "SIAM Journal on Scientific Computing",
 	volume = "31",
 	number = "4",
-	pages = "2549-2567",
+	pages = "2549--2567",
 	keywords = "adjoint equation; dynamic checkpointing; automatic differentiation; checkpointing
 	   scheme; optimal checkpointing; online checkpointing; revolve",
 	url = "http://link.aip.org/link/?SCE/31/2549/1",
@@ -20438,5 +20465,961 @@
 	volume = "199",
 	ad_area = "Computational Fluid Dynamics",
 	ad_tools = "ADIFOR, TAPENADE"
+}
+
+@ARTICLE{
+	   Wagner2010Ote,
+	title = "On the efficient computation of high-order derivatives for implicitly defined
+	   functions",
+	author = "M. Wagner, B.-J. Schaefer, and A. Walther",
+	year = "2010",
+	journal = "Computer Physics Communications",
+	volume = "181",
+	pages = "756--764",
+	abstract = "Scientific studies often require the precise calculation of derivatives. In many
+	   cases an analytical calculation is not feasible and one resorts to evaluating derivatives
+	   numerically. These are error-prone, especially for higher-order derivatives. A technique based on
+	   algorithmic differentiation is presented which allows for a precise calculation of higher-order
+	   derivatives. The method can be widely applied even for the case of only numerically known, implicit
+	   dependencies which totally hamper a semi-analytical calculation of the derivatives. As a
+	   demonstration the method is applied to a quantum field theoretical physical model. The results are
+	   compared with standard numerical derivative methods.",
+	ad_area = "Physics",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Higher Order"
+}
+
+@ARTICLE{
+	   StummMsA,
+	title = "Multi-stage Approaches for Optimal Offline Checkpointing. SIAM Journal of Scientific
+	   Computing",
+	author = "P. Stumm and A. Walther",
+	publisher = "SIAM",
+	journal = "SIAM Journal of Scientific Computing",
+	volume = "31",
+	pages = "1946--1967",
+	ad_theotech = "Checkpointing"
+}
+
+@INPROCEEDINGS{
+	   Enciu2009ADA,
+	title = "Automatic Differentiation Applied for Optimization of Dynamical Systems",
+	author = "Petre Enciu, Laurent Gerbaud and Frédéric Wurtz",
+	year = "2009",
+	booktitle = "COMPUMAG 09, 17th Conference on the Computation of Electromagnetic Fields",
+	pages = "249--250",
+	abstract = "Abstract&#8212;Simulation is ubiquitous in many scientific areas. Applied for
+	   dynamic systems usually by employing differential equations, it gives the time evolution of system
+	   states. In order to solve such problems, numerical integration algorithms are often required.
+	   Automatic Differentiation (AD) is introduced as a powerful technique to compute derivatives of
+	   functions given in the form of computer programs in a high level programming lan- guage such as
+	   FORTRAN, C or C++. Such technique fits perfectly in combination with gradient based optimization
+	   algorithms, provided that the derivatives are valued with no truncation or cancellation error. This
+	   paper intends to use Automatic Differentiation employed for numerical integration schemes of
+	   dynamical systems simulating electromechanical actuators. Then, the resulting derivatives are used
+	   for sizing such devices by means of gradient based constrained optimization.",
+	ad_area = "Dynamical Systems",
+	ad_tools = "ADOL-C"
+}
+
+@ARTICLE{
+	   Hu2007AWC,
+	title = "A Weak-Constraint-Based Data Assimilation Scheme for Estimating Surface Turbulent
+	   Fluxes",
+	author = "Jun Qin Shunlin Liang Ronggao Liu Hao Zhang Bo Hu",
+	year = "2007",
+	journal = "Geoscience and Remote Sensing Letters, IEEE",
+	volume = "4",
+	pages = "649 -- 653",
+	abstract = "Much attention has been focused on the assimilation of satellite data and products
+	   into land surface processes. In this letter, a variational data assimilation scheme is developed
+	   based on the weak-constraint concept. It assimilates surface skin temperature into a simple land
+	   surface model for the estimation of turbulent fluxes. An automatic differentiation technique is used
+	   to derive the adjoint codes to evaluate the gradient of the cost function. After the construction of
+	   this assimilation system, numerical experiments are conducted to test its performance with different
+	   model errors, and the comparison is also made with the strong constraint scheme. The results show
+	   that the land surface turbulent fluxes can be retrieved with highly satisfactory
+	   accuracy."
+}
+
+@BOOK{
+	   Robenack2005RuB,
+	title = "Regler- und Beobachterentwurf {f\"ur} nicht\-lineare Systeme mit Hilfe
+	   des Automatischen Differenzierens",
+	publisher = "Shaker Verlag",
+	year = "2005",
+	author = "K. R{\"o}benack",
+	address = "Aachen",
+	ad_area = "Control",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Robenack2008Com,
+	author = "K. R{\"o}benack",
+	title = "Computational of multiple {Lie} derivatives by algorithmic differentiation",
+	journal = "J. of Computational and Applied Mathematics",
+	year = "2008",
+	volume = "213",
+	pages = "454-464",
+	number = "2",
+	ad_area = "Control",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Robenack2005ADa,
+	author = "K. R{\"o}benack",
+	title = "Automatic Differentiation and Nonlinear Controller Design by Exact Linearization",
+	journal = "Future Generation Computer Systems",
+	year = "2005",
+	volume = "21",
+	pages = "1372--1379",
+	number = "8",
+	ad_area = "Control",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Rasch2010EAI,
+	author = "A. Rasch and H. M. B{\"u}cker",
+	journal = "{ACM} Transactions on Mathematical Software",
+	pages = "13:1--13:37",
+	doi = "10.1145/1731022.1731023",
+	abstract = "An interactive software environment is proposed that combines numerical simulation
+	   codes with optimization software packages in an automated and modular way. It simplifies the
+	   experimentation with varying objective functions for common optimization problems such as parameter
+	   estimation and optimal experimental design that are frequently encountered in computational science
+	   and engineering. The design philosophy takes into consideration the need for derivatives of
+	   potentially large-scale simulation codes via automatic differentiation as well as distributed
+	   computing in a heterogenous environment via CORBA.",
+	title = "{EFCOSS}: {A}n Interactive Environment Facilitating Optimal Experimental Design",
+	year = "2010",
+	volume = "37",
+	number = "2",
+	ad_area = "Optimization"
+}
+
+@ARTICLE{
+	   Qin2008Dot,
+	title = "Development of the Adjoint Model of a Canopy Radiative Transfer Model for Sensitivity
+	   Study and Inversion of Leaf Area Index",
+	author = "Qin, J. and S. Liang and X. Li, and J. Wang",
+	publisher = "IEEE",
+	year = "2008",
+	journal = "IEEE Transactions on Geoscience and Remote Sensing",
+	volume = "46",
+	pages = "DOI:10.1109/TGRS.2008.916637"
+}
+
+@INCOLLECTION{
+	   Bischof2010Etf,
+	author = "C. H. Bischof and H. M. B{\"u}cker and A. Rasch",
+	title = "Enabling technologies for robust high-performance simulations in computational fluid
+	   dynamics",
+	booktitle = "Summary of Flow Modulation and Fluid-Structure Interaction Findings",
+	publisher = "Springer",
+	editor = "W. Schr{\"o}der",
+	pages = "153--180",
+	doi = "10.1007/978-3-642-04088-7_7",
+	address = "Berlin",
+	number = "109/2010",
+	series = "Notes on Numerical Fluid Mechanics and Multidisciplinary Design",
+	abstract = "In computational science and engineering, the role of computer science includes
+	   the mechanical generation of programs for the fast computation of accurate derivatives and the
+	   efficient utilization of parallel computer architectures. Automatic differentiation and parallel
+	   computing are two technologies enabling robust high-performance simulations in various scientific
+	   and engineering disciplines. This article gives a survey of selected results of an interdisciplinary
+	   research project where automatic differentiation, parallel computing, and their interplay are
+	   investigated in the context of two computational fluid dynamics packages developed at RWTH Aachen
+	   University.",
+	year = "2010",
+	ad_area = "Computational Fluid Dynamics",
+	ad_tools = "ADIFOR",
+	ad_theotech = "Parallelism"
+}
+
+@ARTICLE{
+	   Buntinas2010Egl,
+	title = "Efficient generated libraries for asynchronous derivative computation",
+	journal = "Procedia Computer Science",
+	volume = "1",
+	number = "1",
+	pages = "1779 - 1787",
+	year = "2010",
+	note = "ICCS 2010",
+	issn = "1877-0509",
+	doi = "DOI: 10.1016/j.procs.2010.04.200",
+	url =
+	   "http://www.sciencedirect.com/science/article/B9865-506HM1Y-73/2/223cdd85de22c4119c43b3c43936e01e",
+	author = "Darius Buntinas and Alexis J. Malozemoff and Jean Utke",
+	keywords = "Asynchronous computation",
+	ad_tools = "Rapsodia",
+	ad_theotech = "Parallelism, Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Buntinas2010Mdc,
+	title = "Multithreaded derivative computation with generated libraries",
+	journal = "Journal of Computational Science",
+	volume = "1",
+	number = "2",
+	pages = "89 - 97",
+	year = "2010",
+	issn = "1877-7503",
+	doi = "DOI: 10.1016/j.jocs.2010.03.009",
+	url =
+	   "http://www.sciencedirect.com/science/article/B9HC1-4YT6DGV-4/2/f9e999964ccb5b925f9a2a4d60917ce7",
+	author = "Darius Buntinas and Alexis J. Malozemoff and Jean Utke",
+	keywords = "Multithreaded computation",
+	ad_tools = "Rapsodia",
+	ad_theotech = "Parallelism, Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Skaug2006Aao,
+	title = "Automatic approximation of the marginal likelihood in nonlinear hierarchical models",
+	author = "Skaug, H. and Fournier, D",
+	journal = "Computational Statistics and Data Analysis",
+	pages = "699--709",
+	abstract = "Fitting of non-Gaussian hierarchical random effects models by approximate maximum
+	   likelihood can be made automatic to the same extent that Bayesian model fitting can be automated by
+	   the program BUGS. The word &#8220;automatic&#8221; means that the technical details of
+	   computation are made transparent to the user. This is achieved by combining a technique from
+	   computer science known as &#8220;automatic differentiation&#8221; with the Laplace
+	   approximation for calculating the marginal likelihood. Automatic differentiation, which should not
+	   be confused with symbolic differentiation, is mostly unknown to statisticians, and hence basic ideas
+	   and results are reviewed. The computational performance of the approach is compared to that of
+	   existing mixed-model software on a suite of datasets selected from the mixed-model literature.",
+	ad_area = "Optimization",
+	ad_tools = "AD Model Builder",
+	ad_theotech = "Adjoint, Hessian, Integration of Analytic Derivatives, Reverse Mode",
+	year = "2006",
+	volume = "51",
+	number = "2",
+	doi = "10.1016/j.csda.2006.03.005"
+}
+
+@ARTICLE{
+	   Meyer2003SvB,
+	title = "Stochastic volatility: {B}ayesian computation using automatic differentiation and the
+	   extended {K}alman filter",
+	journal = "Econometrics Journal",
+	pages = "408--420",
+	author = "R. Meyer and D. A. Fournier and A. Berg",
+	volume = "6",
+	number = "2",
+	year = "2003",
+	ad_tools = "AD Model Builder"
+}
+
+@ARTICLE{
+	   Maunder2008Coe,
+	title = "Comparison of estimators for mark-recapture models: random effects, hierarchical
+	   Bayes, and AD Model Builder",
+	author = "M.N. Maunder, H.J. Skaug, D.A. Fournier, S.D. Hoyle",
+	year = "2008",
+	journal = "Environmental and Ecological Statistics",
+	volume = "3",
+	pages = "917--948",
+	abstract = "Mark-recapture studies are one of the most common methods used to obtain
+	   demographic parameters for wildlife populations. Time specific estimates of parameters representing
+	   population processes contain both temporal variability in the process (process error) and error in
+	   estimating the parameters (observation error). Therefore, to estimate the temporal variation in the
+	   population process, it is important to separate these two errors. Traditional random effect models
+	   can be used to separate the two errors. However, it is difficult to implement the required
+	   simultaneous maximization and integration for dynamic nonlinear non-Gaussian models. An alternative
+	   hierarchical Bayesian approach using MCMC integration is easier to apply, but requires priors for
+	   all model parameters. AD Model Builder (ADMB) is a general software environment for fitting
+	   parameter rich nonlinear models to data. It uses automatic differentiation to provide a more
+	   efficient and stable parameter estimation framework. ADMB has both random effects using Laplace
+	   approximation and importance sampling, and MCMC to implement Bayesian analysis. To demonstrate ADMB
+	   and investigate methods to analyze mark-recapture data, we implement fixed effect, random effect,
+	   and hierarchical Bayes estimators in ADMB and apply them to three mark-recapture data sets. Our
+	   results showed that unrestricted time-effects, random effects, and hierarchical Bayes methods often
+	   give similar results, but not in all cases or for all parameters.",
+	ad_area = "Biology",
+	ad_tools = "AD Model Builder"
+}
+
+@INCOLLECTION{
+	   Methot2009SAO,
+	author = "Richard D. Methot",
+	title = "Stock Assessment: {O}perational Models in Support of Fisheries Management",
+	booktitle = "The Future of Fisheries Science in {N}orth {A}merica",
+	publisher = "Springer",
+	editor = "Richard J. Beamish and Brian J. Rothschild",
+	pages = "137--165",
+	address = "Dordrecht",
+	series = "Fish \& Fisheries Series",
+	year = "2009",
+	doi = "10.1007/978-1-4020-9210-7_9",
+	volume = "31",
+	ad_area = "Fisheries Science",
+	ad_tools = "AD Model Builder, AUTODIF"
+}
+
+@INBOOK{
+	   Maunder2009CiF,
+	title = "Computers in Fisheries Population Dynamics",
+	author = "M.N. Maunder, J.T. Schnute, and J. Ianelli",
+	editor = "B.A. Megrey, and E. Moksness",
+	publisher = "Springer",
+	year = "2009",
+	booktitle = "Computers in Fisheries Research",
+	pages = "337--372",
+	chapter = "11",
+	abstract = "In the sections that follow, we start by examining various software environments
+	   available for implementing fisheries models. All of these have potential application in many fields.
+	   We also discuss several packages explicitly tailored to deal with fishery data analysis. Later in
+	   the paper, we use this material as background for a review of recent advances in model design and
+	   application. Our final discussion includes a critique of current software, theories, and
+	   applications, along with a few speculations and suggestions for future progress.",
+	ad_area = "Biology",
+	ad_tools = "AD Model Builder"
+}
+
+@ARTICLE{
+	   Maunder2004PVA,
+	title = "Population Viability Analysis, Based on Combining Integrated, Bayesian, and
+	   Hierarchical Analyses",
+	author = "M.N. Maunder",
+	year = "2004",
+	journal = "Acta Oecologica",
+	volume = "26",
+	pages = "85--94",
+	abstract = "Several methods used in fisheries stock assessment models that can be applied to
+	   population viability analysis are presented. (1) Integrated analysis allows the use of all
+	   information on a particular population, and ensures that all model assumptions and parameter are
+	   consistent throughout the analysis, that uncertainty is propagated throughout the analysis, and that
+	   the correlation among parameters is preserved. (2) Bayesian analysis allows for the inclusion of
+	   prior information, and is a convenient way to represent uncertainty. (3) Random-effects models based
+	   on hierarchical modeling allow information to be shared among parameter estimates and allow the
+	   separation of process error from estimation error. (4) Non-parametric representation of parameters
+	   allows for a more flexible relationship among the parameters. (5) Robust likelihood functions
+	   provide an automatic method to reduce the influence of outliers when the data sets are large. These
+	   methods are applied to artificial data sets provided by the Extinction RiskWorking Group of the
+	   National Center for Ecological Analysis and Synthesis (NCEAS) using AD Model Builder software (Otter
+	   Research&#8482;).",
+	ad_area = "Biology",
+	ad_tools = "AD Model Builder"
+}
+
+@ARTICLE{
+	   Bucker2010DaC,
+	author = "H. M. B{\"u}cker and J. Willkomm and S. Gro{\ss} and O. Fortmeier",
+	title = "Discrete and Continuous Adjoint Approaches to Estimate Boundary Heat Fluxes in
+	   Falling Films",
+	journal = "Optimization Methods \& Software",
+	pages = "105--125",
+	doi = "10.1080/10556780903341711",
+	abstract = "A wavy falling film simulation is considered in which a liquid travels along one
+	   side of a thin metal foil that is heated electrically from the opposite side. The direct problem
+	   consists of a three-dimensional heat conduction equation on a cuboid domain representing the foil
+	   with suitable initial and boundary conditions. The inverse problem consists of determining the heat
+	   flux on the film side of the foil from a given distribution of the temperature on the heating side.
+	   Two different adjoint approaches for the solution of this inverse problem are compared. In the
+	   continuous adjoint approach, the adjoint problem is analytically derived from the direct problem and
+	   then discretized. In the discrete adjoint approach, the direct problem is discretized from which an
+	   adjoint code is generated by means of the reverse mode of automatic differentiation. Numerical
+	   experiments are reported demonstrating the advantages and disadvantages of the two approaches.",
+	year = "2010",
+	volume = "26",
+	number = "1",
+	ad_area = "Process Engineering",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Adjoint"
+}
+
+@INPROCEEDINGS{
+	   Petera2009PJC,
+	author = "M. Petera and M. L{\"u}lfesmann and H. M. B{\"u}cker",
+	title = "Partial {J}acobian Computation in the Domain-specific Program Transformation System
+	   {ADiCape}",
+	booktitle = "Proceedings of the International Multiconference on Computer Science and
+	   Information Technology, Mr{\c{a}}gowo, Poland, October~12--14, 2009",
+	publisher = "IEEE Computer Society",
+	address = "Los Alamitos, CA, USA",
+	editor = "M. Ganzha and M. Paprzycki",
+	pages = "595--599",
+	doi = "10.1109/IMCSIT.2009.5352778",
+	abstract = "Sensitivities of functions given in the form of computer models are crucial in
+	   various areas of computational science and engineering. We consider computer models written in
+	   CapeML, a domain-specific XML-based language used in process engineering. Rather than computing all
+	   nonzero entries of a sparse Jacobian matrix, we are interested in obtaining only a subset of these
+	   entries. For the solution of this problem called partial Jacobian computation, we transform a CapeML
+	   model of an industrial distillation column using the automatic differentiation system ADiCape",
+	year = "2009",
+	volume = "4",
+	ad_tools = "ADiCape",
+	ad_theotech = "graph coloring"
+}
+
+@INPROCEEDINGS{
+	   Schmidl2010Hts,
+	author = "D. Schmidl and C. Terboven and A. Wolf and D. an~Mey and C. H. Bischof",
+	title = "How to scale Nested {OpenMP} Applications on the {ScaleMP} {vSMP} Architecture",
+	booktitle = "Proceedings of the {IEEE} International Conference on Cluster Computing
+	   ({CLUSTER}~2010), Heraklion, Greece, September~20--24, 2010",
+	publisher = "IEEE Computer Society",
+	address = "Los Alamitos, California",
+	pages = "29--37",
+	doi = "10.1109/CLUSTER.2010.38",
+	isbn = "978-0-7695-4220-1",
+	abstract = "The novel ScaleMP vSMP architecture employs commodity x86-based servers with an
+	   InfiniBand network to assemble a large shared memory system at an attractive price point. We examine
+	   this combined hardware- and softwareapproach of a DSM system using both system-level kernel
+	   benchmarks as well as real-world application codes. We compare this architecture with traditional
+	   shared memory machines and elaborate on strategies to tune application codes parallelized with
+	   OpenMP on multiple levels. Finally we summarize the necessary conditions which a scalable
+	   application has to fulfill in order to profit from the full potential of the ScaleMP approach.",
+	year = "2010",
+	ad_area = "Geophysics",
+	ad_tools = "ADIFOR",
+	ad_theotech = "Parallelism"
+}
+
+@ARTICLE{
+	   Korelc2010Dco,
+	title = "Direct computation of critical points based on {C}rout's elimination and
+	   diagonal subset test function",
+	journal = "Computers \& Structures",
+	volume = "88",
+	number = "3--4",
+	pages = "189--197",
+	year = "2010",
+	doi = "DOI: 10.1016/j.compstruc.2009.10.001",
+	url =
+	   "http://www.sciencedirect.com/science/article/B6V28-4XNMBSS-3/2/a7084bc877c220706190e31ad6ea3267",
+	author = "Joze Korelc",
+	abstract = "The paper presents the method for direct computation of critical points. A general
+	   algorithm for the quadratically convergent extended system formulation is introduced based on an
+	   arbitrary subset of the diagonal elements of the upper triangular matrix as a critical point test
+	   function. Closed-form solutions for all derivatives on an element level were obtained by using
+	   symbolic code generation. An algorithm for the backward automatic differentiation of matrix
+	   decomposition is developed for the linearization of the test function at the global level. The
+	   proposed algorithm is compared with the formulations based on a determinant and a critical diagonal
+	   test function."
+}
+
+@INCOLLECTION{
+	   Giering2009ADo,
+	author = "Ralf Giering and Thomas Kaminski and Bernhard Eisfeld and Nicolas Gauger and Jochen
+	   Raddatz and Lars Reimer",
+	title = "Automatic Differentiation of {FLOWer} and {MUGRIDO}",
+	booktitle = "{MEGADESIGN} and {MegaOpt} --- {G}erman Initiatives for Aerodynamic Simulation
+	   and Optimization in Aircraft Design",
+	publisher = "Springer",
+	editor = "N. Kroll and Dieter Schwamborn and Klaus Becker and Herbert Rieger and Frank
+	   Thiele",
+	pages = "221--235",
+	doi = "10.1007/978-3-642-04093-1_16",
+	address = "Berlin",
+	series = "Notes on Numerical Fluid Mechanics and Multidisciplinary Design",
+	year = "2009",
+	number = "107",
+	ad_area = "Computational Fluid Dynamics",
+	ad_tools = "TAF"
+}
+
+@INPROCEEDINGS{
+	   Bergstra2010TaC,
+	author = "Bergstra, James and Breuleux, Olivier and Bastien,
+	   Fr{\'{e}}d{\'{e}}ric and Lamblin, Pascal and Pascanu, Razvan and Desjardins,
+	   Guillaume and Turian, Joseph and Bengio, Yoshua",
+	month = "jun",
+	title = "Theano: a {CPU} and {GPU} Math Expression Compiler",
+	booktitle = "Proceedings of the Python for Scientific Computing Conference ({SciPy})",
+	year = "2010",
+	location = "Austin, TX",
+	note = "Oral",
+	ad_tools = "Theano"
+}
+
+@INPROCEEDINGS{
+	   Scharpenberg2007UoA,
+	title = "Use of Automatic Differentiation for Sensitivity Analysis of Flight Loads",
+	booktitle = "Proceedings of the 1st International Workshop on Aircraft Systems Technologies,
+	   Hamburg, Germany, March 29--30, 2007",
+	editor = "O. {von Estorff}",
+	pages = "407--414",
+	publisher = "Shaker",
+	address = "Aachen",
+	isbn = "978-3-8322-6046-0",
+	abstract = "This paper addresses the use of sensitivities for flight loads analysis in
+	   pre-design with deeper consideration of gradients. A possible way of obtaining them from an
+	   implementation of the equations of motion by means of automatic differentiation and the embedding in
+	   an available framework will be discussed. An example with parametrized inaccuracies in the
+	   aerodynamic lift distribution shows that the use of automatic differentiation is a feasible and
+	   promising approach.",
+	author = "M. Scharpenberg and M.
+	   Luk\'{a}\v{c}ov\'{a}-Medvidov\'{a}",
+	year = "2007",
+	ad_area = "Aerodynamics",
+	ad_tools = "ADiMat"
+}
+
+@ARTICLE{
+	   Bucker2011Wcc,
+	author = "H. M. B{\"u}cker and C. H. Bischof",
+	title = "What computers can do for you automatically: {T}he role of automatic differentiation
+	   in inverse modeling",
+	journal = "GACM Report",
+	volume = "Spring 2011",
+	pages = "25--28",
+	year = "2011",
+	number = "6",
+	ad_tools = "ADiMat",
+	ad_theotech = "General"
+}
+
+@ARTICLE{
+	   Piponi2004ADC,
+	author = "Dan Piponi",
+	title = "Automatic Differentiation, C++ Templates, and Photogrammetry",
+	journal = "Journal of graphics, {GPU}, and game tools",
+	volume = "9",
+	number = "4",
+	pages = "41-55",
+	year = "2004"
+}
+
+@ARTICLE{
+	   Heimbach2011Tar,
+	title = "Timescales and regions of the sensitivity of Atlantic meridional volume and heat
+	   transport: Toward observing system design",
+	journal = "Deep Sea Research Part II: Topical Studies in Oceanography",
+	volume = "In Press, Corrected Proof",
+	pages = "-",
+	year = "2011",
+	issn = "0967-0645",
+	doi = "DOI: 10.1016/j.dsr2.2010.10.065",
+	url =
+	   "http://www.sciencedirect.com/science/article/B6VGC-5241FBJ-1/2/0ba6329a104c206f76486c23961e88f6",
+	author = "Patrick Heimbach and Carl Wunsch and Rui M. Ponte and Gael Forget and Chris Hill and
+	   Jean Utke",
+	keywords = "Oceanic teleconnections",
+	ad_area = "Oceanography",
+	ad_tools = "OpenAD",
+	ad_theotech = "Adjoint"
+}
+
+@ARTICLE{
+	   Alexe2010UAD,
+	author = "Mihai Alexe and Oleg Roderick and Mihai Anitescu and Jean Utke and Thomas Fanning
+	   and Paul Hovland.",
+	title = "Using Automatic Differentiation in Sensitivity Analysis of Nuclear Simulation
+	   Models",
+	journal = "Transactions of the American Nuclear Society",
+	year = "2010",
+	volume = "102",
+	pages = "235--237",
+	ad_area = "Engineering",
+	ad_tools = "OpenAD, TAPENADE",
+	ad_theotech = "Forward Mode, Reverse Mode"
+}
+
+@TECHREPORT{
+	   Alexe2009ADo,
+	author = "Mihai Alexe and Oleg Roderick and Jean Utke and Mihai Anitescu and Paul Hovland and
+	   Thomas Fanning.",
+	title = "Automatic Differentiation of Codes in Nuclear Engineering Application",
+	institution = "Argonne National Laboratory",
+	year = "2009",
+	type = "Technical Memo",
+	number = "Memo ANL/MCS-TM310",
+	address = "Argonne, IL",
+	month = "November",
+	note = "Available online at http://www.mcs.anl.gov/~anitescu/PUBLICATIONS/2009/TM-310.pdf",
+	ad_area = "Engineering",
+	ad_tools = "OpenAD, TAPENADE",
+	ad_theotech = "Forward Mode, Reverse Mode"
+}
+
+@INPROCEEDINGS{
+	   Landmann2010Tdr,
+	title = "Three-dimensional reconstruction of comet nucleus by optimal control of
+	   Maxwell's equations: A contribution to the experiment CONSERT onboard space mission ROSETTA",
+	author = "D. Landmann, D. Plettemeier, C. Statz, F. Hoffeins, U. Markwardt, W. Nagel, A.
+	   Walther, A. Herique, W. Kofman",
+	publisher = "Institute of Electrical and Electronics Engineers",
+	year = "2010",
+	booktitle = "Proceedings of 2010 IEEE Radar Conference",
+	pages = "1392--1396",
+	abstract = "COmet Nucleus Sounding Experiment by Radio Wave Transmission (CONSERT) is one of
+	   20 experiments onboard the ESA mission Rosetta and aimed at the reconstruction of the unknown
+	   internal material parameter distribution of a comet nucleus. The details on the experiment setup can
+	   be found in \cite{kof07},\cite{kof01}. CONSERT consists of a lander module which attaches
+	   to the surface of the comet and an orbiter module which circulates the comet in space. An
+	   electromagnetic sounding of the comet nucleus will be achieved by a signal link between the lander
+	   and orbiter antenna system. We propose an optimal control approach to solve for the unknown 3D
+	   material parameter distribution of the comet nucleus. We optimize the computed electromagnetic field
+	   distribution at the receiver locations for the measured (observed) electromagnetic field
+	   distribution by controlling the material parameters. The target functional, the difference between
+	   computed and observed field for all receiver locations and time steps is minimized by means of a
+	   gradient-based quasi-Newton optimization algorithm. The optimal control problem is solved if the
+	   target functional yields its global minimum.",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Adjoint, Checkpointing",
+	ad_area = "Inverse Problems"
+}
+
+@ARTICLE{
+	   Hildebrandt2011ISM,
+	title = "Interactive Surface Modeling using Modal Analysis",
+	author = "Klaus Hildebrandt, Christian Schulz, Christoph von Tycowicz, Konrad Polthier",
+	publisher = "ACM",
+	year = "2011",
+	journal = "Transactions on Graphics",
+	volume = "to appear",
+	abstract = "We propose a framework for deformation-based surface modeling that is interactive,
+	   robust and intuitive to use. The deformations are described by a non-linear optimization problem
+	   that models static states of elastic shapes under external forces which implement the user input.
+	   Interactive response is achieved by a combination of model reduction, a robust energy approximation,
+	   and an efficient quasi-Newton solver. Motivated by the observation that a typical modeling session
+	   requires only a fraction of the full shape space of the underlying model, we use second and third
+	   derivatives of a deformation energy to construct a low-dimensional shape space that forms the
+	   feasible set for the optimization. Based on mesh coarsening, we propose an energy approximation
+	   scheme with adjustable approximation quality. The quasi-Newton solver guarantees superlinear
+	   convergence without the need of costly Hessian evaluations during modeling. We demonstrate the
+	   effectiveness of the approach on different examples including the test suite introduced in [Botsch
+	   and Sorkine 2008].",
+	ad_area = "Optimization",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Adjoint"
+}
+
+@ARTICLE{
+	   Charpentier2000TMp,
+	doi = "10.1016/S1364-8152(00)00050-5",
+	ad_area = "Geophysics",
+	ad_tools = "Odyssee",
+	ad_theotech = "Adjoint",
+	author = "Charpentier, I.",
+	title = "The {MesODiF} package for gradient computations with the atmospheric model
+	   {Meso-NH}",
+	journal = "Environmental Modelling \& Software",
+	year = "2000",
+	volume = "15",
+	number = "6--7",
+	pages = "533--538",
+	note = "Meeting on Air Pollution Modeling and Simulation, Paris, France, Oct, 1998",
+	abstract = "The meso-scale meteorological model Mese-NH is able to simulate atmospheric events
+	   ranging from the meso-scale down to the micro-scale. It also allows for transport and diffusion of
+	   passive scalar quantities such as pollutants coming from the coupling with a chemical package. The
+	   MesODiF package was generated to complete Mese-NH with both a tangent Linear code and an adjoint
+	   code. The differentiation work, realized with respect to the state variables, is done on the
+	   adiabatic part of the code. Physical parameterizations are not taken into account yet. The
+	   linearized codes are efficient both in time and memory consumptions. In particular, checkpoint
+	   schemes and an appropriate differentiation of the Leap-Frog scheme of Mese-NH allow the computation
+	   of gradients on simulations with a physical meaning at a low CPU-time cost. Sensitivity analysis and
+	   variational data assimilation experiments are now attainable by the Mese-NH model.",
+	issn = "1364-8152",
+	id = "Charpentier2000TMp"
+}
+
+@ARTICLE{
+	   Ozaki1993Aaa,
+	title = "Applying an automatic differentiation technique to sensitivity analysis in design
+	   optimization problems",
+	journal = "Finite Elements in Analysis and Design",
+	volume = "14",
+	number = "2--3",
+	pages = "143--151",
+	year = "1993",
+	note = "Special Issue Optimum Design in Japan",
+	issn = "0168-874X",
+	doi = "DOI: 10.1016/0168-874X(93)90015-I",
+	url =
+	   "http://www.sciencedirect.com/science/article/B6V36-47X7CVD-R/2/bb8e33cd734fbb3d668e9017e7837a25",
+	author = "Ikuo Ozaki and Takao Terano",
+	abstract = "For the design of optimal mechanical structures, the design sensitivity analysis
+	   technique using high-order derivatives is important. However, the usual techniques for computing the
+	   derivatives, for example a numerical differential method, are very hard to apply to real scale
+	   structures because of excessive computation time. To overcome the problem, we have used a code
+	   generator to compute differential coefficients of high-order derivatives of complex functions
+	   calledtexpander and written in fortran. texpander automatically transforms a user's fortran
+	   functions into special purpose ones, which can compute both the value of the given functions and
+	   their derivatives. The algorithm used in texpander can automatically and efficiently compute
+	   accurate values of high-order partial derivatives of a given function with many variables. This
+	   paper reports the basic principle of the automatic differentiation method, and some experiments on
+	   the design sensitivity analysis of mechanical structures. The original program of structures
+	   analysis by using the finite element method was implemented in fortran, as developed by us. Using
+	   the proposed method, we get accurate sensitivity and prediction values compared with the usual
+	   numerical differentiation, with less computing time. We also discuss the effectiveness of the
+	   proposed method.",
+	ad_tools = "TEXPANDER"
+}
+
+@ARTICLE{
+	   Charpentier2004Maw,
+	doi = "10.1142/S0218396X04002390",
+	ad_area = "Geophysics",
+	ad_tools = "Odyssee",
+	ad_theotech = "Adjoint",
+	author = "Charpentier, I. and Roux, P.",
+	title = "Mode and wavenumber inversion in shallow water using an adjoint method",
+	journal = "Journal of Computational Acoustics",
+	year = "2004",
+	volume = "12",
+	number = "4",
+	pages = "521--542",
+	month = "dec",
+	abstract = "Modes and wavenumbers are the principal ingredients that characterize the pressure
+	   field in an oceanic waveguide. However, wavenumber and mode inversions are well-known to be a
+	   difficult task in underwater acoustics. Moreover, this double inversion has never been performed
+	   simultaneously from the same configuration of emitters and receivers. We present a new approach to
+	   this problem in a shallow water environment between two vertical arrays of sources and receivers.
+	   Starting from a classical modal decomposition of the pressure field, our algorithm focuses on a
+	   specific treatment of phase and amplitude variables. The key idea is to run a three-stage
+	   optimization by working separately on the phase and amplitude of the acoustic field. The high number
+	   of variables of the problem is turned into an advantage by using an adjoint code generated by an
+	   Automatic Differentiation software. Numerical results in the presence of noise show that modes and
+	   wavenumbers are estimated with a high accuracy.",
+	issn = "0218-396X",
+	id = "Charpentier2004Maw"
+}
+
+@ARTICLE{
+	   Charpentier2001End,
+	doi = "10.1063/1.1332808",
+	ad_area = "Physics",
+	ad_tools = "Odyssee",
+	ad_theotech = "Tangent",
+	author = "Charpentier, I. and Jakse, N.",
+	title = "Exact numerical derivatives of the pair-correlation function of simple liquids using
+	   the tangent linear method",
+	journal = "Journal of Chemical Physics",
+	year = "2001",
+	volume = "114",
+	number = "5",
+	pages = "2284--2292",
+	month = "feb",
+	abstract = "We present for the first time the tangent linear method applied to the algorithm
+	   for solving integral equations of the theory of simple liquids. The purpose of this method is to
+	   compute the exact derivatives of the pair-correlation function g(r) with respect to density and
+	   temperature, which appear in thermodynamic properties and in the self-consistent procedure. An
+	   automatic differentiation tool is applied to the numerical algorithm of the integral equation method
+	   that combines the Newton-Raphson and the traditional iterative techniques. It results in a tangent
+	   linear code for the integral equation proposed by Vompe and Martynov, which is applied to calculate
+	   the thermodynamic properties and the bridge functions of the Lennard-Jones fluid. The results
+	   suggest that the tangent linear method should be preferred over the different strategies of
+	   differentiation that have been used up to now. Moreover, a local formulation of the Gibbs-Duhem
+	   relation is tractable in this framework.",
+	issn = "0021-9606",
+	id = "Charpentier2001End"
+}
+
+@ARTICLE{
+	   Charpentier2005Aso,
+	doi = "10.1111/j.1365-246X.2005.02541.x",
+	ad_area = "Geophysics",
+	ad_tools = "Odyssee",
+	ad_theotech = "Tangent",
+	author = "Charpentier, I. and Espindola, J.M.",
+	title = "A study of the entrainment function in models of {P}linian columns: characteristics
+	   and calibration",
+	journal = "Geophysical Journal International",
+	year = "2005",
+	volume = "160",
+	number = "3",
+	pages = "1123--1130",
+	month = "mar",
+	abstract = "Many of the processes involved in volcanic eruptive columns may be described
+	   through physical models based on conservation laws in which a physical parametrization called the
+	   entrainment function plays an important role. The solution of inverse problems and the estimation of
+	   the characteristics of ancient eruptions are among the purposes of these models that require a
+	   better knowledge of the characteristics and properties of this function. The first part of the study
+	   shows that the three usual shapes chosen for this function yield apparently the same behaviour of
+	   the column. However, we prove that a piecewise constant shape may be unsuitable in optimization
+	   processes based on gradient methods. It also turns out that the parameters defining the entrainment
+	   function cannot be considered constant. In the second part of the paper, the unique parameter of the
+	   remaining two functions is viewed as dependent on the boundary conditions and specified with respect
+	   to them. A calibration of the entrainment function with respect to real data is achieved through a
+	   power law established between column height and discharge, the latter being related to velocity,
+	   radius and bulk density at the vent. According to a discussion on eruptive data, the construction of
+	   a mathematical parametrization for epsilon, with respect to boundary conditions and the heights of
+	   the vent and the tropopause, appears to be an unwarranted and difficult task since any new addition
+	   to the observed data will definitely modify the power law. A 4-D database covering the range of
+	   boundary conditions usually found in Plinian eruptions, together with an interpolation operator, are
+	   constructed in order to provide an approximated parameter for any set of boundary conditions in the
+	   range considered. Numerical results with a database of dimension 9(4) show that the approximated
+	   parameter allows one to recover column height very accurately.",
+	issn = "0956-540X",
+	id = "Charpentier2005Aso"
+}
+
+@ARTICLE{
+	   Charpentier2008Sos,
+	ad_tools = "Diamant",
+	ad_theotech = "Higher Order",
+	author = "Charpentier, Isabelle",
+	title = "Sensitivity of solutions computed through the Asymptotic Numerical Method",
+	journal = "Comptes Rendus M{\'e}canique",
+	year = "2008",
+	volume = "336",
+	number = "10",
+	pages = "788--793",
+	month = "oct",
+	abstract = "The Asymptotic Numerical Method (ANM) allows one to compute solution branches of
+	   sufficiently smooth non-linear PDE problems using truncated Taylor expansions. The Diamant approach
+	   of the ANM has been proposed for hiding definitively the differentiation aspects to the user. In
+	   this Note, this significant improvement in terms of genericity is exploited to compute the
+	   sensitivity of ANM solutions with respect to modelling parameters. The differentiation in the
+	   parameters is discussed at both the equation and code level to highlight the Automatic
+	   Differentiation (AD) purposes. A numerical example proves the interest of such techniques for a
+	   generic and efficient implementation of sensitivity computations.",
+	doi = "10.1016/j.crme.2008.09.003",
+	issn = "1631-0721",
+	id = "Charpentier2008Sos"
+}
+
+@ARTICLE{
+	   Charpentier2008Vco,
+	ad_area = "Geophysics",
+	ad_tools = "Odyssee",
+	ad_theotech = "Adjoint",
+	author = "Charpentier, Isabelle",
+	title = "Variational coupling of {P}linian column models and data: {A}pplication to {E}l
+	   {C}hich{\'o}n volcano",
+	journal = "Journal of Volcanology and Geothermal Research",
+	year = "2008",
+	volume = "175",
+	number = "4",
+	pages = "501--508",
+	month = "aug",
+	abstract = "Many efforts have been done in the modelling of Plinian columns. However, until
+	   now, the inverse problem of the reconstruction of a Plinian event from observed data has been only
+	   roughly tackled. This paper discusses the efficient variational data assimilation (VDA) that manages
+	   the optimization iterate sequence by means of gradient computations. Theoretical developments of VDA
+	   are presented for both the Woods equations and a generic system allowing for the modelling of the
+	   Navier-Stokes equations. Two- and three-dimensional unsteady Plinian models being based on the
+	   latters, VDA could be clearly performed on their differentiable subset of equations. Although no
+	   column data are available for the 1982 El Chichon eruptions, identical twin experiments were used to
+	   check the abilities of the VDA approach. VDA experiments coupled with a tephra tephra-fall model
+	   could be used, to obtain isopach and isopleth maps of past eruptions. Performing VDA experiments
+	   with a Plinian model coupled to a tephra-fall model could be an interesting solution to exploit
+	   isopach and isopleth maps of the past eruptions of El Chichon. Some of the numerical experiments
+	   presented in this paper are downloadable in the PliniAD package which is freely available from the
+	   author's webpage.",
+	doi = "10.1016/j.jvolgeores.2008.02.021",
+	issn = "0377-0273",
+	id = "Charpentier2008Vco"
+}
+
+@ARTICLE{
+	   Bilasse2009Aga,
+	journal = "Computer Methods in Applied Mechanics and Engineering",
+	ad_area = "Mechanical Engineering",
+	ad_tools = "Diamant",
+	ad_theotech = "Higher Order",
+	author = "Bilasse, Massamaesso and Charpentier, Isabelle and Daya, El Mostafa and Koutsawa,
+	   Yao",
+	title = "A generic approach for the solution of nonlinear residual equations. {Part II}:
+	   {H}omotopy and complex nonlinear eigenvalue method",
+	year = "2009",
+	volume = "198",
+	number = "49--52",
+	pages = "3999--4004",
+	abstract = "Solutions of nonlinear smooth PDE problems may be approximated as higher order
+	   truncated Taylor series using the Asymptotic Numerical Method (ANM). The Diamant approach, already
+	   presented in Part I, is a generic and efficient Automatic Differentiation implementation of the ANM.
+	   In this second Part, a Diamant-based ANM driver is designed for the solution of nonlinear problems
+	   involving a homotopy, that is an artificial transformation of the original problem into a simpler
+	   one whose solutions are known. Complex nonlinear eigenvalue problems are considered as an
+	   application, the homotopy being achieved by continuation from the real eigenvalue problem to the
+	   complex one. Numerical examples are presented for sandwich beams with frequency dependent
+	   viscoelastic cores (PVB and 3M ISD112). Three different constitutive laws - a constant modulus, a
+	   power law and a generalized Maxwell model - are presented to enhance the capabilities of this
+	   Diamant driver.",
+	doi = "10.1016/j.cma.2009.09.015",
+	issn = "0045-7825",
+	id = "Bilasse2009Aga"
+}
+
+@ARTICLE{
+	   Charpentier2008Ado,
+	ad_tools = "Diamant",
+	ad_theotech = "Higher Order",
+	author = "Charpentier, Isabelle and Potier-Ferry, Michel",
+	title = "Automatic differentiation of the asymptotic numerical method: the Diamant approach",
+	journal = "Comptes Rendus M{\'e}canique",
+	year = "2008",
+	volume = "336",
+	number = "3",
+	pages = "336--340",
+	month = "mar",
+	abstract = "The Asymptotic Numerical Method (ANM) is a competitive path following method based
+	   on truncated series. Until now, these Taylor expansions were mainly handwritten. The Note discusses
+	   the automation of high order derivative computations involved in the ANM and presents the Automatic
+	   Differentiation (AD) library Diamant. As any AD tool, the latter is generic and may be used to
+	   differentiate the code of any differentiable behaviour law what simplifies the implementation of the
+	   MAN in a significant manner. Numerical performances prove the efficiency of the Diamant approach.",
+	doi = "10.1016/j.crme.2007.11.022",
+	issn = "1631-0721",
+	id = "Charpentier2008Ado"
+}
+
+@ARTICLE{
+	   Charpentier2005Pdo,
+	pages = "204901-1--204901-10",
+	ad_area = "Physics",
+	ad_tools = "Odyssee",
+	ad_theotech = "Tangent",
+	author = "Charpentier, I. and Jakse, N.",
+	title = "Phase diagram of complex fluids using an efficient integral equation method",
+	journal = "Journal of Chemical Physics",
+	year = "2005",
+	volume = "123",
+	number = "204910",
+	month = "nov",
+	abstract = "We present an adaptive technique for the determination of the phase diagram of
+	   fluids within the integral equation theory. It enables an efficient and accurate systematic mapping
+	   of the thermodynamic space in order to construct the binodal and spinodal lines. Results are
+	   obtained with the thermodynamically consistent integral equation proposed by Sarkisov {[}J. Chem.
+	   Phys. 114, 9496 (2001)] within the tangent linear technique that yields an exact differentiation of
+	   correlation functions. The generality of the numerical approach is assessed by determining both the
+	   liquid-vapor coexistence and the critical parameters of the generalized Lennard-Jones (n,6)
+	   potentials with varying repulsive part, including the hard-sphere limit.",
+	doi = "10.1063/1.2117010",
+	issn = "0021-9606",
+	id = "Charpentier2005Pdo"
+}
+
+@INPROCEEDINGS{
+	   Gofen2005IEf,
+	author = "Alexander Gofen",
+	title = "Interactive Environment for the Taylor Integration (in 3D Stereo)",
+	comments = "Proceedings of the 2005 International Conference on Scientific Computing (CSC
+	   05)",
+	publisher = "CSREA Press",
+	year = "2005",
+	ad_tools = "ODE solver",
+	url = "http://www.resonoelusono.com/gofen/TaylorCenterPC.pdf"
+}
+
+@INPROCEEDINGS{
+	   Gofen2007VEf,
+	author = "Alexander Gofen",
+	title = "Visual Environment for the Taylor integration in 3D Stereo",
+	comments = "Proceedings DMS 2007, the 13th Intern. Conf. on Distributed Multimedia Systems",
+	year = "2007",
+	ad_tools = "ODE solver",
+	url = "http://www.resonoelusono.com/gofen/VisualTaylor.pdf"
+}
+
+@ARTICLE{
+	   Gofen2009Tod,
+	author = "Alexander Gofen",
+	title = "The ordinary differential equations and automatic differentiation unified",
+	journal = "Complex Variables and Elliptic Equations",
+	volume = "54",
+	number = "9",
+	year = "2009",
+	ad_theotech = "General",
+	url = "http://www.resonoelusono.com/gofen/UnifiedView.pdf"
 }
 

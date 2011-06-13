@@ -35,6 +35,9 @@ whirl2xaifOptions.txt \
 xaif2whirlOptions.txt \
 rtPropagationRoutines.txt \
 numericalDiscrepancy.pdf \
+selfAdjointDriverOutput.txt \
+selfAdjointDriverADMsplitOutput.txt \
+selfAdjointDriverFDOutput.txt \
 $(DOT2PDF) \
 $(DIA2PDF) \
 $(FIG2PDF) 
@@ -152,6 +155,18 @@ numericalDiscrepancy.ps : $(FORCE)
 	cd ${OPENADROOT}/Regression/testRoundTrip && ./testAll.py -c gfortran -b boxmodel 
 	- cd ${OPENADROOT}/Regression/testRoundTrip && ./numericalComparison.py -gi -t postscript -n boxmodel tmpOutput/dd.out examples/boxmodel/refOutput/dd.out tmpOutput/ad.out examples/boxmodel/refOutput/ad.out
 	cp ${OPENADROOT}/Regression/testRoundTrip/plotOutput/numericalComparison-boxmodel.ps $@
+
+selfAdjointDriverOutput.txt : Examples $(FORCE)
+	cd Examples/SelfAdjoint && $(MAKE)
+	cd Examples/SelfAdjoint; ./driver > ${THISDIR}/$@
+
+selfAdjointDriverADMsplitOutput.txt : Examples $(FORCE)
+	cd Examples/SelfAdjoint/ADMsplit && $(MAKE)
+	cd Examples/SelfAdjoint/ADMsplit; ./driverADMsplit > ${THISDIR}/$@
+
+selfAdjointDriverFDOutput.txt : Examples $(FORCE)
+	cd Examples/SelfAdjoint/FD && $(MAKE)
+	cd Examples/SelfAdjoint/FD; ./driverFD > ${THISDIR}/$@
 
 Examples :
 	ln -sf ${OPENADROOT}/Examples .

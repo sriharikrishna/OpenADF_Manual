@@ -89,6 +89,7 @@
 
 % math
 \newcommand{\R}{I\!\!R}
+\newcommand{\bmb}{\mbox{\bf\em b}}
 \newcommand{\bmC}{\mbox{\bf\em C}}
 \newcommand{\bmf}{\mbox{\bf\em f}}
 \newcommand{\bmfp}{\mbox{\bf\em f$\,^\prime\!\!$}}
@@ -2675,7 +2676,7 @@ We provide a number of helper scripts to manage the \OpenADF\ installation.
 This section is useful only for \OpenADF\ installation made from source 
 code repositories. The binary distribution does not include the scripts 
 and source tar ball does not include the repository data.
-To {\bf\em g}et {\bf\em O}pen{\bf\em AD} components and update the 
+To get \OpenADF\ components and update the 
 revision from the source code repositories  it is easiest to use the \lstinline{openadUpdate} script 
 which is written in Python \cite{pythonweb} and can be found  at \\[1ex]
 \hspace*{.3cm}\lstinline{$OPENDADROOT/bin/openadUpdate}\\[1ex] %$
@@ -2986,6 +2987,133 @@ shallow water code achieves
 a run time that is only about 8 times that of  plain model computation.
 We expect the ongoing development of \OpenADF, see also \refsec{sec:mods} to yield 
 further efficiency gains.
+
+% -----------------------------------------------------------------------------------------
+\section{Wrapping Higher-Level Calls using Stubs and Templates}\label{sec:higherLevel}
+Portions of the code that implement well defined higher-level mathematical mappings,  
+such as linear solves, it is generally preferable to formulate the mapping for the derivatives 
+directly rather than differentiating the code that implements the mapping. 
+This section we provides a few examples how to orchestrate the wrapping.
+
+% .........................................................................................
+\subsection{Self Adjoint Solves}\label{sec:selfAdjoint}
+In \lstinline{$OPENADROOT/Examples/SelfAdjoint/} %$
+one can find a simple example for 
+a selfadjoint solve of the following system
+\[
+\left[\begin{array}{cc}
+2 & 3 \\
+3 & 2 
+\end{array}\right] \bmx=\bmb \quad .
+\]
+The function in question is $\bmf: \bmb \mapsto \bmx$. 
+Because the matrix is symmetric and fixed we can write the adjoint simply as
+$\bar{\bmb}=\bar{\bmb}+A^{-1}\bar{\bmx}$. In other words this is just another solve 
+with the same matrix. 
+Let the solver be implemented as a simple LU-factorization, see \lstinline{lu.f90}.
+One can compile the original example in this directory by invoking \\[1ex]
+\hspace*{.3cm}\lstinline{make} \\[1ex] 
+and then invoking the resulting binary\\[1ex]
+\hspace*{.3cm}\lstinline{./driver} \\[1ex]
+which produces the output shown in \reffig{fig:selfAdjointDriverOutput}.
+\begin{figure}[htb]
+\begin{boxedminipage}{\textwidth}
+\scriptsize\verbatiminput{selfAdjointDriverOutput.txt}
+\end{boxedminipage}
+\caption{Output from \lstinline{driver} of the self-adjoint example.}\label{fig:selfAdjointDriverOutput}
+\end{figure} 
+The correctness test is also implemented in \lstinline{lu.f90}.
+
+For the reverse mode setup we assume a simple split scheme (see also, \refsec{sec:cgReversal}) implemented in 
+\lstinline{ADMsplit/}.
+For the differentiation we replace the original code from \lstinline{lu.f90} with stubs provided in 
+\lstinline{ADMsplit/luStubs.f90}. 
+The purpose of the stub is simply to establish the data dependency for the code analysis while hiding the 
+complexity of the actual code or dealing with cases where the source code is not available in the first place.
+In this file we simply establish a dependency from  the right-hand-side vector \lstinline{b} to the solution 
+\lstinline{x}. 
+The code analysis now can trace the path from the independent to the dependent declared in 
+\lstinline{head.f90}. 
+The rules in \lstinline{ADMsplit/Makefile} show how the \lstinline{ADMsplit/luStubs.f90} and  
+\lstinline{head.f90} are concatenaded, the module name is changed to the \lstinline{LUstubs} module,
+and then the sources are transformed using the \lstinline{openad} wrapper script.
+
+During the post processing phase we use the default split mode template copied in by the 
+\lstinline{openad} script. The one exception is the transformed \lstinline{ADMsplit/luStubs.f90}
+that contains the template pragma directing the post processor to use the template files
+\lstinline{oad_template_solve.f90} (and also \lstinline{oad_template_test.f90})  in 
+\lstinline{ADMsplit} instead. 
+\begin{figure}
+\begin{minipage}{\linewidth}
+\small\lstinputlisting[basicstyle=,language=Fortran,frame=single]{Examples/SelfAdjoint/ADMsplit/oad_template_solve.f90}
+\end{minipage}
+\caption{Split mode template for LU solve (see file 
+\lstinline{$OPENADROOT/Examples/SelfAdjoint/ADMsplit/oad_template_solve.f90}) %$
+}\label{fig:selfAdjointSplitTemplate}
+\end{figure}
+Inspecting the \lstinline{ADMsplit/oad_template_solve.f90} file, see also \reffig{fig:selfAdjointSplitTemplate}
+shows that we avoid a name clash by \lstinline{USE}ing the original \lstinline{solve} renamed as \lstinline{trueSolve}
+and implement the forward and reverse sweeps simply as the linear system solves indicated above. 
+
+The output created  by the \lstinline{ADMsplit/driverADMsplit} variant can be compared with the output created for finite differences with 
+\lstinline{FD/driverFD}, see also \reffig{fig:selfAdjointDriverADMsplitFDOutput}.
+\begin{figure}
+\begin{boxedminipage}{\textwidth}
+\scriptsize\verbatiminput{selfAdjointDriverADMsplitOutput.txt}
+\end{boxedminipage}
+\begin{boxedminipage}{\textwidth}
+\scriptsize\verbatiminput{selfAdjointDriverFDOutput.txt}
+\end{boxedminipage}
+\caption{Output from \lstinline{ADMsplit/driverADMsplit} (top) and \lstinline{FD/driverFD} for the self-adjoint example.}\label{fig:selfAdjointDriverADMsplitFDOutput}
+\end{figure} 
+% .........................................................................................
+\subsection{Linear Solve with UMFPACK}\label{sec:umfpack}
+Because UMFPACK \cite{umfpackWeb} is not included in the \OpenADF\ downloads you need to make sure to have it installed and have the environment variable \lstinline{UMFPACK_LID_DIR} point to the installation directory to compile and run the examples. 
+We use this example to also illustrate the difference between an active and a passive system matrix. 
+% .........................................................................................
+\subsubsection{Passive System Matrix (UMFPACK v. 2.2)}\label{sec:umfpackPassive}  
+This example refers to the old UMFPACK implementation v. 2.2.  
+All related files can be found in 
+\lstinline{$OPENADROOT/Examples/LibWrappers/UmfPack_2.2_passive}. %$
+Similarly to \refsec{sec:selfAdjoint} we consider a linear solve but now with an unsymmetric system: 
+\[
+\left[\begin{array}{cc}
+2 & 4 \\
+3 & 2 
+\end{array}\right] \bmx=\bmb \quad .
+\]
+As opposed to \refsec{sec:selfAdjoint}, the corresponding adjoint solve has to be done with the transpose
+$\bar{\bmb}=\bar{\bmb}+A^{-T}\bar{\bmx}$.
+For the solve with UMFPACK a sequence of three calls has to be issued to the routines
+\lstinline{UMD21I} (initialization),  \lstinline{UMD2FA} (factorization), \lstinline{UMD2SO} (backsubstitution).
+The last two calls are typically followed by error checks. Considering this calling sequence it is apparent that 
+\begin{itemize} 
+\item a naive reversal of the sequence will let the error checks precede the calls to be checked, and 
+\item the calls themselves do not have an obvious adjoint equivalent.
+\end{itemize}
+The entire calling sequence as a linear solve however does.  Therefore we consider the solve as implemented in 
+\lstinline{solve.f90} the unit to be wrapped. Note the \lstinline{trans} parameter to quickly switch to the 
+transposed version.
+Similarly to \refsec{sec:selfAdjoint} we use a stub, see \lstinline{ADMsplit/Stubs/solve.f90} for the transformation
+which then is replaced in the post process step by the template indicated in the stub's template pragma, see 
+\lstinline{ADMsplit/Templates/solve.f90} which is also shown in \reffig{fig:umf22passiveTemplate}.
+\begin{figure}[tb]
+\begin{minipage}{\linewidth}
+\small\lstinputlisting[basicstyle=,language=Fortran,frame=single]{Examples/LibWrappers/UmfPack_2.2_passive/ADMsplit/Templates/solve.f90}
+\end{minipage}
+\caption{Split mode template for UMFPACK solve (see file 
+\lstinline{$OPENADROOT/Examples/LibWrappers/UmfPack_2.2_passive/ADMsplit/Templates/solve.f90}) %$
+}\label{fig:umf22passiveTemplate}
+\end{figure}
+Note the switch in the transpose parameter on the \lstinline{solve} call in the adjoint branch.
+
+Also, note that in difference to \refsec{sec:selfAdjoint} we disambiguate between the stub for \lstinline{solve} 
+and the actual \lstinline{solve} wrapper by forcing a rename on all routines during the transformation with 
+the \lstinline{-r} switch, see \lstinline{ADMsplit/Makefile} for the command line flags passed to \lstinline{oadDriver}.
+Because all routines are renamed, the calls to \lstinline{head} in the driver have to be changed to a calls to 
+\lstinline{OpenAD_head}, see \lstinline{ADMsplit/driverADMsplit.f90}.    
+% .........................................................................................
+\subsubsection{Active System Matrix (UMFPACK v. 2.2)}  \label{sec:umfpackActive}
 
 % #########################################################################################
 \chapter{Modifying \OpenADF}\label{sec:mods}

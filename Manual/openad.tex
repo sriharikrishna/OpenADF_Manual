@@ -89,6 +89,7 @@
 
 % math
 \newcommand{\R}{I\!\!R}
+\newcommand{\bmA}{\mbox{\bf\em A}}
 \newcommand{\bmb}{\mbox{\bf\em b}}
 \newcommand{\bmC}{\mbox{\bf\em C}}
 \newcommand{\bmf}{\mbox{\bf\em f}}
@@ -2988,7 +2989,8 @@ a run time that is only about 8 times that of  plain model computation.
 We expect the ongoing development of \OpenADF, see also \refsec{sec:mods} to yield 
 further efficiency gains.
 
-% -----------------------------------------------------------------------------------------
+% #########################################################################################
+\chapter{Recepies}\label{sec:recepies}
 \section{Wrapping Higher-Level Calls using Stubs and Templates}\label{sec:higherLevel}
 Portions of the code that implement well defined higher-level mathematical mappings,  
 such as linear solves, it is generally preferable to formulate the mapping for the derivatives 
@@ -3001,10 +3003,10 @@ In \lstinline{$OPENADROOT/Examples/SelfAdjoint/} %$
 one can find a simple example for 
 a selfadjoint solve of the following system
 \[
-\left[\begin{array}{cc}
+\underbrace{\left[\begin{array}{cc}
 2 & 3 \\
 3 & 2 
-\end{array}\right] \bmx=\bmb \quad .
+\end{array}\right]}_{=\bmA} \bmx=\bmb \quad .
 \]
 The function in question is $\bmf: \bmb \mapsto \bmx$. 
 Because the matrix is symmetric and fixed we can write the adjoint simply as
@@ -3077,10 +3079,10 @@ All related files can be found in
 \lstinline{$OPENADROOT/Examples/LibWrappers/UmfPack_2.2_passive}. %$
 Similarly to \refsec{sec:selfAdjoint} we consider a linear solve but now with an unsymmetric system: 
 \[
-\left[\begin{array}{cc}
+\underbrace{\left[\begin{array}{cc}
 2 & 4 \\
 3 & 2 
-\end{array}\right] \bmx=\bmb \quad .
+\end{array}\right]}_{=\bmA} \bmx=\bmb \quad .
 \]
 As opposed to \refsec{sec:selfAdjoint}, the corresponding adjoint solve has to be done with the transpose
 $\bar{\bmb}=\bar{\bmb}+A^{-T}\bar{\bmx}$.
@@ -3101,20 +3103,67 @@ which then is replaced in the post process step by the template indicated in the
 \begin{minipage}{\linewidth}
 \small\lstinputlisting[basicstyle=,language=Fortran,frame=single]{Examples/LibWrappers/UmfPack_2.2_passive/ADMsplit/Templates/solve.f90}
 \end{minipage}
-\caption{Split mode template for UMFPACK solve (see file 
+\caption{Split mode template for passive UMFPACK solve (see file 
 \lstinline{$OPENADROOT/Examples/LibWrappers/UmfPack_2.2_passive/ADMsplit/Templates/solve.f90}) %$
 }\label{fig:umf22passiveTemplate}
 \end{figure}
 Note the switch in the transpose parameter on the \lstinline{solve} call in the adjoint branch.
+In general it is not guaranteed that the values of $\bmA$ are available without taping and restoring (see \refsec{sec:cfReversal}).
+In this example the values of $\bmA$ happen to be set with a \lstinline{data} statement (see \lstinline{head.f90}) which allows their reuse in the 
+adjoint without any extra measures.  
 
 Also, note that in difference to \refsec{sec:selfAdjoint} we disambiguate between the stub for \lstinline{solve} 
 and the actual \lstinline{solve} wrapper by forcing a rename on all routines during the transformation with 
 the \lstinline{-r} switch, see \lstinline{ADMsplit/Makefile} for the command line flags passed to \lstinline{oadDriver}.
 Because all routines are renamed, the calls to \lstinline{head} in the driver have to be changed to a calls to 
 \lstinline{OpenAD_head}, see \lstinline{ADMsplit/driverADMsplit.f90}.    
+
+The output created  by the \lstinline{ADMsplit/driverADMsplit} variant can be compared with the output created for finite differences with 
+\lstinline{FD/driverFD}
 % .........................................................................................
 \subsubsection{Active System Matrix (UMFPACK v. 2.2)}  \label{sec:umfpackActive}
+This example refers to the old UMFPACK implementation v. 2.2.  
+All related files can be found in 
+\lstinline{$OPENADROOT/Examples/LibWrappers/UmfPack_2.2_active}. %$
+In difference to \refsec{sec:umfpackPassive} the matrix values are computed using the 
+independents \bmb: 
+\[
+\underbrace{\left(\left[\begin{array}{cc}
+2 & 4 \\
+3 & 2 
+\end{array}\right]
++\bmI\bmb\right)}_{=\bmA}\bmx=\bmb \quad .
+\]
+We follow \cite{Giles2008CMD} in deriving the respective adjoint statements as 
+\begin{equation}
+\bar{\bmb}=\bar{\bmb}+A^{-T}\bar{\bmx} \label{eqn:umfpackActivebarb}
+\end{equation}
+and 
+\begin{equation}
+\bar{\bmA}=\bar{\bmA}-\bar{\bmb}\bmx^T \quad.\label{eqn:umfpackActivebarA}
+\end{equation}
+While the setup of the example follows the one in \refsec{sec:umfpackPassive}, there are a few notable 
+differences. 
+\begin{figure}[tb]
+\begin{minipage}{\linewidth}
+\small\lstinputlisting[basicstyle=,language=Fortran,frame=single]{Examples/LibWrappers/UmfPack_2.2_active/ADMsplit/Templates/solve.f90}
+\end{minipage}
+\caption{Split mode template for active UMFPACK solve (see file 
+\lstinline{$OPENADROOT/Examples/LibWrappers/UmfPack_2.2_active/ADMsplit/Templates/solve.f90}) %$
+}\label{fig:umf22activeTemplate}
+\end{figure}
+\begin{itemize}
+\item The values of $\bmA$ are set in the code (not with a \lstinline{data} statement) and that means for \refeqn{eqn:umfpackActivebarb}
+we need to tape and restore $\bmA$. This is done manually in the template, see \reffig{fig:umf22activeTemplate} lines 23-25 and lines 
+31-32 respectively.
+\item The values of the solution  $\bmx$ are needed in \refeqn{eqn:umfpackActivebarA}. We could recompute them if we knew without more 
+effort the values of $\bmb$ or alternatively 
+we tape and restore $\bmx$. This is done manually in the template, see \reffig{fig:umf22activeTemplate} lines 20-21 and lines 
+37-38 respectively. Note that the order of taping (first $\bmx$, then $\bmA$) implies the inverse order for restore (first $\bmA$, then $\bmx$).
+\end{itemize}
 
+The output created  by the \lstinline{ADMsplit/driverADMsplit} variant can be compared with the output created for finite differences with 
+\lstinline{FD/driverFD}
 % #########################################################################################
 \chapter{Modifying \OpenADF}\label{sec:mods}
 

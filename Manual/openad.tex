@@ -2233,7 +2233,7 @@ are used in transformation tool chain in the following sequence.
 \end{enumerate}
 
 % -----------------------------------------------------------------------------------------
-\subsection{Canonicalization (incompl.)}\label{sec:Canonicalization}
+\subsection{Canonicalization with \lstinline{preProcess.py} (incompl.)}\label{sec:Canonicalization}
 In \refsec{sec:xaif} we explain how the restriction to the numerical core 
 contributes to the  language independence of the transformation
 engine.
@@ -2345,9 +2345,36 @@ Because none of the above canonicalizations are intended to produce manually
 maintainable code we prefer simplicity over more sophisticated transformations 
 e.g. a module generator which abstracts dimension information shared between common blocks. 
 
+\subsubsection{Error Conditions}\label{sec:canonErrors}
+For simplicity the Fortran parser use here does not validate the input. 
+All input is expected to be syntactically correct, otherwise an exception
+may be raised and the \lstinline{preProcess.py} or 
+\lstinline{postProcess.py} script may abort with an error message.  
+\begin{description}
+\item[{\tt UserError} : ] a simple user error (such as specifying a non-existant input file); the 
+details  should be explained by the accompanying message. 
+\item[{\tt FunToSuError} : ] an error specific to the function to subroutine 
+conversion; 
+if the message does not spell out a specific problem with the user input it may indicate a 
+problem in the implementation and should be reported to the bug tracking system via the \OpenADF\ website.
+\item[{\tt CanonError} : ] an error specific to the canonicalization phase; 
+if the message does not spell out a specific problem with the user input it may indicate a 
+problem in the implementation and should be reported to the bug tracking system via the \OpenADF\ website.
+\item[other errors:] error messages of the following categories:
+\begin{description}
+\item[{\tt ScanError}]
+\item[{\tt ParseError}]
+\item[{\tt AssemblerException}]
+\item[{\tt ListAssemblerException}]
+\item[{\tt SymtabError}]
+\item[{\tt InferenceError}]
+\end{description}
+thrown either because the input has incorrect syntax or there is a bug in the parser. 
+If you are convinced the input is syntactically correct please submit the input along with 
+the error message to the bug tracking system via the \OpenADF\ website. 
+\end{description}
 % -----------------------------------------------------------------------------------------
 \subsection{Compiler Front-End Components (from \OpenSixtyFour)} \label{sec:open64FeBe}
-
 The choice of \OpenSixtyFour\ for some of the programming-language-dependent 
 components ensures some initial robustness of the tool that is afforded by an 
 industrial-strength compiler. 
@@ -2487,7 +2514,7 @@ three tasks to be accomplished by the postprocessor.
 \end{itemize}  
 
 % -----------------------------------------------------------------------------------------
-\subsection{Postprocessing (incompl.)}\label{sec:PostProcessor}
+\subsection{Postprocessing with \lstinline{postProcess.py} (incompl.)}\label{sec:PostProcessor}
 The postprocessor performs the three tasks outlined at the end of \refsec{sec:wtxxtw}.
 This is done using the following Python script.\\[1ex]
 \hspace*{.3cm}\lstinline{$OPENADFORTTK_BASE/tools/SourceProcessing/postProcess.py}\\[1ex] %$
@@ -2669,6 +2696,14 @@ The respective top-level routine is called by the driver with the state structur
 \caption{Joint mode Fortran90 template with argument checkpointing} \label{fig:jointACTemplate}
 \end{figure}
 
+\subsubsection{Error Conditions}\label{sec:postProcErrors}
+In addition to what is mentioned in \refsec{sec:canonErrors} the post processing 
+phase may abort with:   
+\begin{description}
+\item[{\tt PostProcessError} : ] an error specific to the post processing logic; 
+if the message does not spell out a specific problem with the user input it may indicate a 
+problem in the implementation and should be reported to the bug tracking system via the \OpenADF\ website.
+\end{description}
 % -----------------------------------------------------------------------------------------
 \section{Ancillary Tools}\label{sec:ancillaryTools}
 We provide a number of helper scripts to manage the \OpenADF\ installation.

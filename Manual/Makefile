@@ -147,7 +147,7 @@ xaif2whirlOptions.txt : $(FORCE)
 	${OPENADFORTTKROOT}/bin/xaif2whirl -h 2> ${THISDIR}/$@
 
 rtPropagationRoutines.txt : $(FORCE)
-	cat ${OPENADROOT}/runTimeSupport/scalar/OAD_active.f90 | grep subroutine | grep -v convert | grep -v 'end subroutine' | grep -v 'allocateMatching' | grep -v 'shapeTest' | grep -v 'runTimeError' |  sed 's/ *subroutine //' > ${THISDIR}/$@
+	cat ${OPENADROOT}/runTimeSupport/scalar/OAD_active.f90 | grep subroutine | grep -v convert | grep -v 'end subroutine' | grep -v 'allocateMatching' | grep -v 'shapeTest' | grep -v 'runTimeError' | grep -v 'allocateShape' | sed 's/ *subroutine //' > ${THISDIR}/$@
 
 numericalDiscrepancy.ps : $(FORCE)
 	cd ${OPENADROOT}/Regression/testRoundTrip && $(MAKE) clean

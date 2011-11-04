@@ -120,7 +120,7 @@ openadStatusFlags.txt : $(FORCE)
 	cd ${OPENADROOT}; openadStatus -h > ${THISDIR}/$@
 
 preProcessOptions.txt : $(FORCE)
-	${OPENADFORTTK_BASE}/tools/SourceProcessing/preProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+	export COLUMNS=$(PORTRAIT_ORIENT_BOX_WIDTH); ${OPENADFORTTK_BASE}/tools/SourceProcessing/preProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
 
 Examples/SRCanonical/func.pre.f90 : Examples $(FORCE)
 	cd Examples/SRCanonical && $(MAKE)
@@ -132,7 +132,7 @@ Examples/ArgExprCanonical/func.pre.f90 : Examples $(FORCE)
 	cd Examples/ArgExprCanonical && $(MAKE)
 
 postProcessOptions.txt : $(FORCE)
-	${OPENADFORTTK_BASE}/tools/SourceProcessing/postProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
+	export COLUMNS=$(PORTRAIT_ORIENT_BOX_WIDTH); ${OPENADFORTTK_BASE}/tools/SourceProcessing/postProcess.py -h | ${THISDIR}/fold.py -p '			' -w $(PORTRAIT_ORIENT_BOX_WIDTH) > ${THISDIR}/$@
 
 mfef90Options.txt : $(FORCE)
 	${OPEN64ROOT}/crayf90/sgi/mfef90 -h | egrep '(-z|-N|-F|-f|in the Open64)' > ${THISDIR}/$@

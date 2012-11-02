@@ -155,7 +155,7 @@
 	author = "Klaus R{\"o}benack",
 	title = "Automatic Differentiation for Nonlinear Controller Design",
 	year = "2002",
-	crossref = Sloot2002CSI
+	crossref = "Sloot2002CSI"
 }
 
 @ARTICLE{
@@ -1555,13 +1555,24 @@
 	author = "D. Conforti and Marco Mancini",
 	title = "A Curvilinear Search Algorithm for Unconstrained Optimization by Automatic
 	   Differentiation",
-	journal = "Optimization Methods and Software",
+	journal = "Optimization Methods \& Software",
 	volume = "15r",
 	number = "3-4",
 	pages = "283--297",
+	doi = "10.1080/10556780108805822",
 	key = "Conforti2001ACS",
 	referred = "[Christianson2001GoP].",
-	year = "2001"
+	year = "2001",
+	abstract = "Solving in an efficient and robust way an unconstrained optimization problem may
+	   prove quite hard in certain difficult situations. Typical examples are highly nonlinear problems,
+	   ill-conditioned and badly scaled problems. Particularly in these situations, it may be useful to
+	   compute a curvilinear trajectory and follow it by curvilinear searches with the aim to reach the
+	   solution in few long steps. In this paper, we proposed an approach for computing a suitable
+	   curvilinear trajectory, based on the knowledge of the third order derivatives of the objective
+	   function. The numerical implementation of this approach was made possible by Automatic
+	   Differentiation techniques. Some preliminary numerical results are very encouraging, especially in
+	   the case of very ill-conditioned and badly scaled problems.",
+	ad_theotech = "Higher Order"
 }
 
 @INCOLLECTION{
@@ -4231,7 +4242,7 @@
 	   Solver",
 	pdf = "http://www.mit.edu/~heimbach/publication/iccs2002_final.pdf",
 	url = "http://www.mit.edu/afs/athena.mit.edu/user/h/e/heimbach/www",
-	crossref = Sloot2002CSI
+	crossref = "Sloot2002CSI"
 }
 
 @TECHREPORT{
@@ -6310,18 +6321,26 @@
 	REFERRED = "[Iri1991HoA]."
 }
 
-@ARTICLE{
-	   Fateman1969OCf,
-	AUTHOR = "Fateman, Richard J.",
-	TITLE = "Optimal Code for Serial and Parallel Computation",
-	JOURNAL = "Comm. ACM",
-	YEAR = "1969",
-	VOLUME = "12",
-	NUMBER = "12",
-	PAGES = "694--695",
-	MONTH = "December",
-	REFERRED = "[Char1991CAa].",
-	COMMENT = "Discusses Breuer's paper as it relates to symbolic algebra."
+@INPROCEEDINGS{
+	   Smith2007Adi,
+	author = "Smith, Jacob and Dos Reis, Gabriel and J{\"a}rvi, Jaakko",
+	title = "Algorithmic differentiation in Axiom",
+	booktitle = "Proceedings of the 2007 international symposium on Symbolic and algebraic
+	   computation",
+	series = "ISSAC '07",
+	year = "2007",
+	isbn = "978-1-59593-743-8",
+	location = "Waterloo, Ontario, Canada",
+	pages = "347--354",
+	numpages = "8",
+	url = "http://doi.acm.org/10.1145/1277548.1277595",
+	doi = "10.1145/1277548.1277595",
+	acmid = "1277595",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	keywords = "algorithmic differentiation, axiom, program transformation, symbolic-numeric
+	   computation",
+	ad_theotech = "Implementation Strategies"
 }
 
 @PHDTHESIS{
@@ -7624,15 +7643,14 @@
 
 @INCOLLECTION{
 	   Rall1996GCb,
-	AUTHOR = "Louis B. Rall",
-	TITLE = "Gradient Computation by Matrix Multiplication",
-	BOOKTITLE = "Applied Mathematics and Parallel Computing",
-	YEAR = "1996",
-	EDITOR = "Herbert C. Fischer and B. Riedmueller and S. Schaeffler",
-	PUBLISHER = "Physica-Verlag",
-	ADDRESS = "Berlin ",
-	PAGES = "233--240",
-	REFERRED = "[Rall1996AIt]."
+	author = "Louis B. Rall",
+	title = "Gradient Computation by Matrix Multiplication",
+	booktitle = "Applied Mathematics and Parallel Computing",
+	year = "1996",
+	editor = "Herbert C. Fischer and B. Riedm{\"u}ller and S. Sch{\"a}ffler",
+	publisher = "Physica-Verlag",
+	address = "Heidelberg",
+	pages = "233--240"
 }
 
 @MISC{
@@ -9180,18 +9198,18 @@
 
 @INCOLLECTION{
 	   Ulbrich1996ADA,
-	AUTHOR = "Michael Ulbrich and Stefan Ulbrich",
-	TITLE = "Automatic Differentiation: A Structure-Exploiting Forward Mode with Almost Optimal
+	author = "Michael Ulbrich and Stefan Ulbrich",
+	title = "Automatic Differentiation: A Structure-Exploiting Forward Mode with Almost Optimal
 	   Complexity for {K}antorovic Trees",
-	BOOKTITLE = "Applied Mathematics and Parallel Computing, Festschrift for Klaus Ritter",
-	YEAR = "1996",
-	EDITOR = "Herbert C. Fischer and B. Riedmueller and S. Schaeffler",
-	PUBLISHER = "Physica-Verlag",
-	ADDRESS = "Berlin ",
-	PAGES = "327--357",
-	KEYWORDS = "Automatic differentiation, characterizing sequence, code list, forward mode,
+	booktitle = "Applied Mathematics and Parallel Computing, Festschrift for Klaus Ritter",
+	year = "1996",
+	editor = "Herbert C. Fischer and B. Riedm{\"u}ller and S. Sch{\"a}ffler",
+	publisher = "Physica-Verlag",
+	address = "Berlin",
+	pages = "327--357",
+	keywords = "Automatic differentiation, characterizing sequence, code list, forward mode,
 	   reverse mode, Kantorovic graph, Kantorovic tree, time complexity, parallelization.",
-	ABSTRACT = "A structure-exploiting forward mode is discussed that achieves almost optimal
+	abstract = "A structure-exploiting forward mode is discussed that achieves almost optimal
 	   complexity for functions given by Kantorovic trees. It is based on approriate representations of the
 	   gradient and the Hessian. After a brief exposition of the forward and reverse mode of automatic
 	   differentiation for derivatives up to second order and compact proofs of their complexities, the new
@@ -9529,7 +9547,7 @@
 	author = "M. Fagan and A. Carle",
 	title = "Switchback: Profile-Driven Subprogram-Focused Recomputation for Reverse Mode",
 	year = "2002",
-	crossref = Sloot2002CSI
+	crossref = "Sloot2002CSI"
 }
 
 @INPROCEEDINGS{
@@ -9547,7 +9565,7 @@
 	title = "Reducing the Memory Requirement in Reverse Mode Automatic Differentiation by Solving
 	   {TBR} Flow Equations",
 	year = "2002",
-	crossref = Sloot2002CSI
+	crossref = "Sloot2002CSI"
 }
 
 @INPROCEEDINGS{
@@ -9565,7 +9583,7 @@
 	title = "The Implementation and Testing of Time-minimal and Resource-optimal Parallel Reversal
 	   Schedules",
 	year = "2002",
-	crossref = Sloot2002CSI
+	crossref = "Sloot2002CSI"
 }
 
 @ARTICLE{
@@ -9618,7 +9636,7 @@
 	year = "2002",
 	author = "H. Martin B{\"u}cker and Bruno Lang and A. Rasch and Christian
 	   H.~Bischof",
-	crossref = Sloot2002CSI
+	crossref = "Sloot2002CSI"
 }
 
 @INPROCEEDINGS{
@@ -9637,7 +9655,7 @@
 	title = "Performance Issues for Vertex Elimination Methods in Computing {J}acobians using
 	   Automatic Differentiation",
 	year = "2002",
-	crossref = Sloot2002CSI
+	crossref = "Sloot2002CSI"
 }
 
 @INPROCEEDINGS{
@@ -9655,7 +9673,7 @@
 	author = "P. Hovland and B. Norris and B. Smith",
 	title = "Making Automatic Differentiation Truly Automatic: Coupling {PETSc} with {ADIC}",
 	year = "2002",
-	crossref = Sloot2002CSI
+	crossref = "Sloot2002CSI"
 }
 
 @INPROCEEDINGS{
@@ -11223,7 +11241,7 @@
 	ad_area = "Beam Physics",
 	ad_tools = "ADIFOR",
 	year = "2003",
-	crossref = Kumar2003CSa
+	crossref = "Kumar2003CSa"
 }
 
 @INPROCEEDINGS{
@@ -11254,7 +11272,7 @@
 	ad_area = "Computational Fluid Dynamics",
 	ad_tools = "ADIFOR",
 	year = "2003",
-	crossref = Kumar2003CSa
+	crossref = "Kumar2003CSa"
 }
 
 @INPROCEEDINGS{
@@ -11279,7 +11297,7 @@
 	ad_area = "Computational Fluid Dynamics",
 	ad_tools = "TAPENADE",
 	year = "2003",
-	crossref = Kumar2003CSa
+	crossref = "Kumar2003CSa"
 }
 
 @INPROCEEDINGS{
@@ -11306,7 +11324,7 @@
 	ad_tools = "EliAD",
 	ad_theotech = "Hierarchical Approach",
 	year = "2003",
-	crossref = Kumar2003CSa
+	crossref = "Kumar2003CSa"
 }
 
 @TECHREPORT{
@@ -11520,7 +11538,7 @@
 @INPROCEEDINGS{
 	   Bucker2004ACo,
 	author = "H. M. B{\"u}cker and A.~Rasch and A.~Wolf",
-	title = "A Class of OpenMP Applications Involving Nested Parallelism",
+	title = "A Class of {O}pen{MP} Applications Involving Nested Parallelism",
 	booktitle = "Proceedings of the 19th ACM Symposium on Applied Computing, Nicosia, Cyprus,
 	   March~14--17, 2004",
 	publisher = "ACM Press",
@@ -14618,7 +14636,8 @@
 	address = "Philadelphia, PA",
 	series = "Classics in Applied Mathematics",
 	YEAR = "1996",
-	volume = "16"
+	volume = "16",
+	ad_area = "Optimization"
 }
 
 @ARTICLE{
@@ -15196,8 +15215,8 @@
 @INPROCEEDINGS{
 	   Kalkuhl2005HPS,
 	author = "M. Kalkuhl and W. Wiechert and H. M. B{\"u}cker and A. Vehreschild",
-	title = "High Precision Satellite Orbit Simulation: A Test Bench for Automatic Differentiation
-	   in MATLAB",
+	title = "High Precision Satellite Orbit Simulation: {A} Test Bench for Automatic
+	   Differentiation in {MATLAB}",
 	booktitle = "Proceedings of the Eighteenth Symposium on Simulation Techniques, ASIM~2005,
 	   Erlangen, September~12--15",
 	editor = "F. H{\"u}lsemann and M. Kowarschik and U. R{\"u}de",
@@ -16527,7 +16546,7 @@
 @INPROCEEDINGS{
 	   Giering2002ATt,
 	author = "Ralf Giering and Thomas Kaminski",
-	title = "Applying TAF to generate efficient derivative code of Fortran 77-95 programs",
+	title = "Applying {TAF} to generate efficient derivative code of {Fortran} 77-95 programs",
 	booktitle = "Proceedings of GAMM 2002, Augsburg, Germany",
 	year = "2002",
 	ad_tools = "TAF",
@@ -16774,7 +16793,7 @@
 @ARTICLE{
 	   Gebremedhin2005WCI,
 	author = "Assefaw Hadish Gebremedhin and Fredrik Manne and Alex Pothen",
-	title = "What Color Is Your Jacobian? Graph Coloring for Computing Derivatives",
+	title = "What Color Is Your {J}acobian? Graph Coloring for Computing Derivatives",
 	publisher = "SIAM",
 	year = "2005",
 	journal = "SIAM Review",
@@ -17529,10 +17548,10 @@
 	address = "{Bristol and Philadelphia} publisher = {Institute of Phsysics Publishing}",
 	pages = "466--470",
 	year = "2005",
-	note = "online avaliable at
-	   http://www.iop.org/EJ/article/1742-6596/16/1/063/jpconf5_16_063.pdf",
 	ad_tools = "OpenAD",
-	ad_theotech = "General"
+	ad_theotech = "General",
+	note = "online avaliable
+	   at \url{ http://www.iop.org/EJ/article/1742-6596/16/1/063/jpconf5_16_063.pdf}"
 }
 
 @ARTICLE{
@@ -17803,7 +17822,7 @@
 	   and/or results of subroutine calls such that the overall computational effort (the total number of
 	   floating-point operations performed by potentially repeated forward evaluations of the program) of
 	   the data-flow reversal is minimized. CALL TREE REVERSAL is shown to be NP-complete.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "13--22",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -17829,7 +17848,7 @@
 	   a WHILE-language, we show how such proofs can be constructed. In particular, we show that certain
 	   code transformations and static analyses used in AD can be certified using the well-established
 	   Hoare logic for program verification.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "23--33",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -17854,7 +17873,7 @@
 	   the adjoint ODE solution with the same order as the original linear multistep method. Discrete
 	   adjoints inherit the zero-stability properties of the forward method. Numerical results confirm the
 	   theoretical findings.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "1--12",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -17877,7 +17896,7 @@
 	   remarkable contribution of a 1948 paper by Dwyer and Macphail which derives the linear and adjoint
 	   sensitivities of a matrix product, inverse and determinant, and a number of related results
 	   motivated by applications in multivariate analysis in statistics.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "35--44",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -17900,7 +17919,7 @@
 	   ill-posed problem. We describe a powerful modification of Weeks' Method, based on automatic
 	   differentiation, to be used in the real inversion. We show that the automatic differentiation
 	   technique assures accurate and efficient numerical computation of the inverse Laplace function.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "45--54",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -17930,7 +17949,7 @@
 	   numerical rank of the Jacobian matrix). This process reveals the rank of the Jacobian matrix and can
 	   be obtained by ESM via a series of r randomized matrix-vector products of the form: $Jq$, and $J^{T}
 	   \omega$ which can be evaluated by the AD forward and reverse modes, respectively.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "55--65",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -17961,7 +17980,7 @@
 	   of the method for actual applications. In addition, it demonstrates how multiple C++ operator
 	   overloading AD packages can be used with the same source code. This provides motivation for the
 	   coding numerical routines where the floating point type is a C++ template parameter.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "67--77",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -17989,7 +18008,7 @@
 	   compiler which does this integration. Using novel analysis techniques, it accepts source code
 	   involving free use of a first-class forward AD operator and generates object code which attains
 	   numerical performance comparable to, or better than, the most aggressive existing AD systems.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "79--90",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18013,7 +18032,7 @@
 	   algorithm detects symmetry in the graph by matching the vertices and edges with their corresponding
 	   pairs; thereby enabling us to identify duplicate operations. Through the detection of symmetry, the
 	   computation costs can potentially be halved by performing only one of each of these operations.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "91--102",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18041,7 +18060,7 @@
 	   implemented as a fully automatic transformation in OpenAD. This paper introduces the problem and a
 	   set of heuristics to approximate the minimal graph representation. We also present results on a set
 	   of test problems.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "103--114",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18071,7 +18090,7 @@
 	   with the existing CSFI activity analysis implementation. Although the number of reduced
 	   overestimations looks small, the additionally identified passive variables may significantly reduce
 	   tedious human effort in maintaining a large code base such as MITgcm.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "115--125",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18094,7 +18113,7 @@
 	   that computes 2F1 if that code is available or require the user to provide a hand-written derivative
 	   code. We present options for the derivative computation in the context of an ionization problem and
 	   compare the approach implemented in the Diamant library to standard methods.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "127--137",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18120,7 +18139,7 @@
 	   automatic differentiation (AD) approach Diamant. As any AD tool, Diamant is generic and may be used
 	   to differentiate the code of any differentiable behaviour law. Numerical performances, measured
 	   while solving a mechanical PDE problem, prove the efficiency of the Diamant approach.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "139--149",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18145,7 +18164,7 @@
 	   algorithms to help the end-user apply the two strategies to a given application source. We discuss
 	   the modification needed inside the automatic differentiation tool to improve Tangent-on-Reverse
 	   differentiation.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "151--161",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18174,7 +18193,7 @@
 	   the outer level with parallel trace generation and evaluation at the inner level. We discuss the
 	   extensions necessary for ADOL-C to work in a multithreaded environment and the setup necessary for
 	   the user code and present performance results on a shared-memory multiprocessor.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "163--173",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18198,7 +18217,7 @@
 	   time steps are taped using an overloading approach. The entire evolution is reversed based on an
 	   efficient checkpointing schedule that is computed by revolve. The feasibility of nonlinear
 	   optimization based on discrete adjoints is supported by our numerical results.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "175--185",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18226,7 +18245,7 @@
 	   computational finance, and aeronautics. For instance, the run time of the adjoints for simultaneous
 	   evaluation of the function and its gradient is between 1.9 and 3.9 times slower than that of the
 	   respective function codes. Options for further enhancement are discussed.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "187--197",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18250,7 +18269,7 @@
 	   style, include files, parameter-passing mechanism, and extensive use of pointers. We describe how we
 	   addressed these problems, and how the resulting improvements also benefits to differentiation of
 	   Fortran programs.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "199--209",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18275,7 +18294,7 @@
 	   transformation tool ADiMat implementing automatic differentiation for programs written in MATLAB.
 	   The approach taken by ADiMat to cope with default arguments and argument lists of variable length is
 	   described. Implementation techniques and remaining open questions are discussed.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "211--222",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18302,7 +18321,7 @@
 	   performance differences of codes generated by the AD tools ADiMat and ADiCape using the five code
 	   optimization techniques constant folding, loop unrolling, constant propagation, forward
 	   substitution, and common subexpression elimination.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	pages = "223--233",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -18335,7 +18354,7 @@
 	   level. Then the new source-to-source AD tool (ADModelica) is introduced which takes the second
 	   approach. Particularly, it is shown that there are several differences between AD methods for
 	   classical procedural languages and equation-based modeling languages.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18358,7 +18377,7 @@
 	   chosen projectors. A new algorithm based on matrices of Taylor polynomials for realizing the matrix
 	   sequence and computing the index is introduced. Derivatives are computed using algorithmic
 	   differentiation tools.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18386,7 +18405,7 @@
 	   implementation issues in the presence of such restrictions on the target platform and present a
 	   method which can register a CT volume data set (512 × 512 × 288 voxels) with three X-ray
 	   images (512 × 512 pixels each) in 20 seconds on a GeForce 8800GTX graphics card.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18412,7 +18431,7 @@
 	   efficient using AD-obtained gradients than finite-differencing. A post-optimality analysis,
 	   performed using AD-enabled third-order method of moments and Monte-Carlo analysis, confirms the
 	   attractiveness of the Sigma-Point technique for uncertainty propagation.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18436,7 +18455,7 @@
 	   gradient smoothing are presented and numerically evaluated. Different formulations of the coarse
 	   grid functional are discussed and compared. Convergence results for an inverse aerofoil optimisation
 	   are presented.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18466,7 +18485,7 @@
 	   derivative matrices. Numerical examples of optimizations are made on large test cases coming from
 	   real-world problems. They allow an interesting comparison of performance for derivative
 	   computations.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18495,7 +18514,7 @@
 	   also construct Monte Carlo experiments to compare maximum-likelihood estimates obtained with and
 	   without the aid of automatic derivatives. We find that the convergence rate of our optimization
 	   algorithm can increase substantially when we use AD derivatives.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18516,7 +18535,7 @@
 	abstract = "Giving some numerical methods for combinatorial computation by means of automatic
 	   differentiation, this paper reports the effectiveness of the technique of automatic differentiation
 	   in the field of combinatorial computation or discrete computation.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18547,7 +18566,7 @@
 	   analysis, and the total runtime is found to be only about a hundred times the time needed for
 	   evaluating the function itself. The alternative approach of computing the Jacobian without
 	   exploiting sparsity is infeasible.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -18561,28 +18580,43 @@
 
 @INCOLLECTION{
 	   Stumm2008SEA,
-	author = "Philipp Stumm and Andrea Walther and Jan Riehme and Uwe Naumann",
+	author = "P. Stumm and A. Walter and J. Riehme and U. Naumann",
 	title = "Structure-Exploiting Automatic Differentiation of Finite Element Discretizations",
 	doi = "10.1007/978-3-540-68942-3_30",
-	pages = "339--349",
-	abstract = "A common way to solve PDE constrained optimal control problems by automatic
-	   differentiation (AD) is the full black box approach. This technique may fail because of the large
-	   memory requirement. In this paper we present two alternative approaches. First, we exploit the
-	   structure in time yielding a reduced memory requirement. Second, we additionally exploit the
-	   structure in space by providing derivatives on a reference finite element. This approach reduces the
-	   memory requirement once again compared to the exploitation in time. We present numerical results for
-	   both approaches, where the derivatives are determined by the AD-enabled NAGWare Fortran compiler.",
-	crossref = "bischof2008aia",
 	booktitle = "Advances in Automatic Differentiation",
+	crossref = "Bischof2008AiA",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
 	   Naumann and J. Utke",
 	isbn = "978-3-540-68935-5",
 	issn = "1439-7358",
 	year = "2008",
-	ad_area = "Optimal Control",
+	pages = "339--350",
 	ad_tools = "NAGWare Fortran 95",
-	ad_theotech = "Adjoint"
+	abstract = "A common way to solve PDE constrained optimal control problems by automatic
+	   differentiation (AD) is the full black box approach. This technique may fail because of the large
+	   memory requirement. In this paper we present two alternative approaches. First, we exploit the
+	   structure in time yielding a reduced memory requirement. Second, we additionally exploit the
+	   structure in space by providing derivatives on a reference finite element. This approach reduces the
+	   memory requirement once again compared to the exploitation in time. We present numerical results for
+	   both approaches, where the derivatives are determined by the AD-enabled NAGWare Fortran
+	   compiler."
+}
+
+@INPROCEEDINGS{
+	   Riehme2009ADT,
+	author = "Jan Riehme and Andreas Griewank",
+	title = "Algorithmic Differentiation Through Automatic Graph Elimination Ordering (ADTAGEO)",
+	booktitle = "Combinatorial Scientific Computing",
+	year = "2009",
+	editor = "Uwe Naumann and Olaf Schenk and Horst D. Simon and Sivan Toledo",
+	number = "09061",
+	series = "Dagstuhl Seminar Proceedings",
+	issn = "1862-4405",
+	publisher = "Schloss Dagstuhl - Leibniz-Zentrum fuer Informatik, Germany",
+	address = "Dagstuhl, Germany",
+	annote = "Keywords: Automatic Differentiation, Instant Elimination, Live-DAG, symmetric
+	   Hessian-DAG, forward mode, reverse mode, checkpointing, ADTAGEO"
 }
 
 @INCOLLECTION{
@@ -18599,7 +18633,7 @@
 	   element-based simulation codes written in C++ and works well with forward sensitivity analysis as
 	   implemented in the Trilinos time-integration package Rythmos. The forward sensitivity calculation is
 	   significantly more efficient and robust than finite differencing.",
-	crossref = "bischof2008aia",
+	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
 	editor = "Christian H. Bischof and H. Martin B{\"u}cker and Paul D. Hovland and Uwe
@@ -19050,9 +19084,9 @@
 
 @INPROCEEDINGS{
 	   Kowarz2008PDC,
-	title = "Parallel Derivative Computation Using ADOL-C",
+	title = "Parallel Derivative Computation Using {ADOL-C}",
 	author = "A. Kowarz and A. Walther",
-	editor = "W. Nagel, R. Hoffmann, and A. Koch",
+	editor = "W. Nagel and R. Hoffmann and A. Koch",
 	publisher = "Gesellschaft für Informatik",
 	year = "2008",
 	booktitle = "Proceedings of PASA 2008",
@@ -19105,7 +19139,7 @@
 	   Charpentier2009Fho,
 	author = "Isabelle Charpentier and Jean Utke",
 	title = "Fast higher-order derivative tensors with {R}apsodia",
-	journal = "Optimization Methods Software",
+	journal = "Optimization Methods \& Software",
 	volume = "24",
 	number = "1",
 	year = "2009",
@@ -19210,7 +19244,7 @@
 	type = "Dissertation",
 	url = "http://darwin.bth.rwth-aachen.de/opus3/volltexte/2009/2680/",
 	author = "A. Vehreschild",
-	title = "Automatisches Differenzieren f{\"u}r {MATLAB}",
+	title = "Automatisches {D}ifferenzieren f{\"u}r {MATLAB}",
 	school = "Department of Computer Science, RWTH Aachen University",
 	year = "2009",
 	ad_tools = "ADiMat"
@@ -19387,21 +19421,6 @@
 	ad_theotech = "Implementation Strategies"
 }
 
-@INCOLLECTION{
-	   Stumm2008ESi,
-	author = "P. Stumm and A. Walter and J. Riehme and U. Naumann",
-	title = "Exploiting Structure in Navier-Stokes Simulations",
-	booktitle = "Advances in Automatic Differentiation",
-	editor = "C. Bischof et al.",
-	pages = "339--350",
-	year = "2008",
-	publisher = "Springer",
-	isbn = "978-3-540-68935-5",
-	issn = "1439-7358",
-	crossref = "bischof2008aia",
-	ad_tools = "NAGWare Fortran 95"
-}
-
 @ARTICLE{
 	   Naumann2006OJa,
 	author = "U. Naumann",
@@ -19512,7 +19531,7 @@
 	number = "2",
 	pages = "209--223",
 	ad_theotech = "graph coloring, Sparsity",
-	ad_tools = "ADOL-C"
+	ad_tools = "ADOL-C, ColPack"
 }
 
 @ARTICLE{
@@ -20979,7 +20998,7 @@
 @ARTICLE{
 	   Piponi2004ADC,
 	author = "Dan Piponi",
-	title = "Automatic Differentiation, C++ Templates, and Photogrammetry",
+	title = "Automatic Differentiation, {C++} Templates, and Photogrammetry",
 	journal = "Journal of graphics, {GPU}, and game tools",
 	volume = "9",
 	number = "4",
@@ -20992,8 +21011,8 @@
 	title = "Timescales and regions of the sensitivity of Atlantic meridional volume and heat
 	   transport: Toward observing system design",
 	journal = "Deep Sea Research Part II: Topical Studies in Oceanography",
-	volume = "In Press, Corrected Proof",
-	pages = "-",
+	volume = "58(17-18)",
+	pages = "1858-1879",
 	year = "2011",
 	issn = "0967-0645",
 	doi = "DOI: 10.1016/j.dsr2.2010.10.065",
@@ -21445,7 +21464,7 @@
 
 @ARTICLE{
 	   Narayanan2011SJC,
-	title = "Sparse Jacobian Computation Using ADIC2 and ColPack",
+	title = "Sparse Jacobian Computation Using {ADIC2} and {ColPack}",
 	journal = "Procedia Computer Science",
 	volume = "4",
 	pages = "2115 - 2123",
@@ -21458,7 +21477,7 @@
 	   Assefaw H. Gebremedhin",
 	keywords = "ColPack",
 	ad_area = "Chemistry",
-	ad_tools = "ADIC",
+	ad_tools = "ADIC, ColPack",
 	ad_theotech = "Sparsity"
 }
 
@@ -21510,5 +21529,948 @@
 	ad_area = "Engineering",
 	ad_tools = "ADOL-C",
 	ad_theotech = "Reverse Mode"
+}
+
+@ARTICLE{
+	   Robenack2010Com,
+	author = "K. R{\"o}benack",
+	title = "Computation of mixed Lie derivatives in nonlinear control",
+	journal = "Proc. in Applied Mathematics and Mechanics",
+	year = "2010",
+	volume = "10",
+	pages = "627-628",
+	number = "1",
+	month = "dec",
+	abstract = "Several algorithms in nonlinear control require Lie derivatives. The symbolic
+	   computation using computer algebra software is straightforward. However, the applicability of
+	   symbolic computation in nonlinear control is limited due to a considerable increase of the sizes of
+	   higher order derivatives. This problem can be circumvented using an alternative computation
+	   technique for derivatives called algorithmic differentiation. We extend existing approaches to
+	   calculate mixed Lie derivaties.",
+	ad_area = "Control",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Taylor Arithmetic"
+}
+
+@INBOOK{
+	   Hascoet2009RSf,
+	title = "Reversal Strategies for Adjoint Algorithms",
+	author = "Laurent Hasco{\"e}t",
+	editor = "Bertot, Y. and Huet, G. and Levy, J.-J. and Plotkin, G.",
+	publisher = "Cambridge University Press",
+	year = "2009",
+	booktitle = "From Semantics to Computer Science. Essays in memory of Gilles Kahn",
+	pages = "487--503",
+	abstract = "Adjoint Algorithms are a powerful way to obtain the gradients that are needed in
+	   Scientific Computing. Automatic Differentiation can build Adjoint Algorithms automatically by source
+	   transformation of the direct algorithm. The specific structure of Adjoint Algorithms strongly relies
+	   on reversal of the sequence of computations made by the direct algorithm. This reversal problem is
+	   at the same time difficult and interesting. This paper makes a survey of the reversal strategies
+	   employed in recent tools and describes some of the more abstract formalizations used to justify
+	   these strategies.",
+	ad_tools = "Tapenade",
+	ad_theotech = "reverse mode, adjoint, checkpointing, data-flow reversal, control-flow
+	   reversal"
+}
+
+@INPROCEEDINGS{
+	   Robenack2011LAT,
+	author = "K. R{\"o}benack and J. Winkler and S. Wang",
+	title = "{LIEDRIVERS} --- A Toolbox for the Efficient Computation of {Lie} Derivatives Based
+	   on the Object-Oriented Algorithmic Differentiation Package {ADOL-C}",
+	booktitle = "Proc. of the 4th International Workshop on Equation-Based Object-Oriented
+	   Modeling Languages and Tools",
+	year = "2011",
+	editor = "F. E. Cellier and D. Broman and P. Fritzson and E. A. Lee",
+	volume = "56",
+	series = "Link{\"o}ping Electronic Conference Proceedings",
+	pages = "57-66",
+	address = "Zurich",
+	month = "sep",
+	url = "\url{ http://www.ep.liu.se/ecp_home/index.en.aspx?issue=056}",
+	ad_area = "Control",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Taylor Arithmetic"
+}
+
+@INPROCEEDINGS{
+	   Robenack2011DSo,
+	author = "K. R{\"o}benack and J. Winkler and C. Knoll",
+	title = "Direct Simulation of mechanical control systems using algorithmic differentiation",
+	booktitle = "Proc. $56^{th}$ International Scientific Colloquium",
+	year = "2011",
+	address = "Ilmenau",
+	ad_area = "Control, Dynamical Systems, Engineering",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Hessian"
+}
+
+@PHDTHESIS{
+	   Wolf2011ESz,
+	type = "Dissertation",
+	url = "http://darwin.bth.rwth-aachen.de/opus3/volltexte/2011/3766/",
+	autodiffbib = "ja",
+	rwthbib = "ja",
+	author = "A. Wolf",
+	title = "Ein {S}oftwarekonzept zur hierarchischen {P}arallelisierung von stochastischen und
+	   deterministischen {I}nversionsproblemen auf modernen {ccNUMA}-{P}lattformen unter {N}utzung
+	   automatischer {P}rogrammtransformation",
+	school = "Department of Computer Science, RWTH Aachen University",
+	year = "2011",
+	ad_area = "Geophysics",
+	ad_tools = "ADIFOR, TAF, TAPENADE",
+	ad_theotech = "Parallelism"
+}
+
+@INPROCEEDINGS{
+	   Karczmarczuk1998Fdo,
+	author = "Karczmarczuk, Jerzy",
+	title = "Functional differentiation of computer programs",
+	booktitle = "Proceedings of the third {ACM} {SIGPLAN} international conference on functional
+	   programming",
+	series = "ICFP '98",
+	year = "1998",
+	isbn = "1-58113-024-4",
+	location = "Baltimore, Maryland, United States",
+	pages = "195--203",
+	numpages = "9",
+	acmid = "289442",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	ad_theotech = "Functional Programming"
+}
+
+@ARTICLE{
+	   Karczmarczuk2001FDo,
+	author = "Karczmarczuk, Jerzy",
+	title = "Functional Differentiation of Computer Programs",
+	journal = "Higher Order Symbolic Computing",
+	volume = "14",
+	issue = "1",
+	month = "March",
+	year = "2001",
+	issn = "1388-3690",
+	pages = "35--57",
+	numpages = "23",
+	acmid = "609227",
+	publisher = "Kluwer Academic Publishers",
+	address = "Hingham, MA, USA",
+	keywords = "Haskell, arithmetic, differentiation, lazy semantics",
+	ad_theotech = "Functional Programming"
+}
+
+@ARTICLE{
+	   Neidinger2010ItA,
+	author = "Richard D. Neidinger",
+	title = "Introduction to Automatic Differentiation and {MATLAB} Object-Oriented Programming",
+	publisher = "SIAM",
+	year = "2010",
+	journal = "SIAM Review",
+	volume = "52",
+	number = "3",
+	pages = "545--563",
+	doi = "10.1137/080743627",
+	keywords = "automatic differentiation; MATLAB; object-oriented programming; OOP; numerical
+	   analysis; computational differentiation; algorithmic differentiation; evaluating derivatives",
+	ad_theotech = "General"
+}
+
+@ARTICLE{
+	   Pearlmutter2008RmA,
+	author = "Pearlmutter, Barak A. and Siskind, Jeffrey Mark",
+	title = "Reverse-mode AD in a functional framework: Lambda the ultimate back propagator",
+	journal = "ACM Trans. Program. Lang. Syst.",
+	volume = "30",
+	issue = "2",
+	month = "March",
+	year = "2008",
+	issn = "0164-0925",
+	pages = "7:1--7:36",
+	articleno = "7",
+	numpages = "36",
+	acmid = "1330018",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	keywords = "Closures, Jacobian, derivatives, forward-mode AD, higher-order AD, higher-order
+	   functional languages, program transformation, reflection",
+	ad_theotech = "Functional Programming"
+}
+
+@ARTICLE{
+	   Griewank1981Otu,
+	title = "On the unconstrained optimization of partially separable functions",
+	author = "A. Griewank and P. L. Toint",
+	publisher = "Academic Press",
+	year = "1981",
+	journal = "Nonlinear Optimization",
+	pages = "119--137",
+	ad_area = "Optimization",
+	ad_tools = "ADIFOR",
+	ad_theotech = "Sparsity, partial separability"
+}
+
+@TECHREPORT{
+	   Averick1992TMT,
+	author = "Averick, Brett M. and Carter, Richard G. and Mor\'{e}, Jorge J. and Xue,
+	   Guo-Liang",
+	number = "Preprint MCS-P152-0694",
+	institution = "Mathematics and Computer Science Division, Argonne National Laboratory",
+	title = "The {MINPACK-2} Test Problem Collection",
+	year = "1992",
+	ad_area = "Optimization",
+	ad_tools = "MINPACK-2",
+	ad_theotech = "partial separability, Sparsity"
+}
+
+@INCOLLECTION{
+	   Probst2012OtI,
+	author = "M. Probst and M. L{\"u}lfesmann and M. Nicolai and H. M.
+	   B{\"u}cker and M. Behr and C. H. Bischof",
+	title = "On the Influence of Constitutive Models on Shape Optimization for Artificial Blood
+	   Pumps",
+	pages = "611--622",
+	doi = "10.1007/978-3-0348-0133-1_32",
+	booktitle = "Constrained Optimization and Optimal Control for Partial Differential Equations",
+	isbn = "978-3-0348-0132-4",
+	address = "Basel",
+	publisher = "Birkh{\"a}user",
+	editor = "G. Leugering and S. Engell and A. Griewank and M. Hinze and R. Rannacher and V.
+	   Schulz and M. Ulbrich and S. Ulbrich",
+	series = "International Series of Numerical Mathematics",
+	abstract = "We report on a shape optimization framework that couples a highly-parallel finite
+	   element solver with a geometric kernel and different optimization algorithms. The entire
+	   optimization framework is transformed with automatic differentiation techniques, and the derivative
+	   code is employed to compute derivatives of the optimal shapes with respect to viscosity. This
+	   methodology provides a powerful tool to investigate the necessity of intricate constitutive models
+	   by taking derivatives with respect to model parameters.",
+	year = "2012",
+	number = "160",
+	ad_area = "Biomedicine, Shape optimization",
+	ad_tools = "ADIFOR, TAPENADE"
+}
+
+@ARTICLE{
+	   Toivanen2011IoS,
+	author = "Toivanen, Jukka I. and M{\"a}kinen, Raino A. E.",
+	journal = "Optimization Methods and Software",
+	number = "4-5",
+	pages = "601--616",
+	title = "Implementation of Sparse Forward Mode Automatic Differentiation with Application to
+	   Electromagnetic Shape Optimization",
+	url = "http://dx.doi.org/10.1080/10556781003642305",
+	volume = "26",
+	year = "2011",
+	ad_area = "Shape optimization",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Adjoint, Dynamic Analysis, Forward Mode, graph coloring,
+	   Sparsity"
+}
+
+@INCOLLECTION{
+	   Walther2012Gsw,
+	title = "Getting started with ADOL-C",
+	author = "A. Walther and A. Griewank",
+	editor = "U. Naumann and O. Schenk",
+	publisher = "Chapman-Hall CRC Computational Science",
+	year = "2012",
+	booktitle = "Combinatorial Scientific Computing",
+	pages = "181--202",
+	chapter = "7",
+	ad_tools = "ADOL-C"
+}
+
+@ARTICLE{
+	   Lyons2012Rhf,
+	author = "Lyons, Andrew and Safro, Ilya and Utke, Jean",
+	title = "Randomized heuristics for exploiting Jacobian scarcity",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "311--322",
+	year = "2012",
+	doi = "10.1080/10556788.2011.577774",
+	url = " http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.577774",
+	eprint = " http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.577774",
+	ad_tools = "OpenAD",
+	ad_theotech = "Combinatorics, Scarsity",
+	abstract = "In this paper, we describe a code transformation technique that, given a code for
+	   a vector function F, produces a code suitable for computing collections of Jacobian-vector products
+	   F'(x)x? or Jacobian-transpose-vector products F'(x)T y¯. Exploitation of scarcity
+	   &#8211; a measure of the degrees of freedom in the Jacobian matrix &#8211; requires solving
+	   a combinatorial optimization problem that is believed to be hard. Our heuristics transform the
+	   computational graph for F, producing, in the form of a transformed graph G', a representation
+	   of the Jacobian F'(x) that is both concise and suitable for evaluating large collections of the
+	   Jacobian-vector products or the Jacobian-transpose-vector products. Our heuristics are randomized
+	   and compare favourably in all cases with the best known heuristics."
+}
+
+@INCOLLECTION{
+	   Utke2012CPi,
+	editor = "Uwe Naumann and Olaf Schenk",
+	title = "Combinatorial Problems in {Open/AD}",
+	booktitle = "Combinatorial Scientific Computing",
+	author = "Jean Utke and Uwe Naumann",
+	note = "chap. 6",
+	series = "Computational Science",
+	publisher = "Chapman and Hall/CRC",
+	month = "January",
+	year = "2012",
+	ad_tools = "OpenAD",
+	ad_theotech = "Combinatorics"
+}
+
+@ARTICLE{
+	   Mosenkis2012Oop,
+	title = "On optimality preserving eliminations for the minimum edge count and optimal
+	   {J}acobian accumulation problems in linearized {DAGs}",
+	author = "Mosenkis, Viktor and Naumann, Uwe",
+	publisher = "Taylor and Francis",
+	year = "2012",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	pages = "337--358",
+	abstract = "The minimum edge count (MEC) and optimal Jacobian accumulation problems in
+	   linearized directed acyclic graphs (DAGs) result from the combinatorics induced by the associativity
+	   of the chain rule of differential calculus. This paper discusses a suitable graph formalism followed
+	   by proving a number of results that yield a considerable search space reduction for both problems.
+	   An algorithmic link between numerical analysis and theoretical computer science is established.
+	   Although both problems are believed to be NP-hard in general, a linear-time algorithm is presented
+	   solving the MEC problem for a specified subclass of l-DAGs.",
+	ad_theotech = "Combinatorics, X-Country"
+}
+
+@ARTICLE{
+	   Lampoh2011Aga,
+	title = "A generic approach for the solution of nonlinear residual equations. {Part III}:
+	   {S}ensitivity computations",
+	journal = "Computer Methods in Applied Mechanics and Engineering",
+	volume = "200",
+	number = "45--46",
+	pages = "2983--2990",
+	year = "2011",
+	issn = "0045-7825",
+	url = "http://www.sciencedirect.com/science/article/pii/S0045782511002271",
+	doi = "10.1016/j.cma.2011.06.009",
+	author = "Komlanvi Lampoh and Isabelle Charpentier and El Mostafa Daya",
+	keywords = "Sensitivity analysis; Asymptotic numerical method; Automatic differentiation;
+	   Diamant; ADiMat; Laminated glasses",
+	abstract = "Sensitivity analysis provides qualitative and quantitative information on the
+	   behaviour of the model under study, and offers an access to gradients that may be used for
+	   identification purposes. Such precious information may be obtained at a low development cost
+	   applying a generic automatic differentiation (AD) tool to the computer code implementing this model.
+	   Nonlinear residual problems solved through a path following method may be addressed too. In this
+	   paper, AD techniques are adapted to the Taylor-based asymptotic numerical method. A sensitivity
+	   study of a laminated glass beam to the perturbation of some material and geometric parameters, and
+	   the perturbation of elementary stiffness matrices illustrates the method.",
+	ad_tools = "Diamant, ADiMat"
+}
+
+@ARTICLE{
+	   Picchini2011Peo,
+	author = "Umberto Picchini and Susanne Ditlevsen",
+	title = "Practical estimation of high dimensional stochastic differential mixed-effects
+	   models",
+	journal = "Computational Statistics \& Data Analysis",
+	volume = "55",
+	number = "3",
+	pages = "1426--1444",
+	year = "2011",
+	issn = "0167-9473",
+	doi = "10.1016/j.csda.2010.10.003",
+	url = "http://www.sciencedirect.com/science/article/pii/S0167947310003774",
+	keywords = "Automatic differentiation, Closed form transition density expansion, Maximum
+	   likelihood estimation, Population estimation, Stochastic differential equation, Cox--Ingersoll--Ross
+	   process",
+	abstract = "Stochastic differential equations (SDEs) are established tools for modeling
+	   physical phenomena whose dynamics are affected by random noise. By estimating parameters of an SDE,
+	   intrinsic randomness of a system around its drift can be identified and separated from the drift
+	   itself. When it is of interest to model dynamics within a given population, i.e. to model
+	   simultaneously the performance of several experiments or subjects, mixed-effects modelling allows
+	   for the distinction of between and within experiment variability. A framework for modeling dynamics
+	   within a population using SDEs is proposed, representing simultaneously several sources of
+	   variation: variability between experiments using a mixed-effects approach and stochasticity in the
+	   individual dynamics, using SDEs. These stochastic differential mixed-effects models have
+	   applications in e.g. pharmacokinetics/pharmacodynamics and biomedical modelling. A parameter
+	   estimation method is proposed and computational guidelines for an efficient implementation are
+	   given. Finally the method is evaluated using simulations from standard models like the
+	   two-dimensional Ornstein--Uhlenbeck (OU) and the square root models.",
+	ad_area = "Stochastic DIfferential Equations",
+	ad_tools = "ADiMat"
+}
+
+@INPROCEEDINGS{
+	   Jalon2007Ncf,
+	author = "Javier Garc\'{\i}a de Jal\'{o}n and Nobuyuki Shimizu and
+	   David G\'{o}mez",
+	title = "Natural coordinates for teaching multibody systems with {M}atlab",
+	booktitle = "Proceedings of the ASME 2007 International Design Engineering Technical
+	   Conferences and Computers and Information in Engineering Conference {IDETC/CIE}~2007, September
+	   4--7, 2007, Las Vegas, Nevada, USA",
+	year = "2007",
+	volume = "5",
+	series = "6th International Conference on Multibody Systems, Nonlinear Dynamics, and Control,
+	   Parts A, B, and C",
+	isbn = "0-7918-4806-X",
+	pages = "1539--1548",
+	publisher = "ASME",
+	url = "http://link.aip.org/link/abstract/ASMECP/v2007/i4806X/p1539/s1",
+	ad_area = "Multibody Systems",
+	ad_tools = "ADiMat",
+	doi = "10.1115/DETC2007-35358",
+	abstract = "This paper deals with teaching kinematic and dynamic analysis of 3-D multibody
+	   systems in a context of courses with severe time constraints and the objective of attaining
+	   practical abilities. This high course efficiency is intended by the use of a simple theoretical
+	   approach (the natural or fully Cartesian coordinates) and a high level programming language (the
+	   function rich and easy to learn development tool Matlab). The theoretical prerequisites for such a
+	   course can be kept to a minimum. This approach would allow the introduction of some lessons on
+	   multibody systems inside more general courses on machine dynamics. It can also be useful for short
+	   courses addressed to engineers in industry and for numerical analysis courses addressed to
+	   mechanical engineering students that are interested in practical applications of these numerical
+	   methods. In this paper the achievable theory level will be presented in detail by means of a
+	   practical but non trivial example: a closed-chain 3-D robot. Natural coordinates and Matlab are also
+	   a good starting point to present more advanced techniques such as numerical integration methods for
+	   ODEs and DAEs, or the not very well known automatic differentiation techniques. The latter is
+	   considered as a more advanced example in this paper."
+}
+
+@ARTICLE{
+	   Pryce2010Con,
+	author = "Pryce, J. D. and Khoshsiar Ghaziani, R. and De Witte, V. and Govaerts, W.",
+	title = "Computation of normal form coefficients of cycle bifurcations of maps by algorithmic
+	   differentiation",
+	journal = "Mathematics and Computers in Simulation",
+	issue_date = "September, 2010",
+	volume = "81",
+	number = "1",
+	month = "sep",
+	year = "2010",
+	issn = "0378-4754",
+	pages = "109--119",
+	numpages = "11",
+	url = "http://dx.doi.org/10.1016/j.matcom.2010.07.014",
+	doi = "10.1016/j.matcom.2010.07.014",
+	acmid = "1857366",
+	publisher = "Elsevier Science Publishers B. V.",
+	address = "Amsterdam, The Netherlands, The Netherlands",
+	keywords = "Bifurcation, Iterated map, Matlab, Multilinear form, Taylor series",
+	abstract = "As an alternative to symbolic differentiation (SD) and finite differences (FD) for
+	   computing partial derivatives, we have implemented algorithmic differentiation (AD) techniques into
+	   the Matlab bifurcation software Cl_MatcontM, http://sourceforge.net/projects/matcont, where we need
+	   to compute derivatives of an iterated map, with respect to state variables. We use derivatives up to
+	   the fifth order, of the iteration of a map to arbitrary order. The multilinear forms are needed to
+	   compute the normal form coefficients of codimension-1 and -2 bifurcation points. Methods based on
+	   finite differences are inaccurate for such computations. Computation of the normal form coefficients
+	   confirms that AD is as accurate as SD. Moreover, elapsed time in computations using AD grows
+	   linearly with the iteration number J, but more like Jd for d th derivatives with SD. For small J, SD
+	   is still faster than AD.",
+	ad_tools = "CL_MatContM",
+	ad_theotech = "Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Witte2011Nco,
+	author = "Virginie De Witte and Willy Govaerts",
+	title = "Numerical computation of normal form coefficients of bifurcations of {ODE}s in
+	   {MATLAB}",
+	journal = "Discrete and Continous Dynamical Systems Supplements",
+	year = "2011",
+	pages = "362--372",
+	doi = "10.3934/proc.2011.2011.362",
+	abstract = "Normal form coefficients of codim-1 and codim-2 bifurcations of equilibria of ODEs
+	   are important since their sign and size determine the bifurcation scenario near the bifurcation
+	   points. Multilinear forms with derivatives up to the fifth order are needed in these coefficients.
+	   So far, in the Matlab bifurcation software MatCont for ODEs, these derivatives are computed either
+	   by finite differences or by symbolic differentiation. However, both approaches have disadvantages.
+	   Finite differences do not usually have the required accuracy and for symbolic differentiation the
+	   Matlab Symbolic Toolbox is needed. Automatic differentiation is an alternative since this technique
+	   is as accurate as symbolic derivatives and no extra software is needed. In this paper, we discuss
+	   the pros and cons of these three kinds of differentiation in a specific context by the use of
+	   several examples.",
+	keywords = "Automatic differentiation, symbolic derivatives, MatCont, directional
+	   derivatives",
+	ad_tools = "MatCont",
+	ad_theotech = "Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Spiteri2010SAo,
+	author = "Spiteri, Raymond and Dean, Ryan",
+	title = "Stiffness Analysis of Cardiac Electrophysiological Models",
+	journal = "Annals of Biomedical Engineering",
+	publisher = "Springer Netherlands",
+	issn = "0090-6964",
+	pages = "3592--3604",
+	volume = "38",
+	issue = "12",
+	year = "2010",
+	url = "http://dx.doi.org/10.1007/s10439-010-0100-9",
+	doi = "10.1007/s10439-010-0100-9",
+	keyword = "Biomedical and Life Sciences",
+	affiliation = "Department of Computer Science, University of Saskatchewan, Saskatoon, SK S7N
+	   5C9, Canada",
+	abstract = "The electrophysiology in a cardiac cell can be modeled as a system of ordinary
+	   differential equations (ODEs). The efficient solution of these systems is important because they
+	   must be solved many times as sub-problems of tissue- or organ-level simulations of cardiac
+	   electrophysiology. The wide variety of existing cardiac cell models encompasses many different
+	   properties, including the complexity of the model and the degree of stiffness. Accordingly, no
+	   single numerical method can be expected to be the most efficient for every model. In this article,
+	   we study the stiffness properties of a range of cardiac cell models and discuss the implications for
+	   their numerical solution. This analysis allows us to select or design numerical methods that are
+	   highly effective for a given model and hence outperform commonly used methods.",
+	ad_area = "Biomedicine, Ordinary Differential Equations",
+	ad_tools = "ADiMat"
+}
+
+@ARTICLE{
+	   Schanen2010Iaf,
+	author = "Michel Schanen and Uwe Naumann and Laurent Hasco{\"e}t and Jean Utke",
+	title = "Interpretative adjoints for numerical simulation codes using {MPI}",
+	journal = "Procedia Computer Science",
+	volume = "1",
+	number = "1",
+	year = "2010",
+	pages = "1825-1833",
+	ee = " http://dx.doi.org/10.1016/j.procs.2010.04.204",
+	bibsource = "DBLP, http://dblp.uni-trier.de",
+	ad_theotech = "Adjoint, Parallelism"
+}
+
+@BOOK{
+	   Naumann2012TAo,
+	author = "Uwe Naumann",
+	title = "The Art of Differentiating Computer Programs: {A}n Introduction to Algorithmic
+	   Differentiation",
+	publisher = "SIAM",
+	series = "Software, Environments, and Tools",
+	address = "Philadelphia, PA",
+	isbn = "978--1--611972--06--1",
+	ad_theotech = "General, Introduction",
+	year = "2012",
+	url = "http://www.ec-securehost.com/SIAM/SE24.html",
+	abstract = "This is the first entry-level book on algorithmic (also known as automatic)
+	   differentiation (AD), providing fundamental rules for the generation of first- and higher-order
+	   tangent-linear and adjoint code. The author covers the mathematical underpinnings as well as how to
+	   apply these observations to real-world numerical simulation programs.",
+	number = "24"
+}
+
+@INCOLLECTION{
+	   Griewank1995ADa,
+	editor = "Albrecht D. Beutelspacher et al.",
+	booktitle = "Jahrbuch {\"U}berblicke Mathematik",
+	author = "Andreas Griewank and Jean Utke",
+	publisher = "Vieweg",
+	year = "1995",
+	isbn = "9783528066079",
+	ad_theotech = "Combinatorics",
+	title = "Automatisches {D}ifferenzieren als kombinatorisches {P}roblem",
+	note = "in German"
+}
+
+@BOOK{
+	   Naumann2012CSC,
+	editor = "Uwe Naumann and Olaf Schenk",
+	title = "Combinatorial Scientific Computing",
+	publisher = "Chapman and Hall/CRC",
+	year = "2012",
+	series = "Computational Science Series",
+	address = "",
+	abstract = "Combinatorial Scientific Computing explores the latest research on creating
+	   algorithms and software tools to solve key combinatorial problems on large-scale high-performance
+	   computing architectures. It includes contributions from international researchers who are pioneers
+	   in designing software and applications for high-performance computing systems. The book offers a
+	   state-of-the-art overview of the latest research, tool development, and applications. It focuses on
+	   load balancing and parallelization on high-performance computers, large-scale optimization,
+	   algorithmic differentiation of numerical simulation code, sparse matrix software tools, and
+	   combinatorial challenges and applications in large-scale social networks. The authors unify these
+	   seemingly disparate areas through a common set of abstractions and algorithms based on
+	   combinatorics, graphs, and hypergraphs. Combinatorial algorithms have long played a crucial enabling
+	   role in scientific and engineering computations and their importance continues to grow with the
+	   demands of new applications and advanced architectures. By addressing current challenges in the
+	   field, this volume sets the stage for the accelerated development and deployment of fundamental
+	   enabling technologies in high-performance scientific computing.",
+	isbn = "978--1--439827352",
+	url = "http://www.crcpress.com/product/isbn/9781439827352",
+	ad_theotech = "General"
+}
+
+@ARTICLE{
+	   Caillau2012Dcf,
+	author = "Caillau, J.-B. and Cots, O. and Gergaud, J.",
+	title = "Differential continuation for regular optimal control problems",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "177--196",
+	year = "2012",
+	doi = "10.1080/10556788.2011.593625",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.593625",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.593625",
+	abstract = "{ Regular control problems in the sense of the Legendre condition are defined, and
+	   second-order necessary and sufficient optimality conditions in this class are reviewed. Adding a
+	   scalar homotopy parameter, differential pathfollowing is introduced. The previous sufficient
+	   conditions ensure the definiteness and regularity of the path. The role of AD for the implementation
+	   of this approach is discussed, and two examples excerpted from quantum and space mechanics are
+	   detailed. }",
+	ad_area = "Optimal Control"
+}
+
+@ARTICLE{
+	   Charpentier2012Oho,
+	author = "Charpentier, I.",
+	title = "On higher-order differentiation in nonlinear mechanics",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "221--232",
+	year = "2012",
+	doi = "10.1080/10556788.2011.577775",
+	url = " http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.577775",
+	eprint = " http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.577775",
+	abstract = "Modelling often involves nonlinear parametric problems and bifurcation analysis.
+	   This interdisciplinary paper reviews higher-order numerical methods for the solution of nonlinear
+	   problems, and proposes a synthesis of two different conceptual frameworks, namely automatic
+	   differentiation and the asymptotic numerical method. Various mechanical problems and references
+	   illustrate the presentation.",
+	ad_theotech = "Higher Order"
+}
+
+@ARTICLE{
+	   Fournier2012AMB,
+	author = "Fournier, David A. and Skaug, Hans J. and Ancheta, Johnoel and Ianelli, James and
+	   Magnusson, Arni and Maunder, Mark N. and Nielsen, Anders and Sibert, John",
+	title = "{AD} {M}odel {B}uilder: using automatic differentiation for statistical inference of
+	   highly parameterized complex nonlinear models",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "233--249",
+	year = "2012",
+	doi = "10.1080/10556788.2011.597854",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.597854",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.597854",
+	abstract = "Many criteria for statistical parameter estimation, such as maximum likelihood,
+	   are formulated as a nonlinear optimization problem. Automatic Differentiation Model Builder (ADMB)
+	   is a programming framework based on automatic differentiation, aimed at highly nonlinear models with
+	   a large number of parameters. The benefits of using AD are computational efficiency and high
+	   numerical accuracy, both crucial in many practical problems. We describe the basic components and
+	   the underlying philosophy of ADMB, with an emphasis on functionality found in no other statistical
+	   software. One example of such a feature is the generic implementation of Laplace approximation of
+	   high-dimensional integrals for use in latent variable models. We also review the literature in which
+	   ADMB has been used, and discuss future development of ADMB as an open source project. Overall, the
+	   main advantages of ADMB are flexibility, speed, precision, stability and built-in methods to
+	   quantify uncertainty.",
+	ad_tools = "AD Model Builder"
+}
+
+@ARTICLE{
+	   Gower2012Anf,
+	author = "Gower, R. M. and Mello, M. P.",
+	title = "A new framework for the computation of {H}essians",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "251--273",
+	year = "2012",
+	doi = "10.1080/10556788.2011.580098",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.580098",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.580098",
+	abstract = "We investigate the computation of Hessian matrices via Automatic Differentiation,
+	   using a graph model and an algebraic model. The graph model reveals the inherent symmetries involved
+	   in calculating the Hessian. The algebraic model, based on Griewank and Walther's [Evaluating
+	   derivatives, in Principles and Techniques of Algorithmic Differentiation, 2nd ed., Society for
+	   Industrial and Applied Mathematics (SIAM), Philadelphia, PA, 2008] state transformations synthesizes
+	   the calculation of the Hessian as a formula. These dual points of view, graphical and algebraic,
+	   lead to a new framework for Hessian computation. This is illustrated by developing edge_pushing, a
+	   new truly reverse Hessian computation algorithm that fully exploits the Hessian's symmetry.
+	   Computational experiments compare the performance of edge_pushing on 16 functions from the CUTE
+	   collection [I. Bongartz et al. Cute: constrained and unconstrained testing environment, ACM Trans.
+	   Math. Softw. 21(1) (1995), pp. 123&#8211;160] against two algorithms available as drivers of the
+	   software ADOL-C [A. Griewank et al. ADOL-C: A package for the automatic differentiation of
+	   algorithms written in C/C++, Technical report, Institute of Scientific Computing, Technical
+	   University Dresden, 1999. Updated version of the paper published in ACM Trans. Math. Softw. 22,
+	   1996, pp. 131&#8211;167; A. Walther, Computing sparse Hessians with automatic differentiation,
+	   ACM Trans. Math. Softw. 34(1) (2008), pp. 1&#8211;15; A.H. Gebremedhin et al. Efficient
+	   computation of sparse Hessians using coloring and automatic differentiation, INFORMS J. Comput.
+	   21(2) (2009), pp. 209&#8211;223], and the results are very promising.",
+	ad_tools = "ADOL-C",
+	ad_theotech = "Hessian"
+}
+
+@ARTICLE{
+	   Gundersen2012Sih,
+	author = "Gundersen, Geir and Steihaug, Trond",
+	title = "Sparsity in higher order methods for unconstrained optimization",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "275--294",
+	year = "2012",
+	doi = "10.1080/10556788.2011.597853",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.597853",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.597853",
+	abstract = "In this paper, we introduce data structures for storing the third derivative
+	   (tensor) of a multivariate scalar function when the second and third derivatives of the function are
+	   sparse. We consider solving unconstrained optimization problems using methods of the Halley class.
+	   The gradient, Hessian matrix and the tensor of the objective function are required for the methods
+	   and they have a third-order rate of convergence. However, these methods require the solution of two
+	   linear systems of equations at each iteration. Solving the linear systems using a factorization will
+	   cause fill-ins. The impact of these fill-ins will be discussed and we give the number of arithmetic
+	   operations of the methods of the Halley class compared to Newton's method. Finally, we will
+	   give some preliminary numerical results showing that including the time to compute the derivatives,
+	   the ratios of elapsed time of methods in the Halley class and Newton's method are close to the
+	   ratios of arithmetic operations.",
+	ad_theotech = "Higher Order, Sparsity"
+}
+
+@ARTICLE{
+	   Juedes2012CJr,
+	author = "Juedes, David and Jones, Jeffrey",
+	title = "Coloring {J}acobians revisited: a new algorithm for star and acyclic bicoloring",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "295--309",
+	year = "2012",
+	doi = "10.1080/10556788.2011.606575",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.606575",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.606575",
+	abstract = "This paper presents a new polynomial-time algorithm, approximate star bicoloring
+	   (ASBC), for star bicoloring and acyclic bicoloring. These NP-complete combinatorial problems arise
+	   from problems associated with computing large sparse Jacobian matrices. The main results of this
+	   paper lie in approximation analysis related to these problems. In particular, it is shown that (i)
+	   both star and acyclic bicoloring can be approximated in polynomial time to the ratio O(n 2/3) and
+	   (ii) both star and acyclic bicoloring cannot be approximated to the ratio O(n 1/3-e) in polynomial
+	   time under reasonable complexity theoretic hypotheses. The ASBC algorithm is also analysed
+	   experimentally on a collection of realistic test cases from the Harwell&#8211;Boeing sparse
+	   matrix collection. The experimental results indicate that ASBC performs quite well in practice; the
+	   performance of the new algorithm always fell within the range of 1.53 and 6 times optimal on the
+	   given test sets.",
+	ad_theotech = "Combinatorics, Sparsity"
+}
+
+@ARTICLE{
+	   Menshikova2012Ado,
+	author = "Menshikova, Marina and Forth, Shaun A.",
+	title = "Automatic differentiation of quadrature",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "323--335",
+	year = "2012",
+	doi = "10.1080/10556788.2011.561539",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.561539",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.561539",
+	abstract = "We analyse the application of automatic differentiation (AD) to the quadrature
+	   (numerical integration) of a function integrand to determine the sensitivities of the integral to
+	   variations in the limits of integration. We derive an expression for the truncation errors of such
+	   AD-derived sensitivities and relate them to the truncation error of the original, and a closely
+	   related, function quadrature. Our results hold provided the integrand is one degree higher
+	   continuously differentiable than that sufficient for convergence of its quadrature. Numerical
+	   results validate our analysis. However, utilization of algebraic expressions for such sensitivities,
+	   instead of directly applying AD, results in an approach that proves more efficient for the
+	   tetrachoric correlation estimation example we considered using our Matlab AD framework.",
+	ad_theotech = "Hierarchical Approach"
+}
+
+@ARTICLE{
+	   Schichl2012Adt,
+	author = "Schichl, Hermann and Mark\'{o}t, Mih\'{a}ly Csaba",
+	title = "Algorithmic differentiation techniques for global optimization in the {COCONUT}
+	   environment",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "359--372",
+	year = "2012",
+	doi = "10.1080/10556788.2010.547581",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2010.547581",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2010.547581",
+	abstract = "We describe algorithmic differentiation as it can be used in algorithms for global
+	   optimization. We focus on the algorithmic differentiation methods implemented in the COCONUT
+	   Environment for global nonlinear optimization. The COCONUT Environment represents each factorable
+	   optimization problem as a directed acyclic graph (DAG). Various inference modules implemented in
+	   this software environment can serve as building blocks for solution algorithms. Many of them use
+	   techniques based on various forms of algorithmic differentiation for computing approximations or
+	   enclosures of functions or their derivatives. The algorithmic differentiation in the COCONUT
+	   Environment not only provides point evaluations but also range enclosures of derivatives up to order
+	   3, as well as slopes up to order 2. Care is taken to ensure that rounding errors are treated
+	   correctly. The ranges of the enclosures can be tightened by combining the evaluation routines with
+	   constraint propagation. Advantages and pitfalls of this method are also outlined.",
+	ad_area = "Optimization"
+}
+
+@ARTICLE{
+	   Walther2012Afo,
+	author = "Walther, Andrea and Vetukuri, Rama Raju and Biegler, Lorenz T.",
+	title = "A first-order convergence analysis of trust-region methods with inexact {J}acobians
+	   and inequality constraints",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "373--389",
+	year = "2012",
+	doi = "10.1080/10556788.2011.606574",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.606574",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.606574",
+	abstract = "A class of trust-region algorithms is developed and analyzed for the solution of
+	   minimization problems with nonlinear inequality constraints. Based on composite-step trust-region
+	   methods with barrier functions, the resulting algorithm also does not require the computation of
+	   exact Jacobians; only Jacobian vector products are used along with approximate Jacobian matrices.
+	   Therefore, the proposed method is targeted on small or medium size problems with dense Jacobians of
+	   the constraints. As demonstrated on small numerical examples, this feature has significant potential
+	   benefits for problems where Jacobian calculations are expensive.",
+	ad_area = "Optimization"
+}
+
+@ARTICLE{
+	   Walter2012Oeh,
+	author = "Walter, Sebastian F. and Lehmann, Lutz and Lamour, Ren\'{e}",
+	title = "On evaluating higher-order derivatives of the {QR} decomposition of tall matrices
+	   with full column rank in forward and reverse mode algorithmic differentiation",
+	journal = "Optimization Methods and Software",
+	volume = "27",
+	number = "2",
+	pages = "391--403",
+	year = "2012",
+	doi = "10.1080/10556788.2011.610454",
+	url = "http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.610454",
+	eprint = "http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.610454",
+	abstract = "We address the task of higher-order derivative evaluation of computer programs
+	   that contain QR decompositions of tall matrices with full column rank. The approach is a combination
+	   of univariate Taylor polynomial arithmetic and matrix calculus in the (combined) forward/reverse
+	   mode of algorithmic differentiation (AD). Explicit algorithms are derived and presented in an
+	   accessible form.",
+	ad_theotech = "Higher Order, Taylor Arithmetic"
+}
+
+@ARTICLE{
+	   Birkisson2012AFD,
+	author = "Birkisson, Asgeir and Driscoll, Tobin A.",
+	title = "Automatic Fr\échet Differentiation for the Numerical Solution of
+	   Boundary-Value Problems",
+	journal = "ACM Trans. Math. Softw.",
+	issue_date = "August 2012",
+	volume = "38",
+	number = "4",
+	month = "aug",
+	year = "2012",
+	issn = "0098-3500",
+	pages = "26:1--26:29",
+	articleno = "26",
+	numpages = "29",
+	url = "http://doi.acm.org/10.1145/2331130.2331134",
+	doi = "10.1145/2331130.2331134",
+	acmid = "2331134",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	keywords = "Chebfun, Newton's method in function space, linearization of boundary-value
+	   problems, object-oriented Matlab",
+	ad_theotech = "Frechet Differentiation"
+}
+
+@ARTICLE{
+	   Lantoine2012UMV,
+	author = "Lantoine, Gregory and Russell, Ryan P. and Dargent, Thierry",
+	title = "Using Multicomplex Variables for Automatic Computation of High-Order Derivatives",
+	journal = "ACM Trans. Math. Softw.",
+	issue_date = "April 2012",
+	volume = "38",
+	number = "3",
+	month = "apr",
+	year = "2012",
+	issn = "0098-3500",
+	pages = "16:1--16:21",
+	articleno = "16",
+	numpages = "21",
+	url = "http://doi.acm.org/10.1145/2168773.2168774",
+	doi = "10.1145/2168773.2168774",
+	acmid = "2168774",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	keywords = "Sensitivity analysis, automatic differentiation, high-order derivatives,
+	   multicomplex numbers, multicomplex step differentiation, overloading",
+	ad_theotech = "Multicomplex Step Differentiation"
+}
+
+@INCOLLECTION{
+	   Fischer1996AdT,
+	author = "H. Fischer",
+	title = "Automatic differentiation: {T}he key idea and an illustrative example",
+	booktitle = "Applied Mathematics and Parallel Computing",
+	year = "1996",
+	editor = "Herbert C. Fischer and B. Riedm{\"u}ller and S. Sch{\"a}ffler",
+	publisher = "Physica-Verlag",
+	address = "Heidelberg",
+	pages = "121--139",
+	ad_theotech = "Introduction"
+}
+
+@INPROCEEDINGS{
+	   Fateman2003Hlp,
+	author = "Fateman, Richard",
+	title = "High-level proofs of mathematical programs using automatic differentiation,
+	   simplification, and some common sense",
+	booktitle = "Proceedings of the 2003 international symposium on Symbolic and algebraic
+	   computation",
+	series = "ISSAC '03",
+	year = "2003",
+	isbn = "1-58113-641-2",
+	location = "Philadelphia, PA, USA",
+	pages = "88--94",
+	numpages = "7",
+	url = "http://doi.acm.org/10.1145/860854.860883",
+	doi = "10.1145/860854.860883",
+	acmid = "860883",
+	publisher = "ACM",
+	address = "New York, NY, USA",
+	keywords = "Bessel, differentiation, proof, recurrence, sine",
+	ad_area = "Program Verification"
+}
+
+@ARTICLE{
+	   Enciu2009Adf,
+	author = "P. Enciu and F. Wurtz and L. Gerbaud and B. Delinchant",
+	title = "Automatic differentiation for electromagnetic models used in optimization",
+	journal = "{COMPEL}: {T}he International Journal for Computation and Mathematics in Electrical
+	   and Electronic Engineering",
+	year = "2009",
+	volume = "28",
+	number = "5",
+	pages = "1313--1326",
+	abstract = "Purpose &#8211; The purpose of this paper is to illustrate automatic
+	   differentiation (AD) as a new technology for the device sizing in electromagnetism by using gradient
+	   constrained optimization. Component architecture for the design of engineering systems (CADES)
+	   framework, previously described, is presented here with extended features.
+	   Design/methodology/approach &#8211; The paper is subject to further usage for optimization of AD
+	   (also named algorithmic differentiation) which is a powerful technique that computes derivatives of
+	   functions described as computer programs in a programming language like C/C++, FORTRAN. Findings
+	   &#8211; Indeed, analytical modeling is well suited regarding optimization procedure, but the
+	   modeling of complex devices needs sometimes numerical formulations. This paper then reviews the
+	   concepts implemented in CADES which aim to manage the interactions of analytical and numerical
+	   modeling inside of gradient-based optimization procedure. Finally, the paper shows that AD has no
+	   limit for the input program complexity, or gradients accuracy, in the context of constrained
+	   optimization of an electromagnetic actuator. Originality/value &#8211; AD is employed for a
+	   large and complex numerical code computing multidimensional integrals of functions. Thus, the paper
+	   intends to prove the AD capabilities in the context of electromagnetic device sizing by means of
+	   gradient optimization. The code complexity as also as the implications of AD usage may stand as a
+	   good reference for the researchers in this field area.",
+	keywords = "Computer software, Constraint handling, Electromagnetism, Gradient methods,
+	   Modelling, Optimization techniques",
+	doi = "10.1108/03321640910969557",
+	ad_area = "Electrical Engineering",
+	ad_tools = "ADOL-C"
+}
+
+@PHDTHESIS{
+	   Kharche2011Mad,
+	type = "Dissertation",
+	url = "http://dspace.lib.cranfield.ac.uk/handle/1826/7298",
+	author = "R. V. Kharche",
+	title = "{MATLAB} automatic differentiation using source transformation",
+	school = "Department of Informatics \& Systems Engineering, Applied Mathematics
+	   \& Scientific Computing, Cranfield Defence and Security, Cranfield University",
+	year = "2011",
+	ad_tools = "MSAD"
 }
 

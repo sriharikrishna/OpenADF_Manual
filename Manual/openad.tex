@@ -634,7 +634,7 @@ up to date instructions on the \OpenADF\ website \cite{openadWeb}.
 All components are open source and readily available for download as \lstinline{tar} files
 or via version control checkout. 
 The website\\[1ex] 
-\centerline{\url{www.mcs.anl.gov/openad}}\\[1ex]
+\centerline{\url{http://www.mcs.anl.gov/openad}}\\[1ex]
 provides details on downloading and building the tool chain. 
 The build process essentially consists setting up the environment as described in 
 \refsec{sec:env} followed invoking\\[1ex]   
@@ -963,6 +963,14 @@ checkpointing (only  for adjoint models, see \lstinline{runTimeSupport/simple/Op
 \subsubsection{PostProcessor - Templates (incompl.)}
 
 \subsubsection{Trace (incompl.)}
+
+\subsubsection{Reversal with Revolve}
+A implementation of the {\em Revolve} reversal scheme \cite{Griewank2000ARA} as a Fortran library 
+is provided in the \lstinline{$OPENADROOT/RevolveF9X} component that is part of the optional
+components (see 'extras' in \refsec{sec:openadUpdate}). The library interface is self explanatory 
+and its use is illustrated in the examples \lstinline{ADMrevolve} and \lstinline{ADMrevolve2} 
+found under \lstinline{$OPENADROOT/Examples} (see \refsec{sec:application}).
+ 
 
 % #########################################################################################
 \chapter{AD Concepts}\label{sec:ADIntro}
@@ -2759,6 +2767,13 @@ but instead uses the actual data found in the respective directories.
 This applications section intends to augment the explanations given so far. 
 We use two small examples to further illustrate the  explanations given in \refsec{sec:oneMinute} and 
 discuss a more complicated example in \refsec{sec:shallow}. 
+To obtain the source code for the examples in this section please refer to \refsec{sec:compilingManual}. 
+To run the examples one needs to install \OpenADF\ following the instructions in \refsec{sec:dab}.
+As in 
+\refsec{sec:oneMinute}
+one can change the default Fortran  and C compilers for these examples by setting the
+environemt variables \lstinline{F90C} and \lstinline{CC} respectively. 
+We have tested the examples with \lstinline{gfortran}, NAG \lstinline{f95} and Intel's \lstinline{ifort}.  
 % -----------------------------------------------------------------------------------------
 \section{Two Small Examples}\label{sec:toyExample}
 Both examples follow the same prinicipal steps as the example in \refsec{sec:oneMinute} :
@@ -2774,13 +2789,6 @@ specific to the examples.
 \item computing a whole Jacobian either iteratively or in vector mode
 \item controlling call graph reversal mode
 \end{itemize}
-To obtain the source code for the examples in this section please refer to \refsec{sec:compilingManual}. 
-To run the examples one needs to install \OpenADF\ following the instructions in \refsec{sec:dab}.
-As in 
-\refsec{sec:oneMinute}
-one can change the default Fortran  and C compilers for these examples by setting the
-environemt variables \lstinline{F90C} and \lstinline{CC} respectively. 
-We have tested the examples with \lstinline{gfortran}, NAG \lstinline{f95} and Intel's \lstinline{ifort}.  
 
 \subsection{FDC example}\label{sec:fdcExample}
 This example code was taken from the Minpack test problem ``flow in a driven cavity''. 
@@ -3324,11 +3332,9 @@ underlying source files from \lstinline{t.cpp} to \lstinline{oadDriver.cpp}.
 and command line flags have been added.
 \end{itemize}
 }
-\item[Changed command line flags]
-\begin{itemize}
-\item the replacement for the \lstinline{goad} script which is called \lstinline{openadUpdate} has command 
+\item[Changed command line flags] Because of the ongoing development new command line flags have been added.
+In particular the replacement for the \lstinline{goad} script which is called \lstinline{openadUpdate} has command 
 line flags that were not present for \lstinline{goad}. Details can be found in \refsec{sec:ancillaryTools}.
-\end{itemize}
 \item[Refactorized Algorithms]
 \end{description}
 % -----------------------------------------------------------------------------------------

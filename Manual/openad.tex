@@ -970,7 +970,23 @@ is provided in the \lstinline{$OPENADROOT/RevolveF9X} component that is part of 
 components (see 'extras' in \refsec{sec:openadUpdate}). The library interface is self explanatory 
 and its use is illustrated in the examples \lstinline{ADMrevolve} and \lstinline{ADMrevolve2} 
 found under \lstinline{$OPENADROOT/Examples} (see \refsec{sec:application}).
- 
+
+To adapt a given loop to revolve one should use the templates given in the above examples. 
+Care should be taken with the interpretation of the \lstinline{iteration} member 
+of an \lstinline{rvAction} instance. Within the Revolve implementation the loop iterations 
+are assumed to run from 0 to $s-1$  where $s$ is the argument value 
+given to \lstinline{rvInit} as \lstinline{steps}. 
+The value $i$ of the \lstinline{iteration} member is to be interpreted as follows with respect 
+to a {\em current} iteration state $c$ that is initialized to 0. 
+\begin{itemize}
+\item for \lstinline{rvRestore}: the argument checkpoint for  iteration $i$ is being restored; set $c=i$   
+\item for \lstinline{rvForward}: perform iterations $[c,i-1]$ with $c$ as the loop variable, that is, after 
+this  loop the value of $c$ should be $i-1$.  
+\end{itemize}
+Using this recipe $c$ will attain all the iteration values in $[0,s-1]$ until the completion of the 
+Revolve loop and $i$ can be interpreted 
+as the respective ``next'' iteration not yet executed. For values of \lstinline{rvAction%actionFlag} 
+other than the two values listed above no meaning is assigned to \lstinline{iteration}.  
 
 % #########################################################################################
 \chapter{AD Concepts}\label{sec:ADIntro}

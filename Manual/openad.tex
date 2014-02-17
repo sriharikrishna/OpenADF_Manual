@@ -2794,21 +2794,21 @@ We have tested the examples with \lstinline{gfortran}, NAG \lstinline{f95} and I
 \section{Two Small Examples}\label{sec:toyExample}
 Both examples follow the same prinicipal steps as the example in \refsec{sec:oneMinute} :
 \begin{itemize}
-\item setup of a \lstinline{Makefile} that uses the \lstinline{openad} script
-\item identification of independent and dependent variables
-\item driver code to setup the derivative computation and obtain the derivative values
+\item write a \lstinline{Makefile} that uses the \lstinline{openad} script,
+\item identify independent and dependent variables, and
+\item write driver logic to setup the derivative computation and obtain the derivative values.
 \end{itemize}
 We do not explain these fundamental steps again but instead concentrate on various aspects 
 specific to the examples. 
 \begin{itemize}
-\item select the source code to be transformed
-\item computing a whole Jacobian either iteratively or in vector mode
-\item controlling call graph reversal mode
+\item select the source code to be transformed,
+\item compute a whole Jacobian either iteratively or in vector mode, and 
+\item control the call graph reversal mode.
 \end{itemize}
 
 \subsection{FDC example}\label{sec:fdcExample}
-This example code was taken from the Minpack test problem ``flow in a driven cavity''. 
-The source code for the problem can be found under \lstinline{$OPENADROOT/Examples/OneMinute/}%$
+This example code was taken from the Minpack test problem ``flow in a driven cavity'' \cite{Averick1992TMT}.
+The source code for the problem can be found under \lstinline{$OPENADROOT/Examples/FDC/} %$
 in file \lstinline{head.f} and a simple driver in \lstinline{driver.f90} and an executable named \lstinline{driver} can be 
 produced by running\\[1ex] 
 \hspace*{.3cm}\lstinline{cd $OPENADROOT/Examples/FDC}\\ %$
@@ -2821,27 +2821,27 @@ finite differences we have setups with driver source files and \lstinline{Makefi
 \item[\tt ADMsplit] - for the \OpenADF\ adjoint model in split mode (see also, \refsec{sec:cgReversal})
 \item[\tt ADMjoint] - for the \OpenADF\ adjoint model in joint mode (see also, \refsec{sec:cgReversal})
 \end{description}
-The respective executables can be obtained by running \\[1ex]
+The respective executables can be obtained (relacing {\em subDir} by one of the four variants given above) by running \\[1ex]
 \hspace*{.3cm}\lstinline{cd} {\em subDir}\\ 
 \hspace*{.3cm}\lstinline{make} \\[1ex]
 in each 
 subdirectory which then produces an executable named\\[1ex]
 \hspace*{.3cm}\lstinline{driver}{\em subDir}\\[1ex]
 One can compare the produced output and observe matching values for the Jacobian entries. 
-We suggest to also compare the driver source files and the \lstinline{Makefile}s
+We suggest to compare also  the driver source files and the \lstinline{Makefile}s
 to see the differences between the variants. 
 
 \noindent
 {\bf What to transform:} Note that part of the computation is an initialization done in \lstinline{init.f}. All driver files call 
-the \lstinline{init} routine but it is \underline{\em not part of the transformation} because we only want to differentiation 
+the \lstinline{init} routine but it is \underline{\em not part of the transformation} because we want to differentiate only 
 with the respect to the initial value in variable \lstinline{x} and  not with respect to the parameters that are 
-used in \lstinline{init}. Because the \lstinline{init} routine is not transformed its floating point argument will retain 
+used in \lstinline{init}. Because the \lstinline{init} routine is not transformed, its floating point argument will retain 
 the original type while the argument type of \lstinline{x} in \lstinline{head} has changed to the active type. 
-Consequently we use a variable \lstinline{x0} to compute the initial value then copy it from there into the active variable \lstinline{x}.    
+Consequently, we use a variable \lstinline{x0} to compute the initial value then copy it from there into the active variable \lstinline{x}.    
 
 \noindent
 {\bf How to obtain the whole Jacobian:} In these examples we use a single scalar derivative associated with each scalar program variable. 
-Consequently in one sweep we can obtain in forward mode one product $\bmJ\dot{\bmx}$ or in reverse mode one product $\bar{\bmy}^T\bmJ$. 
+Consequently, in one sweep we can obtain in forward mode one projection $\bmJ\dot{\bmx}$ or in reverse mode one projection $\bar{\bmy}^T\bmJ$. 
 This means we need either $n$ forward sweeps or $m$ reverse sweeps for the whole Jacobian\footnote{Because one can see that the Jacobian 
 is in fact sparse one could employ various compression techniques to reduce the effort but we do not do this here to keep the example simple.}.   
 This is reflected in the respective loops in the driver routines that wrap the calls to the differentiated \lstinline{head} routine where in each loop
@@ -2852,16 +2852,36 @@ column or row of $\bmJ$.
 \noindent
 {\bf Controling split and joint mode in the adjoint model:} The principal behavior (split or joint mode) of the call graph reversal is encoded 
 in the template file that the \lstinline{openad} script uses which is controled by the \lstinline{--mode} flag which for reverse mode is set 
-either to \lstinline{rs} or \lstinline{rj}. Aside from that difference which is evident in the respective \lstinline{Makefile}s, one can 
+either to \lstinline{rs} or \lstinline{rj}. Aside from that difference, which is evident in the respective \lstinline{Makefile}s, one can 
 see in the driver logic that the split reaches up to the top level routine \lstinline{head} which in the driver is first invoked 
 for the taping sweep (the code variant is selected by calling \lstinline{OAD_rev_tape()}) 
 and then again for the adjoint sweep  (the code variant is selected by calling  \lstinline{OAD_rev_adjoint()}). 
-In joint mode on the other hand the implicit behavior encoded in the template is that the adjoint sweep follows immediately after 
+In joint mode, on the other hand, the implicit behavior encoded in the template is that the adjoint sweep follows immediately after 
 the taping sweep and consequently we see only one call to \lstinline{head} initially for the taping variant  
 and the template internally then selects and invokes the adjoint sweep variant of the code.    
 
 
 \subsection{Box model example}\label{sec:boxModelExample}
+This code was provided by Patrick Heimbach\footnote{\url{http://heimbach.wordpress.com/}}. 
+It is used for the solution of a (generalized) eigenvalue
+problem arising in physical oceanography,
+where
+substantial effort in understanding the
+ocean circulation's role in the
+variability of the climate system,
+on time scales of decades to millennia and beyond,
+is being directed at investigating
+the so-called 'thermohaline' circulation (THC).
+This refers to the contribution to
+the ocean circulation which is driven by density gradients
+and thus controlled by temperature and salinity properties
+and its associated fluxes.
+It plays a crucial role in connecting the surface
+to the deep ocean through deep-water formation which occurs at some
+isolated convection sites at high latitudes mainly in the subpolar
+Atlantic ocean, such as the Labrador Sea and the
+Greenland-Irminger-Norwegian (GIN) Seas.
+
 This example code was taken from a simple oceanographic box model test. 
 The source code for the problem can be found under \lstinline{$OPENADROOT/Examples/BoxModel/}%$
 in file \lstinline{head.f} and a simple driver in \lstinline{driver.f90} and an executable named \lstinline{driver} can be 

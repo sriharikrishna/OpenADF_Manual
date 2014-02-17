@@ -233,7 +233,10 @@
 	ad_theotech = "Introduction",
 	year = "2000",
 	volume = "124",
-	doi = "10.1016/S0377-0427(00)00422-2"
+	doi = "10.1016/S0377-0427(00)00422-2",
+	abstract = "We introduce the basic notions of automatic differentiation, describe some
+	   extensions which are of interest in the context of nonlinear optimization and give some illustrative
+	   examples."
 }
 
 @INCOLLECTION{
@@ -1963,8 +1966,8 @@
 
 @TECHREPORT{
 	   Faure1999EoO,
-	author = "C.Faure and P.Dutto",
-	title = "Extension of Odyss\'ee to the MPI library -Reverse mode",
+	author = "C. Faure and P. Dutto",
+	title = "Extension of {O}dyss\'ee to the {MPI} library -- Reverse mode",
 	address = "Sophia Antipolis",
 	institution = "INRIA",
 	type = "Rapport de recherche",
@@ -1990,7 +1993,8 @@
 	number = "3774",
 	series = "Rapport de recherche 3774",
 	ad_tools = "Odyssee",
-	ad_theotech = "Parallelism"
+	ad_theotech = "Parallelism",
+	url = "http://hal.inria.fr/inria-00072887/"
 }
 
 @TECHREPORT{
@@ -2597,13 +2601,23 @@
 	   Griewank1992ALG,
 	ad_theotech = "Adjoint, Checkpointing, Data Flow Analysis, General, Introduction, Reverse
 	   Mode",
-	Author = "Andreas Griewank",
-	Journal = "Optimization Methods and Software",
-	Pages = "35--54",
-	Title = "Achieving Logarithmic Growth of Temporal and Spatial Complexity in Reverse Automatic
+	author = "Andreas Griewank",
+	journal = "Optimization Methods and Software",
+	pages = "35--54",
+	title = "Achieving Logarithmic Growth of Temporal and Spatial Complexity in Reverse Automatic
 	   Differentiation",
-	Volume = "1",
-	Year = "1992"
+	volume = "1",
+	year = "1992",
+	abstract = "In its basic form the reverse mode of automatic differentiation yields gradient
+	   vectors at a small multiple of the computational work needed to evaluate the underlying scalar
+	   function. The practical applicability of this temporal complexity result, due originally to
+	   Linnainmaa, seemed to be severely limited by the fact that the memory requirement of the basic
+	   implementation is proportional to the run time $T$, of the original evaluation program. It is shown
+	   here that, by a recursive scheme related to the multilevel differentiation approach of Volin and
+	   Ostrovskii, the growth in both temporal and spatial complexity can be limited to a fixed multiple of
+	   $\log(T)$. Other compromises between the run time and memory requirement are possible, so that
+	   the reverse mode becomes applicable to computational problems of virtually any
+	   size."
 }
 
 @INCOLLECTION{
@@ -6181,16 +6195,18 @@
 
 @ARTICLE{
 	   Dixon1990ADo,
-	AUTHOR = "Dixon, Lawrence C. W. and Maany, Z. and Mohseninia, M.",
-	TITLE = "Automatic Differentiation of Large Sparse Systems",
-	JOURNAL = "J. Economic Dynamics \& Control",
-	VOLUME = "14",
-	NUMBER = "2",
-	YEAR = "1990",
-	REFERRED = "[Dixon1991UoA].",
-	NOTE = "Presented at IFAC on Dynamic Modelling \& Control of National Economies,
+	author = "Dixon, Lawrence C. W. and Maany, Z. and Mohseninia, M.",
+	title = "Automatic Differentiation of Large Sparse Systems",
+	journal = "J. Economic Dynamics \& Control",
+	volume = "14",
+	number = "2",
+	year = "1990",
+	referred = "[Dixon1991UoA].",
+	doi = "10.1016/0165-1889(90)90023-A",
+	note = "Presented at IFAC on Dynamic Modelling \& Control of National Economies,
 	   Edinburgh, July, 1989. Also appeared as Technical Report NOC TR223, The Numerical Optimisation
-	   Center, Hatfield Polytechnic, Hatfield, U.K., July 1989."
+	   Center, Hatfield Polytechnic, Hatfield, U.K., July 1989.",
+	ad_theotech = "Sparsity"
 }
 
 @TECHREPORT{
@@ -11501,7 +11517,7 @@
 	   Engineering",
 	editors = "P. Neittaanm{\"a}ki and T. Rossi and K. Majava and O. Pironneau",
 	location = "Jyv{\"a}skyl{\"a}, Finland",
-	note = "QUB-SAE-04-02 \url{ www.ea.qub.ac.uk/pcusdin/index.php}",
+	note = "QUB-SAE-04-02 \url{Â www.ea.qub.ac.uk/pcusdin/index.php}",
 	ad_tools = "Adifor, TAF, TAMC, Tapenade",
 	ad_area = "Computational Fluid Dynamics"
 }
@@ -12686,7 +12702,7 @@
 	address = "Jyv{\"a}skyl{\"a}, Finland",
 	publisher = "University of Jyv{\"a}skyl{\"a}",
 	isbn = "951-39-1868-8",
-	note = "online at http://www.mit.jyu.fi/eccomas2004/proceedings/pdf/702.pdf",
+	note = "online atÂ http://www.mit.jyu.fi/eccomas2004/proceedings/pdf/702.pdf",
 	ad_tools = "OpenAD",
 	author = "Uwe Naumann and Jean Utke and Andrea Walther"
 }
@@ -16802,7 +16818,23 @@
 	pages = "629-705",
 	url = "http://link.aip.org/link/?SIR/47/629/1",
 	doi = "10.1137/S0036144504444711",
-	ad_theotech = "Sparsity"
+	ad_theotech = "Sparsity",
+	abstract = "Graph coloring has been employed since the 1980s to efficiently compute sparse
+	   Jacobian and Hessian matrices using either finite differences or automatic differentiation. Several
+	   coloring problems occur in this context, depending on whether the matrix is a Jacobian or a Hessian,
+	   and on the specifics of the computational techniques employed. We consider eight variant vertex
+	   coloring problems here. This article begins with a gentle introduction to the problem of computing a
+	   sparse Jacobian, followed by an overview of the historical development of the research area. Then we
+	   present a unifying framework for the graph models of the variant matrix estimation problems. The
+	   framework is based upon the viewpoint that a partition of a matrix into structurally orthogonal
+	   groups of columns corresponds to distance-2 coloring an appropriate graph representation. The
+	   unified framework helps integrate earlier work and leads to fresh insights; enables the design of
+	   more efficient algorithms for many problems; leads to new algorithms for others; and eases the task
+	   of building graph models for new problems. We report computational results on two of the coloring
+	   problems to support our claims. Most of the methods for these problems treat a column or a row of a
+	   matrix as an atomic entity, and partition the columns or rows (or both). A brief review of methods
+	   that do not fit these criteria is provided. We also discuss results in discrete mathematics and
+	   theoretical computer science that intersect with the topics considered here."
 }
 
 @INPROCEEDINGS{
@@ -17025,7 +17057,7 @@
 
 @INCOLLECTION{
 	   Elizondo1999UtO,
-	title = "Using the Odyssée automatic differentiation tool for inverse modeling",
+	title = "Using the OdyssÃ©e automatic differentiation tool for inverse modeling",
 	author = "D.Elizondo and B.Cappelaere and C.Faure",
 	year = "1999",
 	booktitle = "24th General Assembly of the EGS - Hydrology, Oceans and Atmosphere, The Hague,
@@ -17551,7 +17583,7 @@
 	ad_tools = "OpenAD",
 	ad_theotech = "General",
 	note = "online avaliable
-	   at \url{ http://www.iop.org/EJ/article/1742-6596/16/1/063/jpconf5_16_063.pdf}"
+	   atÂ \url{Â http://www.iop.org/EJ/article/1742-6596/16/1/063/jpconf5_16_063.pdf}"
 }
 
 @ARTICLE{
@@ -18403,8 +18435,8 @@
 	   being designed for graphics applications, GPUs have some restrictions which conflict with
 	   requirements for reverse mode AD, in particular for taping and TBR analysis. We discuss design and
 	   implementation issues in the presence of such restrictions on the target platform and present a
-	   method which can register a CT volume data set (512 × 512 × 288 voxels) with three X-ray
-	   images (512 × 512 pixels each) in 20 seconds on a GeForce 8800GTX graphics card.",
+	   method which can register a CT volume data set (512 Ã— 512 Ã— 288 voxels) with three X-ray
+	   images (512 Ã— 512 pixels each) in 20 seconds on a GeForce 8800GTX graphics card.",
 	crossref = "Bischof2008AiA",
 	booktitle = "Advances in Automatic Differentiation",
 	publisher = "Springer",
@@ -19087,7 +19119,7 @@
 	title = "Parallel Derivative Computation Using {ADOL-C}",
 	author = "A. Kowarz and A. Walther",
 	editor = "W. Nagel and R. Hoffmann and A. Koch",
-	publisher = "Gesellschaft für Informatik",
+	publisher = "Gesellschaft fÃ¼r Informatik",
 	year = "2008",
 	booktitle = "Proceedings of PASA 2008",
 	series = "Lecture Notes in Informatics, Vol. 124",
@@ -19189,7 +19221,7 @@
 	author = "Jean Utke and Uwe Naumann and Andrew Lyons",
 	title = "Open{AD/F}: {U}ser {M}anual",
 	note = "latest version available online at
-	   \url{ http://www.mcs.anl.gov/OpenAD/openad.pdf}",
+	   \url{Â http://www.mcs.anl.gov/OpenAD/openad.pdf}",
 	institution = "Argonne National Laboratory",
 	ad_tools = "OpenAD"
 }
@@ -20223,7 +20255,7 @@
 	   purpose of this paper is to report on the development and application of computer algebra systems
 	   for automating the implementation of differentiation into existing computer codes. The so-called
 	   Automatic Differentiation (AD) Methods have been tested on several examples of thermodynamic
-	   property calculation routines. We have used the Odyssée system, developed for the project
+	   property calculation routines. We have used the OdyssÃ©e system, developed for the project
 	   SAFIR. The various automatic differentiation algorithms, called forward (direct) mode and reverse
 	   (adjoint) mode, have been compared on these examples. Our results show that Automatic
 	   Differentiation algorithms can handle real- life codes and that the codes generated are competitive
@@ -20523,7 +20555,7 @@
 @INPROCEEDINGS{
 	   Enciu2009ADA,
 	title = "Automatic Differentiation Applied for Optimization of Dynamical Systems",
-	author = "Petre Enciu, Laurent Gerbaud and Frédéric Wurtz",
+	author = "Petre Enciu, Laurent Gerbaud and FrÃ©dÃ©ric Wurtz",
 	year = "2009",
 	booktitle = "COMPUMAG 09, 17th Conference on the Computation of Electromagnetic Fields",
 	pages = "249--250",
@@ -21587,7 +21619,7 @@
 	pages = "57-66",
 	address = "Zurich",
 	month = "sep",
-	url = "\url{ http://www.ep.liu.se/ecp_home/index.en.aspx?issue=056}",
+	url = "\url{Â http://www.ep.liu.se/ecp_home/index.en.aspx?issue=056}",
 	ad_area = "Control",
 	ad_tools = "ADOL-C",
 	ad_theotech = "Taylor Arithmetic"
@@ -21789,13 +21821,13 @@
 	pages = "311--322",
 	year = "2012",
 	doi = "10.1080/10556788.2011.577774",
-	url = " http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.577774",
-	eprint = " http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.577774",
+	url = "Â http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.577774",
+	eprint = "Â http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.577774",
 	ad_tools = "OpenAD",
 	ad_theotech = "Combinatorics, Scarsity",
 	abstract = "In this paper, we describe a code transformation technique that, given a code for
 	   a vector function F, produces a code suitable for computing collections of Jacobian-vector products
-	   F'(x)x? or Jacobian-transpose-vector products F'(x)T y¯. Exploitation of scarcity
+	   F'(x)x? or Jacobian-transpose-vector products F'(x)T yÂ¯. Exploitation of scarcity
 	   &#8211; a measure of the degrees of freedom in the Jacobian matrix &#8211; requires solving
 	   a combinatorial optimization problem that is believed to be hard. Our heuristics transform the
 	   computational graph for F, producing, in the form of a transformed graph G', a representation
@@ -22030,8 +22062,8 @@
 	number = "1",
 	year = "2010",
 	pages = "1825-1833",
-	ee = " http://dx.doi.org/10.1016/j.procs.2010.04.204",
-	bibsource = "DBLP, http://dblp.uni-trier.de",
+	ee = "Â http://dx.doi.org/10.1016/j.procs.2010.04.204",
+	bibsource = "DBLP,Â http://dblp.uni-trier.de",
 	ad_theotech = "Adjoint, Parallelism"
 }
 
@@ -22125,8 +22157,8 @@
 	pages = "221--232",
 	year = "2012",
 	doi = "10.1080/10556788.2011.577775",
-	url = " http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.577775",
-	eprint = " http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.577775",
+	url = "Â http://www.tandfonline.com/doi/abs/10.1080/10556788.2011.577775",
+	eprint = "Â http://www.tandfonline.com/doi/pdf/10.1080/10556788.2011.577775",
 	abstract = "Modelling often involves nonlinear parametric problems and bifurcation analysis.
 	   This interdisciplinary paper reviews higher-order numerical methods for the solution of nonlinear
 	   problems, and proposes a synthesis of two different conceptual frameworks, namely automatic
@@ -22347,7 +22379,7 @@
 @ARTICLE{
 	   Birkisson2012AFD,
 	author = "Birkisson, Asgeir and Driscoll, Tobin A.",
-	title = "Automatic Fr\échet Differentiation for the Numerical Solution of
+	title = "Automatic Fr\Ã©chet Differentiation for the Numerical Solution of
 	   Boundary-Value Problems",
 	journal = "ACM Trans. Math. Softw.",
 	issue_date = "August 2012",
@@ -22472,5 +22504,202 @@
 	   \& Scientific Computing, Cranfield Defence and Security, Cranfield University",
 	year = "2011",
 	ad_tools = "MSAD"
+}
+
+@ARTICLE{
+	   Hall2002Cmu,
+	doi = "doi:10.1088/0957-0233/13/4/301",
+	author = "B. D. Hall",
+	title = "Calculating measurement uncertainty using automatic differentiation",
+	journal = "Measurement Science and Technology",
+	volume = "13",
+	number = "4",
+	pages = "421--427",
+	url = "http://stacks.iop.org/0957-0233/13/i=4/a=301",
+	year = "2002",
+	abstract = "A computational technique is described that can perform the simultaneous
+	   evaluation of a measurement function and the associated combined standard uncertainty. The
+	   uncertainty equation is automatically derived from the measurement function and need not be provided
+	   separately. The technique is based on automatic differentiation. It is simple, efficient, accurate
+	   and easy to implement in software.",
+	ad_theotech = "Uncertainties"
+}
+
+@ARTICLE{
+	   Hall2003Cmu,
+	doi = "doi:10.1088/0957-0233/14/3/316",
+	author = "B. D. Hall",
+	title = "Calculating measurement uncertainty for complex-valued quantities",
+	journal = "Measurement Science and Technology",
+	volume = "14",
+	number = "3",
+	pages = "368--375",
+	url = "http://stacks.iop.org/0957-0233/14/i=3/a=316",
+	year = "2003",
+	abstract = "A software technique is described that provides support for uncertainty
+	   calculations for complex-valued measurements. The technique is based on classical methods of
+	   multivariate statistics and propagation of variance as well as automatic differentiation, which is
+	   an established computational method. It facilitates propagation of covariance data by automating the
+	   calculation of sensitivity coefficients. The technique introduces a simple abstraction to represent
+	   measurement data and defines arithmetic operations and standard functions that manipulate this
+	   abstraction. The method is not difficult to implement and is easy to use. An example source code in
+	   C++ is included.",
+	ad_theotech = "Uncertainties"
+}
+
+@BOOK{
+	   Forth2012RAi,
+	editor = "S. Forth and P. D. Hovland and E. Phipps and Jean Utke and A. Walther",
+	title = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	ad_theotech = "General",
+	year = "2012",
+	volume = "87",
+	doi = "10.1007/978-3-642-30023-3",
+	isbn = "978-3-642-30022-6",
+	issn = "1439-7358"
+}
+
+@ARTICLE{
+	   Kato2005Goc,
+	abstract = "Circuit simulators have often been used for power electronic system design.
+	   However, most of them are limited in their application class to one with fixed elements because they
+	   can only handle programmed or fixed element characteristics. To overcome this disadvantage, a
+	   simulator should be flexible enough to handle any combination of characteristics of available
+	   mathematical functions and operations. It is a problem how to compute Jacobian elements or partial
+	   derivatives with respect to circuit variables. This paper proposes a way to compute the derivatives
+	   by using the automatic differentiation method which is simple and accurate. The principle and
+	   application examples are described.",
+	author = "T. Kato",
+	title = "Generalization of circuit simulator by automatic differentiation",
+	journal = "Electrical Engineering in Japan",
+	year = "2005",
+	volume = "152",
+	number = "3",
+	pages = "47--54",
+	doi = "10.1002/eej.20075",
+	ad_area = "Electrical Engineering"
+}
+
+@INPROCEEDINGS{
+	   Xiaoqing2006RoA,
+	author = "Zheng Xiaoqing and Shao Zhijiang",
+	title = "Research on Automatic Differentiation and the Application to Distillation Column
+	   Optimization",
+	booktitle = "Proceedings of the Sixth World Congress on Intelligent Control and Automation,
+	   (WCICA 2006), June 21--23, 2006",
+	pages = "1833--1837",
+	year = "2006",
+	volume = "1",
+	publisher = "{IEEE}",
+	note = "In Chineese",
+	doi = "10.1109/WCICA.2006.1712671",
+	abstract = "Automatic differentiation is the approach of differentiation without truncation
+	   error introduced. In this paper, two ways of automatic differentiation based on source
+	   transformation and operator overloading are investigated and applied to the optimization of
+	   distillation column. After comparing with the traditional finite difference method, the result
+	   proves the automatic differentiation approach based on source transformation the highest efficient
+	   in the optimization."
+}
+
+@ARTICLE{
+	   Yu2013Das,
+	author = "Wenbin Yu and Maxwell Blair",
+	title = "{DNAD}, a simple tool for automatic differentiation of {F}ortran codes using dual
+	   numbers",
+	journal = "Computer Physics Communications",
+	volume = "184",
+	number = "5",
+	pages = "1446--1452",
+	year = "2013",
+	doi = "10.1016/j.cpc.2012.12.025",
+	url = "http://www.sciencedirect.com/science/article/pii/S0010465513000027",
+	abstract = "DNAD (dual number automatic differentiation) is a simple, general-purpose tool to
+	   automatically differentiate Fortran codes written in modern Fortran (F90/ 95/2003) or legacy codes
+	   written in previous version of the Fortran language. It implements the forward mode of automatic
+	   differentiation using the arithmetic of dual numbers and the operator overloading feature of F90/
+	   95/2003. Very minimum changes of the source codes are needed to compute the first derivatives of
+	   Fortran programs. The advantages of DNAD in comparison to other existing similar computer codes are
+	   its programming simplicity, extensibility, and computational efficiency. Specifically, DNAD is more
+	   accurate and efficient than the popular complex-step approximation. Several examples are used to
+	   demonstrate its applications and advantages.",
+	ad_tools = "DNAD"
+}
+
+@INPROCEEDINGS{
+	   Elsheikh2012Aop,
+	author = "Atiyah Elsheikh and Wolfgang Wiechert",
+	title = "Accuracy of parameter sensitivities of {DAE} systems using finite difference
+	   methods",
+	booktitle = "MATHMOD 2012: The 7th Vienna International Conference on Mathematical Modelling",
+	year = "2012",
+	editor = "Troch, Inge and Breitenecker, Felix",
+	volume = "7",
+	number = "1",
+	series = "Mathematical Modelling",
+	pages = "136 -- 142",
+	address = "Vienna, Austria",
+	month = "Feb",
+	publisher = "IFAC-PapersOnLine.net",
+	abstract = "This work evaluates the accuracy of Finite Difference (FD) methods when computing
+	   parameter sensitivities of badly-scaled DAE systems. Due to their simple implementation, FD methods
+	   are commonly favoured especially when the underlying mathematical model is a hard-coded
+	   sophisticated simulator. Nevertheless, FD methods may impose serious numerical problems even if FD
+	   step sizes and solver tolerances w.r.t. the order of the FD scheme are ideally selected. Judging the
+	   precision of the resulting parameter sensitivities is practically difficult. With the availability
+	   of powerful Automatic Differentiation (AD) tools for equation-based simulation languages like
+	   ADModelica, there is a new possibility to examine step sizes of various FD schemes, solver
+	   tolerances and the resulting precision for realistic large scale examples. This can be done by
+	   comparing numerical parameter sensitivities with highly precise analytical solutions using direct
+	   integration of sensitivity equation systems generated by AD techniques. It is shown with a
+	   realistically sized example that FD methods are actually more critical than usually assumed.",
+	booktitle2 = "Proceeding of the 7th Vienna International Conference on Mathematical
+	   Modelling",
+	doi = "10.3182/20120215-3-AT-3016.00024",
+	keywords = "finite difference methods,differential algebraic equations,sensitivity
+	   analysis,automatic differentiation,accuracy,simulation languages",
+	owner = "ElsheikhA",
+	timestamp = "2012.11.10",
+	ad_area = "Differential-Algebraic Equation",
+	ad_tools = "ADModelica",
+	ad_theotech = "Forward Mode"
+}
+
+@INPROCEEDINGS{
+	   Elsheikh2012AAA,
+	author = "Atiyah Elsheikh",
+	title = "{ADGenKinetics}: An Algorithmically Differentiated Library for Biochemical Networks
+	   Modeling via Simplified Kinetics Formats",
+	booktitle = "Modelica'2012, The 9th International Modelica Conference",
+	year = "2012",
+	number = "076",
+	series = "LinkÃ¶ping Electronic Conference Proceedings",
+	pages = "915 -- 926",
+	address = "Munich, Germany",
+	month = "Sep.",
+	publisher = "LinkÃ¶ping University Electronic Press, LinkÃ¶pings universitet",
+	note = "Library available online at https://www.modelica.org/libraries/adgenkinetics",
+	abstract = "This work demonstrates the compact but powerful freely available Modelica library
+	   ADGenKinetics for descriptive modeling of biochemical reaction networks using simplified kinetics
+	   formats. While existing powerful works and guidelines for modeling biochemical reaction networks
+	   based on classical mechanistic kinetics already exist, in this work a first attempt of utilizing the
+	   power of Modelica constructs for providing a compact implementation of simplified kinetic formats
+	   with generalized structured formulas is presented. This gives the opportunity of realizing
+	   biochemical reaction networks using few number of reaction components, in contrast to libraries
+	   based on classical mechanistic kinetics which require hundreds of reaction components. ADGenKinetics
+	   is the first algorithmically differentiated Modelica library that is enhanced with differentiated
+	   components by which parameter sensitivities are additionally computed with minimal efforts from the
+	   user perspective.",
+	doi = "ecp12076915",
+	keywords = "Enzyme Kinetics, Biochemical Reaction Networks, Systems Biology, Algorithmic
+	   Differentiation",
+	owner = "ElsheikhA",
+	timestamp = "2012.09.20",
+	url = "http://www.ep.liu.se/ecp/076/095/ecp12076095.pdf",
+	ad_area = "Biogeochemistry, Differential-Algebraic Equation",
+	ad_tools = "ADModelica",
+	ad_theotech = "Forward Mode, Equation-based AD"
 }
 

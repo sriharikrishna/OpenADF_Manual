@@ -2814,19 +2814,16 @@ produced by running\\[1ex]
 \hspace*{.3cm}\lstinline{cd $OPENADROOT/Examples/FDC}\\ %$
 \hspace*{.3cm}\lstinline{make}\\[1ex]
 To illustrate the use of \OpenADF\ and provide a comparison with 
-finite differences we have setups with driver source files and \lstinline{Makefile}s in the following subdirectories
+finite differences we have setups with driver source files and \lstinline{Makefile}s recursively invoked by the above command in the following subdirectories
 \begin{description}
 \item[\tt FD] - for a finite difference approximation to the Jacobian
 \item[\tt TLM] - for the  \OpenADF\ tangent linear model, i.e. forward mode
 \item[\tt ADMsplit] - for the \OpenADF\ adjoint model in split mode (see also, \refsec{sec:cgReversal})
 \item[\tt ADMjoint] - for the \OpenADF\ adjoint model in joint mode (see also, \refsec{sec:cgReversal})
 \end{description}
-The respective executables can be obtained (relacing {\em subDir} by one of the four variants given above) by running \\[1ex]
-\hspace*{.3cm}\lstinline{cd} {\em subDir}\\ 
-\hspace*{.3cm}\lstinline{make} \\[1ex]
-in each 
-subdirectory which then produces an executable named\\[1ex]
+The respective executables are named\\[1ex]
 \hspace*{.3cm}\lstinline{driver}{\em subDir}\\[1ex]
+where {\em subDir} is one of the four choices given above.
 One can compare the produced output and observe matching values for the Jacobian entries. 
 We suggest to compare also  the driver source files and the \lstinline{Makefile}s
 to see the differences between the variants. 
@@ -2882,8 +2879,7 @@ isolated convection sites at high latitudes mainly in the subpolar
 Atlantic ocean, such as the Labrador Sea and the
 Greenland-Irminger-Norwegian (GIN) Seas.
 
-This example code was taken from a simple oceanographic box model test. 
-The source code for the problem can be found under \lstinline{$OPENADROOT/Examples/BoxModel/}%$
+The source code for the problem can be found under \lstinline{$OPENADROOT/Examples/BoxModel/} %$
 in file \lstinline{head.f} and a simple driver in \lstinline{driver.f90} and an executable named \lstinline{driver} can be 
 produced by running\\[1ex] 
 \hspace*{.3cm}\lstinline{cd $OPENADROOT/Examples/BoxModel}\\ %$
@@ -2897,9 +2893,9 @@ variants in the following 5 subdirectories:
 \item[\tt ADMsplit] - for the \OpenADF\ adjoint model in split mode (see also, \refsec{sec:cgReversal})
 \item[\tt ADMjoint] - for the \OpenADF\ adjoint model in joint mode (see also, \refsec{sec:cgReversal})
 \end{description}
-Here we have an 
+In this example we have an 
 additional variant for {\em vector mode}, see below under ``How to obtain the whole Jacobian''. 
-The noteworthy differences to the example in \refsec{sec:fdcExample} are explained below.
+The noteworthy differences to the example in \refsec{sec:fdcExample} are explained in the following.
  
 \noindent
 {\bf What to transform:} This example stores the computed data as module variables (see \lstinline{all_globals_mod.f}.
@@ -2931,9 +2927,27 @@ change that definition to adapt it to the application context.
 \section{Shallow Water Model (to be reworked)}\label{sec:shallow}
 In this section we will use a practical application to highlight 
 advanced aspects arising for more complicated applications. 
+The application at hand is 
+a shallow water model used in a
+study \cite{Losch2003Bta} on bottom topography as a control variable in ocean
+models. 
+This code was originally written in Fortran77 but  there have
+been a few Fortran90 extensions to the source. 
+It contains some of
+the basic language features also used in the much larger 
+MIT general circulation model (MITgcm) \cite{mitgcmWeb,Adcroft2002TM}.
 The model is a time stepping scheme which eventually computes 
 a scalar valued cost function. We generate an adjoint model 
 to compute the gradient.  
+For a consistency check we looked at the relative discrepancy between 
+finite differences and AD-derivatives. Even for a small setup with only 
+160 gradient elements the discrepancies as plotted in \reffig{fig:shallowWaterFdAd} 
+are significant. 
+\begin{figure}
+\centerline{\includegraphics[width=0.4\textwidth]{shallowWaterFdAd}}
+\caption{Relative discrepancy between finite differences and AD derivatives for a 
+small shallow water model setup with 160 gradient elements and a uniform perturbation factor}\label{fig:shallowWaterFdAd}
+\end{figure}
 
 % -----------------------------------------------------------------------------------------
 \subsection{Collect and Prepare Source Files} 

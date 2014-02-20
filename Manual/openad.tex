@@ -2806,8 +2806,8 @@ specific to the examples.
 \item control the call graph reversal mode.
 \end{itemize}
 
-\subsection{FDC example}\label{sec:fdcExample}
-This example code was taken from the Minpack test problem ``flow in a driven cavity'' \cite{Averick1992TMT}.
+\subsection{Flow in a Driven Cavity}\label{sec:fdcExample}
+This example code was taken from the Minpack test problem ``flow in a driven cavity'' (FDC) \cite{Averick1992TMT}.
 The source code for the problem can be found under \lstinline{$OPENADROOT/Examples/FDC/} %$
 in file \lstinline{head.f} and a simple driver in \lstinline{driver.f90} and an executable named \lstinline{driver} can be 
 produced by running\\[1ex] 
@@ -2858,7 +2858,7 @@ the taping sweep and consequently we see only one call to \lstinline{head} initi
 and the template internally then selects and invokes the adjoint sweep variant of the code.    
 
 
-\subsection{Box model example}\label{sec:boxModelExample}
+\subsection{Box Model}\label{sec:boxModelExample}
 This code was provided by Patrick Heimbach\footnote{\url{http://heimbach.wordpress.com/}}. 
 It is used for the solution of a (generalized) eigenvalue
 problem arising in physical oceanography,
@@ -2924,7 +2924,7 @@ In the example module the length of the derivative component array is hard coded
 change that definition to adapt it to the application context. 
 
 % -----------------------------------------------------------------------------------------
-\section{Shallow Water Model (to be reworked)}\label{sec:shallow}
+\section{Shallow Water Model}\label{sec:shallow}
 In this section we will use a practical application to highlight 
 advanced aspects arising for more complicated applications. 
 The application at hand is 
@@ -2955,7 +2955,7 @@ The entire model consists of many subroutines distributed over various
 source files and the existing build sequence involves C preprocessing.
 To perform the static code analysis as explained in \refsec{sec:openanalysis}
 all code that takes part in computation of the model has to be visible 
-to the tool which means it has to be concatenated into a single file. 
+to the tool which could be done by concatenating into a single file. 
 It is possible to do this for all source files of the model but in many 
 cases this will include code for ancillary tasks such as diagnostics 
 and data processing not directly related to the model computation.
@@ -2966,10 +2966,10 @@ has to make conservative assumptions to ensure
 correctness, e.g. for alias analysis this means an overestimate of 
 the memory locations that can alias each other. One of the effects of these potential aliases
 are additional assignments in the generated code  which lead to 
-a less efficient adjoint. Including ancillary sources may cause more conservative 
-assumptions to be made and therefore lead to an unnecessary loss in efficiency.
+a less efficient adjoint. {\bf Including ancillary sources may cause more conservative 
+assumptions to be made and therefore lead to an unnecessary loss in efficiency.}
 \item While the numerical portions frequently have been tuned and made platform 
-neutral the ancillary portions often are platform dependent and may contain
+neutral, the ancillary portions often are platform dependent and may contain
 Fortran constructs that the language dependent components handle improperly or 
 not at all. While all tools in principle strive for complete language coverage 
 the limited development resources can often not be spared to cover 
@@ -2980,12 +2980,12 @@ As for all AD tools in existence today the above concerns also apply to
 \OpenADF\ and  users are kindly asked to keep them in mind when
 preparing the source code.
 
-\refsec{sec:toyExample} indicates the need for a modification 
-to the code that drives the model computation to at least 
-preform the seeding and extraction of the derivatives. 
+\refsecBS{sec:toyExample} explains the need for augmenting  
+the ``driver'' logic for the model computation such that 
+it carries out the seeding and extraction of the derivative values. 
 The easiest approach to organize the driver is to identify (or create) 
 a top level subroutine that computes the model with a single call. 
-This routine and all code it requires to compute the model 
+This routine (and all code it requires to compute the model)
 become the contents of the single file to be processed by the tool chain.
 The independent and dependent variables should be identified in the top level routine.  
 
@@ -3003,6 +3003,7 @@ which is invoked \lstinline{o} times\footnote{
 for simplicity disregarding remainders \lstinline{o=t/i}.
 }
 \begin{figure}
+\centerline{
 \begin{tabular}{cc}
 \begin{minipage}{5cm}
 \includegraphics[height=4.3cm]{checkpointLoops}
@@ -3013,6 +3014,7 @@ for simplicity disregarding remainders \lstinline{o=t/i}.
 \end{minipage}\\
 (a)& (b)
 \end{tabular}
+}
 \caption{Modification of the original code (a) to allow 2 checkpointing levels (b)}\label{fig:checkpointLoops}
 \end{figure}
 Now we can describe the reversal scheme with the call tree shown in \reffig{fig:checkpointct}.

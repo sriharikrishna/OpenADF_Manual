@@ -964,7 +964,7 @@ checkpointing (only  for adjoint models, see \lstinline{runTimeSupport/simple/Op
 
 \subsubsection{Trace (incompl.)}
 
-\subsubsection{Reversal with Revolve}
+\subsubsection{Reversal with Revolve}\label{sec:revolve}
 A implementation of the {\em Revolve} reversal scheme \cite{Griewank2000ARA} as a Fortran library 
 is provided in the \lstinline{$OPENADROOT/RevolveF9X} component that is part of the optional
 components (see 'extras' in \refsec{sec:openadUpdate}). The library interface is self explanatory 
@@ -2992,16 +2992,19 @@ The independent and dependent variables should be identified in the top level ro
 % -----------------------------------------------------------------------------------------
 \subsection{Orchestrate a Reversal and Checkpointing Scheme}
 Joint and split reversal, see \refsec{sec:cgReversal} are two special cases 
-of a large variety of reversal schemes. The model here involved a time stepping 
-scheme controlled by a main loop. \OpenADF\ supports automatic detection of the 
+of a large variety of reversal schemes. The model here involves a time stepping 
+scheme controlled by a main loop. To facilitate explanations about the \OpenADF\ mechanisms in this example we will disregard
+here the optimal Revolve scheme explained in \refsec{sec:revolve}.  
+\OpenADF\ supports automatic detection of the 
 data set to be checkpointed at a subroutine level. To use this feature the loop 
-body is encapsulated into a inner loop subroutine \lstinline{I}. To realize a nested checkpointing scheme
+body is encapsulated into a inner loop subroutine denoted here for brevity \lstinline{I}, see \lstinline{loop_body_wrapper_inner.F}. 
+To realize a nested checkpointing scheme
 we select a number \lstinline{i} for the inner checkpoints, 
 divide the original loop bound \lstinline{t} by \lstinline{i} and encapsulate the inner loop 
-into an outer loop subroutine \lstinline{O} schematically shown in \reffig{fig:checkpointLoops} 
+into an outer loop subroutine  \lstinline{O} (for brevity; see \lstinline{loop_body_wrapper_outer.F}) schematically shown in \reffig{fig:checkpointLoops} 
 which is invoked \lstinline{o} times\footnote{
 for simplicity disregarding remainders \lstinline{o=t/i}.
-}
+}.
 \begin{figure}
 \centerline{
 \begin{tabular}{cc}
@@ -3024,19 +3027,21 @@ Now we can describe the reversal scheme with the call tree shown in \reffig{fig:
 \end{center}
 \caption{Checkpointing scheme, the \lstinline{.*} indicating \lstinline{.+(o-1)i}} \label{fig:checkpointct}
 \end{figure}
-The state changes can be encapsulated in four templates, one joint mode template for \lstinline{top}
-and all its callees except \lstinline{O}, one for all callees of \lstinline{I} and one  each for 
-\lstinline{O} and \lstinline{I}.  
+The state changes can be encapsulated in four templates.
+\begin{description}
+\item{\lstinline{OADrts/ad_template.joint.f}}: joint mode template for \lstinline{top} and all its callees except \lstinline{O}
+\item{\lstinline{OADrts/ad_template.joint_split_oif.f}}: for \lstinline{O}
+\item{\lstinline{OADrts/ad_template.joint_split_iif.f}}: for \lstinline{I}                                               
+\item{\lstinline{OADrts/ad_template.split.f}}: for all callees of \lstinline{I}
+\end{description}  
 The collection of downloadable test problems contains the 
 model and the four subroutine templates.
-\reffig{fig:checkpointLoops}(b) shows the \lstinline{cost} subroutine called from 
+\reffigBS{fig:checkpointLoops}(b) shows the \lstinline{cost} subroutine called from 
 \lstinline{I} as well as from \lstinline{top}. 
 However, according to \reffig{fig:checkpointLoops} we would need two versions of 
 \lstinline{cost}, one that as callee of \lstinline{top} is reversed in joint mode and 
 one as callee of \lstinline{I} is reversed in split mode. In order to maintain 
-the static reversal approach\footnote{
-A dynamic reversal scheme is forthcoming.
-}
+the static reversal approach
 one needs to duplicate \lstinline{cost}.
 
 % -----------------------------------------------------------------------------------------

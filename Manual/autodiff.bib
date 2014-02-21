@@ -5014,14 +5014,59 @@
 	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
 	isbn = "978-3-540-68935-5",
 	issn = "1439-7358",
-	year = "2012"
+	year = "2012",
+	ad_theotech = "General"
+}
+
+@INCOLLECTION{
+	   Reynolds2012SJC,
+	title = "Sparse {J}acobian Construction for Mapped Grid Visco-Resistive Magnetohydrodynamics",
+	doi = "10.1007/978-3-642-30023-3_2",
+	author = "Daniel R. Reynolds and Ravi Samtaney",
+	abstract = "We apply the automatic differentiation tool OpenAD toward constructing a
+	   preconditioner for fully implicit simulations of mapped grid visco-resistive magnetohydrodynamics
+	   (MHD), used in modeling tokamak fusion devices. Our simulation framework employs a fully implicit
+	   formulation in time, and a mapped finite volume spatial discretization. We solve this model using
+	   inexact Newton-Krylov methods. Of critical importance in these iterative solvers is the development
+	   of an effective preconditioner, which typically requires knowledge of the Jacobian of the nonlinear
+	   residual function. However, due to significant nonlinearity within our PDE system, our mapped
+	   spatial discretization, and stencil adaptivity at physical boundaries, analytical derivation of
+	   these Jacobian entries is highly nontrivial. This paper therefore focuses on Jacobian construction
+	   using automatic differentiation. In particular, we discuss applying OpenAD to the case of a
+	   spatially-adaptive stencil patch that automatically handles differences between the domain interior
+	   and boundary, and configuring AD for reduced stencil approximations to the Jacobian. We investigate
+	   both scalar and vector tangent mode differentiation, along with simple finite difference approaches,
+	   to compare the resulting accuracy and efficiency of Jacobian construction in this application.",
+	pages = "11--21",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_tools = "OpenAD",
+	ad_theotech = "Sparsity"
 }
 
 @INCOLLECTION{
 	   Reed2012CAD,
 	title = "Combining Automatic Differentiation Methods for High-Dimensional Nonlinear Models",
 	doi = "10.1007/978-3-642-30023-3_3",
-	author = "Reed, James A. and Utke, Jean and Abdel-Khalik, Hany S.",
+	author = "James A. Reed and Jean Utke and Hany S. Abdel-Khalik",
+	abstract = "Earlier work has shown that the efficient subspace method can be employed to
+	   reduce the effective size of the input data stream for high-dimensional models when the effective
+	   rank of the first-order sensitivity matrix is orders of magnitude smaller than the size of the input
+	   data. Here, the method is extended to handle nonlinear models, where the evaluation of higher-order
+	   derivatives is important but also challenging because the number of derivatives increases
+	   exponentially with the size of the input data streams. A recently developed hybrid approach is
+	   employed to combine reverse-mode automatic differentiation to calculate first-order derivatives and
+	   perform the required reduction in the input data stream, followed by forward-mode automatic
+	   differentiation to calculate higher-order derivatives with respect only to the reduced input
+	   variables. Three test cases illustrate the viability of the approach.",
 	pages = "23--33",
 	crossref = "Forth2012RAi",
 	booktitle = "Recent Advances in Algorithmic Differentiation",
@@ -5030,7 +5075,7 @@
 	address = "Berlin",
 	volume = "87",
 	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
-	isbn = "978-3-642-30022-6",
+	isbn = "978-3-540-68935-5",
 	issn = "1439-7358",
 	year = "2012",
 	ad_area = "Uncertainty Analysis",
@@ -5039,12 +5084,22 @@
 }
 
 @INCOLLECTION{
-	   Mametjanov2012CAD,
-	title = "Combining Automatic Differentiation Methods for High-Dimensional Nonlinear Models",
-	doi = "10.1007/978-3-642-30023-3_5",
-	author = "Mametjanov, Azamat and Norris, Boyana and Zeng, Xiaoyan and Drewniak, Beth and Utke,
-	   Jean and Anitescu, Mihai and Hovland, Paul",
-	pages = "47--57",
+	   Ozkaya2012AoA,
+	title = "Application of Automatic Differentiation to an Incompressible {URANS} Solver",
+	doi = "10.1007/978-3-642-30023-3_4",
+	author = "Emre {\"O}zkaya and Anil Nemili and Nicolas R. Gauger",
+	abstract = "This paper deals with the task of generating a discrete adjoint solver from a
+	   given primal Unsteady Reynolds Averaged Navier-Stokes (URANS) solver for incompressible flows. This
+	   adjoint solver is to be employed in active flow control problems to enhance the performance of
+	   aerodynamic configurations. We discuss on how the development of such a code can be eased through
+	   the use of the reverse mode of Automatic/Algorithmic Differentiation (AD). If AD is applied in a
+	   black-box fashion then the resulting adjoint URANS solver will have prohibitively expensive memory
+	   requirements. We present several strategies to circumvent the excessive memory demands. We also
+	   address the parallelization of the adjoint code and the adjoint counterparts of the MPI directives
+	   that are used in the primal solver. The adjoint code is validated by applying it to the standard
+	   test case of a rotating cylinder by active flow control. The sensitivities based on the adjoint code
+	   are compared with the values obtained from finite differences and forward mode AD code.",
+	pages = "35--45",
 	crossref = "Forth2012RAi",
 	booktitle = "Recent Advances in Algorithmic Differentiation",
 	series = "Lecture Notes in Computational Science and Engineering",
@@ -5052,18 +5107,26 @@
 	address = "Berlin",
 	volume = "87",
 	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
-	isbn = "978-3-642-30022-6",
+	isbn = "978-3-540-68935-5",
 	issn = "1439-7358",
 	year = "2012",
-	ad_tools = "OpenAD"
+	ad_theotech = "Adjoint, Parallelism"
 }
 
 @INCOLLECTION{
 	   Mametjanov2012AAD,
 	title = "Applying Automatic Differentiation to the Community Land Model",
 	doi = "10.1007/978-3-642-30023-3_5",
-	author = "Mametjanov, Azamat and Norris, Boyana and Zeng, Xiaoyan and Drewniak, Beth and Utke,
-	   Jean and Anitescu, Mihai and Hovland, Paul",
+	author = "Azamat Mametjanov and Boyana Norris and Xiaoyan Zeng and Beth Drewniak and Jean Utke
+	   and Mihai Anitescu and Paul Hovland",
+	abstract = "Earth system models rely on past observations and knowledge to simulate future
+	   climate states. Because of the inherent complexity, a substantial uncertainty exists in model-based
+	   predictions. Evaluation and improvement of model codes are one of the priorities of climate science
+	   research. Automatic Differentiation enables analysis of sensitivities of predicted outcomes to input
+	   parameters by calculating derivatives of modeled functions. The resulting sensitivity knowledge can
+	   lead to improved parameter calibration. We present our experiences in applying OpenAD to the
+	   Fortran-based crop model code in the Community Land Model (CLM). We identify several issues that
+	   need to be addressed in future developments of tangent-linear and adjoint versions of the CLM.",
 	pages = "47--57",
 	crossref = "Forth2012RAi",
 	booktitle = "Recent Advances in Algorithmic Differentiation",
@@ -5072,17 +5135,355 @@
 	address = "Berlin",
 	volume = "87",
 	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
-	isbn = "978-3-642-30022-6",
+	isbn = "978-3-540-68935-5",
 	issn = "1439-7358",
 	year = "2012",
 	ad_tools = "OpenAD"
 }
 
 @INCOLLECTION{
+	   Lauvernet2012UAD,
+	title = "Using Automatic Differentiation to Study the Sensitivity of a Crop Model",
+	doi = "10.1007/978-3-642-30023-3_6",
+	author = "Claire Lauvernet and Laurent Hasco{\"e}t and Fran\c{c}ois-Xavier Le
+	   Dimet and Fr{\'e}d{\'e}ric Baret",
+	abstract = "Automatic Differentiation (AD) is often applied to codes that solve partial
+	   differential equations, e.g. in geophysical sciences or Computational Fluid Dynamics. In agronomy,
+	   the differentiation of crop models has never been performed since these models are more empirical
+	   than fully mecanistic, derived from equations. This study shows the feasibility of constructing the
+	   adjoint model of a crop model referent in the agronomic community (STICS) with the TAPENADE tool,
+	   and the use of this accurate adjoint to perform some sensitivity analysis. This paper reports on the
+	   experience from AD users of the environmental domain, in which AD usage is not very widespread.",
+	pages = "59--69",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_tools = "TAPENADE"
+}
+
+@INCOLLECTION{
+	   Olsen2012EAD,
+	title = "Efficient Automatic Differentiation of Matrix Functions",
+	doi = "10.1007/978-3-642-30023-3_7",
+	author = "Peder A. Olsen and Steven J. Rennie and Vaibhava Goel",
+	abstract = "",
+	pages = "71--81",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Hierarchical Approach"
+}
+
+@INCOLLECTION{
+	   Pascual2012NHo,
+	title = "Native Handling of Message-Passing Communication in Data-Flow Analysis",
+	doi = "10.1007/978-3-642-30023-3_8",
+	author = "",
+	abstract = "Automatic Differentiation by program transformation uses static data-flow analysis
+	   to produce efficient code. This data-flow analysis must be adapted for parallel programs with
+	   Message-Passing communication. Starting from a context-sensitive and flow-sensitive data-flow
+	   analysis scheme initially devised for sequential codes, we extend this scheme for parallel codes.
+	   This extension is independent of the particular analysis and does not require a modification of the
+	   code&#8217;s internal representation, i.e. the flow graph. This extension relies on an accurate
+	   matching of communication points, which can&#8217;t be found automatically in general, and thus
+	   new user directives prove useful.",
+	pages = "83--92",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Parallelism"
+}
+
+@INCOLLECTION{
+	   Giering2012IML,
+	title = "Increasing Memory Locality by Executing Several Model Instances Simultaneously",
+	doi = "10.1007/978-3-642-30023-3_9",
+	author = "Ralf Giering and Michael Vo{\ss}beck",
+	abstract = "We present a new source-to-source transformation which generates code to compute
+	   several model instances simultaneously. Due to the increased memory locality of memory accesses this
+	   speeds up the computation on processors using a cache hierarchy to overcome the relative slow memory
+	   access. The speedup depends on the model code, the processor, the compiler, and on the number of
+	   instances.",
+	pages = "93--101",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Code Optimization"
+}
+
+@INCOLLECTION{
+	   Beckers2012AMC,
+	title = "Adjoint Mode Computation of Subgradients for {M}c{C}ormick Relaxations",
+	doi = "10.1007/978-3-642-30023-3_10",
+	author = "Markus Beckers and Viktor Mosenkis and Uwe Naumann",
+	abstract = "In Mitsos et al. (SIAM Journal on Optimization 20(2):573&#8211;601, 2009), a
+	   method similar to Algorithmic Differentiation (AD) is presented which allows the propagation of, in
+	   general nondifferentiable, McCormick relaxations (McCormick, Mathematical Programming
+	   10(2):147&#8211;175, 1976; Steihaug, Twelfth Euro AD Workshop, Berlin, 2011) of factorable
+	   functions and of the corresponding subgradients in tangent-linear mode. Subgradients are natural
+	   extensions of &#8220;usual&#8221; derivatives which allow the application of
+	   derivative-based methods to possibly nondifferentiable convex and concave functions. The software
+	   package libMC (Mitsos et al. SIAM Journal on Optimization 20(2):573&#8211;601, 2009) performs
+	   the automatic propagation of the relaxation and of corresponding subgradients based on the
+	   principles of tangent-linear mode AD by overloading. Similar ideas have been ported to Fortran
+	   yielding modMC as part of our ongoing collaboration with the authors of Mitsos et al. (SIAM Journal
+	   on Optimization 20(2):573&#8211;601, 2009). In this article an adjoint method for the
+	   computation of subgradients for McCormick relaxations is presented. A corresponding implementation
+	   by overloading in Fortran is provided in the form of amodMC. The calculated subgradients are used in
+	   a deterministic global optimization algorithm based on a branch-and-bound method. The superiority of
+	   adjoint over tangent-linear mode is illustrated by two examples.",
+	pages = "103--113",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012"
+}
+
+@INCOLLECTION{
+	   Khan2012EaE,
+	title = "Evaluating an Element of the {C}larke Generalized {J}acobian of a Piecewise
+	   Differentiable Function",
+	doi = "10.1007/978-3-642-30023-3_11",
+	author = "Kamil A. Khan and Paul I. Barton",
+	abstract = "The (Clarke) generalized Jacobian of a locally Lipschitz continuous function is a
+	   derivative-like set-valued mapping that contains slope information. Several methods for optimization
+	   and equation solving require evaluation of generalized Jacobian elements. However, since the
+	   generalized Jacobian does not satisfy calculus rules sharply, this evaluation can be difficult. In
+	   this work, a method is presented for evaluating generalized Jacobian elements of a nonsmooth
+	   function that is expressed as a finite composition of absolute value functions and continuously
+	   differentiable functions. The method makes use of the principles of automatic differentiation and
+	   the theory of piecewise differentiable functions, and is guaranteed to be computationally tractable
+	   relative to the cost of a function evaluation.",
+	pages = "115--125",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012"
+}
+
+@INCOLLECTION{
+	   Willkomm2012TIo,
+	title = "The Impact of Dynamic Data Reshaping on Adjoint Code Generation for Weakly-Typed
+	   Languages Such as {M}atlab",
+	doi = "10.1007/978-3-642-30023-3_12",
+	author = "Johannes Willkomm and Christian H. Bischof and H. Martin B{\"u}cker",
+	abstract = "Productivity-oriented programming languages typically emphasize convenience over
+	   syntactic rigor. A well-known example is Matlab, which employs a weak type system to allow the user
+	   to assign arbitrary types and shapes to a variable, and it provides various shortcuts in programming
+	   that result in implicit data reshapings. Examples are scalar expansion, where a scalar is implicitly
+	   expanded to a matrix of the appropriate size filled with copies of the scalar value, the use of row
+	   vectors in place of column vectors and vice versa, and the automatic expansion of arrays when
+	   indices outside of the previously allocated range are referenced. These features need to be
+	   addressed at runtime when generating adjoint code, as Matlab does not provide required information
+	   about types, shapes and conversions at compile time. This fact, and the greater scope of reshaping
+	   possible, is a main distinguishing feature of Matlab compared to traditional programming languages,
+	   some of which, e.g. Fortran 90, also support vector expressions. In this paper, in the context of
+	   the AdiMAT source transformation tool for Matlab, we develop techniques generally applicable for
+	   adjoint code generation in the face of dynamic data reshapings occurring both on the left- and
+	   right-hand side of assignments. Experiments show that in this fashion correct adjoint code can be
+	   generated also for very dynamic language scenarios at moderate additional cost.",
+	pages = "127--138",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_tools = "ADiMat"
+}
+
+@INCOLLECTION{
+	   Walther2012OtE,
+	title = "On the Efficient Computation of Sparsity Patterns for {H}essians",
+	doi = "10.1007/978-3-642-30023-3_13",
+	author = "Andrea Walther",
+	abstract = "The exploitation of sparsity forms an important ingredient for the efficient
+	   solution of large-scale problems. For this purpose, this paper discusses two algorithms to detect
+	   the sparsity pattern of Hessians: An approach for the computation of exact sparsity patterns and a
+	   second one for the overestimation of sparsity patterns. For both algorithms, corresponding
+	   complexity results are stated. Subsequently, new data structures and set operations are presented
+	   yielding a new complexity result together with an alternative implementation of the exact approach.
+	   For several test problems, the obtained runtimes confirm the new theoretical result, i.e., a
+	   significant reduction in the runtime needed by the exact approach. A comparison with the runtime
+	   required for the overestimation of the sparsity pattern is included together with a corresponding
+	   discussion. Finally, possible directions for future research are stated.",
+	pages = "139--149",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Hessian, Sparsity"
+}
+
+@INCOLLECTION{
+	   Letschert2012ESi,
+	title = "Exploiting Sparsity in Automatic Differentiation on Multicore Architectures",
+	doi = "10.1007/978-3-642-30023-3_14",
+	author = "Benjamin Letschert and Kshitij Kulshreshtha and Andrea Walther and Duc Nguyen and
+	   Assefaw Gebremedhin and Alex Pothen",
+	abstract = "We discuss the design, implementation and performance of algorithms suitable for
+	   the efficient computation of sparse Jacobian and Hessian matrices using Automatic Differentiation
+	   via operator overloading on multicore architectures. The procedure for exploiting sparsity (for
+	   runtime and memory efficiency) in serial computation involves a number of steps. Using nonlinear
+	   optimization problems as test cases, we show that the algorithms involved in the various steps can
+	   be adapted to multithreaded computations.",
+	pages = "151--161",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Parallelism, Sparsity"
+}
+
+@INCOLLECTION{
+	   Fike2012ADT,
+	title = "Automatic Differentiation Through the Use of Hyper-Dual Numbers for Second
+	   Derivatives",
+	doi = "10.1007/978-3-642-30023-3_15",
+	author = "Jeffrey A. Fike and Juan J. Alonso",
+	abstract = "Automatic Differentiation techniques are typically derived based on the chain rule
+	   of differentiation. Other methods can be derived based on the inherent mathematical properties of
+	   generalized complex numbers that enable first-derivative information to be carried in the non-real
+	   part of the number. These methods are capable of producing effectively exact derivative values.
+	   However, when second-derivative information is desired, generalized complex numbers are not
+	   sufficient. Higher-dimensional extensions of generalized complex numbers, with multiple non-real
+	   parts, can produce accurate second-derivative information provided that multiplication is
+	   commutative. One particular number system is developed, termed hyper-dual numbers, which produces
+	   exact first- and second-derivative information. The accuracy of these calculations is demonstrated
+	   on an unstructured, parallel, unsteady Reynolds-Averaged Navier-Stokes solver.",
+	pages = "163--173",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Hessian"
+}
+
+@INCOLLECTION{
+	   Carothers2012CBP,
+	title = "Connections Between Power Series Methods and Automatic Differentiation",
+	doi = "10.1007/978-3-642-30023-3_16",
+	author = "David C. Carothers and Stephen K. Lucas and G. Edgar Parker and Joseph D. Rudmin and
+	   James S. Sochacki and Roger J. Thelwell and Anthony Tongen and Paul G. Warne",
+	abstract = "There is a large overlap in the work of the Automatic Differentiation community
+	   and those whose use Power Series Methods. Automatic Differentiation is predominately applied to
+	   problems involving differentiation, and Power series began as a tool in the ODE setting. Three
+	   examples are presented to highlight this overlap, and several interesting results are presented.",
+	pages = "175--185",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "General"
+}
+
+@INCOLLECTION{
+	   Lotz2012HAD,
+	title = "Hierarchical Algorithmic Differentiation A Case Study",
+	doi = "10.1007/978-3-642-30023-3_17",
+	author = "Johannes Lotz and Uwe Naumann and J{\"o}rn Ungermann",
+	abstract = "This case study in Algorithmic Differentiation (AD) discusses the semi-automatic
+	   generation of an adjoint simulation code in the context of an inverse atmospheric remote sensing
+	   problem. In-depth structural and performance analyses allow for the run time factor between the
+	   adjoint generated by overloading in C++ and the original forward simulation to be reduced to 3. 5.
+	   The dense Jacobian matrix of the underlying problem is computed at the same cost. This is achieved
+	   by a hierarchical AD using adjoint mode locally for preaccumulation and by exploiting interface
+	   contraction. For the given application this approach yields a speed-up over black-box tangent-linear
+	   and adjoint mode of more than 170. Furthermore, the memory consumption is reduced by a factor of
+	   1,000 compared to applying black-box adjoint mode.",
+	pages = "187--196",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Hierarchical Approach"
+}
+
+@INCOLLECTION{
 	   Cole-Mullen2012SVR,
 	title = "Storing Versus Recomputation on Multiple {DAG}s",
 	doi = "10.1007/978-3-642-30023-3_18",
-	author = "Cole-Mullen, Heather and Lyons, Andrew and Utke, Jean",
+	author = "Heather Cole-Mullen and Andrew Lyons and Jean Utke",
+	abstract = "Recomputation and storing are typically seen as tradeoffs for checkpointing
+	   schemes in the context of adjoint computations. At finer granularity during the adjoint sweep, in
+	   practice, only the store-all or recompute-all approaches are fully automated. This paper considers a
+	   heuristic approach for exploiting finer granularity recomputations to reduce the storage
+	   requirements and thereby improve the overall adjoint efficiency without the need for manual
+	   intervention.",
 	pages = "197--207",
 	crossref = "Forth2012RAi",
 	booktitle = "Recent Advances in Algorithmic Differentiation",
@@ -5091,17 +5492,48 @@
 	address = "Berlin",
 	volume = "87",
 	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
-	isbn = "978-3-642-30022-6",
+	isbn = "978-3-540-68935-5",
 	issn = "1439-7358",
 	year = "2012",
 	ad_tools = "OpenAD"
 }
 
 @INCOLLECTION{
+	   Coleman2012UDE,
+	title = "Using Directed Edge Separators to Increase Efficiency in the Determination of
+	   {J}acobian Matrices via Automatic Differentiation",
+	doi = "10.1007/978-3-642-30023-3_19",
+	author = "Thomas F. Coleman and Xin Xiong and Wei Xu",
+	abstract = "",
+	pages = "209--219",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012"
+}
+
+@INCOLLECTION{
 	   Chen2012AIP,
 	title = "An Integer Programming Approach to Optimal Derivative Accumulation",
 	doi = "10.1007/978-3-642-30023-3_20",
-	author = "Chen, Jieqiu and Hovland, Paul and Munson, Todd and Utke, Jean",
+	author = "Jieqiu Chen and Paul Hovland and Todd Munson and Jean Utke",
+	abstract = "In automatic differentiation, vertex elimination is one of the many methods for
+	   Jacobian accumulation and in general it can be much more efficient than the forward mode or reverse
+	   mode (Forth et al. ACM Trans Math Softw 30(3):266&#8211;299, 2004; Griewank and Walther,
+	   Evaluating derivatives: principles and techniques of algorithmic differentiation, SIAM,
+	   Philadelphia, 2008). However, finding the optimal vertex elimination sequence of a computational
+	   graph is a hard combinatorial optimization problem. In this paper, we propose to tackle this problem
+	   with an integer programming (IP) technique, and we develop an IP formulation for it. This enables us
+	   to use a standard integer optimization solver to find an optimal vertex elimination strategy. In
+	   addition, we have developed several bound-tightening and symmetry-breaking constraints to strengthen
+	   the basic IP formulation. We demonstrate the effectiveness of these enhancements through
+	   computational experiments.",
 	pages = "221--231",
 	crossref = "Forth2012RAi",
 	booktitle = "Recent Advances in Algorithmic Differentiation",
@@ -5110,10 +5542,336 @@
 	address = "Berlin",
 	volume = "87",
 	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
-	isbn = "978-3-642-30022-6",
+	isbn = "978-3-540-68935-5",
 	issn = "1439-7358",
 	year = "2012",
-	ad_tools = "OpenAD"
+	ad_theotech = "Computational Graph"
+}
+
+@INCOLLECTION{
+	   Bosse2012TRC,
+	title = "The Relative Cost of Function and Derivative Evaluations in the {CUTE}r Test Set",
+	doi = "10.1007/978-3-642-30023-3_21",
+	author = "Torsten Bosse and Andreas Griewank",
+	abstract = "The CUTEr test set represents a testing environment for nonlinear optimization
+	   solvers containing more than 1,000 academic and applied nonlinear problems. It is often used to
+	   verify the robustness and performance of nonlinear optimization solvers. In this paper we perform a
+	   quantitative analysis of the CUTEr test set. As a result we see that some paradigms of nonlinear
+	   optimization and Automatic Differentiation can be verified whereas others need to be questioned.
+	   Furthermore, we will show that the CUTEr test set is probably biased, i.e., solvers that use exact
+	   derivatives and sparse linear algebra are likely to perform advantageously compared to solvers
+	   employing directional derivatives and low-rank updating.",
+	pages = "233--240",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012"
+}
+
+@INCOLLECTION{
+	   Pham-Quang2012JAD,
+	title = "Java Automatic Differentiation Tool Using Virtual Operator Overloading",
+	doi = "10.1007/978-3-642-30023-3_22",
+	author = "Phuong Pham-Quang and Benoit Delinchant",
+	abstract = "AD tools are available and mature for several languages such as C or Fortran, but
+	   are just emerging in object oriented language such as Java. In this paper, a Java automatic
+	   differentiation tool called JAP is presented which has been defined and developed with specific
+	   requirements for the design of engineering systems using optimization. This paper presents JAP
+	   requirements and the implementation architecture. It also compares JAP performance to ADOL-C in
+	   forward mode on a magnetic MEMS model. JAP has been successfully used on several system
+	   optimizations in the field of electromagnetic MEMS.",
+	pages = "241--250",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012"
+}
+
+@INCOLLECTION{
+	   Younes2012HOU,
+	title = "High-Order Uncertainty Propagation Enabled by Computational Differentiation",
+	doi = "10.1007/978-3-642-30023-3_23",
+	author = "Ahmad Bani Younes and James Turner and Manoranjan Majji and John Junkins",
+	abstract = "Modeling and simulation for complex applications in science and engineering
+	   develop behavior predictions based on mechanical loads. Imprecise knowledge of the model parameters
+	   or external force laws alters the system response from the assumed nominal model data. As a result,
+	   one seeks algorithms for generating insights into the range of variability that can be the expected
+	   due to model uncertainty. Two issues complicate approaches for handling model uncertainty. First,
+	   most systems are fundamentally nonlinear, which means that closed-form solutions are not available
+	   for predicting the response or designing control and/or estimation strategies. Second, series
+	   approximations are usually required, which demands that partial derivative models are available.
+	   Both of these issues have been significant barriers to previous researchers, who have been forced to
+	   invoke computationally intensive Monte-Carlo methods to gain insight into a system&#8217;s
+	   nonlinear behavior through a massive sampling process. These barriers are overcome by introducing
+	   three strategies: (1) Computational differentiation that automatically builds exact partial
+	   derivative models; (2) Map initial uncertainty models into instantaneous uncertainty models by
+	   building a series-based state transition tensor model; and (3) Compute an approximate probability
+	   distribution function by solving the Liouville equation using the state transition tensor model. The
+	   resulting nonlinear probability distribution function (PDF) represents a Liouville approximation for
+	   the stochastic Fokker-Planck equation. Several applications are presented that demonstrate the
+	   effectiveness of the proposed mathematical developments. The general modeling methodology is
+	   expected to be broadly useful for science and engineering applications in general, as well as grand
+	   challenge problems that exist at the frontiers of computational science and mathematics.",
+	pages = "251--260",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Higher Order, Uncertainties"
+}
+
+@INCOLLECTION{
+	   Nehmeier2012GPf,
+	title = "Generative Programming for Automatic Differentiation",
+	doi = "10.1007/978-3-642-30023-3_24",
+	author = "Marco Nehmeier",
+	abstract = "In this paper we present a concept for a C ++ implementation of forward automatic
+	   differentiation of an arbitrary order using expression templates and template metaprogramming. In
+	   contrast to other expression template implementations, the expression tree in our implementation has
+	   only symbolic characteristics. The run-time code is then generated from the tree structure using
+	   template metaprogramming functions to apply the rules of symbolic differentiation onto the single
+	   operations at compile-time. This generic approach has the advantage that the template
+	   metaprogramming functions are replaceable which offers the opportunity to easily generate different
+	   specialized algorithms. We tested the functionality, correctness and performance of a prototype in
+	   different case studies for floating point as well as interval data types and compared it against
+	   other implementations.",
+	pages = "261--271",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Code Optimization"
+}
+
+@INCOLLECTION{
+	   Radul2012AiF,
+	title = "AD \emph{in} {F}ortran: {I}mplementation via {P}repreprocessor",
+	doi = "10.1007/978-3-642-30023-3_25",
+	author = "Alexey Radul and Barak A. Pearlmutter and Jeffrey Mark Siskind",
+	abstract = "We describe an implementation of the Farfel Fortran77 AD extensions (Radul et al.
+	   AD in Fortran, Part 1: Design (2012), http://arxiv.org/abs/1203.1448). These extensions integrate
+	   forward and reverse AD directly into the programming model, with attendant benefits to flexibility,
+	   modularity, and ease of use. The implementation we describe is a
+	   &#8220;prepreprocessor&#8221; that generates input to existing Fortran-based AD tools. In
+	   essence, blocks of code which are targeted for AD by Farfel constructs are put into subprograms
+	   which capture their lexical variable context, and these are closure-converted into top-level
+	   subprograms and specialized to eliminate arguments, rendering them amenable to existing AD
+	   preprocessors, which are then invoked, possibly repeatedly if the AD is nested.",
+	pages = "273--284",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012"
+}
+
+@INCOLLECTION{
+	   Gupta2012AAE,
+	title = "An {AD}-Enabled Optimization ToolBox in {LabVIEW}\texttrademark",
+	doi = "10.1007/978-3-642-30023-3_26",
+	author = "Abhishek Kr. Gupta and Shaun A. Forth",
+	abstract = "LabVIEWTM is a visual programming environment for data acquisition, instrument
+	   control and industrial automation. This article presents LVAD, a graphically programmed
+	   implementation of forward mode Automatic Differentiation for LabVIEW. Our results show that the
+	   overhead of using overloaded AD in LabVIEW is sufficiently low as to warrant further investigation
+	   and that, within the graphical programming environment, AD may be made reasonably user friendly. We
+	   further introduce a prototype LabVIEW Optimization Toolbox which utilizes LVAD&#8217;s
+	   derivative information. Our toolbox presently contains two main LabVIEW procedures fzero and fmin
+	   for calculating roots and minima respectively of an objective function in a single variable. Two
+	   algorithms, Newton and Secant, have been implemented in each case. Our optimization package may be
+	   applied to graphically coded objective functions, not the simple string definition of functions used
+	   by many of the optimizers of LabVIEW&#8217;s own optimization package.",
+	pages = "285--295",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012"
+}
+
+@INCOLLECTION{
+	   Andersson2012CAS,
+	title = "{CasADI}: {A} Symbolic Package for Automatic Differentiation and Optimal Control",
+	doi = "10.1007/978-3-642-30023-3_27",
+	author = "Joel Andersson and Johan {\AA}kesson and Moritz Diehl",
+	abstract = "We present CasADi, a free, open-source software tool for fast, yet efficient
+	   solution of nonlinear optimization problems in general and dynamic optimization problems in
+	   particular. To the developer of algorithms for numerical optimization and to the advanced user of
+	   such algorithms, it offers a level of abstraction which is notably lower, and hence more flexible,
+	   than that of algebraic modeling languages such as AMPL or GAMS, but higher than working with a
+	   conventional automatic differentiation (AD) tool.CasADi is best described as a minimalistic computer
+	   algebra system (CAS) implementing automatic differentiation in eight different flavors. Similar to
+	   algebraic modeling languages, it includes high-level interfaces to state-of-the-art numerical codes
+	   for nonlinear programming, quadratic programming and integration of differential-algebraic
+	   equations. CasADi is implemented in self-contained C++ code and contains full-featured front-ends to
+	   Python and Octave for rapid prototyping. In this paper, we present the AD framework of CasADi and
+	   benchmark the tool against AMPL for a set of nonlinear programming problems from the CUTEr test
+	   suite.",
+	pages = "297--307",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_tools = "CasADI"
+}
+
+@INCOLLECTION{
+	   Phipps2012EET,
+	title = "Efficient Expression Templates for Operator Overloading-Based Automatic
+	   Differentiation",
+	doi = "10.1007/978-3-642-30023-3_28",
+	author = "Eric Phipps and Roger Pawlowski",
+	abstract = "Expression templates are a well-known set of techniques for improving the
+	   efficiency of operator overloading-based forward mode automatic differentiation schemes in the C ++
+	   programming language by translating the differentiation from individual operators to whole
+	   expressions. However standard expression template approaches result in a large amount of duplicate
+	   computation, particularly for large expression trees, degrading their performance. In this paper we
+	   describe several techniques for improving the efficiency of expression templates and their
+	   implementation in the automatic differentiation package Sacado (Phipps et al., Advances in automatic
+	   differentiation, Lecture notes in computational science and engineering, Springer, Berlin, 2008;
+	   Phipps and Gay, Sacado automatic differentiation package.
+	   http://trilinos.sandia.gov/packages/sacado/, 2011). We demonstrate their improved efficiency through
+	   test functions as well as their application to differentiation of a large-scale fluid dynamics
+	   simulation code.",
+	pages = "309--319",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_tools = "Sacado",
+	ad_theotech = "Code Optimization"
+}
+
+@INCOLLECTION{
+	   Kulshreshtha2012CDi,
+	title = "Computing Derivatives in a Meshless Simulation Using Permutations in {ADOL-C}",
+	doi = "10.1007/978-3-642-30023-3_29",
+	author = "Kshitij Kulshreshtha and Jan Marburger",
+	abstract = "In order to compute derivatives in a meshless simulation one needs to take into
+	   account the ever changing neighborhood relationships in a point-cloud that describes the domain.
+	   This may be implemented using permutations of the independent and dependent variables during the
+	   assembly of the discretized system. Such branchings are difficult to handle for operator overloading
+	   AD tools using traces. In this paper, we propose a new approach that allows the derivative
+	   computations for an even larger class of specific branches without retracing.",
+	pages = "321--331",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_tools = "ADOL-C"
+}
+
+@INCOLLECTION{
+	   Younis2012LKW,
+	title = "Lazy K-Way Linear Combination Kernels for Efficient Runtime Sparse {J}acobian Matrix
+	   Evaluations in {C}++",
+	doi = "10.1007/978-3-642-30023-3_30",
+	author = "Rami M. Younis and Hamdi A. Tchelepi",
+	abstract = "The most notoriously expensive component to develop, extend, and maintain within
+	   implicit PDAE-based predictive simulation software is the Jacobian evaluation component. While the
+	   Jacobian is invariably sparse, its structure and dimensionality are functions of the point of
+	   evaluation. The application of Automatic Differentiation to develop these tools is highly desirable.
+	   The challenge presented is in providing implementations that treat dynamic sparsity efficiently
+	   without requiring the developer to have any a priori knowledge of sparsity structure. Under the
+	   context of dynamic sparse Operator Overloading implementations, we develop a direct sparse lazy
+	   evaluation approach. In this approach, an efficient runtime variant of the classic Expression
+	   Templates technique is proposed to support sparsity. The second aspect is the development of two
+	   alternate multi-way Sparse Vector Linear Combination kernels that yield efficient runtime sparsity
+	   detection and evaluation.",
+	pages = "333--342",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "Sparsity"
+}
+
+@INCOLLECTION{
+	   Narayanan2012IoP,
+	title = "Implementation of Partial Separability in a Source-to-Source Transformation {AD}
+	   Tool",
+	doi = "10.1007/978-3-642-30023-3_31",
+	author = "Sri Hari Krishna Narayanan and Boyana Norris and Paul Hovland and Assefaw
+	   Gebremedhin",
+	abstract = "A significant number of large optimization problems exhibit structure known as
+	   partial separability, for example, least squares problems, where elemental functions are gathered
+	   into groups that are then squared. The sparsity of the Jacobian of a partially separable function
+	   can be exploited by computing the smaller Jacobians of the elemental functions and then assembling
+	   them into the full Jacobian. We implemented partial separability support in ADIC2 by using pragmas
+	   to identify partially separable function values, applying source transformations to subdivide the
+	   elemental gradient computations, and using the ColPack coloring toolkit to compress the sparse
+	   elemental Jacobians. We present experimental results for an elastic-plastic torsion optimization
+	   problem from the MINPACK-2 test suite.",
+	pages = "343--353",
+	crossref = "Forth2012RAi",
+	booktitle = "Recent Advances in Algorithmic Differentiation",
+	series = "Lecture Notes in Computational Science and Engineering",
+	publisher = "Springer",
+	address = "Berlin",
+	volume = "87",
+	editor = "Shaun Forth and Paul Hovland and Eric Phipps and Jean Utke and Andrea Walther",
+	isbn = "978-3-540-68935-5",
+	issn = "1439-7358",
+	year = "2012",
+	ad_theotech = "partial separability"
 }
 
 @INPROCEEDINGS{
@@ -5684,7 +6442,8 @@
 	key = "Bischof1998AUG",
 	referred = "[Charpentier2001SOE], [Forth2001AOv], [Giles2001OtI], [Klein2001DMf],
 	   [More2001ADT], [Souli2001a], [Tadjouddine2001ATa].",
-	year = "1998"
+	year = "1998",
+	ad_tools = "ADIFOR"
 }
 
 @MISC{
@@ -19418,7 +20177,8 @@
 	address = "Urbana, IL",
 	month = "May",
 	year = "1997",
-	ad_key = "phd"
+	ad_key = "phd",
+	ad_theotech = "Parallelism"
 }
 
 @PHDTHESIS{
@@ -23132,5 +23892,17 @@
 	   Tennessee, USA, April 15-20",
 	url = "http://www.osti.gov/scitech/servlets/purl/22105784",
 	ad_tools = "OpenAD, Rapsodia"
+}
+
+@ARTICLE{
+	   Griewank2013Osp,
+	author = "Griewank, Andreas",
+	title = "On stable piecewise linearization and generalized algorithmic differentiation",
+	journal = "Optimization Methods and Software",
+	volume = "28",
+	number = "6",
+	pages = "1139--1178",
+	year = "2013",
+	doi = "10.1080/10556788.2013.796683"
 }
 
